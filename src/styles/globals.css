@@ -1,0 +1,251 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Google Fonts are loaded in index.html ── */
+
+:root {
+  /* Core Brand */
+  --spark-ember:       #FF6B35;
+  --spark-warmth:      #FFA62B;
+  --spark-flame:       #E63946;
+
+  /* Backgrounds */
+  --bg-primary:        #FFFDF7;
+  --bg-secondary:      #FFF8ED;
+  --bg-dark:           #1A1A2E;
+  --bg-dark-card:      #16213E;
+
+  /* Domain Colors */
+  --domain-math:        #2B59C3;
+  --domain-science:     #2D936C;
+  --domain-cs:          #5B5EA6;
+  --domain-art:         #E07A5F;
+  --domain-music:       #7B2D8B;
+  --domain-history:     #8B6914;
+  --domain-literature:  #C1666B;
+  --domain-philosophy:  #4A6FA5;
+  --domain-engineering: #D4A373;
+  --domain-languages:   #3A7D44;
+  --domain-cooking:     #D35400;
+  --domain-sports:      #27AE60;
+  --domain-dance:       #E74C8B;
+  --domain-film:        #2C3E50;
+  --domain-architecture:#8E6F47;
+
+  /* Branch States */
+  --branch-flowering:  #FFD700;
+  --branch-dormant:    #8B8B7A;
+
+  /* Text */
+  --text-primary:      #2C2C2C;
+  --text-secondary:    #6B6B5E;
+  --text-muted:        #A3A393;
+
+  /* Semantic */
+  --success:           #2D936C;
+  --warning:           #FFA62B;
+  --error:             #E63946;
+
+  /* Tree */
+  --tree-bg:           #F5F0E6;
+  --ghost-node:        rgba(0,0,0,0.12);
+  --research-frontier: rgba(255,215,0,0.3);
+
+  /* Typography */
+  --font-display:       'Fraunces', Georgia, serif;
+  --font-body:          'Source Sans 3', sans-serif;
+  --font-mono:          'JetBrains Mono', monospace;
+  --font-display-kids:  'Baloo 2', cursive;
+  --font-body-kids:     'Nunito', sans-serif;
+  --app-shell-width:    1100px;
+}
+
+/* Base Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background:
+    radial-gradient(circle at 20% 0%, rgba(255, 166, 43, 0.18), transparent 24%),
+    radial-gradient(circle at 100% 10%, rgba(74, 111, 165, 0.1), transparent 28%),
+    linear-gradient(180deg, #fffaf0 0%, var(--bg-primary) 45%, #f7efe1 100%);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  line-height: 1.2;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Kids font override */
+.kids-mode {
+  font-family: var(--font-body-kids);
+}
+.kids-mode h1,
+.kids-mode h2,
+.kids-mode h3 {
+  font-family: var(--font-display-kids);
+}
+
+/* Utility: warm card */
+.card {
+  background: var(--bg-secondary);
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(42, 42, 42, 0.08);
+}
+
+.spark-shell {
+  width: min(100%, var(--app-shell-width));
+  min-height: 100vh;
+  margin: 0 auto;
+  position: relative;
+}
+
+.spark-surface {
+  background: rgba(255, 253, 247, 0.72);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 24px 80px rgba(72, 49, 10, 0.08);
+  isolation: isolate;
+}
+
+.spark-surface::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 18% 16%, rgba(255, 107, 53, 0.08), transparent 24%),
+    radial-gradient(circle at 82% 22%, rgba(74, 111, 165, 0.08), transparent 28%),
+    radial-gradient(circle at 50% 100%, rgba(255, 166, 43, 0.1), transparent 32%);
+  pointer-events: none;
+  z-index: -2;
+}
+
+.spark-surface::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.16) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.16), transparent 72%);
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.spark-orb {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(24px);
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+/* Utility: tap target */
+.tap-target {
+  min-width: 48px;
+  min-height: 48px;
+}
+
+/* Skip link for a11y */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  background: var(--spark-ember);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0 0 8px 8px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  z-index: 9999;
+  transition: top 0.2s;
+}
+.skip-link:focus {
+  top: 0;
+}
+
+/* Focus ring */
+:focus-visible {
+  outline: 2px solid var(--spark-ember);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Scrollbar (webkit) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(107, 107, 94, 0.3);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(107, 107, 94, 0.5);
+}
+
+/* Domain color utilities */
+.domain-math        { color: var(--domain-math); }
+.domain-science     { color: var(--domain-science); }
+.domain-cs          { color: var(--domain-cs); }
+.domain-art         { color: var(--domain-art); }
+.domain-music       { color: var(--domain-music); }
+.domain-history     { color: var(--domain-history); }
+.domain-literature  { color: var(--domain-literature); }
+.domain-philosophy  { color: var(--domain-philosophy); }
+.domain-engineering { color: var(--domain-engineering); }
+.domain-languages   { color: var(--domain-languages); }
+.domain-cooking     { color: var(--domain-cooking); }
+.domain-sports      { color: var(--domain-sports); }
+.domain-dance       { color: var(--domain-dance); }
+.domain-film        { color: var(--domain-film); }
+.domain-architecture{ color: var(--domain-architecture); }
+
+.bg-domain-math        { background-color: var(--domain-math); }
+.bg-domain-science     { background-color: var(--domain-science); }
+.bg-domain-cs          { background-color: var(--domain-cs); }
+.bg-domain-art         { background-color: var(--domain-art); }
+.bg-domain-music       { background-color: var(--domain-music); }
+.bg-domain-history     { background-color: var(--domain-history); }
+.bg-domain-literature  { background-color: var(--domain-literature); }
+.bg-domain-philosophy  { background-color: var(--domain-philosophy); }
+.bg-domain-engineering { background-color: var(--domain-engineering); }
+.bg-domain-languages   { background-color: var(--domain-languages); }
+.bg-domain-cooking     { background-color: var(--domain-cooking); }
+.bg-domain-sports      { background-color: var(--domain-sports); }
+.bg-domain-dance       { background-color: var(--domain-dance); }
+.bg-domain-film        { background-color: var(--domain-film); }
+.bg-domain-architecture{ background-color: var(--domain-architecture); }

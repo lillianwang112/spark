@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="512" height="512">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FF6B35" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#FF6B35" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="body" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#FF8C55"/>
+      <stop offset="100%" stop-color="#E85520"/>
+    </radialGradient>
+  </defs>
+  <!-- Glow halo -->
+  <circle cx="50" cy="50" r="48" fill="url(#glow)"/>
+  <!-- Body -->
+  <circle cx="50" cy="55" r="38" fill="url(#body)"/>
+  <!-- Cheeks -->
+  <circle cx="30" cy="65" r="8" fill="rgba(255,220,180,0.35)"/>
+  <circle cx="70" cy="65" r="8" fill="rgba(255,220,180,0.35)"/>
+  <!-- Left eye -->
+  <ellipse cx="36" cy="42" rx="5" ry="6" fill="white"/>
+  <circle cx="36" cy="43" r="3" fill="#1A1A2E"/>
+  <circle cx="34.5" cy="41.5" r="1" fill="white" opacity="0.7"/>
+  <!-- Right eye -->
+  <ellipse cx="64" cy="42" rx="5" ry="6" fill="white"/>
+  <circle cx="64" cy="43" r="3" fill="#1A1A2E"/>
+  <circle cx="62.5" cy="41.5" r="1" fill="white" opacity="0.7"/>
+  <!-- Smile -->
+  <path d="M 38 68 Q 50 77 62 68" stroke="rgba(255,255,255,0.75)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+</svg>

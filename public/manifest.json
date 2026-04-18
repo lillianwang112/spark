@@ -1,0 +1,19 @@
+{
+  "name": "Spark — The Curiosity Engine",
+  "short_name": "Spark",
+  "description": "Discover what you actually want to learn",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FFFDF7",
+  "theme_color": "#FF6B35",
+  "icons": [
+    {
+      "src": "/ember-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["education", "productivity", "lifestyle"]
+}
