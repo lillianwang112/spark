@@ -194,7 +194,22 @@ export default function Ember({
         />
 
         <motion.path
-          d="M53 24c8 8 14 16 15 29 1 12-5 24-16 31-11-7-17-19-15-31 1-13 8-21 16-29Z"
+          d="M25 58c-6 3-8 9-6 15 2 6 7 10 13 11-4-6-4-17-1-26-2-1-4-1-6 0Z"
+          fill="rgba(255,138,90,0.28)"
+          animate={{ rotate: [-6, 0, -6], x: [0, -1.5, 0] }}
+          transition={{ duration: 2.1, repeat: Infinity, ease: 'easeInOut' }}
+          style={{ transformOrigin: '28px 72px' }}
+        />
+        <motion.path
+          d="M79 58c6 3 8 9 6 15-2 6-7 10-13 11 4-6 4-17 1-26 2-1 4-1 6 0Z"
+          fill="rgba(255,138,90,0.24)"
+          animate={{ rotate: [6, 0, 6], x: [0, 1.5, 0] }}
+          transition={{ duration: 2.1, repeat: Infinity, ease: 'easeInOut' }}
+          style={{ transformOrigin: '76px 72px' }}
+        />
+
+        <motion.path
+          d="M53 20c9 8 15 16 16 30 1 13-5 26-17 34-12-8-18-21-16-34 1-14 8-22 17-30Z"
           fill="url(#ember-core-gradient)"
           animate={config.core}
         />
@@ -247,7 +262,7 @@ export default function Ember({
         <motion.path
           d={config.mouth}
           stroke="rgba(104,34,38,0.62)"
-          strokeWidth="2.2"
+          strokeWidth="1.45"
           fill="none"
           strokeLinecap="round"
           strokeLinejoin="round"
