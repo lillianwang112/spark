@@ -22,8 +22,18 @@ import { storage } from '../services/storage.js';
 import TopicGraph from '../services/topicGraph.js';
 void motion;
 
+function seededDomainSlice(domains, seed, count = 3) {
+  const ordered = [...domains].sort((a, b) => {
+    const av = `${a}-${seed}`;
+    const bv = `${b}-${seed}`;
+    return av.localeCompare(bv);
+  });
+  return ordered.slice(0, count);
+}
+
 export default function Explore({
   initialSearch = null,
+  onboardingIntent = null,
   pendingDeepDive = null,
   onConsumePendingDeepDive,
   onSpark,
@@ -39,6 +49,7 @@ export default function Explore({
   const [drillStack, setDrillStack] = useState([]);
   const [deepDiveNode, setDeepDiveNode] = useState(null);
   const [toast, setToast] = useState(null);
+  const [discoveryDirection, setDiscoveryDirection] = useState('similar');
 
   const userContextObj = buildUserContext(user);
   const {
@@ -185,6 +196,18 @@ export default function Explore({
   const dailyGoal = streakState?.dailyGoal ?? 3;
 
   const dailyPrompts = useMemo(() => {
+    if (onboardingIntent === 'major') {
+      return [
+        'you are in a lab at 11pm rerunning an experiment',
+        'you just found the bug crashing an app for 10,000 users',
+        'you are writing a policy memo on why a system failed',
+      ];
+    }
+    if (discoveryDirection === 'different') {
+      const daySeed = new Date().toISOString().slice(0, 10);
+      const variedDomains = seededDomainSlice(DOMAINS, daySeed, 3);
+      return variedDomains.map((domain) => `surprising ideas in ${DOMAIN_LABELS[domain] || domain}`);
+    }
     const fromTree = roots[0]
       ? TopicGraph.getPredictedPrompts(roots[0], userContextObj)
       : null;
@@ -197,7 +220,7 @@ export default function Explore({
       ];
     }
     return ['black holes', 'ancient maps', 'why music feels emotional'];
-  }, [roots, topDomains, userContextObj]);
+  }, [discoveryDirection, onboardingIntent, roots, topDomains, userContextObj]);
 
   const dailyHook = deepDiveNode
     ? `Dive through ${deepDiveNode.label}.`
@@ -224,6 +247,24 @@ export default function Explore({
             suggestions={suggestions}
             placeholder={isKids ? 'Ask Ember anything!' : 'Search anything curious...'}
           />
+          <div className="mt-2 flex items-center gap-1 rounded-full bg-[rgba(42,42,42,0.06)] p-1 w-fit">
+            <button
+              onClick={() => setDiscoveryDirection('similar')}
+              className={`px-3 py-1.5 rounded-full text-xs font-body transition-colors ${
+                discoveryDirection === 'similar' ? 'bg-spark-ember text-white' : 'text-text-muted hover:text-text-primary'
+              }`}
+            >
+              Similar paths
+            </button>
+            <button
+              onClick={() => setDiscoveryDirection('different')}
+              className={`px-3 py-1.5 rounded-full text-xs font-body transition-colors ${
+                discoveryDirection === 'different' ? 'bg-spark-ember text-white' : 'text-text-muted hover:text-text-primary'
+              }`}
+            >
+              Surprise me
+            </button>
+          </div>
         </div>
       </div>
 

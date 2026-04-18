@@ -25,6 +25,7 @@ const AGE_OPTIONS = [
 const INTENT_OPTIONS = [
   { id: 'explore',  emoji: '🌳', label: 'Explore freely',        desc: 'Discover what you\'re curious about' },
   { id: 'idea',     emoji: '💡', label: 'I have an idea',        desc: 'Go deep on something specific' },
+  { id: 'major',    emoji: '🎓', label: 'Pick a college major',  desc: 'Discover fields through real day-in-life signals' },
   { id: 'popular',  emoji: '✨', label: 'Show me what\'s popular', desc: 'See what others are exploring' },
 ];
 

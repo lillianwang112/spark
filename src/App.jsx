@@ -85,6 +85,7 @@ function AppShell() {
     explore: (
       <Explore
         initialSearch={exploreInitialSearch}
+        onboardingIntent={onboardingResult?.intent || null}
         pendingDeepDive={pendingDeepDive}
         onConsumePendingDeepDive={() => setPendingDeepDive(null)}
         onSpark={pingStreak}
