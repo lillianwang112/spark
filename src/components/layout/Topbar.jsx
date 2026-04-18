@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import StreakFlame from '../common/StreakFlame.jsx';
 import ProgressRing from '../common/ProgressRing.jsx';
 import Ember from '../ember/Ember.jsx';
+void motion;
 
 export default function Topbar({
   userName,
@@ -17,7 +18,6 @@ export default function Topbar({
   const isKids = ageGroup === 'little_explorer';
   const goalMet = sparksToday >= dailyGoal;
 
-  // Show "Goal met!" badge briefly when goal is first reached
   const [showGoalBadge, setShowGoalBadge] = useState(false);
   const prevGoalMetRef = useState(false);
   useEffect(() => {
@@ -28,74 +28,101 @@ export default function Topbar({
       prevGoalMetRef[0] = true;
       return () => clearTimeout(t);
     }
-    if (!goalMet) {
-      prevGoalMetRef[0] = false;
-    }
+    if (!goalMet) prevGoalMetRef[0] = false;
   }, [goalMet, prevGoalMetRef]);
 
   return (
     <motion.header
-      initial={{ opacity: 0, y: -8 }}
+      initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.35, ease: [0.25, 0.8, 0.25, 1] }}
+      transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
       className="relative z-20 flex items-center justify-between gap-3 px-4 pt-4 pb-3 sm:px-6 sm:pt-5"
     >
       {/* Brand + Ember */}
       <button
         type="button"
         onClick={onTapEmber}
-        className="group flex items-center gap-3 rounded-[18px] px-1 py-1 transition-colors focus-visible:outline-spark-ember"
+        className="group flex items-center gap-3 rounded-[18px] px-1 py-1 transition-all focus-visible:outline-spark-ember"
         aria-label="Spark home"
       >
         <div className="relative">
-          <Ember mood={emberMood} size="sm" glowIntensity={0.85} />
-          <span className="pointer-events-none absolute inset-0 rounded-full animate-glow-breathe" />
+          <motion.div
+            animate={{ boxShadow: ['0 0 0px rgba(255,107,53,0)', '0 0 22px rgba(255,107,53,0.35)', '0 0 0px rgba(255,107,53,0)'] }}
+            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+            className="rounded-full"
+          >
+            <Ember mood={emberMood} size="sm" glowIntensity={0.9} />
+          </motion.div>
         </div>
+
         <div className="min-w-0 text-left">
-          <p className="font-display text-[1.05rem] leading-none font-semibold text-text-primary">
-            {isKids && userName ? `Hi, ${userName}!` : 'Spark'}
+          <p className="font-display text-[1.08rem] leading-none font-bold">
+            <span
+              style={{
+                background: 'linear-gradient(135deg, #FF8A5A 0%, #FF6B35 45%, #FFD166 100%)',
+                WebkitBackgroundClip: 'text',
+                backgroundClip: 'text',
+                color: 'transparent',
+              }}
+            >
+              {isKids && userName ? `Hi, ${userName}!` : 'Spark'}
+            </span>
           </p>
-          <p className="mt-0.5 text-[10px] font-mono uppercase tracking-[0.2em] text-text-muted">
+          <motion.p
+            key={label}
+            initial={{ opacity: 0, y: 3 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="mt-0.5 text-[10px] font-mono uppercase tracking-[0.22em] text-text-muted"
+          >
             {label}
-          </p>
+          </motion.p>
         </div>
       </button>
 
       <div className="flex items-center gap-2">
         {/* Daily goal ring */}
         <div
-          className={`relative flex items-center gap-2 rounded-full px-2.5 py-1.5 ${
-            goalMet
-              ? 'bg-[rgba(255,209,102,0.2)] border border-[rgba(255,209,102,0.45)]'
-              : 'bg-[rgba(255,255,255,0.8)] border border-[rgba(255,181,94,0.2)]'
-          }`}
+          className="relative flex items-center gap-2 rounded-full px-2.5 py-1.5 transition-all"
+          style={{
+            background: goalMet
+              ? 'rgba(255,209,102,0.18)'
+              : 'rgba(255,255,255,0.82)',
+            border: goalMet
+              ? '1px solid rgba(255,209,102,0.50)'
+              : '1px solid rgba(255,181,94,0.18)',
+            boxShadow: goalMet
+              ? '0 0 16px rgba(255,209,102,0.28), 0 4px 14px rgba(255,166,43,0.14)'
+              : '0 2px 8px rgba(72,49,10,0.06)',
+          }}
           title={`${sparksToday}/${dailyGoal} sparks today`}
         >
           <ProgressRing value={Math.min(sparksToday, dailyGoal)} max={dailyGoal} size={30} stroke={3}>
-            <span className="text-[10px] font-mono font-semibold text-text-secondary">
+            <span
+              className="text-[10px] font-mono font-bold"
+              style={{ color: goalMet ? '#B8860B' : 'var(--text-secondary)' }}
+            >
               {sparksToday}
             </span>
           </ProgressRing>
 
           <div className="flex flex-col gap-0.5">
             <span className="hidden sm:inline text-[10px] font-mono uppercase tracking-[0.14em] text-text-muted">
-              {goalMet ? 'Day won' : `${dailyGoal - sparksToday} to go`}
+              {goalMet ? '✓ Day won' : `${dailyGoal - sparksToday} to go`}
             </span>
-            {/* Daily goal progress bar */}
             {dailyGoal > 0 && (
-              <div className="relative h-1 w-16 sm:w-20 rounded-full bg-[rgba(42,42,42,0.08)] overflow-hidden">
+              <div className="relative h-1 w-16 sm:w-20 rounded-full overflow-hidden" style={{ background: 'rgba(42,42,42,0.08)' }}>
                 <motion.div
                   className="absolute inset-y-0 left-0 rounded-full"
-                  style={{ background: 'linear-gradient(90deg, #FFD166, #FF6B35)' }}
+                  style={{ background: goalMet ? 'linear-gradient(90deg,#FFD166,#FFA62B)' : 'linear-gradient(90deg,#FF8A5A,#FF6B35)' }}
                   initial={{ width: 0 }}
                   animate={{ width: `${Math.min(100, (sparksToday / dailyGoal) * 100)}%` }}
-                  transition={{ duration: 0.8, ease: 'easeOut' }}
+                  transition={{ duration: 0.9, ease: 'easeOut' }}
                 />
               </div>
             )}
           </div>
 
-          {/* Goal-met celebration badge */}
           <AnimatePresence>
             {showGoalBadge && (
               <motion.span
@@ -104,8 +131,12 @@ export default function Topbar({
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.8, y: -4 }}
                 transition={{ type: 'spring', stiffness: 380, damping: 22 }}
-                className="absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full px-2.5 py-1 text-[10px] font-mono font-semibold shadow-md"
-                style={{ background: 'linear-gradient(135deg, #FFD166, #FF6B35)', color: '#fff' }}
+                className="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full px-2.5 py-1 text-[10px] font-mono font-bold shadow-lg"
+                style={{
+                  background: 'linear-gradient(135deg, #FFD166, #FF6B35)',
+                  color: '#fff',
+                  boxShadow: '0 8px 20px rgba(255,107,53,0.4)',
+                }}
               >
                 ✓ Goal met!
               </motion.span>
@@ -114,15 +145,23 @@ export default function Topbar({
         </div>
 
         {/* Streak pill */}
-        <div
-          className="flex items-center gap-1.5 rounded-full border border-[rgba(255,107,53,0.22)] bg-[linear-gradient(135deg,rgba(255,221,168,0.55),rgba(255,176,110,0.28))] px-2.5 py-1.5 shadow-[0_4px_12px_rgba(255,107,53,0.18)]"
+        <motion.div
+          whileHover={{ scale: 1.06, y: -1 }}
+          className="flex items-center gap-1.5 rounded-full px-2.5 py-1.5 cursor-default"
+          style={{
+            background: 'linear-gradient(135deg, rgba(255,220,168,0.60), rgba(255,176,110,0.32))',
+            border: '1px solid rgba(255,107,53,0.26)',
+            boxShadow: streak > 3
+              ? '0 0 16px rgba(255,107,53,0.28), 0 4px 14px rgba(255,107,53,0.16)'
+              : '0 4px 12px rgba(255,107,53,0.15)',
+          }}
           title={`${streak} day curiosity streak`}
         >
           <StreakFlame streak={streak} size="sm" pulse={streak > 0} />
-          <span className="hidden sm:inline text-[10px] font-mono uppercase tracking-[0.14em] text-spark-ember font-semibold">
-            Streak
+          <span className="hidden sm:inline text-[10px] font-mono uppercase tracking-[0.14em] text-spark-ember font-bold">
+            {streak}d
           </span>
-        </div>
+        </motion.div>
       </div>
     </motion.header>
   );

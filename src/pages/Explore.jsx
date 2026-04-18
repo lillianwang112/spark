@@ -270,7 +270,14 @@ export default function Explore({
 
   return (
     <div className="flex h-full flex-col">
-      <div className="sticky top-0 z-10 border-b border-[rgba(42,42,42,0.06)] bg-[rgba(255,253,247,0.86)] px-4 pb-2 pt-4 backdrop-blur-xl">
+      <div
+        className="sticky top-0 z-10 px-4 pb-2.5 pt-4 backdrop-blur-2xl"
+        style={{
+          background: 'rgba(255,252,245,0.90)',
+          borderBottom: '1px solid rgba(255,200,140,0.18)',
+          boxShadow: '0 4px 20px rgba(72,49,10,0.06)',
+        }}
+      >
         <div className="mx-auto max-w-[760px]">
           <SearchBar
             value={query}
@@ -279,29 +286,46 @@ export default function Explore({
             suggestions={suggestions}
             placeholder={isKids ? 'Ask Ember anything!' : 'Search anything curious...'}
           />
-          <div className="mt-2 flex items-center gap-1 rounded-full bg-[rgba(42,42,42,0.06)] p-1 w-fit">
-            <button
-              onClick={() => setDiscoveryDirection('similar')}
-              className={`px-3 py-1.5 rounded-full text-xs font-body transition-colors ${
-                discoveryDirection === 'similar' ? 'bg-spark-ember text-white' : 'text-text-muted hover:text-text-primary'
-              }`}
+          <div className="mt-2.5 flex items-center gap-1.5">
+            <div
+              className="flex items-center gap-1 rounded-full p-1"
+              style={{ background: 'rgba(42,42,42,0.06)' }}
             >
-              Similar paths
-            </button>
-            <button
-              onClick={() => setDiscoveryDirection('different')}
-              className={`px-3 py-1.5 rounded-full text-xs font-body transition-colors ${
-                discoveryDirection === 'different' ? 'bg-spark-ember text-white' : 'text-text-muted hover:text-text-primary'
-              }`}
-            >
-              Surprise me
-            </button>
-            <button
+              {[
+                ['similar', 'Similar paths'],
+                ['different', 'Surprise me'],
+              ].map(([val, lbl]) => (
+                <button
+                  key={val}
+                  onClick={() => setDiscoveryDirection(val)}
+                  className="px-3 py-1.5 rounded-full text-xs font-body font-semibold transition-all"
+                  style={discoveryDirection === val
+                    ? {
+                        background: 'linear-gradient(135deg, #FF8A5A, #FF6B35)',
+                        color: '#fff',
+                        boxShadow: '0 4px 12px rgba(255,107,53,0.30)',
+                      }
+                    : { color: 'var(--text-muted)' }
+                  }
+                >
+                  {lbl}
+                </button>
+              ))}
+            </div>
+            <motion.button
+              whileHover={{ scale: 1.05, y: -1 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => setFreefallMode(true)}
-              className="px-3 py-1.5 rounded-full text-xs font-body transition-colors text-text-muted hover:text-text-primary hover:bg-[rgba(255,107,53,0.12)]"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-body font-bold transition-all"
+              style={{
+                background: 'linear-gradient(135deg, #130700, #1E0C00)',
+                color: '#FFD166',
+                border: '1px solid rgba(255,166,43,0.30)',
+                boxShadow: '0 4px 14px rgba(255,107,53,0.20)',
+              }}
             >
               ✦ Freefall
-            </button>
+            </motion.button>
           </div>
         </div>
       </div>
@@ -561,10 +585,10 @@ export default function Explore({
                       onDrillToDepth={handleDrillToDepth}
                     />
 
-                    {/* Free Exploration — browse any topic */}
+                    {/* Free Exploration */}
                     <div className="mt-6">
                       <div className="mb-3 flex items-center justify-between">
-                        <p className="text-[11px] font-mono uppercase tracking-[0.14em] text-text-muted">Explore freely</p>
+                        <p className="text-[11px] font-mono uppercase tracking-[0.18em] text-text-muted">Explore freely</p>
                         <p className="text-xs font-body text-text-muted">Jump into any world</p>
                       </div>
                       <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
@@ -573,13 +597,14 @@ export default function Explore({
                           return (
                             <motion.button
                               key={domain}
-                              initial={{ opacity: 0, scale: 0.85 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              transition={{ delay: i * 0.03, type: 'spring', stiffness: 260, damping: 22 }}
+                              initial={{ opacity: 0, scale: 0.82, y: 10 }}
+                              animate={{ opacity: 1, scale: 1, y: 0 }}
+                              transition={{ delay: i * 0.04, type: 'spring', stiffness: 280, damping: 22 }}
                               whileHover={{
-                                scale: 1.07,
-                                boxShadow: `0 8px 24px ${color}28`,
-                                y: -3,
+                                scale: 1.09,
+                                y: -5,
+                                boxShadow: `0 12px 28px ${color}38`,
+                                borderColor: `${color}55`,
                               }}
                               whileTap={{ scale: 0.93 }}
                               onClick={() => {
@@ -591,15 +616,22 @@ export default function Explore({
                                   description: `Explore ${DOMAIN_LABELS[domain]} freely`,
                                 });
                               }}
-                              className="flex flex-col items-center gap-1.5 rounded-[18px] p-3"
+                              className="flex flex-col items-center gap-1.5 rounded-[18px] p-3 transition-all duration-200"
                               style={{
-                                background: `${color}12`,
-                                border: `1px solid ${color}22`,
+                                background: `linear-gradient(145deg, ${color}10, ${color}06)`,
+                                border: `1px solid ${color}25`,
+                                boxShadow: `0 4px 12px ${color}12`,
                               }}
                             >
-                              <span className="text-xl leading-none">{DOMAIN_EMOJIS[domain]}</span>
+                              <motion.span
+                                className="text-2xl leading-none"
+                                animate={{ scale: [1, 1.08, 1], rotate: [0, -3, 3, 0] }}
+                                transition={{ duration: 3 + i * 0.4, repeat: Infinity, repeatDelay: 4 + i * 0.5 }}
+                              >
+                                {DOMAIN_EMOJIS[domain]}
+                              </motion.span>
                               <span
-                                className="text-[11px] font-body font-semibold text-center leading-tight"
+                                className="text-[11px] font-body font-bold text-center leading-tight"
                                 style={{ color }}
                               >
                                 {DOMAIN_LABELS[domain].replace(' & Design', '').replace(' & Movement', '')}
@@ -618,11 +650,17 @@ export default function Explore({
                           setPhase('discovery');
                           setForceDiscovery(true);
                         }}
-                        whileHover={{ scale: 1.04, color: '#FF6B35' }}
-                        whileTap={{ scale: 0.96 }}
-                        className="flex items-center gap-1.5 rounded-full bg-[rgba(42,42,42,0.05)] px-5 py-2.5 font-body text-sm text-text-muted hover:bg-[rgba(255,107,53,0.08)] transition-colors"
+                        whileHover={{ scale: 1.05, y: -2, boxShadow: '0 8px 20px rgba(255,107,53,0.18)' }}
+                        whileTap={{ scale: 0.95 }}
+                        className="flex items-center gap-1.5 rounded-full px-5 py-2.5 font-body text-sm font-semibold transition-all"
+                        style={{
+                          background: 'rgba(255,107,53,0.08)',
+                          border: '1px solid rgba(255,107,53,0.18)',
+                          color: 'var(--spark-ember)',
+                        }}
                       >
-                        ✦ Run discovery again</motion.button>
+                        ✦ Run discovery again
+                      </motion.button>
                     </div>
                   </>
                 )}

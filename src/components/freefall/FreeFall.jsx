@@ -212,63 +212,95 @@ function SwipeCard({ topic, onSwipeUp, onSwipeDown, onLike, onDig, isTop, zIndex
       className="absolute inset-0 cursor-grab active:cursor-grabbing select-none"
     >
       <div
-        className="relative w-full h-full rounded-[24px] overflow-hidden flex flex-col"
+        className="relative w-full h-full rounded-[28px] overflow-hidden flex flex-col"
         style={{
-          background: `linear-gradient(160deg, ${color}18 0%, rgba(255,253,247,0.98) 50%, ${color}08 100%)`,
-          border: `1.5px solid ${color}22`,
-          boxShadow: isTop ? `0 16px 48px ${color}1E, 0 6px 20px rgba(0,0,0,0.07)` : '0 4px 12px rgba(0,0,0,0.05)',
+          background: `linear-gradient(160deg, #110600 0%, #1D0B00 40%, ${color}18 70%, #0E0500 100%)`,
+          border: `1.5px solid ${color}30`,
+          boxShadow: isTop
+            ? `0 28px 70px ${color}28, 0 0 0 1px ${color}18, 0 8px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)`
+            : `0 6px 16px rgba(0,0,0,0.20)`,
         }}
       >
+        {/* Subtle domain color wash */}
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background: `radial-gradient(ellipse 70% 50% at 80% 20%, ${color}20 0%, transparent 65%)`,
+          }}
+          aria-hidden="true"
+        />
+
         {/* Header row */}
-        <div className="flex items-center justify-between px-5 pt-4 flex-shrink-0">
+        <div className="flex items-center justify-between px-5 pt-4 flex-shrink-0 relative z-10">
           <span
             className="text-[10px] font-mono font-semibold uppercase tracking-[0.18em] px-2.5 py-1 rounded-full"
-            style={{ background: `${color}14`, color }}
+            style={{
+              background: `${color}28`,
+              color,
+              border: `1px solid ${color}40`,
+              boxShadow: `0 2px 8px ${color}28`,
+            }}
           >
             {topic.domain}
           </span>
-          <span className="text-[10px] font-mono text-text-muted opacity-40">↑ skip · ↓ back</span>
+          <span className="text-[10px] font-mono opacity-30" style={{ color: 'rgba(255,220,180,0.6)' }}>
+            ↑ skip · ↓ back
+          </span>
         </div>
 
-        {/* Main content — scrollable if needed */}
-        <div className="flex-1 flex flex-col px-5 py-3 min-h-0">
+        {/* Main content */}
+        <div className="flex-1 flex flex-col px-5 py-3 min-h-0 relative z-10">
           <div className="flex items-start gap-4 mb-3">
             <motion.div
-              initial={{ scale: 0.7, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ type: 'spring', stiffness: 280, damping: 22, delay: 0.05 }}
+              initial={{ scale: 0.6, opacity: 0, rotate: -15 }}
+              animate={{ scale: 1, opacity: 1, rotate: 0 }}
+              transition={{ type: 'spring', stiffness: 260, damping: 20, delay: 0.05 }}
               className="text-5xl leading-none flex-shrink-0"
-              style={{ filter: `drop-shadow(0 6px 18px ${color}38)` }}
+              style={{ filter: `drop-shadow(0 8px 22px ${color}55)` }}
             >
               {topic.emoji}
             </motion.div>
             <div className="flex-1 min-w-0">
               <motion.h2
-                initial={{ opacity: 0, x: 8 }}
+                initial={{ opacity: 0, x: 10 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.08, duration: 0.3 }}
-                className="font-display text-xl font-bold text-text-primary leading-tight"
+                transition={{ delay: 0.1, duration: 0.32 }}
+                className="font-display text-xl font-bold leading-tight"
+                style={{ color: '#FFF7EC' }}
               >
                 {topic.label}
               </motion.h2>
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.14, duration: 0.3 }}
-                className="font-body text-sm text-spark-ember font-medium mt-0.5 leading-snug"
+                transition={{ delay: 0.16, duration: 0.3 }}
+                className="font-body text-sm font-medium mt-0.5 leading-snug"
+                style={{ color }}
               >
                 {topic.hook}
               </motion.p>
             </div>
           </div>
 
-          {/* Body — the substance */}
+          {/* Separator */}
+          <div
+            className="h-px mb-3 opacity-20"
+            style={{ background: `linear-gradient(90deg, transparent, ${color}, transparent)` }}
+          />
+
+          {/* Body */}
           <motion.p
-            initial={{ opacity: 0, y: 6 }}
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.35 }}
-            className="font-body text-sm text-text-secondary leading-relaxed flex-1"
-            style={{ overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 5, WebkitBoxOrient: 'vertical' }}
+            transition={{ delay: 0.22, duration: 0.38 }}
+            className="font-body text-sm leading-relaxed flex-1"
+            style={{
+              color: 'rgba(255,220,170,0.78)',
+              overflow: 'hidden',
+              display: '-webkit-box',
+              WebkitLineClamp: 5,
+              WebkitBoxOrient: 'vertical',
+            }}
           >
             {topic.body}
           </motion.p>
@@ -276,36 +308,45 @@ function SwipeCard({ topic, onSwipeUp, onSwipeDown, onLike, onDig, isTop, zIndex
 
         {/* Actions */}
         {isTop && (
-          <div className="flex-shrink-0 px-4 pb-4 pt-2 space-y-2">
-            {/* Keyboard hints */}
-            <div className="flex justify-center gap-4 text-[10px] font-mono text-text-muted">
+          <div className="flex-shrink-0 px-4 pb-5 pt-2 space-y-2.5 relative z-10">
+            <div className="flex justify-center gap-4 text-[10px] font-mono opacity-40" style={{ color: 'rgba(255,200,140,0.7)' }}>
               <span><span style={{ color }}>[S]</span> save</span>
-              <span className="opacity-30">·</span>
+              <span className="opacity-40">·</span>
               <span><span style={{ color }}>[D]</span> dig deeper</span>
-              <span className="opacity-30">·</span>
-              <span><span style={{ color: '#E63946' }}>[↑]</span> skip</span>
+              <span className="opacity-40">·</span>
+              <span>[↑] skip</span>
             </div>
             <div className="flex gap-2.5">
               <motion.button
-                whileHover={{ scale: 1.04, y: -1 }}
-                whileTap={{ scale: 0.96 }}
+                whileHover={{ scale: 1.05, y: -2, boxShadow: `0 16px 32px ${isLiked ? '#2D936C' : color}50` }}
+                whileTap={{ scale: 0.94 }}
                 onClick={onLike}
-                className="flex-1 flex items-center justify-center gap-1.5 py-3 rounded-[16px] font-body font-semibold text-sm text-white"
+                className="flex-1 flex items-center justify-center gap-1.5 py-3.5 rounded-[18px] font-body font-bold text-sm text-white"
                 style={{
                   background: isLiked
-                    ? `linear-gradient(135deg, #2D936C, #2D936C99)`
-                    : `linear-gradient(135deg, ${color}, ${color}cc)`,
-                  boxShadow: `0 6px 20px ${isLiked ? '#2D936C' : color}38`,
+                    ? 'linear-gradient(135deg, #3DB87F, #2D936C)'
+                    : `linear-gradient(135deg, ${color}EE, ${color}99)`,
+                  boxShadow: `0 10px 28px ${isLiked ? '#2D936C' : color}45`,
+                  border: `1px solid ${isLiked ? 'rgba(61,184,127,0.4)' : `${color}55`}`,
                 }}
               >
                 {isLiked ? '✓ Saved' : '❤️ Save it'}
               </motion.button>
               <motion.button
-                whileHover={{ scale: 1.04, y: -1 }}
-                whileTap={{ scale: 0.96 }}
+                whileHover={{
+                  scale: 1.05, y: -2,
+                  boxShadow: `0 16px 32px ${color}40`,
+                  background: `${color}25`,
+                }}
+                whileTap={{ scale: 0.94 }}
                 onClick={onDig}
-                className="flex-1 flex items-center justify-center gap-1.5 py-3 rounded-[16px] font-body font-semibold text-sm border-2"
-                style={{ borderColor: `${color}38`, color, background: `${color}0A` }}
+                className="flex-1 flex items-center justify-center gap-1.5 py-3.5 rounded-[18px] font-body font-bold text-sm transition-all"
+                style={{
+                  border: `1.5px solid ${color}50`,
+                  color,
+                  background: `${color}14`,
+                  boxShadow: `inset 0 1px 0 rgba(255,255,255,0.06)`,
+                }}
               >
                 ✦ Dig deeper
               </motion.button>
@@ -383,25 +424,46 @@ export default function FreeFall({ onExit, onDig, userContextObj }) {
 
   return (
     <div
-      className="flex flex-col bg-bg-primary"
-      style={{ height: '100%', paddingBottom: NAV_HEIGHT }}
+      className="flex flex-col"
+      style={{
+        height: '100%',
+        paddingBottom: NAV_HEIGHT,
+        background: 'linear-gradient(180deg, #0D0500 0%, #180900 50%, #100600 100%)',
+      }}
     >
       {/* Header */}
       <div className="flex items-center justify-between px-4 pt-4 pb-2 flex-shrink-0">
         <div className="flex items-center gap-2">
-          <Ember mood={likedCount > 3 ? 'celebrating' : 'curious'} size="xs" glowIntensity={0.6} />
+          <Ember mood={likedCount > 3 ? 'celebrating' : 'curious'} size="xs" glowIntensity={0.8} />
           <div>
-            <p className="text-[11px] font-mono uppercase tracking-[0.14em] text-text-muted">Freefall</p>
+            <p className="text-[11px] font-mono uppercase tracking-[0.18em]" style={{ color: 'rgba(255,138,90,0.85)' }}>
+              Freefall
+            </p>
             {likedCount > 0 && (
-              <p className="text-[10px] font-body text-text-muted">{likedCount} saved</p>
+              <motion.p
+                key={likedCount}
+                initial={{ scale: 1.2 }}
+                animate={{ scale: 1 }}
+                className="text-[10px] font-body"
+                style={{ color: 'rgba(255,209,102,0.7)' }}
+              >
+                {likedCount} saved ✨
+              </motion.p>
             )}
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-[10px] font-mono text-text-muted">{idx + 1} / {TOPICS.length}</span>
+          <span className="text-[10px] font-mono" style={{ color: 'rgba(255,180,100,0.45)' }}>
+            {idx + 1} / {TOPICS.length}
+          </span>
           <button
             onClick={onExit}
-            className="text-sm font-body text-text-muted hover:text-text-primary transition-colors px-3 py-1.5 rounded-full hover:bg-[rgba(42,42,42,0.07)]"
+            className="text-sm font-body transition-colors px-3 py-1.5 rounded-full"
+            style={{
+              color: 'rgba(255,180,100,0.65)',
+              background: 'rgba(255,107,53,0.10)',
+              border: '1px solid rgba(255,107,53,0.18)',
+            }}
           >
             ← Back
           </button>
@@ -410,12 +472,15 @@ export default function FreeFall({ onExit, onDig, userContextObj }) {
 
       {/* Progress bar */}
       <div className="px-4 mb-2 flex-shrink-0">
-        <div className="h-1 bg-[rgba(42,42,42,0.07)] rounded-full overflow-hidden">
+        <div
+          className="h-1 rounded-full overflow-hidden"
+          style={{ background: 'rgba(255,255,255,0.07)' }}
+        >
           <motion.div
             className="h-full rounded-full"
-            style={{ background: color }}
+            style={{ background: `linear-gradient(90deg, ${color}, ${color}88)` }}
             animate={{ width: `${progress}%` }}
-            transition={{ duration: 0.4 }}
+            transition={{ duration: 0.45, ease: 'easeOut' }}
           />
         </div>
       </div>
@@ -425,11 +490,11 @@ export default function FreeFall({ onExit, onDig, userContextObj }) {
         {/* Background card hint */}
         <motion.div
           key={`bg-${next.id}`}
-          className="absolute inset-4 rounded-[24px]"
-          animate={{ scale: 0.94, y: 10, opacity: 0.6 }}
+          className="absolute inset-4 rounded-[28px]"
+          animate={{ scale: 0.93, y: 12, opacity: 0.5 }}
           style={{
-            background: `${DOMAIN_COLORS[next.domain] || '#FF6B35'}10`,
-            border: `1.5px solid ${DOMAIN_COLORS[next.domain] || '#FF6B35'}15`,
+            background: `linear-gradient(145deg, #1A0900, ${DOMAIN_COLORS[next.domain] || '#FF6B35'}14, #0F0500)`,
+            border: `1.5px solid ${DOMAIN_COLORS[next.domain] || '#FF6B35'}22`,
           }}
         />
 
@@ -474,7 +539,12 @@ export default function FreeFall({ onExit, onDig, userContextObj }) {
               <span
                 key={t.id}
                 className="flex-shrink-0 text-[10px] font-body font-semibold px-2.5 py-1 rounded-full"
-                style={{ background: `${c}14`, color: c, border: `1px solid ${c}22` }}
+                style={{
+                  background: `${c}22`,
+                  color: c,
+                  border: `1px solid ${c}38`,
+                  boxShadow: `0 2px 8px ${c}28`,
+                }}
               >
                 {t.emoji} {t.label}
               </span>

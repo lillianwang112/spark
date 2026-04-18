@@ -126,10 +126,11 @@ function AppShell() {
 
   return (
     <div className="spark-shell px-2 pb-0 pt-2 sm:px-5 sm:pt-4">
-      {/* Ambient background orbs — visible on all sizes, larger on desktop */}
-      <div className="spark-orb h-28 w-28 sm:h-48 sm:w-48 bg-[rgba(255,107,53,0.28)] left-3 top-5 sm:left-6 sm:top-8" />
-      <div className="spark-orb h-32 w-32 sm:h-56 sm:w-56 bg-[rgba(74,111,165,0.20)] right-2 top-28 sm:right-4 sm:top-40" />
-      <div className="spark-orb h-24 w-24 sm:h-40 sm:w-40 bg-[rgba(255,209,102,0.26)] left-[35%] bottom-14 sm:left-[40%] sm:bottom-20" />
+      {/* Ambient background orbs — vivid, animated */}
+      <div className="spark-orb h-40 w-40 sm:h-64 sm:w-64 bg-[rgba(255,107,53,0.34)] left-2 top-4 sm:left-6 sm:top-8" />
+      <div className="spark-orb h-44 w-44 sm:h-72 sm:w-72 bg-[rgba(74,111,165,0.26)] right-2 top-32 sm:right-4 sm:top-44" />
+      <div className="spark-orb h-36 w-36 sm:h-56 sm:w-56 bg-[rgba(255,209,102,0.32)] left-[30%] bottom-16 sm:left-[38%] sm:bottom-24" />
+      <div className="spark-orb h-28 w-28 sm:h-44 sm:w-44 bg-[rgba(123,45,139,0.18)] right-[20%] top-[45%]" />
 
       <div
         className="spark-surface relative flex flex-col overflow-hidden rounded-[32px]"

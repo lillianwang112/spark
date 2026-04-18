@@ -117,11 +117,18 @@ function OpportunitiesIcon({ active }) {
   );
 }
 
+const TAB_COLORS = {
+  explore: '#FF6B35',
+  tracks: '#2D936C',
+  groups: '#7B6CF6',
+  opportunities: '#4A6FA5',
+  profile: '#FFA62B',
+};
+
 export default function NavBar({ activeTab, onTabChange, onOpenSearch }) {
   const user = useUserContext();
   const isKids = user.ageGroup === 'little_explorer';
 
-  // Due count for Tracks badge
   const masteringTracks = (user.tracks || []).filter((t) => t.mode === 'mastering');
   const dueCount = getDueCards(masteringTracks).length;
 
@@ -132,29 +139,45 @@ export default function NavBar({ activeTab, onTabChange, onOpenSearch }) {
       aria-label="Main navigation"
     >
       <div
-        className="mx-auto relative flex items-center justify-around rounded-[26px] border border-[rgba(255,255,255,0.72)] bg-[rgba(255,253,247,0.94)] px-2 py-1.5 shadow-[0_18px_50px_rgba(42,42,42,0.16)] backdrop-blur-xl overflow-hidden"
+        className="mx-auto relative flex items-center justify-around rounded-[28px] px-2 py-1.5 overflow-hidden"
+        style={{
+          background: 'rgba(255,252,246,0.96)',
+          border: '1px solid rgba(255,255,255,0.80)',
+          backdropFilter: 'blur(28px)',
+          boxShadow: '0 -2px 0 rgba(255,255,255,0.5), 0 20px 60px rgba(42,42,10,0.20), 0 6px 18px rgba(72,49,10,0.12)',
+        }}
       >
-        {/* Glow wash behind the active tab */}
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,166,43,0.18),transparent_70%)]" />
+        {/* Radial glow wash */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <motion.div
+            className="absolute inset-0"
+            animate={{
+              background: [
+                `radial-gradient(circle at ${activeTab === 'explore' ? '30%' : activeTab === 'tracks' ? '46%' : activeTab === 'groups' ? '58%' : activeTab === 'opportunities' ? '70%' : '85%'} 0%, rgba(${
+                  activeTab === 'explore' ? '255,107,53' : activeTab === 'tracks' ? '45,147,108' : activeTab === 'groups' ? '123,108,246' : activeTab === 'opportunities' ? '74,111,165' : '255,166,43'
+                },0.18), transparent 70%)`,
+              ],
+            }}
+            transition={{ duration: 0.4 }}
+          />
         </div>
 
-        {/* Search icon — not a tab, just a floating action button on the far left */}
+        {/* Search FAB */}
         <motion.button
           onClick={() => onOpenSearch?.()}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.92 }}
+          whileHover={{ scale: 1.12, y: -2 }}
+          whileTap={{ scale: 0.90 }}
           className="relative z-10 flex items-center justify-center w-10 h-10 rounded-full flex-shrink-0 transition-all focus-visible:outline-2 focus-visible:outline-spark-ember"
           style={{
-            background: 'linear-gradient(135deg, rgba(255,107,53,0.12), rgba(255,166,43,0.10))',
-            border: '1.5px solid rgba(255,107,53,0.18)',
-            boxShadow: '0 4px 14px rgba(255,107,53,0.12)',
+            background: 'linear-gradient(135deg, rgba(255,107,53,0.16), rgba(255,166,43,0.12))',
+            border: '1.5px solid rgba(255,107,53,0.24)',
+            boxShadow: '0 6px 18px rgba(255,107,53,0.18)',
           }}
           aria-label="Open universal search"
         >
           <svg viewBox="0 0 20 20" width="18" height="18" fill="none" aria-hidden="true">
-            <circle cx="8.5" cy="8.5" r="5.5" stroke="#FF6B35" strokeWidth="1.8" />
-            <line x1="12.5" y1="12.5" x2="17" y2="17" stroke="#FF6B35" strokeWidth="1.8" strokeLinecap="round" />
+            <circle cx="8.5" cy="8.5" r="5.5" stroke="#FF6B35" strokeWidth="1.9" />
+            <line x1="12.5" y1="12.5" x2="17" y2="17" stroke="#FF6B35" strokeWidth="1.9" strokeLinecap="round" />
           </svg>
         </motion.button>
 
@@ -163,78 +186,96 @@ export default function NavBar({ activeTab, onTabChange, onOpenSearch }) {
           const isActive = activeTab === tab.id;
           const showBadge = tab.id === 'tracks' && dueCount > 0;
           const label = isKids ? tab.kidsLabel : tab.label;
+          const tabColor = TAB_COLORS[tab.id] || '#FF6B35';
 
           return (
             <button
               key={tab.id}
               onClick={() => onTabChange(tab.id)}
-              className="relative flex flex-col items-center gap-0.5 px-3 py-2 rounded-[18px] min-w-[58px] transition-all duration-200 focus-visible:outline-2 focus-visible:outline-spark-ember"
+              className="relative flex flex-col items-center gap-0.5 px-3 py-2 rounded-[18px] min-w-[52px] transition-all duration-200 focus-visible:outline-2 focus-visible:outline-spark-ember"
               aria-current={isActive ? 'page' : undefined}
               aria-label={`${label}${showBadge ? ` (${dueCount} due)` : ''}`}
             >
+              {/* Active halo */}
               {isActive && (
                 <motion.span
                   layoutId="tab-halo"
                   className="absolute inset-0 rounded-[18px]"
                   style={{
-                    background:
-                      'linear-gradient(135deg, rgba(255,166,43,0.18), rgba(255,107,53,0.12))',
-                    boxShadow: 'inset 0 0 0 1px rgba(255,107,53,0.18)',
+                    background: `linear-gradient(135deg, ${tabColor}1E, ${tabColor}10)`,
+                    boxShadow: `inset 0 0 0 1px ${tabColor}28, 0 4px 14px ${tabColor}18`,
                   }}
-                  transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+                  transition={{ type: 'spring', stiffness: 440, damping: 36 }}
                 />
               )}
+
               <div className="relative z-10">
+                {/* Icon with animated scale */}
                 <motion.div
-                  animate={isActive ? { scale: [1, 1.22, 1] } : { scale: 1 }}
-                  transition={{ duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
+                  animate={isActive ? { scale: [1, 1.25, 1] } : { scale: 1 }}
+                  transition={{ duration: 0.48, ease: [0.34, 1.56, 0.64, 1] }}
                 >
                   <Icon active={isActive} />
                 </motion.div>
+
+                {/* Burst ring on activation */}
                 {isActive && (
                   <motion.div
-                    key={`glow-${tab.id}`}
-                    initial={{ scale: 0.6, opacity: 0.7 }}
-                    animate={{ scale: 1.8, opacity: 0 }}
-                    transition={{ duration: 0.55, ease: 'easeOut' }}
+                    key={`burst-${tab.id}`}
+                    initial={{ scale: 0.5, opacity: 0.8 }}
+                    animate={{ scale: 2.2, opacity: 0 }}
+                    transition={{ duration: 0.52, ease: 'easeOut' }}
                     className="pointer-events-none absolute inset-0 rounded-full"
+                    style={{ background: `radial-gradient(circle, ${tabColor}55 0%, transparent 70%)` }}
+                    aria-hidden="true"
+                  />
+                )}
+
+                {/* Persistent active glow behind icon */}
+                {isActive && (
+                  <div
+                    className="pointer-events-none absolute inset-0 rounded-full -z-10"
                     style={{
-                      background: tab.id === 'explore'
-                        ? 'radial-gradient(circle, rgba(255,107,53,0.5) 0%, transparent 70%)'
-                        : tab.id === 'tracks'
-                          ? 'radial-gradient(circle, rgba(45,147,108,0.5) 0%, transparent 70%)'
-                          : tab.id === 'groups'
-                            ? 'radial-gradient(circle, rgba(123,108,246,0.5) 0%, transparent 70%)'
-                            : tab.id === 'opportunities'
-                              ? 'radial-gradient(circle, rgba(74,111,165,0.5) 0%, transparent 70%)'
-                              : 'radial-gradient(circle, rgba(255,166,43,0.5) 0%, transparent 70%)',
+                      background: `radial-gradient(circle, ${tabColor}28 0%, transparent 70%)`,
+                      filter: 'blur(4px)',
+                      transform: 'scale(1.6)',
                     }}
                     aria-hidden="true"
                   />
                 )}
+
+                {/* Due badge */}
                 {showBadge && (
                   <span
-                    className="absolute -top-1 -right-2 min-w-[18px] h-[18px] px-1 rounded-full text-[9px] font-bold flex items-center justify-center text-white shadow-[0_4px_10px_rgba(255,107,53,0.4)]"
-                    style={{ background: 'linear-gradient(135deg, #FF8A5A, #E63946)' }}
+                    className="absolute -top-1 -right-2 min-w-[18px] h-[18px] px-1 rounded-full text-[9px] font-bold flex items-center justify-center text-white"
+                    style={{
+                      background: 'linear-gradient(135deg, #FF8A5A, #E63946)',
+                      boxShadow: '0 4px 10px rgba(255,107,53,0.45)',
+                    }}
                     aria-hidden="true"
                   >
                     {dueCount > 9 ? '9+' : dueCount}
                   </span>
                 )}
               </div>
+
               <span
-                className={`relative z-10 text-[10.5px] font-body font-semibold transition-colors ${
-                  isActive ? 'text-spark-ember' : 'text-text-muted'
-                } ${isKids ? 'text-xs' : ''}`}
+                className={`relative z-10 text-[10.5px] font-body font-semibold transition-all duration-200 ${isKids ? 'text-xs' : ''}`}
+                style={{ color: isActive ? tabColor : 'var(--text-muted)' }}
               >
                 {label}
               </span>
+
+              {/* Bottom indicator */}
               {isActive && (
                 <motion.span
                   layoutId="tab-indicator"
-                  className="absolute bottom-0.5 h-[3px] w-6 rounded-full"
-                  style={{ background: 'linear-gradient(90deg, #FFD166, #FF6B35)' }}
-                  transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+                  className="absolute bottom-0.5 h-[3.5px] w-6 rounded-full"
+                  style={{
+                    background: `linear-gradient(90deg, ${tabColor}88, ${tabColor})`,
+                    boxShadow: `0 0 8px ${tabColor}60`,
+                  }}
+                  transition={{ type: 'spring', stiffness: 440, damping: 36 }}
                 />
               )}
             </button>
