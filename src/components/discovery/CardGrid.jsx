@@ -61,6 +61,7 @@ function normalizeCard(card, index) {
 export default function CardGrid({
   userContext,
   onDiscoveryComplete,
+  onOpenTopic,
   totalRounds = DISCOVERY_CONFIG.DEFAULT_ROUNDS,
   mode = 'balanced',
 }) {
@@ -123,6 +124,15 @@ export default function CardGrid({
     setPickedCard(card);
     setEmberMood('excited');
 
+    onOpenTopic?.({
+      id: `discovery_${card.domain}_${card.text}`.replace(/\W+/g, '_').toLowerCase(),
+      label: card.text,
+      description: card._description || card.description || '',
+      domain: card.domain,
+      path: [card.text],
+      source: 'discovery',
+    });
+
     const otherDomains = cards
       .filter((c) => c.domain !== card.domain)
       .map((c) => c.domain);
@@ -145,7 +155,7 @@ export default function CardGrid({
         }
       }, 400);
     }, 600);
-  }, [cards, pickedCard, roundComplete, round, totalRounds, recordPick, loadRoundCards, onDiscoveryComplete]);
+  }, [cards, pickedCard, roundComplete, round, totalRounds, recordPick, loadRoundCards, onDiscoveryComplete, onOpenTopic]);
 
   const ageGroup = userContext?.ageGroup || 'college';
   const isKids = ageGroup === 'little_explorer';

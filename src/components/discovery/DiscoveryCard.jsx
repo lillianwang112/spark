@@ -3,37 +3,7 @@ import { motion } from 'framer-motion';
 void motion;
 import { DOMAIN_COLORS } from '../../utils/domainColors.js';
 import { BRANCH_TYPE_STYLES } from '../../utils/constants.js';
-
-// LoremFlickr fallback: keyword-based, no API key, ?lock=N for per-card variety
-function loremFlickrUrl(imageQuery, text, domain, width, height, lockIndex) {
-  const raw = imageQuery || text?.slice(0, 40) || domain || 'abstract';
-  const keywords = raw
-    .toLowerCase()
-    .replace(/[^a-z0-9\s]/g, '')
-    .trim()
-    .split(/\s+/)
-    .slice(0, 4)
-    .join(',');
-  return `https://loremflickr.com/${width}/${height}/${keywords || domain}?lock=${lockIndex + 1}`;
-}
-
-// Wikipedia Summary API: returns the article's lead image — relevant and free
-async function fetchWikiImage(imageQuery, text, domain) {
-  const topic = imageQuery || text?.slice(0, 40) || domain;
-  try {
-    const res = await fetch(
-      `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(topic)}`,
-      { headers: { Accept: 'application/json' } }
-    );
-    if (!res.ok) return null;
-    const data = await res.json();
-    if (!data.thumbnail?.source) return null;
-    // Request a 400px-wide version of the thumbnail
-    return data.thumbnail.source.replace(/\/\d+px-/, '/400px-');
-  } catch {
-    return null;
-  }
-}
+import { fetchTopicImages } from '../../services/liveContent.js';
 
 function getBranchCta(kind) {
   switch (kind) {
@@ -58,20 +28,24 @@ export default function DiscoveryCard({ card, index, onPick, disabled, isKids = 
   const cta = getBranchCta(card._kind);
   const [loadedUrl, setLoadedUrl] = useState(null);
   const [imgError, setImgError] = useState(false);
-  const [wikiSrc, setWikiSrc] = useState(null);
+  const [imageSrc, setImageSrc] = useState(null);
 
-  const [w, h] = isKids ? [400, 300] : [400, 250];
-  const fallbackUrl = loremFlickrUrl(card.imageQuery, card.text, card.domain, w, h, index);
-  const imgUrl = wikiSrc || fallbackUrl;
-  const imgLoaded = loadedUrl === imgUrl;
+  const imgUrl = imageSrc;
+  const imgLoaded = !!imgUrl && loadedUrl === imgUrl;
   const imgHeight = isKids ? 120 : 100;
 
-  // Fetch Wikipedia thumbnail in background; swap in if it loads
   useEffect(() => {
     let cancelled = false;
-    fetchWikiImage(card.imageQuery, card.text, card.domain).then(src => {
-      if (!cancelled && src) setWikiSrc(src);
-    });
+
+    fetchTopicImages(card.imageQuery || card.text || card.domain, 1)
+      .then((images) => {
+        if (cancelled) return;
+        setImageSrc(images[0]?.url || null);
+      })
+      .catch(() => {
+        if (!cancelled) setImageSrc(null);
+      });
+
     return () => { cancelled = true; };
   }, [card.imageQuery, card.text, card.domain]);
 
@@ -109,20 +83,13 @@ export default function DiscoveryCard({ card, index, onPick, disabled, isKids = 
         className="relative overflow-hidden"
         style={{ height: imgHeight, backgroundColor: `${color}15` }}
       >
-        {!imgError && (
+        {!imgError && imgUrl && (
           <img
             src={imgUrl}
             alt=""
             aria-hidden="true"
             onLoad={() => { setLoadedUrl(imgUrl); setImgError(false); }}
-            onError={() => {
-              if (imgUrl === wikiSrc) {
-                // Wiki image failed — clear it so we fall back to LoremFlickr
-                setWikiSrc(null);
-              } else {
-                setImgError(true);
-              }
-            }}
+            onError={() => setImgError(true)}
             className={`w-full h-full object-cover transition-opacity duration-500 ${imgLoaded ? 'opacity-100' : 'opacity-0'}`}
           />
         )}
@@ -132,8 +99,8 @@ export default function DiscoveryCard({ card, index, onPick, disabled, isKids = 
             className="absolute inset-0 flex items-center justify-center"
             style={{ backgroundColor: `${color}20` }}
           >
-            {imgError && <span className="text-3xl">{card.emoji}</span>}
-            {!imgError && !imgLoaded && (
+            {(imgError || !imgUrl) && <span className="text-3xl">{card.emoji}</span>}
+            {!!imgUrl && !imgError && !imgLoaded && (
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-pulse" />
             )}
           </div>

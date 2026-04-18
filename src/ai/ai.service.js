@@ -15,12 +15,12 @@ import { parseAIJson } from '../utils/helpers.js';
 import { hashPath } from '../utils/helpers.js';
 
 const AI_BACKEND = import.meta.env.VITE_AI_BACKEND || 'puter';
-const TIMEOUT_MS = 5000;
+const TIMEOUT_MS = 12000;
 const inflight = new Map();
 
 // ── Wait for Puter.js to load (async script) ──
 // Short timeout so network failures fail fast rather than hanging
-function waitForPuter(timeoutMs = 1500) {
+function waitForPuter(timeoutMs = 5000) {
   if (window.puter) return Promise.resolve(window.puter);
   return new Promise((resolve, reject) => {
     const start = Date.now();

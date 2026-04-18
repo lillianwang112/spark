@@ -228,6 +228,159 @@ function BadgeCard({ badge, earned }) {
   );
 }
 
+function AuthPanel({ user }) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [mode, setMode] = useState('signin');
+  const [status, setStatus] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleEmailAuth = async () => {
+    if (!email.trim() || !password.trim()) return;
+    setLoading(true);
+    setStatus('');
+    try {
+      if (mode === 'signup') await user.createAccount(email.trim(), password);
+      else await user.authenticateEmail(email.trim(), password);
+      setStatus(mode === 'signup' ? 'Account created and synced.' : 'Signed in and synced.');
+      setPassword('');
+    } catch (err) {
+      setStatus(err?.message || 'Authentication failed.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogle = async () => {
+    setLoading(true);
+    setStatus('');
+    try {
+      await user.authenticateGoogle();
+      setStatus('Google sign-in complete.');
+    } catch (err) {
+      setStatus(err?.message || 'Google sign-in failed.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGuest = async () => {
+    setLoading(true);
+    setStatus('');
+    try {
+      await user.continueAsGuest();
+      setStatus('Guest session ready.');
+    } catch (err) {
+      setStatus(err?.message || 'Guest session failed.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    setLoading(true);
+    setStatus('');
+    try {
+      await user.logout();
+      setStatus('Signed out. Back in guest mode.');
+    } catch (err) {
+      setStatus(err?.message || 'Sign out failed.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.03 }}
+      className="bg-bg-secondary rounded-card shadow-card p-5"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="font-body text-xs uppercase tracking-wider text-text-muted">Account</p>
+          <h2 className="font-display font-semibold text-text-primary mt-1">
+            {user.authStatus === 'signed_in' ? 'Cloud sync is on' : 'Guest mode'}
+          </h2>
+          <p className="font-body text-sm text-text-secondary mt-1">
+            {user.authStatus === 'signed_in'
+              ? `Signed in as ${user.authEmail || 'Google account'}. Progress syncs to Firebase.`
+              : 'You are exploring as a guest right now. Sign in to keep your threads in the cloud.'}
+          </p>
+        </div>
+        {user.authStatus === 'signed_in' && (
+          <button
+            onClick={handleLogout}
+            disabled={loading}
+            className="px-3 py-1.5 rounded-full bg-[rgba(42,42,42,0.06)] text-text-secondary text-xs font-medium hover:bg-[rgba(42,42,42,0.1)] transition-colors min-h-[32px]"
+          >
+            Sign out
+          </button>
+        )}
+      </div>
+
+      {user.authStatus !== 'signed_in' && (
+        <>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <button
+              onClick={handleGoogle}
+              disabled={loading}
+              className="px-4 py-2 rounded-full bg-spark-ember text-white text-sm font-medium hover:bg-orange-600 transition-colors min-h-[38px]"
+            >
+              Sign in with Google
+            </button>
+            <button
+              onClick={handleGuest}
+              disabled={loading}
+              className="px-4 py-2 rounded-full bg-[rgba(42,42,42,0.06)] text-text-secondary text-sm font-medium hover:bg-[rgba(42,42,42,0.1)] transition-colors min-h-[38px]"
+            >
+              Continue as guest
+            </button>
+          </div>
+
+          <div className="mt-4 grid gap-2 sm:grid-cols-2">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+              className="rounded-[16px] border border-[rgba(42,42,42,0.08)] bg-white px-4 py-3 text-sm text-text-primary outline-none focus:border-spark-ember"
+            />
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+              className="rounded-[16px] border border-[rgba(42,42,42,0.08)] bg-white px-4 py-3 text-sm text-text-primary outline-none focus:border-spark-ember"
+            />
+          </div>
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <button
+              onClick={handleEmailAuth}
+              disabled={loading || !email.trim() || !password.trim()}
+              className="px-4 py-2 rounded-full bg-[#5B5EA6] text-white text-sm font-medium hover:bg-[#4a4d88] transition-colors disabled:opacity-50 min-h-[38px]"
+            >
+              {mode === 'signup' ? 'Create account' : 'Sign in with email'}
+            </button>
+            <button
+              onClick={() => setMode((prev) => prev === 'signup' ? 'signin' : 'signup')}
+              disabled={loading}
+              className="px-4 py-2 rounded-full bg-[rgba(91,94,166,0.1)] text-[#5B5EA6] text-sm font-medium hover:bg-[rgba(91,94,166,0.18)] transition-colors min-h-[38px]"
+            >
+              {mode === 'signup' ? 'Have an account?' : 'Need an account?'}
+            </button>
+          </div>
+        </>
+      )}
+
+      {status && (
+        <p className="mt-3 font-body text-sm text-text-muted">{status}</p>
+      )}
+    </motion.div>
+  );
+}
+
 export default function Profile({ streakState }) {
   const user = useUserContext();
   const streak = streakState?.streak ?? 0;
@@ -321,6 +474,8 @@ export default function Profile({ streakState }) {
 
       <div className="flex-1 overflow-y-auto px-4 pb-24">
         <div className="max-w-[600px] mx-auto py-4 space-y-4">
+          <AuthPanel user={user} />
+
           {isTreeResting && (
             <motion.div
               initial={{ opacity: 0, y: 12 }}

@@ -1,41 +1,81 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useReducer, useEffect, useCallback } from 'react';
+import { createContext, useContext, useReducer, useEffect, useCallback, useMemo, useRef } from 'react';
 import { initEloScores, applyTrackSaveBoost } from '../models/elo.js';
 import { DEFAULT_USER } from '../models/userContext.js';
 import { storage } from '../services/storage.js';
-import { initFirebase, initAuth, loadUserProfile } from '../services/firebase.js';
-
-// ── State ──
+import {
+  initFirebase,
+  ensureGuestSession,
+  subscribeToAuthChanges,
+  loadUserProfile,
+  loadTracks,
+  replaceTracks,
+  saveUserProfile,
+  signInWithGoogle,
+  signInWithEmail,
+  createEmailAccount,
+  signOutUser,
+} from '../services/firebase.js';
 
 const initialState = {
   ...DEFAULT_USER,
   eloScores: initEloScores(),
   isLoading: true,
   firebaseReady: false,
+  authStatus: 'guest',
+  authEmail: null,
 };
 
-// ── Reducer ──
+function mergeTracks(localTracks = [], cloudTracks = []) {
+  const merged = new Map();
+  [...cloudTracks, ...localTracks].forEach((track) => {
+    if (!track?.id) return;
+    const existing = merged.get(track.id);
+    if (!existing) {
+      merged.set(track.id, track);
+      return;
+    }
+    const existingTs = new Date(existing.lastTended || existing.savedAt || 0).getTime();
+    const nextTs = new Date(track.lastTended || track.savedAt || 0).getTime();
+    merged.set(track.id, nextTs >= existingTs ? { ...existing, ...track } : { ...track, ...existing });
+  });
+  return Array.from(merged.values());
+}
+
+function mergeCloudState(localState, cloudProfile, cloudTracks) {
+  const mergedTracks = mergeTracks(localState.tracks, cloudTracks);
+  return {
+    ...localState,
+    ...(cloudProfile || {}),
+    eloScores: cloudProfile?.eloScores && Object.keys(cloudProfile.eloScores).length
+      ? cloudProfile.eloScores
+      : localState.eloScores,
+    knowledgeStates: {
+      ...(cloudProfile?.knowledgeStates || {}),
+      ...(localState.knowledgeStates || {}),
+    },
+    stats: {
+      ...(cloudProfile?.stats || {}),
+      ...(localState.stats || {}),
+    },
+    tracks: mergedTracks,
+  };
+}
 
 function reducer(state, action) {
   switch (action.type) {
     case 'INIT_COMPLETE':
       return { ...state, isLoading: false, ...action.payload };
-
     case 'SET_AGE_GROUP':
       return { ...state, ageGroup: action.payload };
-
     case 'SET_PERSONALITY':
       return { ...state, personality: action.payload };
-
     case 'SET_PROFILE':
       return { ...state, ...action.payload };
-
     case 'COMPLETE_ONBOARDING':
       return { ...state, onboardingComplete: true, ...action.payload };
-
     case 'RESET_ONBOARDING':
       return { ...state, onboardingComplete: false };
-
     case 'RECORD_EXPLORATION':
       return {
         ...state,
@@ -44,10 +84,8 @@ function reducer(state, action) {
           nodesExplored: Math.max(state.stats?.nodesExplored || 0, action.payload),
         },
       };
-
     case 'UPDATE_ELO':
       return { ...state, eloScores: action.payload };
-
     case 'SET_KNOWLEDGE_STATE': {
       const { nodeId, state: kState } = action.payload;
       return {
@@ -55,7 +93,6 @@ function reducer(state, action) {
         knowledgeStates: { ...state.knowledgeStates, [nodeId]: kState },
       };
     }
-
     case 'ADD_TRACK': {
       const exists = state.tracks.find((t) => t.id === action.payload.id);
       if (exists) return state;
@@ -69,74 +106,95 @@ function reducer(state, action) {
         eloScores: applyTrackSaveBoost(action.payload.domain, state.eloScores),
       };
     }
-
     case 'REMOVE_TRACK':
       return { ...state, tracks: state.tracks.filter((t) => t.id !== action.payload) };
-
-    case 'UPDATE_TRACK': {
+    case 'UPDATE_TRACK':
       return {
         ...state,
         tracks: state.tracks.map((t) => t.id === action.payload.id ? { ...t, ...action.payload } : t),
       };
-    }
-
-    case 'FIREBASE_READY':
-      return { ...state, firebaseReady: true, uid: action.payload };
-
     case 'SET_EXPLORATION_STYLE':
       return { ...state, explorationStyle: action.payload };
-
     case 'SET_LEARNING_PREF':
       return { ...state, learningPref: action.payload };
-
+    case 'AUTH_STATE':
+      return {
+        ...state,
+        firebaseReady: action.payload.firebaseReady,
+        uid: action.payload.uid,
+        authStatus: action.payload.authStatus,
+        authEmail: action.payload.authEmail,
+      };
     default:
       return state;
   }
 }
 
-// ── Context ──
-
 const UserContext = createContext(null);
 
 export function UserContextProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const latestStateRef = useRef(initialState);
+  const syncTimerRef = useRef(null);
 
-  // Initialize: load from storage, then Firebase if available
   useEffect(() => {
-    async function init() {
-      // 1. Load local storage first (instant)
-      const saved = storage.getUser();
-      const savedElo = storage.getElo();
-      const savedKnowledge = storage.getKnowledge();
-      const savedTracks = storage.getTracks();
+    latestStateRef.current = state;
+  }, [state]);
 
-      const localState = {
-        ...(saved || {}),
-        eloScores: savedElo && Object.keys(savedElo).length ? savedElo : initEloScores(),
-        knowledgeStates: savedKnowledge || {},
-        tracks: savedTracks || [],
-      };
+  useEffect(() => {
+    const saved = storage.getUser();
+    const savedElo = storage.getElo();
+    const savedKnowledge = storage.getKnowledge();
+    const savedTracks = storage.getTracks();
 
-      dispatch({ type: 'INIT_COMPLETE', payload: localState });
+    const localState = {
+      ...(saved || {}),
+      eloScores: savedElo && Object.keys(savedElo).length ? savedElo : initEloScores(),
+      knowledgeStates: savedKnowledge || {},
+      tracks: savedTracks || [],
+    };
 
-      // 2. Try Firebase (non-blocking)
-      const fbReady = initFirebase();
-      if (fbReady) {
-        const user = await initAuth();
-        if (user) {
-          dispatch({ type: 'FIREBASE_READY', payload: user.uid });
-          // Load cloud profile if available
-          const cloud = await loadUserProfile(user.uid);
-          if (cloud) {
-            dispatch({ type: 'SET_PROFILE', payload: cloud });
-          }
+    dispatch({ type: 'INIT_COMPLETE', payload: localState });
+
+    if (!initFirebase()) return undefined;
+
+    const unsubscribe = subscribeToAuthChanges(async (user) => {
+      if (!user) {
+        try {
+          await ensureGuestSession();
+        } catch {
+          dispatch({ type: 'AUTH_STATE', payload: { firebaseReady: true, uid: null, authStatus: 'guest', authEmail: null } });
         }
+        return;
       }
-    }
-    init();
+
+      const authStatus = user.isAnonymous ? 'guest' : 'signed_in';
+      dispatch({
+        type: 'AUTH_STATE',
+        payload: {
+          firebaseReady: true,
+          uid: user.uid,
+          authStatus,
+          authEmail: user.email || null,
+        },
+      });
+
+      try {
+        const [cloudProfile, cloudTracks] = await Promise.all([
+          loadUserProfile(user.uid),
+          loadTracks(user.uid),
+        ]);
+        const merged = mergeCloudState(latestStateRef.current, cloudProfile, cloudTracks);
+        dispatch({ type: 'SET_PROFILE', payload: merged });
+      } catch {
+        // keep local state if cloud load fails
+      }
+    });
+
+    ensureGuestSession().catch(() => {});
+    return unsubscribe;
   }, []);
 
-  // Persist to localStorage whenever key state changes (debounced via useEffect deps)
   useEffect(() => {
     if (state.isLoading) return;
     storage.saveUser({
@@ -149,21 +207,124 @@ export function UserContextProvider({ children }) {
     storage.saveTracks(state.tracks);
   }, [state]);
 
-  const actions = {
-    setAgeGroup:       useCallback((ag) => dispatch({ type: 'SET_AGE_GROUP', payload: ag }), []),
-    setPersonality:    useCallback((p)  => dispatch({ type: 'SET_PERSONALITY', payload: p }), []),
-    setProfile:        useCallback((p)  => dispatch({ type: 'SET_PROFILE', payload: p }), []),
-    completeOnboarding:useCallback((p)  => dispatch({ type: 'COMPLETE_ONBOARDING', payload: p }), []),
-    updateElo:         useCallback((scores) => dispatch({ type: 'UPDATE_ELO', payload: scores }), []),
-    setKnowledgeState: useCallback((nodeId, ks) => dispatch({ type: 'SET_KNOWLEDGE_STATE', payload: { nodeId, state: ks } }), []),
-    addTrack:          useCallback((node) => dispatch({ type: 'ADD_TRACK', payload: node }), []),
-    removeTrack:       useCallback((id)   => dispatch({ type: 'REMOVE_TRACK', payload: id }), []),
-    updateTrack:       useCallback((node) => dispatch({ type: 'UPDATE_TRACK', payload: node }), []),
-    setExplorationStyle: useCallback((s) => dispatch({ type: 'SET_EXPLORATION_STYLE', payload: s }), []),
-    setLearningPref:   useCallback((p)  => dispatch({ type: 'SET_LEARNING_PREF', payload: p }), []),
-    resetOnboarding:   useCallback(()   => dispatch({ type: 'RESET_ONBOARDING' }), []),
-    recordExploration: useCallback((count) => dispatch({ type: 'RECORD_EXPLORATION', payload: count }), []),
-  };
+  useEffect(() => {
+    if (state.isLoading || !state.firebaseReady || !state.uid) return;
+    if (syncTimerRef.current) clearTimeout(syncTimerRef.current);
+    syncTimerRef.current = setTimeout(() => {
+      const profile = {
+        name: state.name || null,
+        ageGroup: state.ageGroup,
+        personality: state.personality,
+        explorationStyle: state.explorationStyle,
+        learningPref: state.learningPref,
+        onboardingComplete: state.onboardingComplete,
+        eloScores: state.eloScores,
+        knowledgeStates: state.knowledgeStates,
+        stats: state.stats,
+        treeStage: state.treeStage,
+      };
+      saveUserProfile(state.uid, profile).catch(() => {});
+      replaceTracks(state.uid, state.tracks || []).catch(() => {});
+    }, 500);
+
+    return () => {
+      if (syncTimerRef.current) clearTimeout(syncTimerRef.current);
+    };
+  }, [
+    state.ageGroup,
+    state.eloScores,
+    state.explorationStyle,
+    state.firebaseReady,
+    state.isLoading,
+    state.knowledgeStates,
+    state.learningPref,
+    state.name,
+    state.onboardingComplete,
+    state.personality,
+    state.stats,
+    state.tracks,
+    state.treeStage,
+    state.uid,
+  ]);
+
+  const authenticateGoogle = useCallback(async () => {
+    const user = await signInWithGoogle();
+    return user;
+  }, []);
+
+  const authenticateEmail = useCallback(async (email, password) => {
+    const user = await signInWithEmail(email, password);
+    return user;
+  }, []);
+
+  const createAccount = useCallback(async (email, password) => {
+    const user = await createEmailAccount(email, password);
+    return user;
+  }, []);
+
+  const continueAsGuest = useCallback(async () => {
+    const user = await ensureGuestSession();
+    return user;
+  }, []);
+
+  const logout = useCallback(async () => {
+    await signOutUser();
+    await ensureGuestSession().catch(() => {});
+  }, []);
+
+  const setAgeGroup = useCallback((ag) => dispatch({ type: 'SET_AGE_GROUP', payload: ag }), []);
+  const setPersonality = useCallback((p) => dispatch({ type: 'SET_PERSONALITY', payload: p }), []);
+  const setProfile = useCallback((p) => dispatch({ type: 'SET_PROFILE', payload: p }), []);
+  const completeOnboarding = useCallback((p) => dispatch({ type: 'COMPLETE_ONBOARDING', payload: p }), []);
+  const updateElo = useCallback((scores) => dispatch({ type: 'UPDATE_ELO', payload: scores }), []);
+  const setKnowledgeState = useCallback((nodeId, ks) => dispatch({ type: 'SET_KNOWLEDGE_STATE', payload: { nodeId, state: ks } }), []);
+  const addTrack = useCallback((node) => dispatch({ type: 'ADD_TRACK', payload: node }), []);
+  const removeTrack = useCallback((id) => dispatch({ type: 'REMOVE_TRACK', payload: id }), []);
+  const updateTrack = useCallback((node) => dispatch({ type: 'UPDATE_TRACK', payload: node }), []);
+  const setExplorationStyle = useCallback((s) => dispatch({ type: 'SET_EXPLORATION_STYLE', payload: s }), []);
+  const setLearningPref = useCallback((p) => dispatch({ type: 'SET_LEARNING_PREF', payload: p }), []);
+  const resetOnboarding = useCallback(() => dispatch({ type: 'RESET_ONBOARDING' }), []);
+  const recordExploration = useCallback((count) => dispatch({ type: 'RECORD_EXPLORATION', payload: count }), []);
+
+  const actions = useMemo(() => ({
+    setAgeGroup,
+    setPersonality,
+    setProfile,
+    completeOnboarding,
+    updateElo,
+    setKnowledgeState,
+    addTrack,
+    removeTrack,
+    updateTrack,
+    setExplorationStyle,
+    setLearningPref,
+    resetOnboarding,
+    recordExploration,
+    authenticateGoogle,
+    authenticateEmail,
+    createAccount,
+    continueAsGuest,
+    logout,
+  }), [
+    addTrack,
+    authenticateEmail,
+    authenticateGoogle,
+    completeOnboarding,
+    continueAsGuest,
+    createAccount,
+    logout,
+    recordExploration,
+    removeTrack,
+    resetOnboarding,
+    setAgeGroup,
+    setExplorationStyle,
+    setKnowledgeState,
+    setLearningPref,
+    setPersonality,
+    setProfile,
+    updateElo,
+    updateTrack,
+  ]);
 
   return (
     <UserContext.Provider value={{ ...state, ...actions }}>

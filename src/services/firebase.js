@@ -1,6 +1,15 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, setDoc, getDoc, collection, getDocs } from 'firebase/firestore';
-import { getAuth, signInAnonymously, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import {
+  getAuth,
+  signInAnonymously,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+} from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey:            import.meta.env.VITE_FIREBASE_API_KEY,
@@ -11,83 +20,85 @@ const firebaseConfig = {
   appId:             import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
-let app, db, auth;
+let app;
+let db;
+let auth;
 
-// Firebase is optional — app works fully offline without it
 export function initFirebase() {
   try {
     if (!firebaseConfig.apiKey) return false;
-    app  = initializeApp(firebaseConfig);
-    db   = getFirestore(app);
-    auth = getAuth(app);
+    if (!app) {
+      app = initializeApp(firebaseConfig);
+      db = getFirestore(app);
+      auth = getAuth(app);
+    }
     return true;
   } catch (err) {
-    console.warn('[Firebase] Init failed — running in local-only mode:', err.message);
+    console.warn('[Firebase] Init failed:', err.message);
     return false;
   }
 }
 
-export function getDB()   { return db; }
-export function getAuth_() { return auth; }
-
-// Start anonymous auth — no account needed to explore
-export async function initAuth() {
-  if (!auth) return null;
-  try {
-    const result = await signInAnonymously(auth);
-    return result.user;
-  } catch (err) {
-    console.warn('[Firebase] Anonymous auth failed:', err.message);
-    return null;
-  }
+function requireAuth() {
+  if (!auth) throw new Error('Firebase auth is not initialized');
+  return auth;
 }
 
-// Upgrade to Google when user saves first track
-export async function upgradeToGoogle() {
-  if (!auth) throw new Error('Firebase not initialized');
-  const provider = new GoogleAuthProvider();
-  const result = await signInWithPopup(auth, provider);
+export function subscribeToAuthChanges(callback) {
+  if (!auth) return () => {};
+  return onAuthStateChanged(auth, callback);
+}
+
+export async function ensureGuestSession() {
+  if (!auth) return null;
+  if (auth.currentUser) return auth.currentUser;
+  const result = await signInAnonymously(auth);
   return result.user;
 }
 
-// ── Firestore helpers ──
+export async function signInWithGoogle() {
+  const provider = new GoogleAuthProvider();
+  const result = await signInWithPopup(requireAuth(), provider);
+  return result.user;
+}
+
+export async function signInWithEmail(email, password) {
+  const result = await signInWithEmailAndPassword(requireAuth(), email, password);
+  return result.user;
+}
+
+export async function createEmailAccount(email, password) {
+  const result = await createUserWithEmailAndPassword(requireAuth(), email, password);
+  return result.user;
+}
+
+export async function signOutUser() {
+  if (!auth) return;
+  await signOut(auth);
+}
 
 export async function saveUserProfile(uid, profile) {
-  if (!db) return;
-  try {
-    await setDoc(doc(db, 'users', uid, 'data', 'profile'), profile, { merge: true });
-  } catch (err) {
-    console.warn('[Firebase] Save profile failed:', err.message);
-  }
+  if (!db || !uid) return;
+  await setDoc(doc(db, 'users', uid, 'data', 'profile'), profile, { merge: true });
 }
 
 export async function loadUserProfile(uid) {
-  if (!db) return null;
-  try {
-    const snap = await getDoc(doc(db, 'users', uid, 'data', 'profile'));
-    return snap.exists() ? snap.data() : null;
-  } catch {
-    return null;
-  }
+  if (!db || !uid) return null;
+  const snap = await getDoc(doc(db, 'users', uid, 'data', 'profile'));
+  return snap.exists() ? snap.data() : null;
 }
 
-export async function saveTrack(uid, track) {
-  if (!db) return;
-  try {
-    await setDoc(doc(db, 'tracks', uid, 'nodes', track.id), track, { merge: true });
-  } catch (err) {
-    console.warn('[Firebase] Save track failed:', err.message);
-  }
+export async function replaceTracks(uid, tracks) {
+  if (!db || !uid) return;
+  await Promise.all((tracks || []).map((track) =>
+    setDoc(doc(db, 'tracks', uid, 'nodes', track.id), track, { merge: true })
+  ));
 }
 
 export async function loadTracks(uid) {
-  if (!db) return [];
-  try {
-    const snap = await getDocs(collection(db, 'tracks', uid, 'nodes'));
-    return snap.docs.map((d) => d.data());
-  } catch {
-    return [];
-  }
+  if (!db || !uid) return [];
+  const snap = await getDocs(collection(db, 'tracks', uid, 'nodes'));
+  return snap.docs.map((d) => d.data());
 }
 
 export async function cacheNodeData(pathHash, ageGroup, data) {
@@ -95,7 +106,7 @@ export async function cacheNodeData(pathHash, ageGroup, data) {
   try {
     await setDoc(doc(db, 'nodes', pathHash, 'cache', ageGroup), data, { merge: true });
   } catch {
-    // Non-critical
+    // non-critical cache write
   }
 }
 

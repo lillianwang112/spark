@@ -174,11 +174,10 @@ export default function DeepDive({ rootNode, userContextObj, onExplain, onSave, 
       if (cancelRef.current) return;
       setPickedCard(null);
       setEmberMood('curious');
-      TopicGraph.rememberSignal(nextNode, 'deepens');
-      setPath((prev) => [...prev, nextNode]);
-      fetchCards(nextNode);
-    }, 650);
-  }, [pickedCard, currentNode, fetchCards]);
+      TopicGraph.rememberSignal(nextNode, 'opens');
+      onExplain(nextNode);
+    }, 350);
+  }, [pickedCard, currentNode, onExplain]);
 
   const handleBack = useCallback(() => {
     if (path.length === 0) {

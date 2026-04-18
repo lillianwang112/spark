@@ -2,52 +2,11 @@ import { useState, useEffect, useMemo } from 'react';
 import Loader from '../common/Loader.jsx';
 import KnowledgeStateTag from '../common/KnowledgeStateTag.jsx';
 import Ember from '../ember/Ember.jsx';
-import { getImageUrls } from '../../services/images.js';
 import { DOMAIN_COLORS } from '../../utils/domainColors.js';
 import InteractiveDiagram, { shouldShowDiagram } from './InteractiveDiagram.jsx';
 import { copyThreadUrl } from '../../utils/threads.js';
 import TopicGraph from '../../services/topicGraph.js';
-
-function ImageStrip({ nodeLabel, domain }) {
-  const images = useMemo(() => getImageUrls(nodeLabel, domain, 2), [nodeLabel, domain]);
-  const [activeIdx, setActiveIdx] = useState(0);
-  const [loaded, setLoaded] = useState({});
-
-  if (!images.length) return null;
-
-  const img = images[activeIdx];
-
-  return (
-    <div className="overflow-hidden">
-      <div className="relative overflow-hidden bg-[rgba(42,42,42,0.04)]" style={{ maxHeight: 200 }}>
-        <img
-          key={img.url}
-          src={img.url}
-          alt={img.alt}
-          onLoad={() => setLoaded((prev) => ({ ...prev, [activeIdx]: true }))}
-          onError={() => setLoaded((prev) => ({ ...prev, [activeIdx]: 'error' }))}
-          className={`h-full w-full object-cover transition-opacity duration-500 ${loaded[activeIdx] === true ? 'opacity-100' : 'opacity-0'}`}
-          style={{ maxHeight: 200 }}
-        />
-        {!loaded[activeIdx] && (
-          <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-[rgba(42,42,42,0.04)] via-[rgba(42,42,42,0.08)] to-[rgba(42,42,42,0.04)]" />
-        )}
-        {images.length > 1 && loaded[activeIdx] === true && (
-          <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1.5">
-            {images.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setActiveIdx(index)}
-                className={`h-1.5 w-1.5 rounded-full transition-all ${index === activeIdx ? 'bg-white' : 'bg-white/50'}`}
-                aria-label={`Image ${index + 1}`}
-              />
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
+import LiveContentShelf from './LiveContentShelf.jsx';
 
 function formatExplainerText(text) {
   if (!text) return { lead: '', body: [], teaser: '' };
@@ -89,6 +48,7 @@ function ExplainerCardInner({
   const [emberMood, setEmberMood] = useState('thinking');
   const [savedLocal, setSavedLocal] = useState(false);
   const [shareState, setShareState] = useState('idle');
+  const [teachingState, setTeachingState] = useState('idle');
 
   const color = node?.domain ? DOMAIN_COLORS[node.domain] : '#FF6B35';
   const ageGroup = userContextObj?.ageGroup || 'college';
@@ -96,6 +56,24 @@ function ExplainerCardInner({
   const explorationStyle = userContextObj?.explorationStyle || 'balanced';
   const personality = userContextObj?.personality || 'spark';
   const topInterests = useMemo(() => userContextObj?.topInterests || [], [userContextObj?.topInterests]);
+  const topicContext = useMemo(() => ({
+    name: explorerName,
+    explorationStyle,
+    personality,
+    topInterests,
+    knowledgeStates: {
+      [node?.id]: knowledgeState || null,
+    },
+    ageGroup,
+  }), [
+    ageGroup,
+    explorationStyle,
+    explorerName,
+    knowledgeState,
+    node?.id,
+    personality,
+    topInterests,
+  ]);
   const explainerBlocks = useMemo(() => formatExplainerText(text), [text]);
 
   useEffect(() => {
@@ -104,17 +82,6 @@ function ExplainerCardInner({
     let cancelled = false;
     let tagTimer = null;
     let moodTimer = null;
-
-    const topicContext = {
-      name: explorerName,
-      explorationStyle,
-      personality,
-      topInterests,
-      knowledgeStates: {
-        [node.id]: knowledgeState || null,
-      },
-      ageGroup,
-    };
 
     TopicGraph.getExplainer(node, topicContext)
       .then((result) => {
@@ -145,23 +112,14 @@ function ExplainerCardInner({
       if (moodTimer) clearTimeout(moodTimer);
     };
   }, [
-    ageGroup,
-    explorationStyle,
-    explorerName,
-    knowledgeState,
     node,
-    personality,
-    topInterests,
+    topicContext,
   ]);
 
   if (!node) return null;
 
   return (
     <div className="overflow-hidden rounded-card bg-bg-secondary shadow-card">
-      {showImages && !compact && status !== 'loading' && text && (
-        <ImageStrip nodeLabel={node.label} domain={node.domain} />
-      )}
-
       <div
         className="flex items-start justify-between gap-3 px-5 pb-3 pt-4"
         style={{ borderBottom: `2px solid ${color}30` }}
@@ -228,6 +186,15 @@ function ExplainerCardInner({
         )}
       </div>
 
+      {showImages && status !== 'loading' && text && (
+        <div
+          className="px-5 pb-4"
+          style={{ borderTop: `1px solid ${color}10` }}
+        >
+          <LiveContentShelf node={node} compact={compact} />
+        </div>
+      )}
+
       {!compact && status !== 'loading' && text && shouldShowDiagram(node.domain, ageGroup) && (
         <div style={{ borderTop: `1px solid ${color}10` }}>
           <InteractiveDiagram node={node} userContextObj={userContextObj} />
@@ -249,6 +216,28 @@ function ExplainerCardInner({
         className="flex flex-wrap gap-2 px-5 py-3"
         style={{ borderTop: `1px solid ${color}20` }}
       >
+        <button
+          onClick={async () => {
+            if (teachingState === 'loading') return;
+            setTeachingState('loading');
+            setStatus('loading');
+            setEmberMood('thinking');
+            try {
+              const lesson = await TopicGraph.getExplainer(node, topicContext, { forceFresh: true, preferAI: true });
+              setText(lesson);
+              setStatus('ready');
+              setEmberMood('proud');
+              setTeachingState('done');
+            } catch {
+              setStatus('ready');
+              setTeachingState('error');
+              setEmberMood('sheepish');
+            }
+          }}
+          className={`min-h-[36px] rounded-full bg-spark-ember font-medium text-white transition-colors hover:bg-orange-600 ${compact ? 'px-3 py-1.5 text-xs' : 'px-4 py-2 text-sm'}`}
+        >
+          {teachingState === 'loading' ? 'Teaching…' : 'Teach me from scratch'}
+        </button>
         <button
           onClick={async () => {
             await copyThreadUrl(node);

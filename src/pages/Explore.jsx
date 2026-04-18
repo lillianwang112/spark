@@ -149,6 +149,13 @@ export default function Explore({
   const handleGoDeeper = useCallback((node) => {
     setShowExplainer(false);
     clearSearch();
+    if (!node.saved) {
+      user.addTrack({
+        ...node,
+        saved: true,
+        savedAt: new Date().toISOString(),
+      });
+    }
     setDeepDiveNode(node);
     setPhase('tree');
     TopicGraph.rememberSignal(node, 'deepens');
@@ -157,7 +164,7 @@ export default function Explore({
       storage.updateSearch(lastSearchIdRef.current, { wentDeeper: true });
     }
     ping();
-  }, [clearSearch, lastSearchIdRef, userContextObj, ping]);
+  }, [clearSearch, lastSearchIdRef, user, userContextObj, ping]);
 
   const handleSearchSubmit = useCallback((term, targetNode) => {
     runSearch(term, targetNode);
@@ -361,6 +368,7 @@ export default function Explore({
                   key={discoveryMode}
                   userContext={userContextObj}
                   onDiscoveryComplete={handleDiscoveryComplete}
+                  onOpenTopic={handleExplainNode}
                   mode={discoveryMode}
                 />
               </motion.div>

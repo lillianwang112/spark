@@ -4,6 +4,7 @@ import { fuzzySearch, hashPath } from '../utils/helpers.js';
 import { SEED_INDEX, getSeedChildren, getSeedNode } from '../utils/seedData.js';
 import { getCuratedRabbitHoles, buildDomainRabbitHoles } from '../utils/rabbitHoles.js';
 import { getEncyclopediaTopic, getEncyclopediaChildren, getEncyclopediaExplainer } from '../utils/encyclopedia.js';
+import { fetchGroundedExplainer, fetchSpecificTopicChildren } from './liveContent.js';
 
 const TOPIC_GRAPH_KEY = 'spark_topic_graph_v1';
 const EMPTY_GRAPH = { topics: {} };
@@ -86,13 +87,16 @@ function mergeTopicRecord(existing, topic) {
   };
 }
 
-function withInflight(key, factory) {
-  if (inflight.has(key)) return inflight.get(key);
-  const promise = Promise.resolve()
-    .then(factory)
-    .finally(() => inflight.delete(key));
-  inflight.set(key, promise);
-  return promise;
+function isLowSignalExplainer(text) {
+  const normalized = String(text || '').toLowerCase().replace(/\s+/g, ' ').trim();
+  if (!normalized) return true;
+  return [
+    'the fastest way to understand',
+    'what it is, how it works, and where it changes real decisions',
+    'if you keep going deeper, focus on frontier debates',
+    'is a fascinating area of study',
+    'opens doors to even more',
+  ].some((phrase) => normalized.includes(phrase));
 }
 
 async function callTopicApi(pathname, payload) {
@@ -471,7 +475,14 @@ const TopicGraph = {
       }
     }
 
-    // Build instant fallback from curated + encyclopedia data (no AI wait)
+    let specificChildren = [];
+    try {
+      specificChildren = (await fetchSpecificTopicChildren(resolvedTopic.label, resolvedTopic.domain, 6))
+        .map((child, index) => normalizeChildNode(resolvedTopic, child, index, userContextObj))
+        .filter(Boolean);
+    } catch { /* live sources unavailable */ }
+
+    // Build instant fallback from curated + live + encyclopedia data
     const curated = getCuratedRabbitHoles(resolvedTopic)
       .map((child, index) => normalizeChildNode(resolvedTopic, child, index, userContextObj))
       .filter(Boolean);
@@ -482,11 +493,13 @@ const TopicGraph = {
     let immediateChildren;
     if (curated.length > 0) {
       const merged = new Map();
-      [...curated, ...encyclopediaFallback].forEach((child) => {
+      [...curated, ...specificChildren, ...encyclopediaFallback].forEach((child) => {
         const key = normalizeTopicKey(child.id || child.label);
         if (!merged.has(key)) merged.set(key, child);
       });
       immediateChildren = Array.from(merged.values()).slice(0, 6);
+    } else if (specificChildren.length > 0) {
+      immediateChildren = specificChildren.slice(0, 6);
     } else if (encyclopediaFallback.length > 0) {
       immediateChildren = encyclopediaFallback.slice(0, 6);
     } else {
@@ -548,11 +561,30 @@ const TopicGraph = {
 
     if (!options.forceFresh) {
       const cached = this.getCachedExplainer(resolvedTopic, userContextObj);
-      if (cached) return cached;
+      if (cached && !isLowSignalExplainer(cached)) return cached;
     }
 
-    // Return encyclopedia explainer immediately (no AI wait)
-    const immediateText = getEncyclopediaExplainer(resolvedTopic);
+    let immediateText = getEncyclopediaExplainer(resolvedTopic);
+    try {
+      const grounded = await fetchGroundedExplainer(resolvedTopic.label, resolvedTopic.description);
+      if (grounded && !isLowSignalExplainer(grounded)) {
+        immediateText = grounded;
+        persistExplainer(resolvedTopic, userContextObj, immediateText);
+      }
+    } catch {
+      persistExplainer(resolvedTopic, userContextObj, immediateText);
+    }
+
+    if (options.preferAI) {
+      try {
+        const text = await AIService.call('explainer', buildUserParams(resolvedTopic, userContextObj), { skipCache: options.forceFresh });
+        if (text && typeof text === 'string' && text.trim().length >= 80 && !isLowSignalExplainer(text)) {
+          persistExplainer(resolvedTopic, userContextObj, text);
+          return text;
+        }
+      } catch { /* fall back to grounded */ }
+      return immediateText;
+    }
 
     // Enrich with AI in background — updates cache for next visit
     const requestKey = `explainer:${normalizeTopicKey(resolvedTopic.id || resolvedTopic.label)}:${buildProfileKey(userContextObj)}:${hashPath(resolvedTopic.path || [resolvedTopic.label])}`;
@@ -563,7 +595,7 @@ const TopicGraph = {
             topic: resolvedTopic,
             userContext: userContextObj,
           });
-          if (typeof remote?.explainer === 'string' && remote.explainer.trim()) {
+          if (typeof remote?.explainer === 'string' && remote.explainer.trim() && !isLowSignalExplainer(remote.explainer)) {
             persistExplainer(resolvedTopic, userContextObj, remote.explainer);
             return;
           }
@@ -571,7 +603,7 @@ const TopicGraph = {
 
         try {
           const text = await AIService.call('explainer', buildUserParams(resolvedTopic, userContextObj));
-          if (text && typeof text === 'string' && text.trim().length >= 80) {
+          if (text && typeof text === 'string' && text.trim().length >= 80 && !isLowSignalExplainer(text)) {
             persistExplainer(resolvedTopic, userContextObj, text);
             return;
           }
