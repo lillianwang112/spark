@@ -14,6 +14,7 @@ import Groups from './pages/Groups.jsx';
 import GlobalSearch from './components/search/GlobalSearch.jsx';
 import Loader from './components/common/Loader.jsx';
 import { OPEN_DEEP_DIVE_EVENT } from './utils/navigation.js';
+import { loadDemoProfile, getActiveDemoKey } from './data/demoProfile.js';
 
 import './styles/globals.css';
 import './styles/animations.css';
@@ -28,6 +29,119 @@ const PAGE_META = {
   opportunities: { label: 'Real World',             mood: 'proud' },
 };
 
+const DEMO_META = {
+  alex:  { name: 'Alex Chen',     emoji: '🧮', label: 'College · STEM',     color: '#4A6FA5' },
+  maya:  { name: 'Maya Rivera',   emoji: '🎨', label: 'High School · Arts', color: '#E07A5F' },
+  james: { name: 'Dr. James Park',emoji: '📚', label: 'Adult · Humanities', color: '#2D936C' },
+};
+const DEMO_ORDER = ['alex', 'maya', 'james'];
+
+// ── Floating demo-mode switcher ───────────────────────────────────────────────
+function DemoSwitcher({ activeKey }) {
+  const [open, setOpen] = useState(false);
+  const meta = DEMO_META[activeKey];
+
+  function switchTo(key) {
+    loadDemoProfile(key);
+    window.location.href = `?demo=${key}`;
+  }
+
+  // Shift+1/2/3 hotkeys
+  useEffect(() => {
+    const handler = (e) => {
+      if (!e.shiftKey) return;
+      if (e.key === '1') switchTo('alex');
+      if (e.key === '2') switchTo('maya');
+      if (e.key === '3') switchTo('james');
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, []);
+
+  return (
+    <div className="fixed bottom-28 right-3 z-[200] sm:bottom-32 sm:right-5">
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.88, y: 8 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.88, y: 8 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 28 }}
+            className="mb-2 rounded-[20px] p-2 flex flex-col gap-1.5 min-w-[170px]"
+            style={{
+              background: 'rgba(18,8,0,0.95)',
+              border: '1px solid rgba(255,138,90,0.25)',
+              boxShadow: '0 20px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,138,90,0.12)',
+              backdropFilter: 'blur(20px)',
+            }}
+          >
+            <p className="text-[9px] font-mono uppercase tracking-[0.22em] px-2 pt-1 pb-0.5" style={{ color: 'rgba(255,138,90,0.6)' }}>
+              Demo Profiles
+            </p>
+            {DEMO_ORDER.map((key, i) => {
+              const m = DEMO_META[key];
+              const isActive = key === activeKey;
+              return (
+                <motion.button
+                  key={key}
+                  initial={{ opacity: 0, x: 8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.06 }}
+                  onClick={() => { setOpen(false); switchTo(key); }}
+                  className="flex items-center gap-2.5 rounded-[14px] px-3 py-2 text-left transition-all"
+                  style={{
+                    background: isActive ? `${m.color}30` : 'rgba(255,255,255,0.05)',
+                    border: isActive ? `1px solid ${m.color}50` : '1px solid transparent',
+                    boxShadow: isActive ? `0 4px 14px ${m.color}28` : 'none',
+                  }}
+                >
+                  <span className="text-lg leading-none">{m.emoji}</span>
+                  <div>
+                    <p className="text-[11px] font-body font-bold" style={{ color: isActive ? '#FFF7EC' : 'rgba(255,220,170,0.8)' }}>
+                      {m.name}
+                    </p>
+                    <p className="text-[9px] font-mono" style={{ color: isActive ? m.color : 'rgba(255,180,100,0.4)' }}>
+                      {m.label} {isActive ? '← active' : `[Shift+${i + 1}]`}
+                    </p>
+                  </div>
+                </motion.button>
+              );
+            })}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <motion.button
+        whileHover={{ scale: 1.1, y: -2 }}
+        whileTap={{ scale: 0.93 }}
+        onClick={() => setOpen((v) => !v)}
+        className="flex items-center gap-2 rounded-full px-3 py-2 shadow-lg"
+        style={{
+          background: 'rgba(18,8,0,0.92)',
+          border: `1.5px solid ${meta?.color || '#FF6B35'}50`,
+          boxShadow: `0 8px 24px rgba(0,0,0,0.4), 0 0 0 1px ${meta?.color || '#FF6B35'}22`,
+          backdropFilter: 'blur(20px)',
+        }}
+        aria-label="Switch demo profile"
+        title="Switch demo profile (Shift+1/2/3)"
+      >
+        <span className="text-base leading-none">{meta?.emoji || '👤'}</span>
+        <span className="text-[11px] font-mono font-bold" style={{ color: meta?.color || '#FF8A5A' }}>
+          Demo
+        </span>
+        <motion.span
+          animate={{ rotate: open ? 180 : 0 }}
+          transition={{ duration: 0.2 }}
+          className="text-[10px]"
+          style={{ color: 'rgba(255,180,100,0.5)' }}
+        >
+          ▲
+        </motion.span>
+      </motion.button>
+    </div>
+  );
+}
+
 function AppShell() {
   const user = useUserContext();
   const { isLoading, onboardingComplete } = user;
@@ -41,6 +155,24 @@ function AppShell() {
   const [globalSearchOpen, setGlobalSearchOpen] = useState(false);
   const [pendingGlobalSearch, setPendingGlobalSearch] = useState(null);
 
+  // Demo mode: read ?demo= param once on mount and auto-load
+  const demoKey = useMemo(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('demo') || null;
+  }, []);
+
+  useEffect(() => {
+    if (demoKey && ['alex', 'maya', 'james'].includes(demoKey)) {
+      const stored = localStorage.getItem('spark_demo_key');
+      if (stored !== demoKey) {
+        loadDemoProfile(demoKey);
+        window.location.reload();
+      }
+    }
+  }, [demoKey]);
+
+  const activeDemoKey = demoKey || getActiveDemoKey();
+
   const userContextObj = useMemo(() => ({
     ageGroup: user.ageGroup,
     personality: user.personality,
@@ -48,7 +180,6 @@ function AppShell() {
     name: user.name,
   }), [user.ageGroup, user.personality, user.eloScores, user.name]);
 
-  // When "Rediscover interests" resets onboardingComplete, re-show onboarding
   useEffect(() => {
     if (!onboardingComplete && onboardingDone) {
       setOnboardingDone(false);
@@ -76,7 +207,6 @@ function AppShell() {
       setPendingDeepDive(event.detail || null);
       setActiveTab('explore');
     };
-
     window.addEventListener(OPEN_DEEP_DIVE_EVENT, handleOpenDeepDive);
     return () => window.removeEventListener(OPEN_DEEP_DIVE_EVENT, handleOpenDeepDive);
   }, []);
@@ -90,7 +220,6 @@ function AppShell() {
   }
 
   const shouldOnboard = !onboardingComplete && !onboardingDone;
-
   if (shouldOnboard) {
     return (
       <Onboarding
@@ -126,7 +255,7 @@ function AppShell() {
 
   return (
     <div className="spark-shell px-2 pb-0 pt-2 sm:px-5 sm:pt-4">
-      {/* Ambient background orbs — vivid, animated */}
+      {/* Ambient background orbs */}
       <div className="spark-orb h-40 w-40 sm:h-64 sm:w-64 bg-[rgba(255,107,53,0.34)] left-2 top-4 sm:left-6 sm:top-8" />
       <div className="spark-orb h-44 w-44 sm:h-72 sm:w-72 bg-[rgba(74,111,165,0.26)] right-2 top-32 sm:right-4 sm:top-44" />
       <div className="spark-orb h-36 w-36 sm:h-56 sm:w-56 bg-[rgba(255,209,102,0.32)] left-[30%] bottom-16 sm:left-[38%] sm:bottom-24" />
@@ -136,9 +265,7 @@ function AppShell() {
         className="spark-surface relative flex flex-col overflow-hidden rounded-[32px]"
         style={{ minHeight: 'calc(100dvh - 24px)' }}
       >
-        <a href="#main-content" className="skip-link">
-          Skip to main content
-        </a>
+        <a href="#main-content" className="skip-link">Skip to main content</a>
 
         <Topbar
           userName={user.name}
@@ -187,6 +314,9 @@ function AppShell() {
           }}
         />
       </div>
+
+      {/* Demo mode switcher — only shown when ?demo= param present */}
+      {activeDemoKey && <DemoSwitcher activeKey={activeDemoKey} />}
     </div>
   );
 }
