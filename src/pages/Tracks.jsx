@@ -299,14 +299,9 @@ export default function Tracks({ onSpark }) {
       handleStartReview(seededTrack);
       return;
     }
-
-    user.updateTrack({
-      id: track.id,
-      lastTended: new Date().toISOString(),
-      branchState: BRANCH_STATES.HEALTHY,
-    });
-    setShareFeedback(`Woke up ${track.label}`);
-    setTimeout(() => setShareFeedback(''), 1800);
+    // For exploring: open a dedicated tending session for this single track
+    setTendingList([track]);
+    setTendingOpen(true);
   };
 
   const handleTendAll = () => {

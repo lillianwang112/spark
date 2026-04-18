@@ -482,65 +482,87 @@ const TopicGraph = {
         .filter(Boolean);
     } catch { /* live sources unavailable */ }
 
-    // Build instant fallback from curated + live + encyclopedia data
+    // Curated rabbit holes are always real, specific content — use immediately
     const curated = getCuratedRabbitHoles(resolvedTopic)
-      .map((child, index) => normalizeChildNode(resolvedTopic, child, index, userContextObj))
-      .filter(Boolean);
-    const encyclopediaFallback = getEncyclopediaChildren(resolvedTopic)
       .map((child, index) => normalizeChildNode(resolvedTopic, child, index, userContextObj))
       .filter(Boolean);
 
     let immediateChildren;
     if (curated.length > 0) {
       const merged = new Map();
-      [...curated, ...specificChildren, ...encyclopediaFallback].forEach((child) => {
+      [...curated, ...specificChildren].forEach((child) => {
         const key = normalizeTopicKey(child.id || child.label);
         if (!merged.has(key)) merged.set(key, child);
       });
       immediateChildren = Array.from(merged.values()).slice(0, 6);
+      persistChildren(resolvedTopic, immediateChildren);
     } else if (specificChildren.length > 0) {
       immediateChildren = specificChildren.slice(0, 6);
-    } else if (encyclopediaFallback.length > 0) {
-      immediateChildren = encyclopediaFallback.slice(0, 6);
+      persistChildren(resolvedTopic, immediateChildren);
     } else {
-      immediateChildren = buildFallbackChildren(resolvedTopic, userContextObj);
-    }
+      // No curated or live content — generate real content with AI instead of showing template filler
+      // DeepDive already shows a loading state ("Finding the next rabbit holes...") so we can wait
+      const requestKey = `children:${normalizeTopicKey(resolvedTopic.id || resolvedTopic.label)}:${buildProfileKey(userContextObj)}`;
+      if (!inflight.has(requestKey)) {
+        const enrichPromise = (async () => {
+          try {
+            const remote = await callTopicApi('/api/topic/children', {
+              topic: resolvedTopic,
+              userContext: userContextObj,
+            });
+            if (Array.isArray(remote?.children) && remote.children.length > 0) {
+              const enriched = remote.children
+                .map((child, index) => normalizeChildNode(resolvedTopic, child, index, userContextObj))
+                .filter(Boolean);
+              if (enriched.length > 0) { persistChildren(resolvedTopic, enriched); return enriched; }
+            }
+          } catch { /* no remote API */ }
 
-    persistChildren(resolvedTopic, immediateChildren);
-
-    // Enrich with AI in background — updates cache for next visit
-    const requestKey = `children:${normalizeTopicKey(resolvedTopic.id || resolvedTopic.label)}:${buildProfileKey(userContextObj)}`;
-    if (!inflight.has(requestKey)) {
-      const enrichPromise = (async () => {
-        try {
-          const remote = await callTopicApi('/api/topic/children', {
-            topic: resolvedTopic,
-            userContext: userContextObj,
-          });
-          if (Array.isArray(remote?.children) && remote.children.length > 0) {
-            const enriched = remote.children
-              .map((child, index) => normalizeChildNode(resolvedTopic, child, index, userContextObj))
-              .filter(Boolean);
-            if (enriched.length > 0) { persistChildren(resolvedTopic, enriched); return; }
-          }
-        } catch { /* no remote API */ }
-
-        try {
           const childData = await AIService.call('nodeChildren', buildUserParams(resolvedTopic, userContextObj));
           const aiChildren = (Array.isArray(childData) ? childData : [])
             .map((child, index) => normalizeChildNode(resolvedTopic, child, index, userContextObj))
             .filter(Boolean);
           if (aiChildren.length >= 3) {
-            const merged = new Map();
-            [...immediateChildren, ...aiChildren].forEach((child) => {
-              const k = normalizeTopicKey(child.id || child.label);
-              if (!merged.has(k)) merged.set(k, child);
-            });
-            persistChildren(resolvedTopic, Array.from(merged.values()).slice(0, 6));
+            persistChildren(resolvedTopic, aiChildren);
+            return aiChildren;
           }
-        } catch { /* swallow — background only */ }
-      })().finally(() => inflight.delete(requestKey));
-      inflight.set(requestKey, enrichPromise);
+          return null;
+        })().finally(() => inflight.delete(requestKey));
+        inflight.set(requestKey, enrichPromise);
+      }
+
+      try {
+        const aiResult = await inflight.get(requestKey);
+        if (aiResult?.length >= 3) return aiResult;
+      } catch { /* fall through to generic fallback */ }
+
+      // AI failed completely — use curated fallback as last resort
+      immediateChildren = buildFallbackChildren(resolvedTopic, userContextObj);
+      persistChildren(resolvedTopic, immediateChildren);
+    }
+
+    // Background enrichment for curated/live results (improve quality on next visit)
+    if (immediateChildren) {
+      const bgKey = `bg_children:${normalizeTopicKey(resolvedTopic.id || resolvedTopic.label)}`;
+      if (!inflight.has(bgKey)) {
+        const bgPromise = (async () => {
+          try {
+            const childData = await AIService.call('nodeChildren', buildUserParams(resolvedTopic, userContextObj));
+            const aiChildren = (Array.isArray(childData) ? childData : [])
+              .map((child, index) => normalizeChildNode(resolvedTopic, child, index, userContextObj))
+              .filter(Boolean);
+            if (aiChildren.length >= 3) {
+              const merged = new Map();
+              [...immediateChildren, ...aiChildren].forEach((child) => {
+                const k = normalizeTopicKey(child.id || child.label);
+                if (!merged.has(k)) merged.set(k, child);
+              });
+              persistChildren(resolvedTopic, Array.from(merged.values()).slice(0, 6));
+            }
+          } catch { /* swallow — background only */ }
+        })().finally(() => inflight.delete(bgKey));
+        inflight.set(bgKey, bgPromise);
+      }
     }
 
     return immediateChildren;
@@ -559,62 +581,42 @@ const TopicGraph = {
     }
     persistTopic(resolvedTopic);
 
+    // 1. Cached result — always fastest path
     if (!options.forceFresh) {
       const cached = this.getCachedExplainer(resolvedTopic, userContextObj);
       if (cached && !isLowSignalExplainer(cached)) return cached;
     }
 
-    let immediateText = getEncyclopediaExplainer(resolvedTopic);
+    // 2. Try remote API first (fastest when available)
+    try {
+      const remote = await callTopicApi('/api/topic/explainer', {
+        topic: resolvedTopic,
+        userContext: userContextObj,
+      });
+      if (typeof remote?.explainer === 'string' && remote.explainer.trim() && !isLowSignalExplainer(remote.explainer)) {
+        persistExplainer(resolvedTopic, userContextObj, remote.explainer);
+        return remote.explainer;
+      }
+    } catch { /* no remote API — fall through */ }
+
+    // 3. AI-generated explainer — always try this (ExplainerCard has a loading state)
+    try {
+      const text = await AIService.call('explainer', buildUserParams(resolvedTopic, userContextObj), { skipCache: options.forceFresh });
+      if (text && typeof text === 'string' && text.trim().length >= 80 && !isLowSignalExplainer(text)) {
+        persistExplainer(resolvedTopic, userContextObj, text);
+        return text;
+      }
+    } catch { /* fall through to grounded/encyclopedia */ }
+
+    // 4. Grounded or encyclopedia as last resort (user sees something rather than nothing)
+    let fallbackText = getEncyclopediaExplainer(resolvedTopic);
     try {
       const grounded = await fetchGroundedExplainer(resolvedTopic.label, resolvedTopic.description);
-      if (grounded && !isLowSignalExplainer(grounded)) {
-        immediateText = grounded;
-        persistExplainer(resolvedTopic, userContextObj, immediateText);
-      }
-    } catch {
-      persistExplainer(resolvedTopic, userContextObj, immediateText);
-    }
+      if (grounded && !isLowSignalExplainer(grounded)) fallbackText = grounded;
+    } catch { /* use encyclopedia */ }
 
-    if (options.preferAI) {
-      try {
-        const text = await AIService.call('explainer', buildUserParams(resolvedTopic, userContextObj), { skipCache: options.forceFresh });
-        if (text && typeof text === 'string' && text.trim().length >= 80 && !isLowSignalExplainer(text)) {
-          persistExplainer(resolvedTopic, userContextObj, text);
-          return text;
-        }
-      } catch { /* fall back to grounded */ }
-      return immediateText;
-    }
-
-    // Enrich with AI in background — updates cache for next visit
-    const requestKey = `explainer:${normalizeTopicKey(resolvedTopic.id || resolvedTopic.label)}:${buildProfileKey(userContextObj)}:${hashPath(resolvedTopic.path || [resolvedTopic.label])}`;
-    if (!inflight.has(requestKey)) {
-      const enrichPromise = (async () => {
-        try {
-          const remote = await callTopicApi('/api/topic/explainer', {
-            topic: resolvedTopic,
-            userContext: userContextObj,
-          });
-          if (typeof remote?.explainer === 'string' && remote.explainer.trim() && !isLowSignalExplainer(remote.explainer)) {
-            persistExplainer(resolvedTopic, userContextObj, remote.explainer);
-            return;
-          }
-        } catch { /* no remote API */ }
-
-        try {
-          const text = await AIService.call('explainer', buildUserParams(resolvedTopic, userContextObj));
-          if (text && typeof text === 'string' && text.trim().length >= 80 && !isLowSignalExplainer(text)) {
-            persistExplainer(resolvedTopic, userContextObj, text);
-            return;
-          }
-        } catch { /* swallow — background only */ }
-
-        persistExplainer(resolvedTopic, userContextObj, immediateText);
-      })().finally(() => inflight.delete(requestKey));
-      inflight.set(requestKey, enrichPromise);
-    }
-
-    return immediateText;
+    persistExplainer(resolvedTopic, userContextObj, fallbackText);
+    return fallbackText;
   },
 
   getPredictedPrompts(topic, userContextObj = {}) {

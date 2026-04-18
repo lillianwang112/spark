@@ -33,6 +33,39 @@ function waitForPuter(timeoutMs = 5000) {
   });
 }
 
+// ── Low-level: multi-turn chat (preserves conversation history) ──
+async function chat(messages, systemPrompt) {
+  if (AI_BACKEND === 'puter') {
+    const puter = await waitForPuter();
+    if (!puter) throw new Error('Puter.js not loaded');
+    const response = await puter.ai.chat(messages, {
+      system: systemPrompt,
+      model: 'google/gemini-2.5-flash',
+    });
+    return typeof response === 'string'
+      ? response
+      : response?.message?.content?.[0]?.text || response?.message?.content || String(response);
+  } else {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': import.meta.env.VITE_ANTHROPIC_API_KEY,
+        'anthropic-version': '2023-06-01',
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 1024,
+        system: systemPrompt,
+        messages,
+      }),
+    });
+    if (!res.ok) throw new Error(`Claude API error: ${res.status}`);
+    const data = await res.json();
+    return data.content?.[0]?.text || '';
+  }
+}
+
 // ── Low-level: single completion ──
 async function complete(prompt, systemPrompt) {
   if (AI_BACKEND === 'puter') {
@@ -42,7 +75,7 @@ async function complete(prompt, systemPrompt) {
     if (!puter) throw new Error('Puter.js not loaded');
     const response = await puter.ai.chat(prompt, {
       system: systemPrompt,
-      model: 'claude-3-5-sonnet',
+      model: 'google/gemini-2.5-flash',
     });
     // Puter returns string or object — normalize
     return typeof response === 'string'
@@ -131,6 +164,11 @@ function buildPrompt(type, params) {
 
 // ── Main API ──
 const AIService = {
+  // Multi-turn conversation — maintains full history across turns
+  async chat(messages, systemPrompt) {
+    return withTimeout(chat(messages, systemPrompt), TIMEOUT_MS * 1.5);
+  },
+
   // Raw completion (use sparingly — prefer .call())
   async complete(prompt, systemPrompt) {
     return withTimeout(complete(prompt, systemPrompt), TIMEOUT_MS);

@@ -7,6 +7,7 @@ import InteractiveDiagram, { shouldShowDiagram } from './InteractiveDiagram.jsx'
 import { copyThreadUrl } from '../../utils/threads.js';
 import TopicGraph from '../../services/topicGraph.js';
 import LiveContentShelf from './LiveContentShelf.jsx';
+import TeachingSession from './TeachingSession.jsx';
 
 function formatExplainerText(text) {
   if (!text) return { lead: '', body: [], teaser: '' };
@@ -39,6 +40,7 @@ function ExplainerCardInner({
   onKnowledgeTag,
   onSave,
   onGoDeeper,
+  onStartTeaching,
   compact,
   showImages,
 }) {
@@ -48,7 +50,6 @@ function ExplainerCardInner({
   const [emberMood, setEmberMood] = useState('thinking');
   const [savedLocal, setSavedLocal] = useState(false);
   const [shareState, setShareState] = useState('idle');
-  const [teachingState, setTeachingState] = useState('idle');
 
   const color = node?.domain ? DOMAIN_COLORS[node.domain] : '#FF6B35';
   const ageGroup = userContextObj?.ageGroup || 'college';
@@ -217,26 +218,10 @@ function ExplainerCardInner({
         style={{ borderTop: `1px solid ${color}20` }}
       >
         <button
-          onClick={async () => {
-            if (teachingState === 'loading') return;
-            setTeachingState('loading');
-            setStatus('loading');
-            setEmberMood('thinking');
-            try {
-              const lesson = await TopicGraph.getExplainer(node, topicContext, { forceFresh: true, preferAI: true });
-              setText(lesson);
-              setStatus('ready');
-              setEmberMood('proud');
-              setTeachingState('done');
-            } catch {
-              setStatus('ready');
-              setTeachingState('error');
-              setEmberMood('sheepish');
-            }
-          }}
+          onClick={onStartTeaching}
           className={`min-h-[36px] rounded-full bg-spark-ember font-medium text-white transition-colors hover:bg-orange-600 ${compact ? 'px-3 py-1.5 text-xs' : 'px-4 py-2 text-sm'}`}
         >
-          {teachingState === 'loading' ? 'Teaching…' : 'Teach me from scratch'}
+          💬 Teach me from scratch
         </button>
         <button
           onClick={async () => {
@@ -280,6 +265,7 @@ function ExplainerCardInner({
 
 export default function ExplainerCard(props) {
   const { node, knowledgeState, userContextObj } = props;
+  const [teachingMode, setTeachingMode] = useState(false);
 
   const requestKey = useMemo(() => JSON.stringify({
     id: node?.id,
@@ -299,5 +285,23 @@ export default function ExplainerCard(props) {
     userContextObj?.topInterests,
   ]);
 
-  return <ExplainerCardInner key={requestKey} {...props} />;
+  if (teachingMode && node) {
+    return (
+      <div className="overflow-hidden rounded-card bg-bg-secondary shadow-card">
+        <TeachingSession
+          node={node}
+          userContextObj={userContextObj}
+          onExit={() => setTeachingMode(false)}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <ExplainerCardInner
+      key={requestKey}
+      {...props}
+      onStartTeaching={() => setTeachingMode(true)}
+    />
+  );
 }

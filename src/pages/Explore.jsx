@@ -15,6 +15,7 @@ import { useUserContext } from '../hooks/useUserContext.jsx';
 import { useTree } from '../hooks/useTree.jsx';
 import { useSearch } from '../hooks/useSearch.js';
 import { DOMAIN_COLORS } from '../utils/domainColors.js';
+import { DOMAINS, DOMAIN_LABELS, DOMAIN_EMOJIS } from '../utils/constants.js';
 import { buildUserContext } from '../models/userContext.js';
 import { getTopDomains } from '../models/elo.js';
 import { storage } from '../services/storage.js';
@@ -226,10 +227,16 @@ export default function Explore({
         </div>
       </div>
 
-      <AnimatePresence>
-        {(searchExplainer || searchLoading) && (
-          <div className="overflow-hidden">
-            <div className="mx-auto max-w-[760px] px-4 py-3">
+      <div className="flex-1 overflow-y-auto px-4 pb-24">
+        <AnimatePresence>
+          {(searchExplainer || searchLoading) && (
+            <motion.div
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.2 }}
+              className="mx-auto max-w-[760px] pt-3 pb-2"
+            >
               {searchLoading ? (
                 <div className="flex items-center gap-3 py-4 text-text-muted">
                   <Ember mood="thinking" size="xs" glowIntensity={0.5} />
@@ -254,12 +261,10 @@ export default function Explore({
                   </button>
                 </div>
               ) : null}
-            </div>
-          </div>
-        )}
-      </AnimatePresence>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-      <div className="flex-1 overflow-y-auto px-4 pb-24">
         <div className="mx-auto max-w-[760px] space-y-5 pt-4">
           <DailySpark
             userName={user.name}
@@ -438,6 +443,46 @@ export default function Explore({
                       onDrillInto={handleDrillInto}
                       onDrillToDepth={handleDrillToDepth}
                     />
+
+                    {/* Free Exploration — browse any topic */}
+                    <div className="mt-6">
+                      <div className="mb-3 flex items-center justify-between">
+                        <p className="text-[11px] font-mono uppercase tracking-[0.14em] text-text-muted">Explore freely</p>
+                        <p className="text-xs font-body text-text-muted">Jump into any topic</p>
+                      </div>
+                      <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
+                        {DOMAINS.map((domain) => {
+                          const color = DOMAIN_COLORS[domain] || '#FF6B35';
+                          return (
+                            <button
+                              key={domain}
+                              onClick={() => {
+                                setDeepDiveNode({
+                                  id: domain,
+                                  label: DOMAIN_LABELS[domain],
+                                  domain,
+                                  path: [DOMAIN_LABELS[domain]],
+                                  description: `Explore ${DOMAIN_LABELS[domain]} freely`,
+                                });
+                              }}
+                              className="flex flex-col items-center gap-1.5 rounded-[18px] p-3 transition-all hover:scale-[1.03] active:scale-95"
+                              style={{
+                                background: `${color}12`,
+                                border: `1px solid ${color}22`,
+                              }}
+                            >
+                              <span className="text-xl leading-none">{DOMAIN_EMOJIS[domain]}</span>
+                              <span
+                                className="text-[11px] font-body font-semibold text-center leading-tight"
+                                style={{ color }}
+                              >
+                                {DOMAIN_LABELS[domain].replace(' & Design', '').replace(' & Movement', '')}
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
 
                     <div className="mt-5 flex justify-center">
                       <button
