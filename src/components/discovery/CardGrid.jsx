@@ -66,6 +66,8 @@ export default function CardGrid({
   onOpenTopic,
   totalRounds = DISCOVERY_CONFIG.DEFAULT_ROUNDS,
   mode = 'balanced',
+  majorMode = false,
+  majorField = null,
 }) {
   const startRound = mode === 'surprise' ? 2 : mode === 'similar' ? 1 : 0;
   const [round, setRound] = useState(startRound);
@@ -92,6 +94,8 @@ export default function CardGrid({
         topInterests: ranked.slice(0, 3).map((r) => r.domain),
         domains,
         mode,
+        majorMode,
+        majorField,
       });
       if (generated && generated.length >= 4) {
         setCards(generated.map(normalizeCard));
@@ -177,7 +181,7 @@ export default function CardGrid({
           <div className="min-w-0">
             <div className="mb-3 flex flex-wrap items-center gap-2">
               <span className="rounded-full bg-[rgba(42,42,42,0.06)] px-3 py-1 text-[11px] font-mono uppercase tracking-[0.16em] text-text-muted">
-                Discovery Run
+                {majorMode ? '🎓 Major Exploration' : 'Discovery Run'}
               </span>
               <span
                 className="rounded-full px-3 py-1 text-[11px] font-body font-semibold capitalize"
@@ -187,10 +191,14 @@ export default function CardGrid({
               </span>
             </div>
             <h2 className={`mb-1 text-left font-display font-semibold text-text-primary ${isKids ? 'text-2xl' : 'text-[1.9rem]'}`}>
-              {isKids ? 'Pick the spark that feels the coolest.' : 'Train the engine on what genuinely pulls you in.'}
+              {majorMode
+                ? (majorField ? `Exploring what ${majorField} actually feels like.` : "Let's figure out what makes you light up.")
+                : isKids ? 'Pick the spark that feels the coolest.' : 'Train the engine on what genuinely pulls you in.'}
             </h2>
             <p className={`max-w-xl text-left text-text-secondary ${isKids ? 'font-body-kids text-base' : 'font-body text-[15px]'}`}>
-              {isKids
+              {majorMode
+                ? 'Each scenario reveals whether you like making vs understanding, working alone vs collaborating, open problems vs right answers.'
+                : isKids
                 ? 'Every tap helps Ember find your next magical rabbit hole.'
                 : 'Each choice sharpens your map so Explore starts surfacing richer chains, better explanations, and stronger long-term tracks.'}
             </p>

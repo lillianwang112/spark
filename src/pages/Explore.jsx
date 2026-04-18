@@ -37,6 +37,8 @@ export default function Explore({
   onboardingIntent = null,
   pendingDeepDive = null,
   onConsumePendingDeepDive,
+  pendingGlobalSearch = null,
+  onConsumePendingGlobalSearch,
   onSpark,
   streakState,
 }) {
@@ -84,6 +86,13 @@ export default function Explore({
       initRoots(defaultDomains);
     }
   }, [handleQueryChange, initRoots, initialSearch, roots.length, runSearch]);
+
+  useEffect(() => {
+    if (!pendingGlobalSearch) return;
+    handleQueryChange(pendingGlobalSearch);
+    runSearch(pendingGlobalSearch);
+    onConsumePendingGlobalSearch?.();
+  }, [pendingGlobalSearch]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!pendingDeepDive) return;
@@ -458,6 +467,8 @@ export default function Explore({
                   onDiscoveryComplete={handleDiscoveryComplete}
                   onOpenTopic={handleExplainNode}
                   mode={discoveryMode}
+                  majorMode={onboardingIntent === 'major'}
+                  majorField={onboardingIntent === 'major' ? initialSearch : null}
                 />
               </motion.div>
             ) : effectivePhase === 'sprouting' ? (

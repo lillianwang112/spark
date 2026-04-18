@@ -5,6 +5,7 @@ import DiscoveryCard from './DiscoveryCard.jsx';
 import Ember from '../ember/Ember.jsx';
 import MathText from '../common/MathText.jsx';
 import KeyTakeaways from '../explainer/KeyTakeaways.jsx';
+import ResearchFrontier from './ResearchFrontier.jsx';
 import { useTree } from '../../hooks/useTree.jsx';
 import { getSeedChildren } from '../../utils/seedData.js';
 import { DOMAIN_COLORS } from '../../utils/domainColors.js';
@@ -213,7 +214,7 @@ function formatExplainerText(text) {
 }
 
 // Inline rabbit-hole explainer — lean, focused, no videos/images/quiz (those are in Full view)
-function RabbitHoleExplainer({ node, userContextObj, onGoDeeper, onSave, onFullView, onBack, pathLength }) {
+function RabbitHoleExplainer({ node, userContextObj, onGoDeeper, onSave, onFullView, onBack, onFrontier, pathLength }) {
   const [text, setText] = useState(null);
   const [explLoading, setExplLoading] = useState(true);
   const [takeaways, setTakeaways] = useState(null);
@@ -474,6 +475,37 @@ function RabbitHoleExplainer({ node, userContextObj, onGoDeeper, onSave, onFullV
           ← Back
         </button>
       </motion.div>
+
+      {/* Research Frontier — only for college/adult users at depth >= 4 */}
+      {(userContextObj?.ageGroup === 'college' || userContextObj?.ageGroup === 'adult') && pathLength >= 4 && (
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.65 }}
+          className="mt-2"
+        >
+          <button
+            onClick={() => onFrontier?.(node)}
+            className="w-full flex items-center justify-between rounded-[16px] px-4 py-3 text-left transition-all"
+            style={{
+              background: 'linear-gradient(135deg, rgba(10,10,20,0.92) 0%, rgba(15,15,30,0.88) 100%)',
+              border: '1px solid rgba(255,255,255,0.12)',
+              color: 'white',
+            }}
+          >
+            <div>
+              <p className="text-xs font-mono uppercase tracking-[0.16em] mb-0.5" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                Deep enough to go here
+              </p>
+              <p className="font-display text-sm font-semibold">🔬 Research Frontier</p>
+              <p className="text-[11px]" style={{ color: 'rgba(255,255,255,0.55)' }}>
+                See landmark papers, open questions & how to contribute
+              </p>
+            </div>
+            <span style={{ color: 'rgba(255,255,255,0.4)' }}>→</span>
+          </button>
+        </motion.div>
+      )}
     </motion.div>
   );
 }
@@ -489,6 +521,7 @@ export default function DeepDive({ rootNode, userContextObj, onExplain, onSave, 
   const [mode, setMode] = useState('picking');
   const [explainNode, setExplainNode] = useState(null);
   const [emberMood, setEmberMood] = useState('curious');
+  const [frontierNode, setFrontierNode] = useState(null);
   const cancelRef = useRef(false);
 
   const { nodes: treeNodes } = useTree();
@@ -609,6 +642,27 @@ export default function DeepDive({ rootNode, userContextObj, onExplain, onSave, 
 
   const isKids = userContextObj?.ageGroup === 'little_explorer';
 
+  // Research Frontier overlay — takes over the full view when active
+  if (frontierNode) {
+    return (
+      <AnimatePresence mode="wait">
+        <motion.div
+          key="frontier"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.25 }}
+        >
+          <ResearchFrontier
+            node={frontierNode}
+            userContextObj={userContextObj}
+            onBack={() => setFrontierNode(null)}
+          />
+        </motion.div>
+      </AnimatePresence>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-4 w-full">
       {/* Breadcrumb bar — grows with path */}
@@ -675,6 +729,7 @@ export default function DeepDive({ rootNode, userContextObj, onExplain, onSave, 
               onSave={onSave}
               onFullView={onExplain}
               onBack={handleBackFromExplain}
+              onFrontier={(n) => setFrontierNode(n)}
               pathLength={path.length}
             />
           </motion.div>

@@ -12,13 +12,15 @@ import {
   interactiveDiagramPrompt,
   keyTakeawaysPrompt,
   quickQuizPrompt,
+  researchFrontierPrompt,
+  researchContributionPrompt,
 } from './prompts.js';
 import { parseAIJson } from '../utils/helpers.js';
 import { hashPath } from '../utils/helpers.js';
 import { getSharedAICache, setSharedAICache } from '../services/firebase.js';
 
 // Only cache-shareable types (not personalized responses)
-const SHARED_CACHEABLE = new Set(['explainer', 'keyTakeaways', 'quickQuiz', 'nodeChildren']);
+const SHARED_CACHEABLE = new Set(['explainer', 'keyTakeaways', 'quickQuiz', 'nodeChildren', 'researchFrontier']);
 
 // Static pre-warmed cache — zero latency, bundled at build time
 let _staticCache = null;
@@ -147,6 +149,8 @@ const FALLBACKS = {
   interactiveDiagram: () => null, // No fallback — just don't show if AI fails
   keyTakeaways: () => null,
   quickQuiz: () => null,
+  researchFrontier: () => null,
+  researchContribution: () => null,
 };
 
 // ── Cache key builders ──
@@ -154,7 +158,7 @@ function getCacheKey(type, params) {
   const ageGroup = params.ageGroup || params.userContext?.ageGroup || 'college';
   switch (type) {
     case 'discoveryCards':
-      return `dc:${ageGroup}:${(params.topInterests || []).join(',')}:${params.mode || 'default'}`;
+      return `dc:${ageGroup}:${(params.topInterests || []).join(',')}:${params.mode || 'default'}:${params.majorMode ? `major:${(params.majorField || '').replace(/\s+/g,'_').slice(0,20)}` : ''}`;
     case 'nodeChildren':
       return `nc:${hashPath(params.currentPath)}:${params.currentNode}:${ageGroup}`;
     case 'explainer':
@@ -169,6 +173,10 @@ function getCacheKey(type, params) {
       return `kt:${hashPath(params.currentPath)}:${params.currentNode}:${params.ageGroup || 'college'}`;
     case 'quickQuiz':
       return `qq:${hashPath(params.currentPath)}:${params.currentNode}:${params.ageGroup || 'college'}`;
+    case 'researchFrontier':
+      return `rf:${hashPath(params.currentPath)}:${params.currentNode}:${params.ageGroup || 'college'}`;
+    case 'researchContribution':
+      return `rc:${params.currentNode}:${(params.openQuestion?.title || '').replace(/\s+/g,'_').slice(0,30)}:${params.ageGroup || 'college'}`;
     default:
       return `${type}:${JSON.stringify(params).slice(0, 100)}`;
   }
@@ -185,6 +193,8 @@ function buildPrompt(type, params) {
     case 'interactiveDiagram':   return interactiveDiagramPrompt(params);
     case 'keyTakeaways':         return keyTakeawaysPrompt(params);
     case 'quickQuiz':            return quickQuizPrompt(params);
+    case 'researchFrontier':      return researchFrontierPrompt(params);
+    case 'researchContribution':  return researchContributionPrompt(params);
     default: throw new Error(`Unknown prompt type: ${type}`);
   }
 }
@@ -262,7 +272,7 @@ const AIService = {
       }
 
       // 4. Parse JSON types
-      const jsonTypes = ['discoveryCards', 'nodeChildren', 'keyTakeaways', 'quickQuiz'];
+      const jsonTypes = ['discoveryCards', 'nodeChildren', 'keyTakeaways', 'quickQuiz', 'researchFrontier', 'researchContribution'];
       if (jsonTypes.includes(type)) {
         const parsed = parseAIJson(result);
         if (!parsed) {

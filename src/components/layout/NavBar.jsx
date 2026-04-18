@@ -4,9 +4,10 @@ import { getDueCards } from '../../models/srs.js';
 void motion;
 
 const TABS = [
-  { id: 'explore',  label: 'Explore',  icon: ExploreIcon, kidsLabel: 'Discover' },
-  { id: 'tracks',   label: 'Tracks',   icon: TracksIcon,  kidsLabel: 'Saved' },
-  { id: 'profile',  label: 'Profile',  icon: ProfileIcon, kidsLabel: 'Me' },
+  { id: 'explore',       label: 'Explore',  icon: ExploreIcon,       kidsLabel: 'Discover' },
+  { id: 'tracks',        label: 'Tracks',   icon: TracksIcon,         kidsLabel: 'Saved' },
+  { id: 'opportunities', label: 'World',    icon: OpportunitiesIcon,  kidsLabel: 'World' },
+  { id: 'profile',       label: 'Profile',  icon: ProfileIcon,        kidsLabel: 'Me' },
 ];
 
 function ExploreIcon({ active }) {
@@ -73,7 +74,32 @@ function ProfileIcon({ active }) {
   );
 }
 
-export default function NavBar({ activeTab, onTabChange }) {
+function OpportunitiesIcon({ active }) {
+  return (
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none">
+      <circle
+        cx="12" cy="12" r="8.5"
+        fill={active ? 'url(#opp-fill)' : 'none'}
+        stroke={active ? '#4A6FA5' : 'currentColor'}
+        strokeWidth="1.7"
+      />
+      {/* Latitude lines */}
+      <ellipse cx="12" cy="12" rx="3.4" ry="8.5" fill="none" stroke={active ? 'rgba(255,255,255,0.55)' : 'currentColor'} strokeWidth="1.3" opacity={active ? 1 : 0.45} />
+      {/* Horizontal band */}
+      <line x1="3.5" y1="12" x2="20.5" y2="12" stroke={active ? 'rgba(255,255,255,0.55)' : 'currentColor'} strokeWidth="1.3" opacity={active ? 1 : 0.45} />
+      <line x1="5.3" y1="8" x2="18.7" y2="8" stroke={active ? 'rgba(255,255,255,0.40)' : 'currentColor'} strokeWidth="1.1" opacity={active ? 1 : 0.3} />
+      <line x1="5.3" y1="16" x2="18.7" y2="16" stroke={active ? 'rgba(255,255,255,0.40)' : 'currentColor'} strokeWidth="1.1" opacity={active ? 1 : 0.3} />
+      <defs>
+        <linearGradient id="opp-fill" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#6C9BD2" />
+          <stop offset="100%" stopColor="#2D5F8E" />
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+}
+
+export default function NavBar({ activeTab, onTabChange, onOpenSearch }) {
   const user = useUserContext();
   const isKids = user.ageGroup === 'little_explorer';
 
@@ -95,6 +121,25 @@ export default function NavBar({ activeTab, onTabChange }) {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,166,43,0.18),transparent_70%)]" />
         </div>
 
+        {/* Search icon — not a tab, just a floating action button on the far left */}
+        <motion.button
+          onClick={() => onOpenSearch?.()}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.92 }}
+          className="relative z-10 flex items-center justify-center w-10 h-10 rounded-full flex-shrink-0 transition-all focus-visible:outline-2 focus-visible:outline-spark-ember"
+          style={{
+            background: 'linear-gradient(135deg, rgba(255,107,53,0.12), rgba(255,166,43,0.10))',
+            border: '1.5px solid rgba(255,107,53,0.18)',
+            boxShadow: '0 4px 14px rgba(255,107,53,0.12)',
+          }}
+          aria-label="Open universal search"
+        >
+          <svg viewBox="0 0 20 20" width="18" height="18" fill="none" aria-hidden="true">
+            <circle cx="8.5" cy="8.5" r="5.5" stroke="#FF6B35" strokeWidth="1.8" />
+            <line x1="12.5" y1="12.5" x2="17" y2="17" stroke="#FF6B35" strokeWidth="1.8" strokeLinecap="round" />
+          </svg>
+        </motion.button>
+
         {TABS.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -105,7 +150,7 @@ export default function NavBar({ activeTab, onTabChange }) {
             <button
               key={tab.id}
               onClick={() => onTabChange(tab.id)}
-              className="relative flex flex-col items-center gap-0.5 px-5 py-2 rounded-[18px] min-w-[72px] transition-all duration-200 focus-visible:outline-2 focus-visible:outline-spark-ember"
+              className="relative flex flex-col items-center gap-0.5 px-3 py-2 rounded-[18px] min-w-[58px] transition-all duration-200 focus-visible:outline-2 focus-visible:outline-spark-ember"
               aria-current={isActive ? 'page' : undefined}
               aria-label={`${label}${showBadge ? ` (${dueCount} due)` : ''}`}
             >
@@ -140,7 +185,9 @@ export default function NavBar({ activeTab, onTabChange }) {
                         ? 'radial-gradient(circle, rgba(255,107,53,0.5) 0%, transparent 70%)'
                         : tab.id === 'tracks'
                           ? 'radial-gradient(circle, rgba(45,147,108,0.5) 0%, transparent 70%)'
-                          : 'radial-gradient(circle, rgba(255,166,43,0.5) 0%, transparent 70%)',
+                          : tab.id === 'opportunities'
+                            ? 'radial-gradient(circle, rgba(74,111,165,0.5) 0%, transparent 70%)'
+                            : 'radial-gradient(circle, rgba(255,166,43,0.5) 0%, transparent 70%)',
                     }}
                     aria-hidden="true"
                   />

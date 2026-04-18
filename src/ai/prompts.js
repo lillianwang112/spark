@@ -4,7 +4,7 @@
 import { getSystemPrompt } from './personalities.js';
 
 // ── TYPE 1: Discovery Card Generation ──
-export function discoveryCardsPrompt({ ageGroup, topInterests, domains, personality, mode }) {
+export function discoveryCardsPrompt({ ageGroup, topInterests, domains, personality, mode, majorMode = false, majorField = null }) {
   const systemPrompt = getSystemPrompt(personality, ageGroup);
 
   const domainsStr = domains?.join(', ') || 'any domain';
@@ -17,6 +17,34 @@ export function discoveryCardsPrompt({ ageGroup, topInterests, domains, personal
     : mode === 'similar'
     ? `Focus on domains similar to or related to: ${interestsStr}`
     : '';
+
+  // College major exploration mode — completely different card framing
+  if (majorMode) {
+    const fieldContext = majorField ? `The user is exploring "${majorField}" as a potential major.` : 'The user is exploring college majors.';
+    const prompt = `${fieldContext} They are a high school student trying to figure out what to study.
+
+Generate 4 discovery cards that surface DISPOSITION SIGNALS — not abstract concepts, but concrete day-in-the-life scenarios that reveal whether someone would thrive in a field.
+
+Each card should feel like: "You're in a real situation. Does this excite you or exhaust you?"
+
+Examples of good major exploration cards:
+- "You're in a lab at 11pm, running an experiment for the third time. Does that sound exciting or exhausting?"
+- "You just found a bug that's been crashing an app for 10,000 users. Do you want to be the one who fixes it?"
+- "You're reading a paper about why a policy failed. You have an idea for why. Do you want to write that argument?"
+
+Rules:
+- Each card must be a SCENARIO, not a question about facts
+- Scenarios must reveal: do you like making vs understanding, working alone vs collaborating, open problems vs right answers
+- Each must secretly map to one of these domains: ${domainsStr}
+- Under 18 words per card
+- Description (under 20 words) says what kind of person tends to love this field
+- Make them feel real and visceral, not hypothetical
+- Mix domains: don't put all STEM or all humanities
+
+Return ONLY valid JSON array, no markdown fences:
+[{"text": "...", "domain": "...", "emoji": "...", "imageQuery": "...", "kind": "disposition", "description": "..."}]`;
+    return { prompt, systemPrompt };
+  }
 
   const prompt = `Generate 4 discovery card prompts for a user with age group: ${ageGroup}.
 Their top interests so far are: ${interestsStr}.
@@ -185,6 +213,83 @@ Return ONLY valid JSON, no markdown:
 {"question":"...","options":["A option","B option","C option","D option"],"correct":0,"explanation":"One sentence why the answer is correct."}
 
 "correct" is a 0-indexed integer (0=first option).`;
+
+  return { prompt, systemPrompt };
+}
+
+// ── TYPE 8: Research Frontier ──
+export function researchFrontierPrompt({ currentNode, currentPath, ageGroup, personality }) {
+  const systemPrompt = getSystemPrompt(personality, ageGroup);
+  const pathStr = Array.isArray(currentPath) ? currentPath.join(' → ') : currentPath || currentNode;
+
+  const prompt = `The user has gone ${currentPath?.length || 1}+ levels deep exploring "${currentNode}" (path: ${pathStr}).
+
+Generate a research frontier briefing. Return ONLY valid JSON (no markdown fences):
+{
+  "bridge": {
+    "overview": "2-3 sentence honest framing of what this research area is really about",
+    "prerequisites": [
+      {"concept": "...", "why": "why you need this for the frontier", "difficulty": "beginner|intermediate|advanced"}
+    ]
+  },
+  "papers": [
+    {
+      "title": "...",
+      "authors": "...(Last name et al or single name)",
+      "year": 1900,
+      "question": "what problem was this paper actually solving, in plain language",
+      "insight": "what they found and why it mattered",
+      "context": "what came before, what this made possible",
+      "accessibility": "accessible|intermediate|technical"
+    }
+  ],
+  "openQuestions": [
+    {
+      "type": "recurring|disagreement|adjacency",
+      "title": "short title for the question",
+      "question": "the open question in plain language",
+      "why": "why it's hard, what's been tried",
+      "excitement": "what a breakthrough would unlock"
+    }
+  ]
+}
+
+Rules:
+- bridge.prerequisites: 3-5 concepts, honest about difficulty
+- papers: 3-4 real or plausibly real landmark papers in narrative order (oldest to newest), showing evolution of thinking
+- openQuestions: exactly 3 questions, one of each type (recurring, disagreement, adjacency)
+- Calibrate language to age group: "${ageGroup}"
+- Be intellectually honest — this is about genuine frontier territory, not textbook content`;
+
+  return { prompt, systemPrompt };
+}
+
+// ── TYPE 9: Research Contribution ──
+export function researchContributionPrompt({ currentNode, openQuestion, ageGroup, personality }) {
+  const systemPrompt = getSystemPrompt(personality, ageGroup);
+
+  const prompt = `The user is interested in working on this open research question:
+"${openQuestion.question}" (in the area of ${currentNode})
+
+Generate a research entry profile. Return ONLY valid JSON (no markdown fences):
+{
+  "workType": "theoretical|empirical|computational|experimental|interdisciplinary",
+  "prerequisites": ["specific technical prerequisite 1", "..."],
+  "environment": "description of what the research environment looks like (lab, solo, industry, etc.)",
+  "firstStep": {
+    "action": "concrete first step description",
+    "resource": "specific paper/dataset/tool/person to contact"
+  },
+  "researchers": [
+    {"name": "...", "affiliation": "...", "relevance": "why they're working on this specifically"}
+  ]
+}
+
+Rules:
+- Be concrete and actionable
+- firstStep should be something achievable in a week
+- researchers: 2-3 real or plausible researchers
+- Calibrate to "${ageGroup}"`;
 
   return { prompt, systemPrompt };
 }
