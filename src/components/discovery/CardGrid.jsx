@@ -4,7 +4,7 @@ import Loader from '../common/Loader.jsx';
 import Ember from '../ember/Ember.jsx';
 import AIService from '../../ai/ai.service.js';
 import { useElo } from '../../hooks/useElo.js';
-import { DISCOVERY_CONFIG } from '../../utils/constants.js';
+import { BRANCH_TYPE_STYLES, DISCOVERY_CONFIG } from '../../utils/constants.js';
 import { DOMAIN_COLORS } from '../../utils/domainColors.js';
 
 const ROUND_DOMAINS = [
@@ -142,6 +142,10 @@ export default function CardGrid({
   const topDomain = ranked[0]?.domain || cards[0]?.domain;
   const topDomainColor = DOMAIN_COLORS[topDomain] || '#FF6B35';
   const sparkline = useMemo(() => ranked.slice(0, 3).map((r) => r.domain), [ranked]);
+  const sampleBranchTypes = useMemo(
+    () => ['question', 'mechanism', 'connection'].map((kind) => BRANCH_TYPE_STYLES[kind] || BRANCH_TYPE_STYLES.connection),
+    []
+  );
 
   return (
     <div className="flex w-full max-w-2xl flex-col items-center gap-6 px-0 py-2">
@@ -202,6 +206,17 @@ export default function CardGrid({
               style={{ width: `${progressPct}%`, background: `linear-gradient(90deg, ${topDomainColor}, #ffb347)` }}
             />
           </div>
+        </div>
+
+        <div className="mt-4 flex flex-wrap gap-2">
+          {sampleBranchTypes.map((branch) => (
+            <span
+              key={branch.label}
+              className="rounded-full bg-[rgba(255,255,255,0.74)] px-3 py-1 text-[11px] font-body font-semibold text-text-secondary"
+            >
+              {branch.emoji} {branch.shortLabel}
+            </span>
+          ))}
         </div>
       </div>
 

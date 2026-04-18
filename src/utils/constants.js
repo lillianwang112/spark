@@ -173,3 +173,27 @@ export const PROMPT_TYPES = {
   PERSONALITY_SUMMARY: 'personalitySummary',
   JOURNEY_NARRATIVE: 'journeyNarrative',
 };
+
+export const BRANCH_TYPE_STYLES = {
+  foundation:   { label: 'Foundations', shortLabel: 'Base layer', emoji: '🪜' },
+  visual:       { label: 'Visual Pattern', shortLabel: 'See it', emoji: '👁️' },
+  paradox:      { label: 'Paradox', shortLabel: 'Gets weird', emoji: '🌀' },
+  connection:   { label: 'Cross Connection', shortLabel: 'Sideways leap', emoji: '🌉' },
+  mechanism:    { label: 'Mechanism', shortLabel: 'How it works', emoji: '⚙️' },
+  experiment:   { label: 'Experiment', shortLabel: 'Test it', emoji: '🧪' },
+  edge:         { label: 'Edge Case', shortLabel: 'Where it breaks', emoji: '⚠️' },
+  mental_model: { label: 'Mental Model', shortLabel: 'Hold it better', emoji: '🧠' },
+  systems:      { label: 'At Scale', shortLabel: 'Scale test', emoji: '🌐' },
+  failure:      { label: 'Failure Mode', shortLabel: 'Brittle point', emoji: '🧯' },
+  craft:        { label: 'Craft Move', shortLabel: 'Made choice', emoji: '✍️' },
+  taste:        { label: 'Taste Signal', shortLabel: 'What sings', emoji: '✨' },
+  subversion:   { label: 'Rule Break', shortLabel: 'Break it', emoji: '🎭' },
+  forces:       { label: 'Hidden Forces', shortLabel: 'Driving it', emoji: '🌪️' },
+  people:       { label: 'Lived View', shortLabel: 'Inside it', emoji: '🫀' },
+  counterfactual:{ label: 'Counterfactual', shortLabel: 'If not...', emoji: '⏳' },
+  question:     { label: 'Core Question', shortLabel: 'The puzzle', emoji: '❓' },
+  argument:     { label: 'Best Argument', shortLabel: 'Strong case', emoji: '🗣️' },
+  objection:    { label: 'Objection', shortLabel: 'Push back', emoji: '🪓' },
+  applications: { label: 'Real World', shortLabel: 'Use case', emoji: '🧭' },
+  misconceptions:{ label: 'Misconception', shortLabel: 'Wrong turn', emoji: '🫣' },
+};

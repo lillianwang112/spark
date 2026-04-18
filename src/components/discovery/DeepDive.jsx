@@ -7,6 +7,7 @@ import { useTree } from '../../hooks/useTree.jsx';
 import { getSeedChildren } from '../../utils/seedData.js';
 import { DOMAIN_COLORS } from '../../utils/domainColors.js';
 import TopicGraph from '../../services/topicGraph.js';
+import { BRANCH_TYPE_STYLES } from '../../utils/constants.js';
 
 // Map a node-children AI result to the DiscoveryCard card shape
 function toCard(child, domain) {
@@ -18,6 +19,7 @@ function toCard(child, domain) {
     _id: child.id || null,
     _label: child.label,
     _description: child.description || '',
+    _kind: child.kind || 'connection',
     _difficulty: child.difficulty,
     _surpriseFactor: child.surpriseFactor,
   };
@@ -33,6 +35,7 @@ function treeNodeToCard(node) {
     _id: node.id,
     _label: node.label,
     _description: node.description || '',
+    _kind: node.kind || 'connection',
     _difficulty: node.difficulty,
     _surpriseFactor: node.surpriseFactor,
   };
@@ -48,6 +51,7 @@ function seedToCard(seed, domain) {
     _id: seed.id,
     _label: seed.label,
     _description: seed.description || '',
+    _kind: seed.kind || 'foundation',
   };
 }
 
@@ -92,6 +96,7 @@ export default function DeepDive({ rootNode, userContextObj, onExplain, onSave, 
   // The node whose children are currently shown
   const currentNode = path.length > 0 ? path[path.length - 1] : rootNode;
   const currentColor = DOMAIN_COLORS[currentNode.domain] || '#FF6B35';
+  const currentPredictedKinds = Array.from(new Set(cards.map((card) => card._kind).filter(Boolean))).slice(0, 3);
 
   const fetchCards = useCallback(async (node) => {
     setError(false);
@@ -159,6 +164,7 @@ export default function DeepDive({ rootNode, userContextObj, onExplain, onSave, 
       id: card._id || `${currentNode.id || currentNode.label}_${card._label}`.replace(/\W+/g, '_').toLowerCase(),
       label: card._label,
       description: card._description,
+      kind: card._kind || 'connection',
       domain: card.domain,
       path: [...(currentNode.path || []), currentNode.label],
       parentId: currentNode.id || null,
@@ -234,6 +240,22 @@ export default function DeepDive({ rootNode, userContextObj, onExplain, onSave, 
           </motion.p>
         </AnimatePresence>
       </div>
+
+      {!loading && currentPredictedKinds.length > 0 && (
+        <div className="flex flex-wrap justify-center gap-2">
+          {currentPredictedKinds.map((kind) => {
+            const style = BRANCH_TYPE_STYLES[kind] || BRANCH_TYPE_STYLES.connection;
+            return (
+              <span
+                key={kind}
+                className="rounded-full bg-[rgba(255,255,255,0.74)] px-3 py-1 text-[11px] font-body font-semibold text-text-secondary shadow-[0_8px_20px_rgba(72,49,10,0.05)]"
+              >
+                {style.emoji} {style.shortLabel}
+              </span>
+            );
+          })}
+        </div>
+      )}
 
       {/* Loading */}
       {loading && (

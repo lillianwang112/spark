@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 void motion;
 import { DOMAIN_COLORS } from '../../utils/domainColors.js';
+import { BRANCH_TYPE_STYLES } from '../../utils/constants.js';
 
 // LoremFlickr fallback: keyword-based, no API key, ?lock=N for per-card variety
 function loremFlickrUrl(imageQuery, text, domain, width, height, lockIndex) {
@@ -36,6 +37,7 @@ async function fetchWikiImage(imageQuery, text, domain) {
 
 export default function DiscoveryCard({ card, index, onPick, disabled, isKids = false }) {
   const color = DOMAIN_COLORS[card.domain] || '#FF6B35';
+  const branchStyle = BRANCH_TYPE_STYLES[card._kind] || null;
   const [loadedUrl, setLoadedUrl] = useState(null);
   const [imgError, setImgError] = useState(false);
   const [wikiSrc, setWikiSrc] = useState(null);
@@ -125,6 +127,23 @@ export default function DiscoveryCard({ card, index, onPick, disabled, isKids = 
 
       {/* Content */}
       <div className="p-3">
+        {branchStyle && (
+          <div className="mb-2 flex items-center justify-between gap-2">
+            <span
+              className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-mono uppercase tracking-[0.12em]"
+              style={{ backgroundColor: `${color}14`, color }}
+            >
+              <span aria-hidden="true">{branchStyle.emoji}</span>
+              {branchStyle.label}
+            </span>
+            {card._difficulty && (
+              <span className="text-[10px] font-mono uppercase tracking-[0.12em] text-text-muted">
+                {card._difficulty}
+              </span>
+            )}
+          </div>
+        )}
+
         {/* Emoji only shown if image hard-failed */}
         {imgError && (
           <div className="text-2xl mb-2 leading-none" aria-hidden="true">{card.emoji}</div>
@@ -134,6 +153,12 @@ export default function DiscoveryCard({ card, index, onPick, disabled, isKids = 
         <p className={`font-body font-medium text-text-primary leading-snug ${isKids ? 'text-base font-body-kids' : 'text-sm'}`}>
           {card.text}
         </p>
+
+        {card._description && (
+          <p className="mt-2 text-xs leading-relaxed text-text-muted">
+            {card._description}
+          </p>
+        )}
       </div>
 
       {/* Subtle domain color corner glow */}
