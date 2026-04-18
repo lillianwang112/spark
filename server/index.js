@@ -95,6 +95,6 @@ const server = http.createServer(async (req, res) => {
   sendJson(res, 404, { error: 'Not found' });
 });
 
-server.listen(PORT, () => {
-  console.log(`Spark topic API listening on http://localhost:${PORT}`);
+server.listen(PORT, '127.0.0.1', () => {
+  console.log(`Spark topic API listening on http://127.0.0.1:${PORT}`);
 });

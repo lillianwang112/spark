@@ -218,23 +218,83 @@ function resolveTopic(term, targetNode = null) {
   }, graph);
 }
 
+const DOMAIN_EXPLAINER_FRAMES = {
+  math: {
+    lens: 'a compression of pattern into something you can reason with cleanly',
+    doorway: 'you stop memorizing formulas and start seeing structure',
+  },
+  science: {
+    lens: 'a way of turning messy phenomena into testable causes and mechanisms',
+    doorway: 'you can start predicting what should happen before you observe it',
+  },
+  cs: {
+    lens: 'a set of abstractions for turning complexity into procedures, systems, and leverage',
+    doorway: 'you begin asking what should be automated, represented, or optimized',
+  },
+  art: {
+    lens: 'a way of shaping attention, emotion, and meaning through deliberate choices',
+    doorway: 'you start noticing why something feels alive instead of just whether it looks good',
+  },
+  music: {
+    lens: 'a structure of tension, release, rhythm, and memory moving through time',
+    doorway: 'you can hear why certain sounds feel inevitable and others feel unresolved',
+  },
+  history: {
+    lens: 'a map of forces, contingencies, and stories that still shape the present',
+    doorway: 'you start seeing the present as an outcome instead of a default',
+  },
+  philosophy: {
+    lens: 'a machine for sharpening concepts until hidden assumptions become visible',
+    doorway: 'the vague question turns into a precise one that actually bites',
+  },
+  engineering: {
+    lens: 'a discipline of constraints, tradeoffs, and systems that must survive reality',
+    doorway: 'you stop imagining elegant ideas in isolation and start designing for failure modes',
+  },
+  literature: {
+    lens: 'a way of storing consciousness, conflict, and style inside language',
+    doorway: 'you begin noticing what a sentence is doing to your attention',
+  },
+  languages: {
+    lens: 'a system for encoding meaning, culture, and thought into patterns people can share',
+    doorway: 'you start hearing the hidden architecture beneath everyday speech',
+  },
+  cooking: {
+    lens: 'a choreography of chemistry, timing, texture, and appetite',
+    doorway: 'you can predict how flavor and texture will change before you taste the result',
+  },
+  film: {
+    lens: 'a grammar of image, sound, pacing, and point of view',
+    doorway: 'you stop passively watching and start feeling how the scene is being steered',
+  },
+  architecture: {
+    lens: 'a negotiation between space, body, material, climate, and meaning',
+    doorway: 'you start sensing how a place scripts behavior before anyone speaks',
+  },
+  general: {
+    lens: 'a new way of carving up reality so different questions become available',
+    doorway: 'you stop circling the topic and start entering it',
+  },
+};
+
 function generateExplainer(topic, userContext = {}) {
   const ageGroup = userContext.ageGroup || 'college';
   const path = Array.isArray(topic.path) ? topic.path.filter(Boolean) : [topic.label];
   const parentLabel = path.length > 1 ? path[path.length - 2] : null;
   const interestHint = (userContext.topInterests || []).slice(0, 1)[0];
+  const frame = DOMAIN_EXPLAINER_FRAMES[topic.domain] || DOMAIN_EXPLAINER_FRAMES.general;
   const hook = topic.description
-    ? `${topic.label} is easier to feel once you realize it is really about ${topic.description.toLowerCase().replace(/\.$/, '')}.`
-    : `${topic.label} looks like a topic, but it is really a doorway into how something deeper works.`;
+    ? `${topic.label} becomes much more interesting once you realize it is really about ${topic.description.toLowerCase().replace(/\.$/, '')}.`
+    : `${topic.label} looks like a topic, but it is really ${frame.lens}.`;
   const core = parentLabel
     ? `Inside ${parentLabel}, this branch matters because it changes what questions you can ask next.`
-    : `${topic.label} matters because it gives you a more precise way to notice patterns, causes, and tradeoffs.`;
+    : `${topic.label} matters because it gives you a more precise way to notice patterns, causes, and tradeoffs. In this domain, it works like ${frame.lens}.`;
   const analogy = interestHint
     ? `If ${interestHint} already pulls you in, think of ${topic.label} as the version of that instinct with clearer structure and sharper edges.`
     : `A good way to hold it is to treat ${topic.label} like a lens: the world stays the same, but what stands out changes.`;
   const teaser = ageGroup === 'little_explorer'
     ? `The fun part is that one more step usually reveals a stranger question hiding underneath.`
-    : `The real rabbit hole starts when you stop asking what ${topic.label} is and start asking what it unlocks.`;
+    : `The real rabbit hole starts when ${frame.doorway}.`;
 
   return `${hook} ${core} ${analogy} ${teaser}`;
 }
@@ -258,47 +318,67 @@ function inferCrossDomain(topic) {
   return related[topic.domain] || 'art';
 }
 
+const DOMAIN_CHILD_BLUEPRINTS = {
+  math: [
+    { kind: 'foundation', makeLabel: (label) => `Why ${label} works`, makeDescription: (label) => `The hidden structure that makes ${label.toLowerCase()} feel less arbitrary.`, difficulty: 'beginner', surpriseFactor: false },
+    { kind: 'visual', makeLabel: (label) => `Seeing ${label}`, makeDescription: (label) => `The picture or pattern that makes ${label.toLowerCase()} click faster.`, difficulty: 'beginner', surpriseFactor: false },
+    { kind: 'paradox', makeLabel: (label) => `${label} paradoxes`, makeDescription: (label) => `Where intuition breaks and ${label.toLowerCase()} starts getting genuinely weird.`, difficulty: 'advanced', surpriseFactor: true },
+    { kind: 'connection', makeLabel: (label, topic) => `${label} and ${inferCrossDomain(topic)}`, makeDescription: (label, topic) => `A sideways route from ${label.toLowerCase()} into ${inferCrossDomain(topic)}.`, difficulty: 'intermediate', surpriseFactor: true },
+  ],
+  science: [
+    { kind: 'mechanism', makeLabel: (label) => `Mechanisms behind ${label}`, makeDescription: (label) => `The physical causes doing the work beneath ${label.toLowerCase()}.`, difficulty: 'beginner', surpriseFactor: false },
+    { kind: 'experiment', makeLabel: (label) => `Testing ${label}`, makeDescription: () => `The experiment that would most quickly reveal whether your intuition is right.`, difficulty: 'intermediate', surpriseFactor: false },
+    { kind: 'edge', makeLabel: (label) => `Where ${label} breaks`, makeDescription: (label) => `The edge cases where the neat story around ${label.toLowerCase()} stops being enough.`, difficulty: 'advanced', surpriseFactor: true },
+    { kind: 'connection', makeLabel: (label) => `${label} and philosophy`, makeDescription: (label) => `The conceptual questions hiding underneath ${label.toLowerCase()}.`, difficulty: 'intermediate', surpriseFactor: true },
+  ],
+  cs: [
+    { kind: 'mental_model', makeLabel: (label) => `${label} mental models`, makeDescription: (label) => `The abstraction that makes ${label.toLowerCase()} feel more tractable.`, difficulty: 'beginner', surpriseFactor: false },
+    { kind: 'systems', makeLabel: (label) => `${label} at scale`, makeDescription: (label) => `What changes when ${label.toLowerCase()} stops being toy-sized.`, difficulty: 'intermediate', surpriseFactor: false },
+    { kind: 'failure', makeLabel: (label) => `Failure modes in ${label}`, makeDescription: (label) => `Where ${label.toLowerCase()} gets brittle, leaky, or expensive.`, difficulty: 'advanced', surpriseFactor: true },
+    { kind: 'connection', makeLabel: (label) => `${label} and language`, makeDescription: (label) => `How ${label.toLowerCase()} depends on representation, grammar, and interpretation.`, difficulty: 'intermediate', surpriseFactor: true },
+  ],
+  art: [
+    { kind: 'craft', makeLabel: (label) => `Craft inside ${label}`, makeDescription: (label) => `The concrete choices that make ${label.toLowerCase()} feel intentional.`, difficulty: 'beginner', surpriseFactor: false },
+    { kind: 'taste', makeLabel: (label) => `What makes ${label} sing`, makeDescription: (label) => `The difference between competent ${label.toLowerCase()} and unforgettable ${label.toLowerCase()}.`, difficulty: 'intermediate', surpriseFactor: false },
+    { kind: 'subversion', makeLabel: (label) => `Breaking ${label} on purpose`, makeDescription: (label) => `How rule-breaking can make ${label.toLowerCase()} more alive instead of worse.`, difficulty: 'advanced', surpriseFactor: true },
+    { kind: 'connection', makeLabel: (label) => `${label} and memory`, makeDescription: (label) => `Why certain choices in ${label.toLowerCase()} stick in the body and not just the eye.`, difficulty: 'intermediate', surpriseFactor: true },
+  ],
+  history: [
+    { kind: 'forces', makeLabel: (label) => `Forces behind ${label}`, makeDescription: (label) => `The incentives and pressures that made ${label.toLowerCase()} more likely.`, difficulty: 'beginner', surpriseFactor: false },
+    { kind: 'people', makeLabel: (label) => `Lives inside ${label}`, makeDescription: (label) => `What ${label.toLowerCase()} felt like from inside ordinary lives.`, difficulty: 'beginner', surpriseFactor: false },
+    { kind: 'counterfactual', makeLabel: (label) => `If ${label} had gone differently`, makeDescription: (label) => `The alternate path that shows what was contingent about ${label.toLowerCase()}.`, difficulty: 'advanced', surpriseFactor: true },
+    { kind: 'connection', makeLabel: (label) => `${label} in today’s world`, makeDescription: (label) => `The live wires from ${label.toLowerCase()} into the present.`, difficulty: 'intermediate', surpriseFactor: true },
+  ],
+  philosophy: [
+    { kind: 'question', makeLabel: (label) => `The core question in ${label}`, makeDescription: (label) => `The exact puzzle ${label.toLowerCase()} is trying to sharpen.`, difficulty: 'beginner', surpriseFactor: false },
+    { kind: 'argument', makeLabel: (label) => `Best arguments for ${label}`, makeDescription: (label) => `The strongest case that makes ${label.toLowerCase()} hard to dismiss.`, difficulty: 'intermediate', surpriseFactor: false },
+    { kind: 'objection', makeLabel: (label) => `Objections to ${label}`, makeDescription: (label) => `The attack that exposes the weak seams in ${label.toLowerCase()}.`, difficulty: 'advanced', surpriseFactor: true },
+    { kind: 'connection', makeLabel: (label) => `${label} and science`, makeDescription: (label) => `Where ${label.toLowerCase()} collides with evidence, models, and method.`, difficulty: 'intermediate', surpriseFactor: true },
+  ],
+  default: [
+    { kind: 'foundation', makeLabel: (label) => `${label} fundamentals`, makeDescription: (label) => `The core ideas that make ${label.toLowerCase()} click quickly.`, difficulty: 'beginner', surpriseFactor: false },
+    { kind: 'applications', makeLabel: (label) => `${label} in real life`, makeDescription: (label) => `Concrete places where ${label.toLowerCase()} shows up outside the textbook.`, difficulty: 'beginner', surpriseFactor: false },
+    { kind: 'misconceptions', makeLabel: (label) => `Misunderstanding ${label}`, makeDescription: () => `The wrong intuition most people carry before the deeper picture appears.`, difficulty: 'intermediate', surpriseFactor: true },
+    { kind: 'connection', makeLabel: (label, topic) => `${label} and ${inferCrossDomain(topic)}`, makeDescription: (label, topic) => `A sideways branch that makes ${label.toLowerCase()} feel unexpectedly connected to ${inferCrossDomain(topic)}.`, difficulty: 'advanced', surpriseFactor: true },
+  ],
+};
+
 function generateHeuristicChildren(topic) {
   const label = topic.label;
   const path = topic.path || [label];
-  return [
-    {
-      id: `${normalizeTopicKey(label)}_foundations`,
-      label: `${label} fundamentals`,
-      description: `The core ideas that make ${label.toLowerCase()} click quickly.`,
-      difficulty: 'beginner',
-      surpriseFactor: false,
+  const blueprint = DOMAIN_CHILD_BLUEPRINTS[topic.domain] || DOMAIN_CHILD_BLUEPRINTS.default;
+  return blueprint.map((entry) => {
+    const childLabel = entry.makeLabel(label, topic);
+    return {
+      id: `${normalizeTopicKey(label)}_${entry.kind}`,
+      label: childLabel,
+      description: entry.makeDescription(label, topic),
+      difficulty: entry.difficulty,
+      surpriseFactor: entry.surpriseFactor,
       domain: topic.domain,
-      path: [...path, `${label} fundamentals`],
-    },
-    {
-      id: `${normalizeTopicKey(label)}_applications`,
-      label: `${label} in real life`,
-      description: `Concrete places where ${label.toLowerCase()} shows up outside the textbook.`,
-      difficulty: 'beginner',
-      surpriseFactor: false,
-      domain: topic.domain,
-      path: [...path, `${label} in real life`],
-    },
-    {
-      id: `${normalizeTopicKey(label)}_misconceptions`,
-      label: `Misunderstanding ${label}`,
-      description: `The wrong intuition most people carry before the deeper picture appears.`,
-      difficulty: 'intermediate',
-      surpriseFactor: true,
-      domain: topic.domain,
-      path: [...path, `Misunderstanding ${label}`],
-    },
-    {
-      id: `${normalizeTopicKey(label)}_connections`,
-      label: `${label} and ${inferCrossDomain(topic)}`,
-      description: `A sideways branch that makes ${label.toLowerCase()} feel unexpectedly connected.`,
-      difficulty: 'advanced',
-      surpriseFactor: true,
-      domain: topic.domain,
-      path: [...path, `${label} and ${inferCrossDomain(topic)}`],
-    },
-  ];
+      path: [...path, childLabel],
+    };
+  });
 }
 
 function getChildren(topic) {

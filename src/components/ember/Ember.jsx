@@ -1,193 +1,236 @@
 import { motion } from 'framer-motion';
 void motion;
 
-// ── Ember SVG States ──
-// excited, thinking, proud, curious, idle, celebrating, encouraging, attentive, sheepish
-
 const MOOD_CONFIGS = {
   idle: {
-    bodyAnim: { scale: [1, 1.02, 1], transition: { duration: 3, repeat: Infinity, ease: 'easeInOut' } },
+    shell: { y: [0, -2, 0], rotate: [0, 1.5, 0], scale: [1, 1.02, 1], transition: { duration: 3.8, repeat: Infinity, ease: 'easeInOut' } },
+    core: { scale: [1, 1.04, 1], opacity: [0.9, 1, 0.92], transition: { duration: 2.6, repeat: Infinity, ease: 'easeInOut' } },
+    spark: { y: [0, -4, 0], opacity: [0.35, 0.75, 0.35], transition: { duration: 2.2, repeat: Infinity, ease: 'easeInOut' } },
     eyeScale: 1,
-    glowOpacity: 0.3,
-    glowScale: 1,
+    mouth: 'M42 76 C48 82 57 82 63 76',
+    glow: 0.42,
   },
   thinking: {
-    bodyAnim: { rotate: [-2, 2, -1, 1, 0], transition: { duration: 1.8, repeat: Infinity, ease: 'easeInOut' } },
-    eyeScale: 0.85,
-    glowOpacity: 0.5,
-    glowScale: 1.05,
+    shell: { rotate: [-2, 3, -1, 0], y: [0, -2, 1, 0], transition: { duration: 1.8, repeat: Infinity, ease: 'easeInOut' } },
+    core: { scale: [1, 1.08, 0.98, 1], opacity: [0.84, 1, 0.9, 0.84], transition: { duration: 1.6, repeat: Infinity, ease: 'easeInOut' } },
+    spark: { x: [-2, 2, -1], y: [0, -7, -2], opacity: [0.2, 0.9, 0.2], transition: { duration: 1.5, repeat: Infinity, ease: 'easeInOut' } },
+    eyeScale: 0.8,
+    mouth: 'M43 77 C47 74 58 74 62 77',
+    glow: 0.56,
   },
   excited: {
-    bodyAnim: { y: [0, -8, 0, -5, 0], scale: [1, 1.06, 1], transition: { duration: 0.7, repeat: Infinity, ease: 'easeOut' } },
-    eyeScale: 1.2,
-    glowOpacity: 0.7,
-    glowScale: 1.3,
+    shell: { y: [0, -8, 0, -5, 0], scale: [1, 1.08, 1, 1.05, 1], transition: { duration: 0.9, repeat: Infinity, ease: 'easeOut' } },
+    core: { scale: [1, 1.14, 1], opacity: [0.96, 1, 0.94], transition: { duration: 0.9, repeat: Infinity, ease: 'easeOut' } },
+    spark: { y: [0, -10, -2], opacity: [0.25, 1, 0.15], scale: [0.9, 1.2, 0.8], transition: { duration: 1, repeat: Infinity, ease: 'easeOut' } },
+    eyeScale: 1.15,
+    mouth: 'M40 75 C48 84 58 84 66 75',
+    glow: 0.72,
   },
   celebrating: {
-    bodyAnim: { rotate: [-5, 5, -5, 5, 0], y: [0, -12, 0], scale: [1, 1.1, 1], transition: { duration: 0.5, repeat: 3, ease: 'easeOut' } },
-    eyeScale: 1.3,
-    glowOpacity: 0.9,
-    glowScale: 1.5,
+    shell: { rotate: [-5, 5, -4, 4, 0], y: [0, -10, 0], scale: [1, 1.1, 1], transition: { duration: 0.7, repeat: 3, ease: 'easeOut' } },
+    core: { scale: [1, 1.18, 1], opacity: [0.92, 1, 0.92], transition: { duration: 0.7, repeat: 3, ease: 'easeOut' } },
+    spark: { y: [0, -12, 0], opacity: [0.4, 1, 0.15], scale: [0.9, 1.35, 0.85], transition: { duration: 0.8, repeat: 4, ease: 'easeOut' } },
+    eyeScale: 1.2,
+    mouth: 'M39 75 C48 86 58 86 67 75',
+    glow: 0.84,
   },
   proud: {
-    bodyAnim: { scale: [1, 1.04, 1], transition: { duration: 2, repeat: Infinity, ease: 'easeInOut' } },
-    eyeScale: 1.1,
-    glowOpacity: 0.6,
-    glowScale: 1.2,
+    shell: { scale: [1, 1.04, 1], rotate: [0, -1.5, 0], transition: { duration: 2.2, repeat: Infinity, ease: 'easeInOut' } },
+    core: { scale: [1, 1.05, 1], opacity: [0.92, 1, 0.92], transition: { duration: 2, repeat: Infinity, ease: 'easeInOut' } },
+    spark: { y: [0, -5, 0], opacity: [0.25, 0.82, 0.25], transition: { duration: 2, repeat: Infinity, ease: 'easeInOut' } },
+    eyeScale: 1.08,
+    mouth: 'M41 75 C48 80 57 80 64 75',
+    glow: 0.6,
   },
   sheepish: {
-    bodyAnim: { x: [-2, 2, -1, 1, 0], transition: { duration: 0.5 } },
-    eyeScale: 0.7,
-    glowOpacity: 0.2,
-    glowScale: 0.9,
+    shell: { x: [-2, 2, -1, 0], rotate: [-1, 1, 0], transition: { duration: 0.7, ease: 'easeInOut' } },
+    core: { scale: [1, 0.96, 1], opacity: [0.78, 0.86, 0.78], transition: { duration: 1.2, repeat: Infinity, ease: 'easeInOut' } },
+    spark: { opacity: [0.1, 0.3, 0.1], y: [0, -2, 0], transition: { duration: 1.6, repeat: Infinity, ease: 'easeInOut' } },
+    eyeScale: 0.66,
+    mouth: 'M44 78 C49 75 55 75 60 78',
+    glow: 0.26,
   },
   encouraging: {
-    bodyAnim: { scale: [1, 1.03, 1], transition: { duration: 1.5, repeat: Infinity, ease: 'easeInOut' } },
-    eyeScale: 1.05,
-    glowOpacity: 0.5,
-    glowScale: 1.1,
+    shell: { scale: [1, 1.03, 1], y: [0, -3, 0], transition: { duration: 1.9, repeat: Infinity, ease: 'easeInOut' } },
+    core: { scale: [1, 1.08, 1], opacity: [0.9, 1, 0.92], transition: { duration: 1.7, repeat: Infinity, ease: 'easeInOut' } },
+    spark: { y: [0, -6, -1], opacity: [0.25, 0.85, 0.25], transition: { duration: 1.7, repeat: Infinity, ease: 'easeInOut' } },
+    eyeScale: 1.02,
+    mouth: 'M41 76 C48 82 58 82 65 76',
+    glow: 0.52,
   },
   attentive: {
-    bodyAnim: { scale: 1 },
-    eyeScale: 1.15,
-    glowOpacity: 0.45,
-    glowScale: 1.05,
+    shell: { scale: 1, rotate: [0, -1, 0], transition: { duration: 2.1, repeat: Infinity, ease: 'easeInOut' } },
+    core: { scale: [1, 1.03, 1], opacity: [0.92, 0.98, 0.92], transition: { duration: 1.9, repeat: Infinity, ease: 'easeInOut' } },
+    spark: { y: [0, -4, 0], opacity: [0.2, 0.65, 0.2], transition: { duration: 1.8, repeat: Infinity, ease: 'easeInOut' } },
+    eyeScale: 1.12,
+    mouth: 'M43 76 C49 79 56 79 62 76',
+    glow: 0.48,
   },
   surprised: {
-    bodyAnim: { scale: [1, 1.15, 0.95, 1], transition: { duration: 0.4, times: [0, 0.3, 0.7, 1] } },
-    eyeScale: 1.4,
-    glowOpacity: 0.8,
-    glowScale: 1.4,
+    shell: { scale: [1, 1.14, 0.98, 1], rotate: [0, 3, -2, 0], transition: { duration: 0.55, ease: 'easeOut' } },
+    core: { scale: [1, 1.18, 1], opacity: [0.9, 1, 0.92], transition: { duration: 0.55, ease: 'easeOut' } },
+    spark: { y: [0, -12, -2], opacity: [0.3, 1, 0.2], scale: [1, 1.35, 0.9], transition: { duration: 0.6, ease: 'easeOut' } },
+    eyeScale: 1.3,
+    mouth: 'M47 77 C50 81 54 81 57 77',
+    glow: 0.78,
   },
   curious: {
-    bodyAnim: { rotate: [0, -8, 0], transition: { duration: 2, repeat: Infinity, ease: 'easeInOut' } },
-    eyeScale: 1.1,
-    glowOpacity: 0.4,
-    glowScale: 1.1,
+    shell: { rotate: [0, -5, 0, 3, 0], y: [0, -2, 0], transition: { duration: 2.4, repeat: Infinity, ease: 'easeInOut' } },
+    core: { scale: [1, 1.06, 1], opacity: [0.9, 1, 0.9], transition: { duration: 2.2, repeat: Infinity, ease: 'easeInOut' } },
+    spark: { x: [0, 3, -2, 0], y: [0, -6, -3, 0], opacity: [0.2, 0.9, 0.35, 0.2], transition: { duration: 2, repeat: Infinity, ease: 'easeInOut' } },
+    eyeScale: 1.08,
+    mouth: 'M42 77 C48 80 56 80 63 76',
+    glow: 0.5,
   },
 };
 
 const SIZE_MAP = {
-  xs:  32,
-  sm:  40,
-  md:  56,
-  lg:  80,
-  xl:  120,
+  xs: 32,
+  sm: 42,
+  md: 58,
+  lg: 84,
+  xl: 120,
 };
+
+const ORBIT_SPARKS = [
+  { cx: 78, cy: 24, r: 2.6, delay: 0 },
+  { cx: 91, cy: 48, r: 2.2, delay: 0.25 },
+  { cx: 30, cy: 30, r: 2.1, delay: 0.45 },
+];
 
 export default function Ember({
   mood = 'idle',
   size = 'md',
-  glowIntensity = 1,   // 0-1: 0=new user, 1=heavy user
+  glowIntensity = 1,
   className = '',
   'aria-hidden': ariaHidden = true,
 }) {
   const px = SIZE_MAP[size] || SIZE_MAP.md;
   const config = MOOD_CONFIGS[mood] || MOOD_CONFIGS.idle;
-  const eyeRadius = Math.max(2, px * 0.07);
-  const eyeSpread = px * 0.14;
-  const eyeY = px * 0.42;
-  const glow = px * 0.6 * (0.4 + glowIntensity * 0.6);
-
-  const glowColor = 'rgba(255, 107, 53,';
+  const glowScale = 0.58 + glowIntensity * 0.62;
 
   return (
     <motion.div
       className={`relative inline-flex items-center justify-center ${className}`}
-      style={{ width: px, height: px }}
-      animate={config.bodyAnim}
+      style={{ width: px, height: px * 1.08 }}
+      animate={config.shell}
       aria-hidden={ariaHidden}
     >
-      {/* Outer glow */}
       <motion.div
-        className="absolute rounded-full pointer-events-none"
+        className="absolute inset-0 rounded-full pointer-events-none"
         style={{
-          width: px + glow,
-          height: px + glow,
-          left: -(glow / 2),
-          top: -(glow / 2),
-          background: `radial-gradient(circle, ${glowColor}${config.glowOpacity * glowIntensity}), transparent 70%)`,
+          background: `radial-gradient(circle, rgba(255,140,68,${config.glow * glowIntensity}) 0%, rgba(255,107,53,${config.glow * 0.62 * glowIntensity}) 32%, rgba(91,94,166,${0.08 * glowIntensity}) 62%, rgba(255,253,247,0) 74%)`,
+          filter: `blur(${px * 0.18}px)`,
+          transform: 'translateY(6%)',
         }}
-        animate={{ scale: [config.glowScale, config.glowScale * 1.08, config.glowScale] }}
-        transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+        animate={{ scale: [glowScale, glowScale * 1.08, glowScale], opacity: [0.9, 1, 0.9] }}
+        transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
       />
 
-      {/* Body (filled circle) */}
       <motion.svg
         width={px}
-        height={px}
-        viewBox="0 0 100 100"
-        style={{ position: 'relative', zIndex: 1 }}
+        height={px * 1.08}
+        viewBox="0 0 104 118"
+        style={{ position: 'relative', zIndex: 1, overflow: 'visible' }}
       >
-        {/* Body */}
-        <motion.circle
-          cx="50" cy="55" r="38"
-          fill="#FF6B35"
-          filter="url(#ember-glow)"
-        />
-
-        {/* Cheeks (warmth) */}
-        <circle cx="30" cy="65" r="8" fill="rgba(255,200,150,0.35)" />
-        <circle cx="70" cy="65" r="8" fill="rgba(255,200,150,0.35)" />
-
-        {/* Eyes */}
-        <motion.g animate={{ scaleY: config.eyeScale }} style={{ transformOrigin: `50px ${eyeY * 1.06}px` }}>
-          {/* Left eye */}
-          <ellipse
-            cx={50 - eyeSpread}
-            cy={42}
-            rx={eyeRadius * 1.1}
-            ry={eyeRadius * (mood === 'sheepish' ? 0.6 : 1.2)}
-            fill="white"
-          />
-          {/* Left pupil */}
-          <circle cx={50 - eyeSpread} cy={42.5} r={eyeRadius * 0.6} fill="#1A1A2E" />
-
-          {/* Right eye */}
-          <ellipse
-            cx={50 + eyeSpread}
-            cy={42}
-            rx={eyeRadius * 1.1}
-            ry={eyeRadius * (mood === 'sheepish' ? 0.6 : 1.2)}
-            fill="white"
-          />
-          {/* Right pupil */}
-          <circle cx={50 + eyeSpread} cy={42.5} r={eyeRadius * 0.6} fill="#1A1A2E" />
-        </motion.g>
-
-        {/* Smile / expression */}
-        {mood === 'celebrating' || mood === 'excited' ? (
-          <path d="M 36 68 Q 50 80 64 68" stroke="rgba(255,255,255,0.8)" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-        ) : mood === 'sheepish' ? (
-          <path d="M 38 70 Q 50 67 62 70" stroke="rgba(255,255,255,0.5)" strokeWidth="2" fill="none" strokeLinecap="round" />
-        ) : (
-          <path d="M 38 68 Q 50 76 62 68" stroke="rgba(255,255,255,0.6)" strokeWidth="2" fill="none" strokeLinecap="round" />
-        )}
-
-        {/* Thinking dots */}
-        {mood === 'thinking' && (
-          <g>
-            {[0, 1, 2].map((i) => (
-              <motion.circle
-                key={i}
-                cx={60 + i * 8}
-                cy={22}
-                r={2.5}
-                fill="rgba(255,255,255,0.7)"
-                animate={{ opacity: [0.3, 1, 0.3] }}
-                transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
-              />
-            ))}
-          </g>
-        )}
-
-        {/* Glow filter */}
         <defs>
-          <filter id="ember-glow" x="-30%" y="-30%" width="160%" height="160%">
-            <feGaussianBlur stdDeviation="2" result="blur" />
-            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+          <linearGradient id="ember-shell-gradient" x1="24" y1="8" x2="84" y2="108" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#FFD08D" />
+            <stop offset="32%" stopColor="#FF9A4A" />
+            <stop offset="72%" stopColor="#FF5E3A" />
+            <stop offset="100%" stopColor="#A83B34" />
+          </linearGradient>
+          <linearGradient id="ember-core-gradient" x1="36" y1="24" x2="68" y2="92" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#FFF7D6" />
+            <stop offset="55%" stopColor="#FFD36A" />
+            <stop offset="100%" stopColor="#FF8D2F" />
+          </linearGradient>
+          <linearGradient id="ember-eye-gradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#1F1632" />
+            <stop offset="100%" stopColor="#3A2E58" />
+          </linearGradient>
+          <filter id="ember-shadow" x="-40%" y="-40%" width="180%" height="200%">
+            <feDropShadow dx="0" dy="8" stdDeviation="7" floodColor="rgba(92,45,18,0.28)" />
+          </filter>
+          <filter id="ember-soft-glow" x="-80%" y="-80%" width="260%" height="260%">
+            <feGaussianBlur stdDeviation="3.6" result="blur" />
+            <feColorMatrix
+              in="blur"
+              type="matrix"
+              values="1 0 0 0 0
+                      0 0.63 0 0 0
+                      0 0 0.28 0 0
+                      0 0 0 0.52 0"
+            />
           </filter>
         </defs>
+
+        {ORBIT_SPARKS.map((spark) => (
+          <motion.circle
+            key={`${spark.cx}-${spark.cy}`}
+            cx={spark.cx}
+            cy={spark.cy}
+            r={spark.r}
+            fill="#FFD88A"
+            filter="url(#ember-soft-glow)"
+            animate={config.spark}
+            transition={{
+              ...config.spark.transition,
+              delay: spark.delay,
+            }}
+          />
+        ))}
+
+        <motion.path
+          d="M52 8C64 20 76 30 80 49c4 20-4 39-17 49-4 4-7 9-11 12-4-3-7-8-11-12C28 88 20 69 24 49 28 30 40 20 52 8Z"
+          fill="url(#ember-shell-gradient)"
+          filter="url(#ember-shadow)"
+        />
+
+        <motion.path
+          d="M53 24c8 8 14 16 15 29 1 12-5 24-16 31-11-7-17-19-15-31 1-13 8-21 16-29Z"
+          fill="url(#ember-core-gradient)"
+          animate={config.core}
+        />
+
+        <path
+          d="M53 18c5 6 9 10 10 17-7-2-13 2-17 7 1-10 2-17 7-24Z"
+          fill="rgba(255,255,255,0.55)"
+          opacity="0.72"
+        />
+
+        <motion.g
+          animate={{ scaleY: config.eyeScale }}
+          style={{ transformOrigin: '52px 61px' }}
+        >
+          <motion.path
+            d="M38 58c3-4 8-4 11 0-2 5-9 5-11 0Z"
+            fill="url(#ember-eye-gradient)"
+          />
+          <motion.path
+            d="M55 58c3-4 8-4 11 0-2 5-9 5-11 0Z"
+            fill="url(#ember-eye-gradient)"
+          />
+          <circle cx="43.8" cy="58.3" r="1.05" fill="rgba(255,255,255,0.8)" />
+          <circle cx="60.8" cy="58.3" r="1.05" fill="rgba(255,255,255,0.8)" />
+        </motion.g>
+
+        <motion.path
+          d={config.mouth}
+          stroke="rgba(70,24,32,0.72)"
+          strokeWidth="2.5"
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+
+        <motion.path
+          d="M30 77c7 7 16 11 22 13 8-2 16-6 23-13"
+          stroke="rgba(255,246,228,0.2)"
+          strokeWidth="1.4"
+          fill="none"
+          strokeLinecap="round"
+        />
       </motion.svg>
     </motion.div>
   );
