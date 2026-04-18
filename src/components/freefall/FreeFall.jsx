@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 import Ember from '../ember/Ember.jsx';
+import Toast from '../common/Toast.jsx';
 import { DOMAIN_COLORS } from '../../utils/domainColors.js';
 import { useUserContext } from '../../hooks/useUserContext.jsx';
 import TopicGraph from '../../services/topicGraph.js';
@@ -322,6 +323,12 @@ export default function FreeFall({ onExit, onDig, userContextObj }) {
   const [idx, setIdx] = useState(0);
   const [liked, setLiked] = useState(new Set());
   const [exitDir, setExitDir] = useState(null);
+  const [toast, setToast] = useState(null);
+
+  const showToast = useCallback((msg) => {
+    setToast(msg);
+    setTimeout(() => setToast(null), 2200);
+  }, []);
 
   const current = queue[idx % queue.length];
   const next = queue[(idx + 1) % queue.length];
@@ -344,15 +351,17 @@ export default function FreeFall({ onExit, onDig, userContextObj }) {
     }
     setLiked((prev) => new Set([...prev, current.id]));
     const node = TopicGraph.resolveTopic(current.label);
-    user.addTrack?.({ ...node, saved: true, savedAt: new Date().toISOString() });
+    user.addTrack?.({ ...node, saved: true, mode: 'exploring', savedAt: new Date().toISOString() });
+    showToast(`✓ Saved "${current.label}" → check your Tracks tab`);
     TopicGraph.rememberSignal(node, 'saves');
     advance('up');
   }, [current, liked, user, advance]);
 
   const handleDig = useCallback(() => {
     const node = TopicGraph.resolveTopic(current.label);
-    onDig?.(node);
-  }, [current, onDig]);
+    showToast(`Opening ${current.label} in the explorer…`);
+    setTimeout(() => onDig?.(node), 350);
+  }, [current, onDig, showToast]);
 
   useEffect(() => {
     const handleKey = (e) => {
@@ -473,6 +482,13 @@ export default function FreeFall({ onExit, onDig, userContextObj }) {
           })}
         </motion.div>
       )}
+
+      <Toast
+        open={!!toast}
+        onClose={() => setToast(null)}
+        title={toast}
+        variant="calm"
+      />
     </div>
   );
 }

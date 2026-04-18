@@ -10,6 +10,7 @@ import Explore from './pages/Explore.jsx';
 import Tracks from './pages/Tracks.jsx';
 import Profile from './pages/Profile.jsx';
 import Opportunities from './pages/Opportunities.jsx';
+import Groups from './pages/Groups.jsx';
 import GlobalSearch from './components/search/GlobalSearch.jsx';
 import Loader from './components/common/Loader.jsx';
 import { OPEN_DEEP_DIVE_EVENT } from './utils/navigation.js';
@@ -22,6 +23,7 @@ void motion;
 const PAGE_META = {
   explore:       { label: 'Curiosity Engine',      mood: 'curious' },
   tracks:        { label: 'Care · Tend · Master',  mood: 'attentive' },
+  groups:        { label: 'Learn Together',         mood: 'encouraging' },
   profile:       { label: 'Your living portrait',  mood: 'proud' },
   opportunities: { label: 'Real World',             mood: 'proud' },
 };
@@ -115,6 +117,7 @@ function AppShell() {
       />
     ),
     tracks:       <Tracks onSpark={pingStreak} />,
+    groups:       <Groups />,
     opportunities: <Opportunities userContextObj={userContextObj} />,
     profile:      <Profile streakState={streakState} />,
   };

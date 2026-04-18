@@ -6,6 +6,7 @@ void motion;
 const TABS = [
   { id: 'explore',       label: 'Explore',  icon: ExploreIcon,       kidsLabel: 'Discover' },
   { id: 'tracks',        label: 'Tracks',   icon: TracksIcon,         kidsLabel: 'Saved' },
+  { id: 'groups',        label: 'Groups',   icon: GroupsIcon,         kidsLabel: 'Groups' },
   { id: 'opportunities', label: 'World',    icon: OpportunitiesIcon,  kidsLabel: 'World' },
   { id: 'profile',       label: 'Profile',  icon: ProfileIcon,        kidsLabel: 'Me' },
 ];
@@ -68,6 +69,23 @@ function ProfileIcon({ active }) {
         <linearGradient id="profile-fill" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="#FFD166" />
           <stop offset="100%" stopColor="#FF8A5A" />
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+}
+
+function GroupsIcon({ active }) {
+  return (
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none">
+      <circle cx="9" cy="8" r="3" fill={active ? 'url(#groups-fill)' : 'none'} stroke={active ? '#7B6CF6' : 'currentColor'} strokeWidth="1.7" />
+      <circle cx="16" cy="9" r="2.4" fill={active ? 'rgba(123,108,246,0.55)' : 'none'} stroke={active ? '#7B6CF6' : 'currentColor'} strokeWidth="1.5" />
+      <path d="M3 18c0-3 2.7-5 6-5s6 2 6 5" fill={active ? 'url(#groups-fill)' : 'none'} stroke={active ? '#7B6CF6' : 'currentColor'} strokeWidth="1.7" strokeLinecap="round" />
+      <path d="M16 14c2 .5 3.5 2 3.5 4" fill="none" stroke={active ? '#7B6CF6' : 'currentColor'} strokeWidth="1.5" strokeLinecap="round" opacity={active ? 1 : 0.5} />
+      <defs>
+        <linearGradient id="groups-fill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#9B8FF6" />
+          <stop offset="100%" stopColor="#5B5EA6" />
         </linearGradient>
       </defs>
     </svg>
@@ -185,9 +203,11 @@ export default function NavBar({ activeTab, onTabChange, onOpenSearch }) {
                         ? 'radial-gradient(circle, rgba(255,107,53,0.5) 0%, transparent 70%)'
                         : tab.id === 'tracks'
                           ? 'radial-gradient(circle, rgba(45,147,108,0.5) 0%, transparent 70%)'
-                          : tab.id === 'opportunities'
-                            ? 'radial-gradient(circle, rgba(74,111,165,0.5) 0%, transparent 70%)'
-                            : 'radial-gradient(circle, rgba(255,166,43,0.5) 0%, transparent 70%)',
+                          : tab.id === 'groups'
+                            ? 'radial-gradient(circle, rgba(123,108,246,0.5) 0%, transparent 70%)'
+                            : tab.id === 'opportunities'
+                              ? 'radial-gradient(circle, rgba(74,111,165,0.5) 0%, transparent 70%)'
+                              : 'radial-gradient(circle, rgba(255,166,43,0.5) 0%, transparent 70%)',
                     }}
                     aria-hidden="true"
                   />
