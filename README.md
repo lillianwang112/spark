@@ -31,11 +31,15 @@ This repo is configured to deploy with GitHub Actions via `.github/workflows/dep
 ### Why this works
 
 - Vite now supports a configurable base path via `VITE_BASE_PATH`.
-- The workflow builds with:
-  - `VITE_BASE_PATH=/${{ github.event.repository.name }}/`
-- That ensures built assets resolve correctly under the GitHub Pages project URL.
+- The workflow computes `VITE_BASE_PATH` automatically:
+  - `/` for `username.github.io` repositories
+  - `/<repo-name>/` for project repositories
+- That ensures built assets resolve correctly for both GitHub Pages hosting modes.
 
 ### Notes
 
 - The app gracefully falls back to local AI/cache flows when `VITE_TOPIC_API_URL` is not provided (common on Pages).
 - If you use a custom domain and serve from root, set `VITE_BASE_PATH=/` in your build environment.
+- If your GitHub Pages site is blank, verify the repository type:
+  - `username.github.io` repos must build with base path `/`
+  - project repos must build with base path `/<repo-name>/`

@@ -4,6 +4,7 @@ import { fuzzySearch } from '../utils/helpers.js';
 import { SEED_INDEX } from '../utils/seedData.js';
 import { uid } from '../utils/helpers.js';
 import TopicGraph from '../services/topicGraph.js';
+import { searchEncyclopediaTopics } from '../utils/encyclopedia.js';
 
 // All seed node labels for autocomplete
 const ALL_SEED_LABELS = Object.values(SEED_INDEX).map((n) => ({
@@ -33,7 +34,13 @@ export function useSearch(userContextObj) {
     clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       const results = fuzzySearch(q, ALL_SEED_LABELS, (item) => item.label);
-      setSuggestions(results.slice(0, 8));
+      const encyclopedia = searchEncyclopediaTopics(q, 12);
+      const merged = new Map();
+      [...results, ...encyclopedia].forEach((item) => {
+        const key = String(item.id || item.label || '').toLowerCase();
+        if (!merged.has(key)) merged.set(key, item);
+      });
+      setSuggestions(Array.from(merged.values()).slice(0, 8));
     }, 120);
   }, []);
 

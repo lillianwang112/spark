@@ -2,6 +2,8 @@ import AIService from '../ai/ai.service.js';
 import { storage } from './storage.js';
 import { fuzzySearch, hashPath } from '../utils/helpers.js';
 import { SEED_INDEX, getSeedChildren, getSeedNode } from '../utils/seedData.js';
+import { getCuratedRabbitHoles, buildDomainRabbitHoles } from '../utils/rabbitHoles.js';
+import { getEncyclopediaTopic, getEncyclopediaChildren, getEncyclopediaExplainer } from '../utils/encyclopedia.js';
 
 const TOPIC_GRAPH_KEY = 'spark_topic_graph_v1';
 const EMPTY_GRAPH = { topics: {} };
@@ -244,6 +246,28 @@ function normalizeChildNode(topic, child, index = 0, userContextObj = {}) {
 }
 
 function buildFallbackChildren(topic, userContextObj = {}) {
+  const encyclopediaChildren = getEncyclopediaChildren(topic);
+  if (encyclopediaChildren.length > 0) {
+    return encyclopediaChildren
+      .map((child, index) => normalizeChildNode(topic, child, index, userContextObj))
+      .filter(Boolean);
+  }
+
+  const curated = getCuratedRabbitHoles(topic);
+  if (curated.length > 0) {
+    return curated
+      .map((child, index) => normalizeChildNode(topic, child, index, userContextObj))
+      .filter(Boolean);
+  }
+
+  const domainPack = buildDomainRabbitHoles(topic);
+  if (domainPack.length > 0) {
+    return domainPack
+      .map((child, index) => normalizeChildNode(topic, child, index, userContextObj))
+      .filter(Boolean);
+  }
+
+
   const topicLabel = topic.label;
   const isKids = userContextObj.ageGroup === 'little_explorer';
   const starterChildren = [
@@ -367,6 +391,14 @@ const TopicGraph = {
     const graphTopic = getTopicFromGraph(normalized);
     if (graphTopic) return hydrateTopic(graphTopic);
 
+    const encyclopediaTopic = getEncyclopediaTopic(term);
+    if (encyclopediaTopic) {
+      return hydrateTopic({
+        ...encyclopediaTopic,
+        path: [encyclopediaTopic.label],
+      });
+    }
+
     const seeds = allSeedTopics();
     const exact = seeds.find((item) => item.label.toLowerCase() === normalized);
     if (exact) return hydrateTopic(exact);
@@ -405,6 +437,16 @@ const TopicGraph = {
   getCachedChildren(topic) {
     const graphTopic = getTopicFromGraph(topic.id || topic.label);
     if (graphTopic?.children?.length) return graphTopic.children;
+
+    const encyclopediaChildren = getEncyclopediaChildren(topic);
+    if (encyclopediaChildren.length > 0) {
+      return encyclopediaChildren.map((child) => hydrateTopic(child));
+    }
+
+    const curated = getCuratedRabbitHoles(topic);
+    if (curated.length > 0) {
+      return curated.map((child) => hydrateTopic(child));
+    }
 
     const seedChildren = getSeedChildren(topic.id);
     if (!seedChildren?.length) return null;
@@ -450,6 +492,20 @@ const TopicGraph = {
         .map((child, index) => normalizeChildNode(resolvedTopic, child, index, userContextObj))
         .filter(Boolean);
 
+      const curated = getCuratedRabbitHoles(resolvedTopic)
+        .map((child, index) => normalizeChildNode(resolvedTopic, child, index, userContextObj))
+        .filter(Boolean);
+
+      if (curated.length > 0) {
+        const merged = new Map();
+        [...curated, ...children].forEach((child) => {
+          const key = normalizeTopicKey(child.id || child.label);
+          if (!merged.has(key)) merged.set(key, child);
+        });
+        children = Array.from(merged.values()).slice(0, 6);
+      }
+
+
       if (children.length === 0) {
         children = buildFallbackChildren(resolvedTopic, userContextObj);
       }
@@ -488,7 +544,10 @@ const TopicGraph = {
         // Fall back to local-first graph below.
       }
 
-      const text = await AIService.call('explainer', buildUserParams(resolvedTopic, userContextObj));
+      let text = await AIService.call('explainer', buildUserParams(resolvedTopic, userContextObj));
+      if (!text || typeof text !== 'string' || text.trim().length < 80) {
+        text = getEncyclopediaExplainer(resolvedTopic);
+      }
       persistExplainer(resolvedTopic, userContextObj, text);
       return text;
     });
