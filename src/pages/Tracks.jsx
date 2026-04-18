@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 void motion;
 import { useUserContext } from '../hooks/useUserContext.jsx';
@@ -18,6 +18,52 @@ import { buildUserContext } from '../models/userContext.js';
 import { copyThreadUrl } from '../utils/threads.js';
 import { relativeTime } from '../utils/helpers.js';
 import { openDeepDive } from '../utils/navigation.js';
+
+function inferDomainFromDeck(fileName = '', title = '') {
+  const sample = `${fileName} ${title}`.toLowerCase();
+  if (sample.includes('math')) return 'math';
+  if (sample.includes('music')) return 'music';
+  if (sample.includes('art')) return 'art';
+  if (sample.includes('history')) return 'history';
+  if (sample.includes('language') || sample.includes('chinese') || sample.includes('vocab')) return 'language';
+  if (sample.includes('code') || sample.includes('computer') || sample.includes('cs')) return 'cs';
+  return 'culture';
+}
+
+function normalizeDeckEntries(raw) {
+  if (Array.isArray(raw)) return raw;
+  if (Array.isArray(raw?.cards)) return raw.cards;
+  if (Array.isArray(raw?.vocabulary)) return raw.vocabulary;
+  if (Array.isArray(raw?.items)) return raw.items;
+  return [];
+}
+
+async function parseDeckFile(file) {
+  const text = await file.text();
+  const parsed = JSON.parse(text);
+  const entries = normalizeDeckEntries(parsed);
+  if (entries.length === 0) return { cards: [], title: file.name.replace(/\.json$/i, '') };
+
+  const cards = entries
+    .map((entry, index) => {
+      const label = entry.word || entry.character || entry.term || entry.hanzi || entry.front || entry.question;
+      const detail = entry.definition || entry.english || entry.meaning || entry.back || entry.answer || '';
+      if (!label) return null;
+      return {
+        id: `deck-${file.name}-${index}-${String(label).trim().toLowerCase().replace(/\s+/g, '-')}`,
+        label: String(label).trim(),
+        description: String(detail).trim() || 'Imported from study deck',
+      };
+    })
+    .filter(Boolean);
+
+  return {
+    cards,
+    title: parsed?.title || parsed?.deckName || file.name.replace(/\.json$/i, ''),
+  };
+}
+
+const MATCH_BEST_KEY = 'spark:match-best-seconds';
 
 // ── Mode toggle ──
 function ModeToggle({ mode, onChange }) {
@@ -225,6 +271,31 @@ export default function Tracks({ onSpark }) {
   const [tendingList, setTendingList] = useState([]);
   const [pruningTarget, setPruningTarget] = useState(null);
   const [toast, setToast] = useState(null);
+  const [importingDeck, setImportingDeck] = useState(false);
+  const [sprintOpen, setSprintOpen] = useState(false);
+  const [sprintCards, setSprintCards] = useState([]);
+  const [sprintIndex, setSprintIndex] = useState(0);
+  const [sprintScore, setSprintScore] = useState(0);
+  const [sprintReveal, setSprintReveal] = useState(false);
+  const [sprintDone, setSprintDone] = useState(false);
+  const [matchOpen, setMatchOpen] = useState(false);
+  const [matchDeck, setMatchDeck] = useState([]);
+  const [selectedPromptId, setSelectedPromptId] = useState(null);
+  const [selectedAnswerId, setSelectedAnswerId] = useState(null);
+  const [matchedIds, setMatchedIds] = useState([]);
+  const [matchAnswerOrder, setMatchAnswerOrder] = useState([]);
+  const [matchSeconds, setMatchSeconds] = useState(0);
+  const [matchBest, setMatchBest] = useState(() => {
+    const raw = Number(localStorage.getItem(MATCH_BEST_KEY));
+    return Number.isFinite(raw) && raw > 0 ? raw : null;
+  });
+  const [writingOpen, setWritingOpen] = useState(false);
+  const [writingTargetId, setWritingTargetId] = useState(null);
+  const [isDrawing, setIsDrawing] = useState(false);
+  const [writingStrokes, setWritingStrokes] = useState(0);
+  const [writingMessage, setWritingMessage] = useState('');
+  const writingCanvasRef = useRef(null);
+  const writingCtxRef = useRef(null);
   const userContextObj = buildUserContext(user);
 
   const ping = () => { onSpark?.(); };
@@ -248,6 +319,36 @@ export default function Tracks({ onSpark }) {
     ),
     [tracksWithSRS]
   );
+  const troubleTracks = useMemo(
+    () => tracksWithSRS
+      .filter((track) => (track.struggleScore || 0) > 0)
+      .sort((a, b) => (b.struggleScore || 0) - (a.struggleScore || 0))
+      .slice(0, 6),
+    [tracksWithSRS]
+  );
+
+  useEffect(() => {
+    if (!matchOpen || matchDeck.length === 0 || matchedIds.length === matchDeck.length) return undefined;
+    const timer = setInterval(() => {
+      setMatchSeconds((prev) => prev + 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [matchOpen, matchDeck.length, matchedIds.length]);
+
+  useEffect(() => {
+    if (!writingOpen) return;
+    const canvas = writingCanvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    ctx.lineWidth = 4;
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = '#2A2A2A';
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    writingCtxRef.current = ctx;
+  }, [writingOpen]);
 
   const handleToggleMode = (trackId, newMode) => {
     const track = tracks.find((t) => t.id === trackId);
@@ -266,6 +367,17 @@ export default function Tracks({ onSpark }) {
       : dueNow.length > 0 ? dueNow : masteringTracks.slice(0, 10);
     if (!cards.length) return;
     setReviewCards(cards);
+    setReviewMode(true);
+  };
+
+  const startTroubleReview = () => {
+    if (troubleTracks.length === 0) return;
+    const seeded = troubleTracks.map((track) => (
+      track.srsData
+        ? track
+        : { ...track, srsData: seedSRSFromKnowledgeState(track.knowledgeState || 'new') }
+    ));
+    setReviewCards(seeded);
     setReviewMode(true);
   };
 
@@ -376,6 +488,276 @@ export default function Tracks({ onSpark }) {
     setConnectSource(null);
   };
 
+  const handleImportDeck = async (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    setImportingDeck(true);
+    try {
+      const { cards, title } = await parseDeckFile(file);
+      if (cards.length === 0) {
+        setToast({ title: 'Could not import deck', subtitle: 'No recognizable cards were found.', icon: '⚠️' });
+        return;
+      }
+      const deckDomain = inferDomainFromDeck(file.name, title);
+      cards.slice(0, 200).forEach((card) => {
+        user.addTrack({
+          ...card,
+          domain: deckDomain,
+          mode: 'mastering',
+          path: [title, card.label],
+          saved: true,
+          savedAt: new Date().toISOString(),
+          source: 'deck-import',
+          srsData: seedSRSFromKnowledgeState('new'),
+        });
+      });
+      setToast({
+        title: 'Deck imported',
+        subtitle: `${Math.min(cards.length, 200)} cards added to Mastering.`,
+        variant: 'celebrate',
+        icon: '📚',
+      });
+      ping();
+    } catch {
+      setToast({ title: 'Import failed', subtitle: 'Please upload a valid JSON deck.', icon: '⚠️' });
+    } finally {
+      setImportingDeck(false);
+      event.target.value = '';
+    }
+  };
+
+  const startSprint = () => {
+    if (masteringTracks.length === 0) return;
+    const prioritized = [...masteringTracks].sort((a, b) => {
+      const aNext = new Date(a.srsData?.nextReview || 0).getTime();
+      const bNext = new Date(b.srsData?.nextReview || 0).getTime();
+      return aNext - bNext;
+    });
+    const picked = prioritized.slice(0, 12).sort(() => Math.random() - 0.5).slice(0, 5);
+    setSprintCards(picked);
+    setSprintIndex(0);
+    setSprintScore(0);
+    setSprintReveal(false);
+    setSprintDone(false);
+    setSprintOpen(true);
+  };
+
+  const handleSprintGrade = (grade) => {
+    const card = sprintCards[sprintIndex];
+    if (!card) return;
+    const now = Date.now();
+    let nextInterval = card.srsData?.interval || 1;
+    let scoreDelta = 0;
+
+    if (grade === 'again') {
+      nextInterval = 1;
+      scoreDelta = 0;
+    } else if (grade === 'hard') {
+      nextInterval = Math.max(1, Math.round(nextInterval * 1.4));
+      scoreDelta = 1;
+    } else {
+      nextInterval = Math.max(2, Math.round(nextInterval * 2.1));
+      scoreDelta = 2;
+    }
+
+    user.updateTrack({
+      id: card.id,
+      lastTended: new Date(now).toISOString(),
+      struggleScore: grade === 'again'
+        ? (card.struggleScore || 0) + 2
+        : grade === 'hard'
+          ? (card.struggleScore || 0) + 1
+          : Math.max(0, (card.struggleScore || 0) - 1),
+      srsData: {
+        ...(card.srsData || {}),
+        interval: nextInterval,
+        nextReview: new Date(now + nextInterval * 86400000).toISOString(),
+      },
+    });
+
+    const nextScore = sprintScore + scoreDelta;
+    const isLast = sprintIndex >= sprintCards.length - 1;
+    if (isLast) {
+      setSprintScore(nextScore);
+      setSprintDone(true);
+      ping();
+      return;
+    }
+    setSprintScore(nextScore);
+    setSprintIndex((prev) => prev + 1);
+    setSprintReveal(false);
+    ping();
+  };
+
+  const closeSprint = () => {
+    setSprintOpen(false);
+    setSprintCards([]);
+    setSprintIndex(0);
+    setSprintScore(0);
+    setSprintReveal(false);
+    setSprintDone(false);
+  };
+
+  const startMatchGame = () => {
+    if (masteringTracks.length < 3) {
+      setToast({ title: 'Need more cards', subtitle: 'Import or save at least 3 mastering cards for Match Blitz.', icon: '🧩' });
+      return;
+    }
+    const chosen = [...masteringTracks]
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 6)
+      .map((card) => ({
+        id: card.id,
+        prompt: card.label,
+        answer: card.description || card.label,
+      }));
+    setMatchDeck(chosen);
+    setMatchAnswerOrder([...chosen].sort(() => Math.random() - 0.5).map((card) => card.id));
+    setSelectedPromptId(null);
+    setSelectedAnswerId(null);
+    setMatchedIds([]);
+    setMatchSeconds(0);
+    setMatchOpen(true);
+  };
+
+  const closeMatchGame = () => {
+    setMatchOpen(false);
+    setMatchDeck([]);
+    setSelectedPromptId(null);
+    setSelectedAnswerId(null);
+    setMatchedIds([]);
+    setMatchAnswerOrder([]);
+    setMatchSeconds(0);
+  };
+
+  const commitMatchIfSolved = (nextMatched) => {
+    if (nextMatched.length !== matchDeck.length) return;
+    if (matchBest === null || matchSeconds < matchBest) {
+      setMatchBest(matchSeconds);
+      localStorage.setItem(MATCH_BEST_KEY, String(matchSeconds));
+    }
+    setToast({
+      title: 'Match Blitz complete',
+      subtitle: `Solved in ${matchSeconds}s${matchBest && matchSeconds < matchBest ? ' · new personal best!' : ''}`,
+      variant: 'celebrate',
+      icon: '🏆',
+    });
+    ping();
+  };
+
+  const handlePickPrompt = (id) => {
+    if (matchedIds.includes(id)) return;
+    setSelectedPromptId(id);
+    if (!selectedAnswerId) return;
+    if (selectedAnswerId === id) {
+      const nextMatched = Array.from(new Set([...matchedIds, id]));
+      setMatchedIds(nextMatched);
+      setSelectedPromptId(null);
+      setSelectedAnswerId(null);
+      commitMatchIfSolved(nextMatched);
+      return;
+    }
+    if (selectedAnswerId) {
+      user.updateTrack({ id, struggleScore: ((tracksWithSRS.find((t) => t.id === id)?.struggleScore) || 0) + 1 });
+      user.updateTrack({ id: selectedAnswerId, struggleScore: ((tracksWithSRS.find((t) => t.id === selectedAnswerId)?.struggleScore) || 0) + 1 });
+    }
+    setTimeout(() => {
+      setSelectedPromptId(null);
+      setSelectedAnswerId(null);
+    }, 220);
+  };
+
+  const handlePickAnswer = (id) => {
+    if (matchedIds.includes(id)) return;
+    setSelectedAnswerId(id);
+    if (!selectedPromptId) return;
+    if (selectedPromptId === id) {
+      const nextMatched = Array.from(new Set([...matchedIds, id]));
+      setMatchedIds(nextMatched);
+      setSelectedPromptId(null);
+      setSelectedAnswerId(null);
+      commitMatchIfSolved(nextMatched);
+      return;
+    }
+    if (selectedPromptId) {
+      user.updateTrack({ id, struggleScore: ((tracksWithSRS.find((t) => t.id === id)?.struggleScore) || 0) + 1 });
+      user.updateTrack({ id: selectedPromptId, struggleScore: ((tracksWithSRS.find((t) => t.id === selectedPromptId)?.struggleScore) || 0) + 1 });
+    }
+    setTimeout(() => {
+      setSelectedPromptId(null);
+      setSelectedAnswerId(null);
+    }, 220);
+  };
+
+  const startWritingLab = (trackId = null) => {
+    const fallback = troubleTracks[0]?.id || masteringTracks[0]?.id || null;
+    const targetId = trackId || fallback;
+    if (!targetId) {
+      setToast({ title: 'No cards available', subtitle: 'Add or import mastering cards first.', icon: '✍️' });
+      return;
+    }
+    setWritingTargetId(targetId);
+    setWritingStrokes(0);
+    setWritingMessage('');
+    setWritingOpen(true);
+  };
+
+  const clearWritingCanvas = () => {
+    const canvas = writingCanvasRef.current;
+    const ctx = writingCtxRef.current;
+    if (!canvas || !ctx) return;
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    setWritingStrokes(0);
+    setWritingMessage('');
+  };
+
+  const getCanvasPoint = (event) => {
+    const canvas = writingCanvasRef.current;
+    if (!canvas) return null;
+    const rect = canvas.getBoundingClientRect();
+    const x = ((event.clientX - rect.left) / rect.width) * canvas.width;
+    const y = ((event.clientY - rect.top) / rect.height) * canvas.height;
+    return { x, y };
+  };
+
+  const handleWritePointerDown = (event) => {
+    const ctx = writingCtxRef.current;
+    const point = getCanvasPoint(event);
+    if (!ctx || !point) return;
+    setIsDrawing(true);
+    ctx.beginPath();
+    ctx.moveTo(point.x, point.y);
+    setWritingStrokes((prev) => prev + 1);
+  };
+
+  const handleWritePointerMove = (event) => {
+    if (!isDrawing) return;
+    const ctx = writingCtxRef.current;
+    const point = getCanvasPoint(event);
+    if (!ctx || !point) return;
+    ctx.lineTo(point.x, point.y);
+    ctx.stroke();
+  };
+
+  const handleWritePointerUp = () => {
+    if (!isDrawing) return;
+    setIsDrawing(false);
+  };
+
+  const submitWritingAttempt = () => {
+    const current = tracksWithSRS.find((track) => track.id === writingTargetId);
+    if (!current) return;
+    const bonus = writingStrokes >= 5 ? 2 : 1;
+    user.updateTrack({
+      id: current.id,
+      lastTended: new Date().toISOString(),
+      struggleScore: Math.max(0, (current.struggleScore || 0) - bonus),
+    });
+    setWritingMessage(`Great effort — reduced difficulty score by ${bonus}.`);
+    ping();
+  };
+
   // ── Tending session view ──
   if (tendingOpen) {
     return (
@@ -453,6 +835,27 @@ export default function Tracks({ onSpark }) {
 
       <div className="flex-1 overflow-y-auto px-4 pb-24">
         <div className="max-w-[760px] mx-auto py-4">
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-4 rounded-card border border-[rgba(91,94,166,0.2)] bg-[rgba(91,94,166,0.07)] p-4"
+          >
+            <p className="font-body font-semibold text-text-primary text-sm">Import a study deck</p>
+            <p className="font-body text-xs text-text-muted mt-0.5 mb-3">
+              Bring in vocabulary or flashcard JSON decks and Spark will auto-create mastering tracks.
+            </p>
+            <label className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-[#5B5EA6] text-white text-xs font-medium hover:bg-[#4a4d88] transition-colors cursor-pointer min-h-[36px]">
+              {importingDeck ? 'Importing…' : '📥 Import JSON deck'}
+              <input
+                type="file"
+                accept=".json,application/json"
+                className="sr-only"
+                onChange={handleImportDeck}
+                disabled={importingDeck}
+              />
+            </label>
+          </motion.div>
+
           {tracks.length === 0 ? (
             <motion.div
               initial={{ opacity: 0, y: 16 }}
@@ -490,6 +893,102 @@ export default function Tracks({ onSpark }) {
                   <p className="text-xs font-body text-text-muted">Cross-topic bridges in your map.</p>
                 </div>
               </div>
+
+              {masteringTracks.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="rounded-card border border-[rgba(255,107,53,0.24)] bg-[rgba(255,107,53,0.08)] p-4 flex items-center justify-between gap-3"
+                >
+                  <div>
+                    <p className="font-body font-semibold text-text-primary text-sm">⚡ Mastery Sprint</p>
+                    <p className="font-body text-xs text-text-muted mt-0.5">
+                      Run a 5-card rapid challenge to sharpen recall and boost intervals.
+                    </p>
+                  </div>
+                  <button
+                    onClick={startSprint}
+                    className="flex-shrink-0 px-4 py-2 rounded-full bg-spark-ember text-white text-sm font-medium hover:bg-orange-600 transition-colors"
+                  >
+                    Start sprint
+                  </button>
+                </motion.div>
+              )}
+
+              {masteringTracks.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="rounded-card border border-[rgba(91,94,166,0.24)] bg-[rgba(91,94,166,0.08)] p-4 flex items-center justify-between gap-3"
+                >
+                  <div>
+                    <p className="font-body font-semibold text-text-primary text-sm">🧩 Match Blitz</p>
+                    <p className="font-body text-xs text-text-muted mt-0.5">
+                      Timed matching game inspired by your vocab apps. Pair prompts with meanings fast.
+                    </p>
+                  </div>
+                  <button
+                    onClick={startMatchGame}
+                    className="flex-shrink-0 px-4 py-2 rounded-full bg-[#5B5EA6] text-white text-sm font-medium hover:bg-[#4a4d88] transition-colors"
+                  >
+                    Play
+                  </button>
+                </motion.div>
+              )}
+
+              {troubleTracks.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="rounded-card border border-[rgba(230,57,70,0.22)] bg-[rgba(230,57,70,0.08)] p-4"
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <p className="font-body font-semibold text-text-primary text-sm">⚠️ Trouble Words</p>
+                      <p className="font-body text-xs text-text-muted mt-0.5">
+                        Auto-detected from your misses in Sprint + Match. Focus these first.
+                      </p>
+                    </div>
+                    <button
+                      onClick={startTroubleReview}
+                      className="flex-shrink-0 px-4 py-2 rounded-full bg-[#C2414B] text-white text-sm font-medium hover:opacity-90 transition-colors"
+                    >
+                      Focus review
+                    </button>
+                  </div>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {troubleTracks.slice(0, 5).map((track) => (
+                      <span
+                        key={`trouble-${track.id}`}
+                        className="rounded-full bg-[rgba(230,57,70,0.12)] px-2.5 py-1 text-xs font-body text-[#A22F3B]"
+                      >
+                        {track.label} · {track.struggleScore || 0}
+                      </span>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+
+              {masteringTracks.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="rounded-card border border-[rgba(45,147,108,0.24)] bg-[rgba(45,147,108,0.08)] p-4 flex items-center justify-between gap-3"
+                >
+                  <div>
+                    <p className="font-body font-semibold text-text-primary text-sm">✍️ Handwriting Lab</p>
+                    <p className="font-body text-xs text-text-muted mt-0.5">
+                      Practice writing prompts on a canvas board (Axiom-style) and cool down trouble items.
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => startWritingLab()}
+                    className="flex-shrink-0 px-4 py-2 rounded-full bg-[#2D936C] text-white text-sm font-medium hover:opacity-90 transition-colors"
+                  >
+                    Open lab
+                  </button>
+                </motion.div>
+              )}
 
               <AnimatePresence>
                 {shareFeedback && (
@@ -667,6 +1166,208 @@ export default function Tracks({ onSpark }) {
               openDeepDive(node);
             }}
           />
+        )}
+      </Modal>
+
+      <Modal
+        isOpen={sprintOpen}
+        onClose={closeSprint}
+        title="⚡ Mastery Sprint"
+        maxWidth="max-w-xl"
+      >
+        {sprintCards.length > 0 && !sprintDone && (
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <p className="font-body text-sm text-text-muted">
+                Card {sprintIndex + 1} of {sprintCards.length}
+              </p>
+              <p className="font-body text-sm font-semibold text-text-primary">Score: {sprintScore}</p>
+            </div>
+            <div className="rounded-[20px] border border-[rgba(42,42,42,0.1)] bg-[rgba(255,255,255,0.65)] p-4 mb-4">
+              <p className="font-body text-xs uppercase tracking-wider text-text-muted mb-1">Prompt</p>
+              <p className="font-display text-xl text-text-primary">{sprintCards[sprintIndex].label}</p>
+              <p className="font-body text-xs text-text-muted mt-2">Try recalling before revealing.</p>
+              {sprintReveal && (
+                <div className="mt-3 rounded-[14px] bg-[rgba(42,42,42,0.05)] p-3">
+                  <p className="font-body text-xs uppercase tracking-wider text-text-muted mb-1">Answer</p>
+                  <p className="font-body text-sm text-text-secondary">
+                    {sprintCards[sprintIndex].description || 'No answer text in this card.'}
+                  </p>
+                </div>
+              )}
+            </div>
+            {!sprintReveal ? (
+              <button
+                onClick={() => setSprintReveal(true)}
+                className="w-full rounded-full bg-[rgba(91,94,166,0.12)] text-[#5B5EA6] px-4 py-2 text-sm font-medium hover:bg-[rgba(91,94,166,0.2)] transition-colors"
+              >
+                Reveal answer
+              </button>
+            ) : (
+              <div className="grid grid-cols-3 gap-2">
+                <button
+                  onClick={() => handleSprintGrade('again')}
+                  className="rounded-full bg-[rgba(230,57,70,0.12)] text-[#C2414B] px-3 py-2 text-sm font-medium hover:bg-[rgba(230,57,70,0.2)] transition-colors"
+                >
+                  Again
+                </button>
+                <button
+                  onClick={() => handleSprintGrade('hard')}
+                  className="rounded-full bg-[rgba(212,163,115,0.18)] text-[#8E6F47] px-3 py-2 text-sm font-medium hover:bg-[rgba(212,163,115,0.26)] transition-colors"
+                >
+                  Hard
+                </button>
+                <button
+                  onClick={() => handleSprintGrade('easy')}
+                  className="rounded-full bg-[rgba(45,147,108,0.14)] text-[#2D936C] px-3 py-2 text-sm font-medium hover:bg-[rgba(45,147,108,0.24)] transition-colors"
+                >
+                  Easy
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
+        {sprintCards.length > 0 && sprintDone && (
+          <div className="text-center">
+            <p className="text-4xl mb-2">🏁</p>
+            <p className="font-display text-xl text-text-primary">Sprint complete</p>
+            <p className="font-body text-sm text-text-secondary mt-1">
+              You scored <span className="font-semibold text-text-primary">{sprintScore}</span> out of {sprintCards.length * 2}.
+            </p>
+            <p className="font-body text-xs text-text-muted mt-3">
+              Card schedules were updated based on your ratings.
+            </p>
+            <button
+              onClick={closeSprint}
+              className="mt-4 px-4 py-2 rounded-full bg-spark-ember text-white text-sm font-medium hover:bg-orange-600 transition-colors"
+            >
+              Done
+            </button>
+          </div>
+        )}
+      </Modal>
+
+      <Modal
+        isOpen={matchOpen}
+        onClose={closeMatchGame}
+        title="🧩 Match Blitz"
+        maxWidth="max-w-2xl"
+      >
+        {matchDeck.length > 0 && (
+          <div>
+            <div className="mb-4 flex items-center justify-between">
+              <p className="font-body text-sm text-text-muted">
+                Matched {matchedIds.length}/{matchDeck.length}
+              </p>
+              <p className="font-body text-sm font-semibold text-text-primary">
+                ⏱ {matchSeconds}s {matchBest ? `· best ${matchBest}s` : ''}
+              </p>
+            </div>
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="space-y-2">
+                <p className="font-body text-xs uppercase tracking-wider text-text-muted">Prompts</p>
+                {matchDeck.map((item) => {
+                  const matched = matchedIds.includes(item.id);
+                  const selected = selectedPromptId === item.id;
+                  return (
+                    <button
+                      key={`p-${item.id}`}
+                      onClick={() => handlePickPrompt(item.id)}
+                      disabled={matched}
+                      className={`w-full text-left rounded-[14px] px-3 py-2 text-sm transition-colors ${
+                        matched
+                          ? 'bg-[rgba(45,147,108,0.16)] text-[#2D936C]'
+                          : selected
+                            ? 'bg-[rgba(91,94,166,0.2)] text-[#4a4d88]'
+                            : 'bg-[rgba(42,42,42,0.06)] text-text-primary hover:bg-[rgba(42,42,42,0.1)]'
+                      }`}
+                    >
+                      {item.prompt}
+                    </button>
+                  );
+                })}
+              </div>
+              <div className="space-y-2">
+                <p className="font-body text-xs uppercase tracking-wider text-text-muted">Meanings</p>
+                {matchAnswerOrder.map((id) => {
+                  const item = matchDeck.find((entry) => entry.id === id);
+                  if (!item) return null;
+                  const matched = matchedIds.includes(item.id);
+                  const selected = selectedAnswerId === item.id;
+                  return (
+                    <button
+                      key={`a-${item.id}`}
+                      onClick={() => handlePickAnswer(item.id)}
+                      disabled={matched}
+                      className={`w-full text-left rounded-[14px] px-3 py-2 text-sm transition-colors ${
+                        matched
+                          ? 'bg-[rgba(45,147,108,0.16)] text-[#2D936C]'
+                          : selected
+                            ? 'bg-[rgba(255,107,53,0.2)] text-spark-ember'
+                            : 'bg-[rgba(42,42,42,0.06)] text-text-primary hover:bg-[rgba(42,42,42,0.1)]'
+                      }`}
+                    >
+                      {item.answer}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        )}
+      </Modal>
+
+      <Modal
+        isOpen={writingOpen}
+        onClose={() => { setWritingOpen(false); setIsDrawing(false); }}
+        title="✍️ Handwriting Lab"
+        maxWidth="max-w-2xl"
+      >
+        {writingOpen && (
+          <div>
+            <div className="mb-3">
+              <p className="font-body text-xs uppercase tracking-wider text-text-muted">Practice prompt</p>
+              <p className="font-display text-xl text-text-primary">
+                {tracksWithSRS.find((track) => track.id === writingTargetId)?.label || 'Practice'}
+              </p>
+              <p className="font-body text-xs text-text-muted mt-1">
+                Strokes: {writingStrokes} {writingMessage ? `· ${writingMessage}` : ''}
+              </p>
+            </div>
+
+            <canvas
+              ref={writingCanvasRef}
+              width={860}
+              height={360}
+              className="w-full rounded-[16px] border border-[rgba(42,42,42,0.14)] bg-white touch-none"
+              onPointerDown={handleWritePointerDown}
+              onPointerMove={handleWritePointerMove}
+              onPointerUp={handleWritePointerUp}
+              onPointerLeave={handleWritePointerUp}
+            />
+
+            <div className="mt-3 grid grid-cols-3 gap-2">
+              <button
+                onClick={clearWritingCanvas}
+                className="rounded-full bg-[rgba(42,42,42,0.08)] text-text-primary px-3 py-2 text-sm font-medium hover:bg-[rgba(42,42,42,0.14)] transition-colors"
+              >
+                Clear
+              </button>
+              <button
+                onClick={submitWritingAttempt}
+                className="rounded-full bg-[#2D936C] text-white px-3 py-2 text-sm font-medium hover:opacity-90 transition-colors"
+              >
+                Submit
+              </button>
+              <button
+                onClick={() => startWritingLab(troubleTracks[0]?.id)}
+                className="rounded-full bg-[rgba(230,57,70,0.12)] text-[#C2414B] px-3 py-2 text-sm font-medium hover:bg-[rgba(230,57,70,0.2)] transition-colors"
+              >
+                Next trouble
+              </button>
+            </div>
+          </div>
         )}
       </Modal>
 
