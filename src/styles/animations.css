@@ -12,6 +12,14 @@
   50%       { transform: translateY(-8px); }
 }
 
+/* Gentle drift */
+@keyframes drift {
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  33%  { transform: translate(4px, -6px) rotate(2deg); }
+  66%  { transform: translate(-3px, 4px) rotate(-2deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
 /* Bounce for little explorer */
 @keyframes bounce-ember {
   0%, 100% { transform: translateY(0) scale(1); }
@@ -37,6 +45,12 @@
   100% { transform: scale(2.5); opacity: 0; }
 }
 
+/* Double ripple for celebrations */
+@keyframes ripple-out {
+  0%   { transform: scale(0.8); opacity: 0.8; }
+  100% { transform: scale(3.2); opacity: 0; }
+}
+
 /* Domain color fill outward */
 @keyframes color-fill {
   from { fill-opacity: 0; }
@@ -49,10 +63,27 @@
   50%       { opacity: 0.9; filter: brightness(1.3); }
 }
 
+/* Sweeping sheen across surfaces */
+@keyframes sheen {
+  0%   { transform: translateX(-120%) skewX(-18deg); opacity: 0; }
+  40%  { opacity: 0.6; }
+  100% { transform: translateX(220%) skewX(-18deg); opacity: 0; }
+}
+
 /* Card reveal (stagger) */
 @keyframes card-slide-up {
   from { transform: translateY(20px); opacity: 0; }
   to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* Slide-in from left / right (page transitions) */
+@keyframes slide-in-right {
+  from { transform: translateX(16px); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+@keyframes slide-in-left {
+  from { transform: translateX(-16px); opacity: 0; }
+  to   { transform: translateX(0);     opacity: 1; }
 }
 
 /* Seed sprout */
@@ -77,6 +108,14 @@
   100% { stroke-opacity: 0; stroke-width: 6; }
 }
 
+/* Water droplet falls + splashes */
+@keyframes water-drop {
+  0%   { transform: translate(-50%, -120%) scale(0.6); opacity: 0; }
+  15%  { opacity: 1; }
+  70%  { transform: translate(-50%, 0) scale(1); opacity: 1; }
+  100% { transform: translate(-50%, 30%) scale(0); opacity: 0; }
+}
+
 /* Sunlight sweep */
 @keyframes sunlight-sweep {
   from { opacity: 0; transform: translateY(4px); }
@@ -84,11 +123,24 @@
   to   { opacity: 0; transform: translateY(-40px); }
 }
 
+/* Sunshine pulse rays */
+@keyframes sun-rays {
+  0%, 100% { transform: rotate(0deg) scale(1); opacity: 0.55; }
+  50%       { transform: rotate(12deg) scale(1.08); opacity: 0.9; }
+}
+
 /* Full tree bloom (for year-in-spark, tending complete) */
 @keyframes tree-bloom {
   0%   { filter: brightness(1) saturate(1); }
   50%  { filter: brightness(1.2) saturate(1.4); }
   100% { filter: brightness(1) saturate(1); }
+}
+
+/* Flower bloom — petals unfurl */
+@keyframes bloom {
+  0%   { transform: scale(0) rotate(-40deg); opacity: 0; }
+  45%  { transform: scale(1.25) rotate(8deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
 }
 
 /* Ember blink */
@@ -103,21 +155,98 @@
   100% { transform: translate(var(--fall-x, 20px), 60px) rotate(180deg); opacity: 0; }
 }
 
+/* Confetti piece */
+@keyframes confetti-fall {
+  0%   { transform: translate(0, -20px) rotate(0deg);   opacity: 0; }
+  10%  { opacity: 1; }
+  100% { transform: translate(var(--cx, 40px), 480px) rotate(720deg); opacity: 0; }
+}
+
+/* Sparkle ping */
+@keyframes sparkle {
+  0%, 100% { transform: scale(0) rotate(0deg); opacity: 0; }
+  45%       { transform: scale(1) rotate(80deg); opacity: 1; }
+  70%       { transform: scale(0.8) rotate(180deg); opacity: 0.4; }
+}
+
 /* Search result pop in */
 @keyframes search-pop {
   from { transform: translateY(-8px) scale(0.97); opacity: 0; }
   to   { transform: translateY(0)    scale(1);    opacity: 1; }
 }
 
-/* Utility classes */
-.animate-float        { animation: float 3s ease-in-out infinite; }
-.animate-pulse-ember  { animation: pulse-ember 2s ease-in-out infinite; }
-.animate-bounce-ember { animation: bounce-ember 1s cubic-bezier(0.34, 1.56, 0.64, 1) infinite; }
-.animate-sprout       { animation: sprout 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
-.animate-card-in      { animation: card-slide-up 0.4s ease-out forwards; }
-.animate-pop-choice   { animation: pop-choice 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
-.animate-shimmer      { animation: shimmer 3s ease-in-out infinite; }
-.animate-search-pop   { animation: search-pop 0.25s ease-out forwards; }
+/* Attention nudge */
+@keyframes nudge {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-2px); }
+  40%       { transform: translateX(3px); }
+  60%       { transform: translateX(-2px); }
+  80%       { transform: translateX(1px); }
+}
+
+/* Heartbeat for streak flame */
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  30%       { transform: scale(1.14); }
+  60%       { transform: scale(0.96); }
+}
+
+/* Orbit for ambient sparks */
+@keyframes orbit {
+  from { transform: rotate(0deg) translateX(var(--orb-r, 16px)) rotate(0deg); }
+  to   { transform: rotate(360deg) translateX(var(--orb-r, 16px)) rotate(-360deg); }
+}
+
+/* Progress ring fill */
+@keyframes ring-fill {
+  from { stroke-dashoffset: var(--ring-start, 283); }
+  to   { stroke-dashoffset: var(--ring-end, 0); }
+}
+
+/* Toast slide */
+@keyframes toast-in {
+  from { transform: translateY(24px) scale(0.94); opacity: 0; }
+  to   { transform: translateY(0) scale(1); opacity: 1; }
+}
+@keyframes toast-out {
+  from { transform: translateY(0) scale(1); opacity: 1; }
+  to   { transform: translateY(-12px) scale(0.96); opacity: 0; }
+}
+
+/* Level up burst */
+@keyframes level-burst {
+  0%   { transform: scale(0.6) rotate(-20deg); opacity: 0; }
+  35%  { transform: scale(1.18) rotate(4deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+/* Glow breathe */
+@keyframes glow-breathe {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,107,53,0.35), 0 0 36px rgba(255,166,43,0.18); }
+  50%       { box-shadow: 0 0 0 14px rgba(255,107,53,0), 0 0 48px rgba(255,166,43,0.32); }
+}
+
+/* ── Utility classes ── */
+.animate-float          { animation: float 3s ease-in-out infinite; }
+.animate-drift          { animation: drift 6s ease-in-out infinite; }
+.animate-pulse-ember    { animation: pulse-ember 2s ease-in-out infinite; }
+.animate-bounce-ember   { animation: bounce-ember 1s cubic-bezier(0.34, 1.56, 0.64, 1) infinite; }
+.animate-sprout         { animation: sprout 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+.animate-card-in        { animation: card-slide-up 0.4s ease-out forwards; }
+.animate-pop-choice     { animation: pop-choice 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+.animate-shimmer        { animation: shimmer 3s ease-in-out infinite; }
+.animate-search-pop     { animation: search-pop 0.25s ease-out forwards; }
+.animate-bloom          { animation: bloom 0.85s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+.animate-sparkle        { animation: sparkle 1.6s ease-in-out infinite; }
+.animate-nudge          { animation: nudge 0.6s ease-in-out; }
+.animate-heartbeat      { animation: heartbeat 1.4s ease-in-out infinite; }
+.animate-ripple-out     { animation: ripple-out 1.4s ease-out infinite; }
+.animate-sheen          { animation: sheen 2.2s ease-in-out infinite; }
+.animate-glow-breathe   { animation: glow-breathe 3.2s ease-in-out infinite; }
+.animate-sun-rays       { animation: sun-rays 4s ease-in-out infinite; }
+.animate-slide-in-right { animation: slide-in-right 0.3s ease-out forwards; }
+.animate-toast-in       { animation: toast-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+.animate-level-burst    { animation: level-burst 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
 
 /* Stagger helpers */
 .stagger-1 { animation-delay: 50ms; }
@@ -132,14 +261,24 @@
   .animate-float,
   .animate-pulse-ember,
   .animate-bounce-ember,
-  .animate-shimmer {
+  .animate-shimmer,
+  .animate-sparkle,
+  .animate-heartbeat,
+  .animate-ripple-out,
+  .animate-sheen,
+  .animate-glow-breathe,
+  .animate-sun-rays,
+  .animate-drift {
     animation: none;
   }
   .animate-sprout {
     animation: node-appear 0.3s ease-out forwards;
   }
-  .animate-card-in {
+  .animate-card-in,
+  .animate-bloom,
+  .animate-level-burst {
     animation: none;
     opacity: 1;
+    transform: none;
   }
 }
