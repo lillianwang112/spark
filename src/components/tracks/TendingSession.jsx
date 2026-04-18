@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Ember from '../ember/Ember.jsx';
 import Confetti from '../common/Confetti.jsx';
@@ -7,54 +7,179 @@ import BranchStateBadge from './BranchStateBadge.jsx';
 import { DOMAIN_COLORS } from '../../utils/domainColors.js';
 import { BRANCH_STATES } from '../../utils/constants.js';
 import { deriveBranchState } from '../../hooks/useBranchState.js';
+import { openDeepDive } from '../../utils/navigation.js';
+import TopicGraph from '../../services/topicGraph.js';
 void motion;
 
-// The Tending Session: water, sunlight, or connection actions per branch.
-// Ember reacts to each action; completion triggers bloom/confetti.
-export default function TendingSession({ tracks, onTend, onFinish }) {
+// ── Compact explainer block shown after Water ──
+function RevealBlock({ text, isLoading }) {
+  if (isLoading) {
+    return (
+      <div className="flex items-center gap-2 py-4 text-text-muted">
+        <Ember mood="thinking" size="xs" glowIntensity={0.7} />
+        <span className="font-body text-sm italic">Ember is retrieving this...</span>
+      </div>
+    );
+  }
+
+  if (!text) return null;
+
+  const paragraphs = text
+    .split(/\n\s*\n/)
+    .map((p) => p.trim())
+    .filter(Boolean);
+
+  return (
+    <div
+      className="max-h-[36vh] overflow-y-auto rounded-[18px] bg-[rgba(255,255,255,0.8)] px-4 py-3 space-y-2 border border-[rgba(42,42,42,0.07)]"
+    >
+      {paragraphs.map((p, i) => (
+        <p
+          key={i}
+          className={`font-body leading-relaxed text-text-primary ${i === 0 ? 'text-[15px] font-medium' : 'text-sm text-text-secondary'}`}
+        >
+          {p}
+        </p>
+      ))}
+    </div>
+  );
+}
+
+// ── Child topic picker shown after Sunlight ──
+function ChildPicker({ track, userContextObj, onPick, onClose }) {
+  const [children, setChildren] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    TopicGraph.getChildren(track, userContextObj)
+      .then((result) => {
+        if (!cancelled) { setChildren(result || []); setLoading(false); }
+      })
+      .catch(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, [track, userContextObj]);
+
+  return (
+    <div className="rounded-[22px] bg-[rgba(255,255,255,0.9)] border border-[rgba(42,42,42,0.07)] p-4">
+      <div className="flex items-center justify-between mb-3">
+        <p className="text-[11px] font-mono uppercase tracking-[0.14em] text-text-muted">Go deeper into</p>
+        <button onClick={onClose} className="text-xs text-text-muted hover:text-text-primary font-body">← Back</button>
+      </div>
+      <p className="font-display font-semibold text-text-primary mb-3">{track.label}</p>
+      {loading ? (
+        <div className="flex items-center gap-2 py-3">
+          <Ember mood="thinking" size="xs" glowIntensity={0.6} />
+          <span className="font-body text-sm text-text-muted">Finding rabbit holes...</span>
+        </div>
+      ) : children.length === 0 ? (
+        <p className="font-body text-sm text-text-muted py-3">No subtopics found — try the full Explore tab.</p>
+      ) : (
+        <div className="space-y-2">
+          {children.slice(0, 5).map((child) => {
+            const color = DOMAIN_COLORS[child.domain] || '#FF6B35';
+            return (
+              <button
+                key={child.id}
+                onClick={() => onPick(child)}
+                className="w-full text-left flex items-start gap-3 p-3 rounded-[16px] transition-all hover:scale-[1.01]"
+                style={{ background: `${color}0d`, border: `1px solid ${color}20` }}
+              >
+                <div className="flex-1 min-w-0">
+                  <p className="font-body font-semibold text-sm text-text-primary leading-snug">{child.label}</p>
+                  {child.description && (
+                    <p className="font-body text-xs text-text-muted mt-0.5 leading-relaxed line-clamp-2">{child.description}</p>
+                  )}
+                </div>
+                <span className="text-xs flex-shrink-0 mt-0.5" style={{ color }}>→</span>
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default function TendingSession({ tracks, userContextObj = {}, onTend, onFinish }) {
   const [index, setIndex] = useState(0);
   const [actionsTaken, setActionsTaken] = useState(0);
   const [celebrate, setCelebrate] = useState(false);
   const [completed, setCompleted] = useState(false);
+
+  // Per-card phase: 'action' | 'water-loading' | 'water-revealed' | 'sunlight-pick'
+  const [phase, setPhase] = useState('action');
+  const [revealText, setRevealText] = useState(null);
   const [dropletActive, setDropletActive] = useState(false);
   const [sunActive, setSunActive] = useState(false);
+  const scrollRef = useRef(null);
 
   const list = useMemo(() => tracks.slice(0, 8), [tracks]);
   const current = list[index];
   const total = list.length;
 
   const advance = useCallback(() => {
+    setPhase('action');
+    setRevealText(null);
+    setDropletActive(false);
+    setSunActive(false);
     setTimeout(() => {
-      setDropletActive(false);
-      setSunActive(false);
       if (index + 1 >= total) {
         setCelebrate(true);
         setCompleted(true);
       } else {
         setIndex(index + 1);
       }
-    }, 850);
+    }, 500);
   }, [index, total]);
 
-  const handleWater = () => {
+  // Scroll reveal block into view
+  useEffect(() => {
+    if ((phase === 'water-revealed' || phase === 'sunlight-pick') && scrollRef.current) {
+      setTimeout(() => scrollRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+    }
+  }, [phase]);
+
+  // ── Water: load the explainer, let user rate their recall ──
+  const handleWater = useCallback(async () => {
     if (!current) return;
     setDropletActive(true);
+    setPhase('water-loading');
     setActionsTaken((n) => n + 1);
     onTend?.(current, 'water');
-    advance();
-  };
 
-  const handleSunlight = () => {
+    try {
+      const text = await TopicGraph.getExplainer(current, userContextObj);
+      setRevealText(text);
+    } catch {
+      setRevealText(`${current.label} is a fascinating area. Re-reading its ideas keeps the branch alive.`);
+    }
+    setPhase('water-revealed');
+  }, [current, userContextObj, onTend]);
+
+  // Rating after reveal: updates branch based on how well they remembered
+  const handleRating = useCallback((rating) => {
+    if (!current) return;
+    onTend?.(current, 'water-rated', rating);
+    advance();
+  }, [current, onTend, advance]);
+
+  // ── Sunlight: show child topics to explore ──
+  const handleSunlight = useCallback(() => {
     if (!current) return;
     setSunActive(true);
     setActionsTaken((n) => n + 1);
     onTend?.(current, 'sunlight');
-    advance();
-  };
+    setPhase('sunlight-pick');
+  }, [current, onTend]);
 
-  const handleSkip = () => {
+  // User picks a child in Sunlight phase → open it in Explore
+  const handleChildPick = useCallback((child) => {
+    openDeepDive(child); // Navigates to Explore tab + opens DeepDive for this child
     advance();
-  };
+  }, [advance]);
+
+  const handleSkip = useCallback(() => advance(), [advance]);
 
   if (!current && !completed) {
     return (
@@ -78,10 +203,7 @@ export default function TendingSession({ tracks, onTend, onFinish }) {
             {actionsTaken} branch{actionsTaken === 1 ? '' : 'es'} revived. Your tree feels the difference.
           </p>
         </div>
-        <button
-          onClick={onFinish}
-          className="btn btn-primary px-6"
-        >
+        <button onClick={onFinish} className="btn btn-primary px-6">
           Back to Tracks
         </button>
       </div>
@@ -90,15 +212,16 @@ export default function TendingSession({ tracks, onTend, onFinish }) {
 
   const color = DOMAIN_COLORS[current.domain] || '#FF6B35';
   const state = deriveBranchState(current);
-  const stateLabels = {
+  const stateMessage = {
     [BRANCH_STATES.THIRSTY]: 'A quick check-in keeps the branch saturated.',
-    [BRANCH_STATES.WILTING]: 'This one needs attention — a review or a small revive.',
+    [BRANCH_STATES.WILTING]: 'This one needs attention — recall what you knew.',
     [BRANCH_STATES.DORMANT]: 'Long dormant. One honest look wakes the whole branch.',
     [BRANCH_STATES.HEALTHY]: 'Strong pulse. A drop of water keeps it that way.',
   };
 
   return (
     <div className="relative mx-auto flex w-full max-w-xl flex-col gap-5 px-1 py-4">
+      {/* Header */}
       <div className="flex items-center justify-between gap-3">
         <div>
           <p className="text-[11px] font-mono uppercase tracking-[0.16em] text-text-muted">Tending Session</p>
@@ -115,19 +238,21 @@ export default function TendingSession({ tracks, onTend, onFinish }) {
         </button>
       </div>
 
+      {/* Progress bar */}
       <div className="h-2 w-full rounded-full bg-[rgba(42,42,42,0.08)]">
         <motion.div
           className="h-full rounded-full"
           style={{ background: 'linear-gradient(90deg, #FFD166, #FF6B35)' }}
           initial={{ width: 0 }}
-          animate={{ width: `${((index) / total) * 100}%` }}
+          animate={{ width: `${(index / total) * 100}%` }}
           transition={{ duration: 0.4, ease: 'easeOut' }}
         />
       </div>
 
+      {/* Card */}
       <AnimatePresence mode="wait">
         <motion.div
-          key={current.id}
+          key={current.id + phase}
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
@@ -148,9 +273,7 @@ export default function TendingSession({ tracks, onTend, onFinish }) {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.8, ease: 'easeIn' }}
                 style={{
-                  width: 22,
-                  height: 28,
-                  marginLeft: -11,
+                  width: 22, height: 28, marginLeft: -11,
                   borderRadius: '50% 50% 50% 50% / 70% 70% 45% 45%',
                   background: 'linear-gradient(180deg, #A8D5FF, #4A6FA5)',
                   boxShadow: '0 6px 18px rgba(74,111,165,0.45)',
@@ -176,8 +299,9 @@ export default function TendingSession({ tracks, onTend, onFinish }) {
           </AnimatePresence>
 
           <div className="relative z-0 p-6">
+            {/* Topic header */}
             <div className="mb-3 flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full" style={{ backgroundColor: color }} aria-hidden="true" />
+              <span className="h-2 w-2 rounded-full" style={{ backgroundColor: color }} />
               <span className="text-[10px] font-mono uppercase tracking-[0.16em] text-text-muted capitalize">
                 {current.domain}
               </span>
@@ -187,51 +311,127 @@ export default function TendingSession({ tracks, onTend, onFinish }) {
               {current.label}
             </h3>
             {current.description && (
-              <p className="mt-2 font-body text-sm leading-relaxed text-text-secondary">
+              <p className="mt-1.5 font-body text-sm leading-relaxed text-text-secondary">
                 {current.description}
               </p>
             )}
 
-            <div className="mt-4 rounded-[16px] bg-[rgba(255,255,255,0.7)] px-4 py-3 border border-[rgba(42,42,42,0.06)]">
-              <p className="font-body text-sm text-text-secondary">{stateLabels[state] || stateLabels.healthy}</p>
-            </div>
+            {/* Action phase */}
+            {phase === 'action' && (
+              <>
+                <div className="mt-4 rounded-[16px] bg-[rgba(255,255,255,0.7)] px-4 py-3 border border-[rgba(42,42,42,0.06)]">
+                  <p className="font-body text-sm text-text-secondary">{stateMessage[state] || stateMessage[BRANCH_STATES.HEALTHY]}</p>
+                </div>
 
-            <div className="mt-5 flex flex-wrap items-center gap-2">
-              <button
-                onClick={handleWater}
-                className="group relative inline-flex items-center gap-2 rounded-full bg-[linear-gradient(135deg,#8ec5fc,#4A6FA5)] px-4 py-2 font-body text-sm font-semibold text-white shadow-[0_8px_20px_rgba(74,111,165,0.35)] transition hover:-translate-y-0.5 hover:shadow-[0_12px_26px_rgba(74,111,165,0.45)]"
-              >
-                <span aria-hidden="true">💧</span>
-                Water
-                <span className="text-[10px] font-mono uppercase tracking-[0.14em] opacity-80">Review</span>
-              </button>
-              <button
-                onClick={handleSunlight}
-                className="group relative inline-flex items-center gap-2 rounded-full bg-[linear-gradient(135deg,#ffd166,#ff8a5a)] px-4 py-2 font-body text-sm font-semibold text-[#6b4b10] shadow-[0_8px_20px_rgba(255,166,43,0.35)] transition hover:-translate-y-0.5 hover:shadow-[0_12px_26px_rgba(255,166,43,0.45)]"
-              >
-                <span aria-hidden="true">☀️</span>
-                Sunlight
-                <span className="text-[10px] font-mono uppercase tracking-[0.14em] opacity-80">Go deeper</span>
-              </button>
-              <button
-                onClick={handleSkip}
-                className="inline-flex items-center gap-2 rounded-full bg-[rgba(42,42,42,0.06)] px-4 py-2 font-body text-sm font-semibold text-text-muted hover:bg-[rgba(42,42,42,0.12)]"
-              >
-                Skip
-              </button>
-            </div>
+                <div className="mt-5 flex flex-wrap items-center gap-2">
+                  <button
+                    onClick={handleWater}
+                    className="inline-flex items-center gap-2 rounded-full bg-[linear-gradient(135deg,#8ec5fc,#4A6FA5)] px-4 py-2.5 font-body text-sm font-semibold text-white shadow-[0_8px_20px_rgba(74,111,165,0.35)] transition hover:-translate-y-0.5"
+                  >
+                    <span>💧</span>
+                    Water
+                    <span className="text-[10px] font-mono uppercase tracking-[0.14em] opacity-80">Active Recall</span>
+                  </button>
+                  <button
+                    onClick={handleSunlight}
+                    className="inline-flex items-center gap-2 rounded-full bg-[linear-gradient(135deg,#ffd166,#ff8a5a)] px-4 py-2.5 font-body text-sm font-semibold text-[#6b4b10] shadow-[0_8px_20px_rgba(255,166,43,0.35)] transition hover:-translate-y-0.5"
+                  >
+                    <span>☀️</span>
+                    Sunlight
+                    <span className="text-[10px] font-mono uppercase tracking-[0.14em] opacity-70">Go Deeper</span>
+                  </button>
+                  <button
+                    onClick={handleSkip}
+                    className="inline-flex items-center gap-2 rounded-full bg-[rgba(42,42,42,0.06)] px-4 py-2.5 font-body text-sm font-semibold text-text-muted hover:bg-[rgba(42,42,42,0.12)]"
+                  >
+                    Skip
+                  </button>
+                </div>
+              </>
+            )}
+
+            {/* Water loading + reveal phase */}
+            {(phase === 'water-loading' || phase === 'water-revealed') && (
+              <div className="mt-4 space-y-4" ref={scrollRef}>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-mono uppercase tracking-wider text-[#4A6FA5]">💧 Active recall</span>
+                  <span className="text-xs text-text-muted font-body">— read, then rate your memory</span>
+                </div>
+
+                <RevealBlock
+                  text={revealText}
+                  isLoading={phase === 'water-loading'}
+                />
+
+                {phase === 'water-revealed' && (
+                  <div className="space-y-2">
+                    <p className="font-body text-xs text-text-muted text-center">How well did you remember this?</p>
+                    <div className="flex gap-2 justify-center flex-wrap">
+                      <button
+                        onClick={() => handleRating('got_it')}
+                        className="flex-1 min-w-[80px] rounded-full bg-[rgba(45,147,108,0.12)] text-[#2D936C] px-3 py-2.5 font-body text-sm font-semibold hover:bg-[rgba(45,147,108,0.22)] transition-colors"
+                      >
+                        ✅ Got it
+                      </button>
+                      <button
+                        onClick={() => handleRating('kinda')}
+                        className="flex-1 min-w-[80px] rounded-full bg-[rgba(255,166,43,0.12)] text-[#8B6914] px-3 py-2.5 font-body text-sm font-semibold hover:bg-[rgba(255,166,43,0.22)] transition-colors"
+                      >
+                        🤔 Kinda
+                      </button>
+                      <button
+                        onClick={() => handleRating('nope')}
+                        className="flex-1 min-w-[80px] rounded-full bg-[rgba(230,57,70,0.1)] text-[#E63946] px-3 py-2.5 font-body text-sm font-semibold hover:bg-[rgba(230,57,70,0.18)] transition-colors"
+                      >
+                        ❌ Blanked
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Sunlight pick phase */}
+            {phase === 'sunlight-pick' && (
+              <div className="mt-4" ref={scrollRef}>
+                <ChildPicker
+                  track={current}
+                  userContextObj={userContextObj}
+                  onPick={handleChildPick}
+                  onClose={() => setPhase('action')}
+                />
+              </div>
+            )}
           </div>
         </motion.div>
       </AnimatePresence>
 
+      {/* Ember reaction */}
       <div className="flex items-center justify-center gap-3">
-        <Ember mood={dropletActive ? 'attentive' : sunActive ? 'proud' : 'encouraging'} size="sm" glowIntensity={0.7} />
+        <Ember
+          mood={
+            phase === 'water-loading' ? 'thinking'
+            : phase === 'water-revealed' ? 'attentive'
+            : phase === 'sunlight-pick' ? 'curious'
+            : dropletActive ? 'attentive'
+            : sunActive ? 'proud'
+            : 'encouraging'
+          }
+          size="sm"
+          glowIntensity={0.7}
+        />
         <p className="font-body text-sm text-text-secondary max-w-sm">
-          {dropletActive
+          {phase === 'water-loading'
+            ? 'Pulling the memory back to the surface...'
+            : phase === 'water-revealed'
+            ? 'Read it. Then tell me how much you remembered.'
+            : phase === 'sunlight-pick'
+            ? 'Pick a thread to follow — it feeds right back to the root.'
+            : dropletActive
             ? 'Water trickles back into the branch.'
             : sunActive
-              ? 'Sunlight reaches from root to leaf.'
-              : 'Pick a care action. Small gestures make the tree remember you.'}
+            ? 'Sunlight reaches from root to leaf.'
+            : 'Pick a care action. Small gestures make the tree remember you.'}
         </p>
       </div>
     </div>

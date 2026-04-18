@@ -310,15 +310,44 @@ export default function Tracks({ onSpark }) {
     setTendingOpen(true);
   };
 
-  const handleTendAction = (track, action) => {
-    const updates = {
-      id: track.id,
-      lastTended: new Date().toISOString(),
-      branchState: BRANCH_STATES.HEALTHY,
-    };
-    if (action === 'sunlight' && track.mode === 'mastering' && track.srsData) {
-      updates.srsData = { ...track.srsData, nextReview: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() };
+  const handleTendAction = (track, action, rating = null) => {
+    const now = new Date().toISOString();
+    const updates = { id: track.id, lastTended: now };
+
+    if (action === 'water' || action === 'sunlight') {
+      // Mark as attended; rating refines the state further
+      updates.branchState = BRANCH_STATES.HEALTHY;
     }
+
+    if (action === 'water-rated') {
+      // Adjust branch state based on recall quality
+      if (rating === 'got_it') {
+        updates.branchState = BRANCH_STATES.HEALTHY;
+        if (track.mode === 'mastering' && track.srsData) {
+          updates.srsData = {
+            ...track.srsData,
+            interval: Math.round((track.srsData.interval || 1) * 1.5),
+            nextReview: new Date(Date.now() + Math.round((track.srsData.interval || 1) * 1.5) * 86400000).toISOString(),
+          };
+        }
+      } else if (rating === 'kinda') {
+        updates.branchState = BRANCH_STATES.THIRSTY;
+        if (track.mode === 'mastering' && track.srsData) {
+          updates.srsData = { ...track.srsData, nextReview: new Date(Date.now() + 86400000).toISOString() };
+        }
+      } else {
+        // nope — wilting, needs more review
+        updates.branchState = BRANCH_STATES.WILTING;
+        if (track.mode === 'mastering' && track.srsData) {
+          updates.srsData = { ...track.srsData, interval: 1, nextReview: now };
+        }
+      }
+    }
+
+    if (action === 'sunlight' && track.mode === 'mastering' && track.srsData) {
+      updates.srsData = { ...track.srsData, nextReview: new Date(Date.now() + 86400000).toISOString() };
+    }
+
     user.updateTrack(updates);
     ping();
   };
@@ -365,6 +394,7 @@ export default function Tracks({ onSpark }) {
           <div className="max-w-[600px] mx-auto">
             <TendingSession
               tracks={tendingList}
+              userContextObj={userContextObj}
               onTend={handleTendAction}
               onFinish={handleTendFinish}
             />
