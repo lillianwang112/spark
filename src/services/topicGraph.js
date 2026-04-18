@@ -8,6 +8,8 @@ const EMPTY_GRAPH = { topics: {} };
 const inflight = new Map();
 const API_BASE = import.meta.env.VITE_TOPIC_API_URL || '';
 const API_RETRY_COOLDOWN_MS = 8000;
+const FALLBACK_CHILD_KIND_ORDER = ['question', 'mechanism', 'connection', 'experiment', 'counterfactual', 'paradox'];
+const FALLBACK_DIFFICULTY_ORDER = ['beginner', 'beginner', 'intermediate', 'intermediate', 'advanced', 'advanced'];
 
 let topicApiStatus = 'unknown';
 let topicApiFailedAt = 0;
@@ -92,6 +94,10 @@ function withInflight(key, factory) {
 }
 
 async function callTopicApi(pathname, payload) {
+  if (!API_BASE) {
+    throw new Error('Topic API unavailable');
+  }
+
   if (topicApiStatus === 'unavailable' && (Date.now() - topicApiFailedAt) < API_RETRY_COOLDOWN_MS) {
     throw new Error('Topic API unavailable');
   }
@@ -188,6 +194,120 @@ function persistChildren(topic, children) {
   return parent.children;
 }
 
+function buildSubstantiveFallbackDescription(topicLabel, childLabel, kind, ageGroup) {
+  const isKids = ageGroup === 'little_explorer';
+  const templates = {
+    question: isKids
+      ? `${childLabel} is a big clue hiding inside ${topicLabel}.`
+      : `${childLabel} asks the central question that makes ${topicLabel} worth exploring.`,
+    mechanism: isKids
+      ? `This shows what makes ${topicLabel} actually work.`
+      : `${childLabel} reveals the mechanism that powers ${topicLabel} under the surface.`,
+    connection: isKids
+      ? `This links ${topicLabel} to another cool world.`
+      : `${childLabel} maps how ${topicLabel} connects to seemingly distant ideas.`,
+    experiment: isKids
+      ? `You can test this with a tiny real-world experiment.`
+      : `${childLabel} turns ${topicLabel} into a testable experiment instead of a vague idea.`,
+    counterfactual: isKids
+      ? `Imagine ${topicLabel} if one rule changed.`
+      : `${childLabel} stress-tests ${topicLabel} by changing one key assumption.`,
+    paradox: isKids
+      ? `This part feels impossible at first, then clicks.`
+      : `${childLabel} holds the paradox that separates shallow understanding from deep understanding.`,
+  };
+
+  return templates[kind] || templates.connection;
+}
+
+function normalizeChildNode(topic, child, index = 0, userContextObj = {}) {
+  if (!child?.label) return null;
+  const kind = child.kind || FALLBACK_CHILD_KIND_ORDER[index % FALLBACK_CHILD_KIND_ORDER.length];
+  const difficulty = child.difficulty || FALLBACK_DIFFICULTY_ORDER[index % FALLBACK_DIFFICULTY_ORDER.length];
+  const label = String(child.label).trim();
+
+  return hydrateTopic({
+    id: child.id || normalizeTopicKey(label),
+    label,
+    description:
+      child.description
+      || child.description_one_sentence
+      || child.summary
+      || child.why_it_matters
+      || buildSubstantiveFallbackDescription(topic.label, label, kind, userContextObj.ageGroup),
+    kind,
+    domain: child.domain || topic.domain,
+    difficulty,
+    surpriseFactor: Boolean(child.surpriseFactor || child.surprising || child.isSurprising),
+    path: child.path || [...(topic.path || [topic.label]), label],
+  });
+}
+
+function buildFallbackChildren(topic, userContextObj = {}) {
+  const topicLabel = topic.label;
+  const isKids = userContextObj.ageGroup === 'little_explorer';
+  const starterChildren = [
+    {
+      label: `${topicLabel} in real life`,
+      kind: 'question',
+      difficulty: 'beginner',
+      surpriseFactor: false,
+      description: isKids
+        ? `Where you can spot ${topicLabel} in everyday life.`
+        : `Concrete examples that make ${topicLabel} feel visible instead of abstract.`,
+    },
+    {
+      label: `How ${topicLabel} actually works`,
+      kind: 'mechanism',
+      difficulty: 'beginner',
+      surpriseFactor: false,
+      description: isKids
+        ? `The hidden moving parts behind ${topicLabel}.`
+        : `The mechanism that explains why ${topicLabel} behaves the way it does.`,
+    },
+    {
+      label: `${topicLabel} and decision making`,
+      kind: 'connection',
+      difficulty: 'intermediate',
+      surpriseFactor: false,
+      description: isKids
+        ? `How ${topicLabel} helps people choose better.`
+        : `How ideas from ${topicLabel} can improve reasoning and real-world decisions.`,
+    },
+    {
+      label: `Test ${topicLabel} yourself`,
+      kind: 'experiment',
+      difficulty: 'intermediate',
+      surpriseFactor: true,
+      description: isKids
+        ? 'A mini experiment you can try today.'
+        : `A hands-on experiment to verify a core claim inside ${topicLabel}.`,
+    },
+    {
+      label: `If ${topicLabel} assumptions break`,
+      kind: 'counterfactual',
+      difficulty: 'advanced',
+      surpriseFactor: true,
+      description: isKids
+        ? 'What changes if one big rule is different?'
+        : `A stress test of ${topicLabel}: what fails first when key assumptions change?`,
+    },
+    {
+      label: `${topicLabel} paradoxes`,
+      kind: 'paradox',
+      difficulty: 'advanced',
+      surpriseFactor: true,
+      description: isKids
+        ? 'The weird part that seems impossible at first.'
+        : `Counterintuitive edge-cases where ${topicLabel} exposes deeper structure.`,
+    },
+  ];
+
+  return starterChildren
+    .map((child, index) => normalizeChildNode(topic, child, index, userContextObj))
+    .filter(Boolean);
+}
+
 function persistExplainer(topic, userContextObj, text) {
   const graph = readGraph();
   const key = normalizeTopicKey(topic.id || topic.label);
@@ -201,7 +321,13 @@ function persistExplainer(topic, userContextObj, text) {
 
 function buildPredictivePrompts(topic, children = []) {
   if (children.length > 0) {
-    return children.slice(0, 3).map((child) => child.label);
+    return children.slice(0, 3).map((child) => {
+      const kind = child.kind || 'connection';
+      if (kind === 'mechanism') return `how ${child.label} works`;
+      if (kind === 'paradox') return `why ${child.label} feels paradoxical`;
+      if (kind === 'experiment') return `experiment: ${child.label}`;
+      return child.label;
+    });
   }
 
   const searches = storage.getSearches().slice(0, 30);
@@ -309,7 +435,9 @@ const TopicGraph = {
           userContext: userContextObj,
         });
         if (Array.isArray(remote?.children) && remote.children.length > 0) {
-          const children = remote.children.map((child) => hydrateTopic(child));
+          const children = remote.children
+            .map((child, index) => normalizeChildNode(resolvedTopic, child, index, userContextObj))
+            .filter(Boolean);
           persistChildren(resolvedTopic, children);
           return children;
         }
@@ -318,16 +446,14 @@ const TopicGraph = {
       }
 
       const childData = await AIService.call('nodeChildren', buildUserParams(resolvedTopic, userContextObj));
-      const children = (Array.isArray(childData) ? childData : []).map((child) => hydrateTopic({
-        id: child.id || normalizeTopicKey(child.label),
-        label: child.label,
-        description: child.description || '',
-        kind: child.kind || 'connection',
-        domain: resolvedTopic.domain,
-        difficulty: child.difficulty,
-        surpriseFactor: child.surpriseFactor,
-        path: [...(resolvedTopic.path || [resolvedTopic.label]), child.label],
-      }));
+      let children = (Array.isArray(childData) ? childData : [])
+        .map((child, index) => normalizeChildNode(resolvedTopic, child, index, userContextObj))
+        .filter(Boolean);
+
+      if (children.length === 0) {
+        children = buildFallbackChildren(resolvedTopic, userContextObj);
+      }
+
       persistChildren(resolvedTopic, children);
       return children;
     });
@@ -384,7 +510,12 @@ const TopicGraph = {
       userContext: userContextObj,
     }).then((remote) => {
       if (Array.isArray(remote?.children) && remote.children.length > 0) {
-        persistChildren(resolvedTopic, remote.children.map((child) => hydrateTopic(child)));
+        persistChildren(
+          resolvedTopic,
+          remote.children
+            .map((child, index) => normalizeChildNode(resolvedTopic, child, index, userContextObj))
+            .filter(Boolean),
+        );
       }
       if (typeof remote?.explainer === 'string' && remote.explainer.trim()) {
         persistExplainer(resolvedTopic, userContextObj, remote.explainer);

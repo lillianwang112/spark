@@ -18,7 +18,7 @@ function toCard(child, domain) {
     imageQuery: child.label,
     _id: child.id || null,
     _label: child.label,
-    _description: child.description || '',
+    _description: child.description || child.description_one_sentence || child.summary || '',
     _kind: child.kind || 'connection',
     _difficulty: child.difficulty,
     _surpriseFactor: child.surpriseFactor,
