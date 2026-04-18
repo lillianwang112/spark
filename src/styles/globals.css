@@ -32,6 +32,7 @@
   --domain-history:     #8B6914;
   --domain-literature:  #C1666B;
   --domain-philosophy:  #4A6FA5;
+  --domain-economics:   #0E9F6E;
   --domain-engineering: #D4A373;
   --domain-languages:   #3A7D44;
   --domain-cooking:     #D35400;
@@ -154,6 +155,29 @@ body::after {
   z-index: -1;
 }
 
+body.theme-dark {
+  --bg-primary: #14121D;
+  --bg-secondary: #1B1926;
+  --bg-tertiary: #232035;
+  --text-primary: #F5F1FF;
+  --text-secondary: #C9C3DD;
+  --text-muted: #A39CB8;
+  --text-faint: #7E7797;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(123,108,246,0.20), transparent 28%),
+    radial-gradient(circle at 88% 12%, rgba(14,159,110,0.16), transparent 30%),
+    radial-gradient(circle at 52% 100%, rgba(255,107,53,0.16), transparent 44%),
+    linear-gradient(180deg, #11101A 0%, #161424 45%, #120F1D 100%);
+}
+
+body.theme-dark::before {
+  opacity: 0.22;
+}
+
+body.theme-dark::after {
+  opacity: 0.18;
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
   line-height: 1.15;
@@ -229,6 +253,28 @@ select {
     0 32px 100px rgba(72, 49, 10, 0.12),
     inset 0 1px 0 rgba(255,255,255,0.82);
   isolation: isolate;
+}
+
+body.theme-dark .spark-surface {
+  background: linear-gradient(180deg, rgba(22,20,34,0.86), rgba(19,17,30,0.84));
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow:
+    0 32px 100px rgba(0,0,0,0.38),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+body.theme-dark .spark-surface::before {
+  background:
+    radial-gradient(circle at 18% 16%, rgba(255, 107, 53, 0.08), transparent 26%),
+    radial-gradient(circle at 82% 22%, rgba(91, 94, 166, 0.12), transparent 30%),
+    radial-gradient(circle at 50% 100%, rgba(14,159,110,0.10), transparent 34%);
+}
+
+body.theme-dark .spark-surface::after {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
+  opacity: 0.28;
 }
 
 .spark-surface::before {

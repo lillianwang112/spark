@@ -125,7 +125,7 @@ const TAB_COLORS = {
   profile: '#FFA62B',
 };
 
-export default function NavBar({ activeTab, onTabChange, onOpenSearch }) {
+export default function NavBar({ activeTab, onTabChange, onOpenSearch, theme = 'light' }) {
   const user = useUserContext();
   const isKids = user.ageGroup === 'little_explorer';
 
@@ -141,10 +141,14 @@ export default function NavBar({ activeTab, onTabChange, onOpenSearch }) {
       <div
         className="mx-auto relative flex items-center justify-around rounded-[28px] px-2 py-1.5 overflow-hidden"
         style={{
-          background: 'rgba(255,252,246,0.96)',
-          border: '1px solid rgba(255,255,255,0.80)',
+          background: theme === 'dark'
+            ? 'linear-gradient(145deg, rgba(26,24,34,0.96), rgba(20,18,28,0.92))'
+            : 'linear-gradient(145deg, rgba(255,252,246,0.98), rgba(255,244,228,0.92))',
+          border: theme === 'dark' ? '1px solid rgba(255,255,255,0.14)' : '1px solid rgba(255,255,255,0.88)',
           backdropFilter: 'blur(28px)',
-          boxShadow: '0 -2px 0 rgba(255,255,255,0.5), 0 20px 60px rgba(42,42,10,0.20), 0 6px 18px rgba(72,49,10,0.12)',
+          boxShadow: theme === 'dark'
+            ? '0 -2px 0 rgba(255,255,255,0.08), 0 28px 72px rgba(0,0,0,0.45), 0 8px 22px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.06)'
+            : '0 -2px 0 rgba(255,255,255,0.56), 0 24px 70px rgba(42,42,10,0.22), 0 8px 22px rgba(72,49,10,0.15), inset 0 1px 0 rgba(255,255,255,0.75)',
         }}
       >
         {/* Radial glow wash */}
