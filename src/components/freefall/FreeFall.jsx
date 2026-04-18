@@ -182,7 +182,7 @@ function shuffle(arr) {
 // NAV_HEIGHT accounts for the fixed bottom NavBar so card buttons aren't hidden
 const NAV_HEIGHT = 90;
 
-function SwipeCard({ topic, onSwipeUp, onSwipeDown, onLike, onDig, isTop, zIndex, liked }) {
+function SwipeCard({ topic, onSwipeUp, onSwipeDown, onLike, onDig, isTop, zIndex, liked, theme = 'light' }) {
   const y = useMotionValue(0);
   const rotate = useTransform(y, [-150, 150], [-4, 4]);
   const opacity = useTransform(y, [-140, 0, 140], [0.5, 1, 0.5]);
@@ -200,6 +200,7 @@ function SwipeCard({ topic, onSwipeUp, onSwipeDown, onLike, onDig, isTop, zIndex
   }, [onSwipeUp, onSwipeDown]);
 
   const isLiked = liked;
+  const isDark = theme === 'dark';
 
   return (
     <motion.div
@@ -214,11 +215,15 @@ function SwipeCard({ topic, onSwipeUp, onSwipeDown, onLike, onDig, isTop, zIndex
       <div
         className="relative w-full h-full rounded-[28px] overflow-hidden flex flex-col"
         style={{
-          background: `linear-gradient(160deg, #110600 0%, #1D0B00 40%, ${color}18 70%, #0E0500 100%)`,
+          background: isDark
+            ? `linear-gradient(160deg, #110600 0%, #1D0B00 40%, ${color}18 70%, #0E0500 100%)`
+            : `linear-gradient(160deg, #FFFFFF 0%, #FFF8ED 45%, ${color}15 78%, #FFF3DF 100%)`,
           border: `1.5px solid ${color}30`,
           boxShadow: isTop
-            ? `0 28px 70px ${color}28, 0 0 0 1px ${color}18, 0 8px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)`
-            : `0 6px 16px rgba(0,0,0,0.20)`,
+            ? isDark
+              ? `0 28px 70px ${color}28, 0 0 0 1px ${color}18, 0 8px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)`
+              : `0 24px 64px ${color}20, 0 10px 30px rgba(72,49,10,0.12), inset 0 1px 0 rgba(255,255,255,0.82)`
+            : isDark ? `0 6px 16px rgba(0,0,0,0.20)` : `0 6px 16px rgba(72,49,10,0.12)`,
         }}
       >
         {/* Subtle domain color wash */}
@@ -243,7 +248,7 @@ function SwipeCard({ topic, onSwipeUp, onSwipeDown, onLike, onDig, isTop, zIndex
           >
             {topic.domain}
           </span>
-          <span className="text-[10px] font-mono opacity-30" style={{ color: 'rgba(255,220,180,0.6)' }}>
+          <span className="text-[10px] font-mono opacity-30" style={{ color: isDark ? 'rgba(255,220,180,0.6)' : 'rgba(72,49,10,0.48)' }}>
             ↑ skip · ↓ back
           </span>
         </div>
@@ -266,7 +271,7 @@ function SwipeCard({ topic, onSwipeUp, onSwipeDown, onLike, onDig, isTop, zIndex
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.1, duration: 0.32 }}
                 className="font-display text-xl font-bold leading-tight"
-                style={{ color: '#FFF7EC' }}
+                style={{ color: isDark ? '#FFF7EC' : '#2C2C2C' }}
               >
                 {topic.label}
               </motion.h2>
@@ -294,8 +299,8 @@ function SwipeCard({ topic, onSwipeUp, onSwipeDown, onLike, onDig, isTop, zIndex
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.22, duration: 0.38 }}
             className="font-body text-sm leading-relaxed flex-1"
-            style={{
-              color: 'rgba(255,220,170,0.78)',
+              style={{
+              color: isDark ? 'rgba(255,220,170,0.78)' : 'rgba(72,49,10,0.78)',
               overflow: 'hidden',
               display: '-webkit-box',
               WebkitLineClamp: 5,
@@ -309,7 +314,7 @@ function SwipeCard({ topic, onSwipeUp, onSwipeDown, onLike, onDig, isTop, zIndex
         {/* Actions */}
         {isTop && (
           <div className="flex-shrink-0 px-4 pb-5 pt-2 space-y-2.5 relative z-10">
-            <div className="flex justify-center gap-4 text-[10px] font-mono opacity-40" style={{ color: 'rgba(255,200,140,0.7)' }}>
+            <div className="flex justify-center gap-4 text-[10px] font-mono opacity-40" style={{ color: isDark ? 'rgba(255,200,140,0.7)' : 'rgba(72,49,10,0.68)' }}>
               <span><span style={{ color }}>[S]</span> save</span>
               <span className="opacity-40">·</span>
               <span><span style={{ color }}>[D]</span> dig deeper</span>
@@ -358,7 +363,7 @@ function SwipeCard({ topic, onSwipeUp, onSwipeDown, onLike, onDig, isTop, zIndex
   );
 }
 
-export default function FreeFall({ onExit, onDig, userContextObj }) {
+export default function FreeFall({ onExit, onDig, theme = 'light' }) {
   const user = useUserContext();
   const [queue] = useState(() => shuffle(TOPICS));
   const [idx, setIdx] = useState(0);
@@ -396,7 +401,7 @@ export default function FreeFall({ onExit, onDig, userContextObj }) {
     showToast(`✓ Saved "${current.label}" → check your Tracks tab`);
     TopicGraph.rememberSignal(node, 'saves');
     advance('up');
-  }, [current, liked, user, advance]);
+  }, [current, liked, user, advance, showToast]);
 
   const handleDig = useCallback(() => {
     const node = TopicGraph.resolveTopic(current.label);
@@ -421,6 +426,7 @@ export default function FreeFall({ onExit, onDig, userContextObj }) {
   const likedCount = liked.size;
   const progress = Math.min((idx / Math.max(TOPICS.length - 1, 1)) * 100, 100);
   const color = DOMAIN_COLORS[current.domain] || '#FF6B35';
+  const isDark = theme === 'dark';
 
   return (
     <div
@@ -428,7 +434,9 @@ export default function FreeFall({ onExit, onDig, userContextObj }) {
       style={{
         height: '100%',
         paddingBottom: NAV_HEIGHT,
-        background: 'linear-gradient(180deg, #0D0500 0%, #180900 50%, #100600 100%)',
+        background: isDark
+          ? 'linear-gradient(180deg, #0D0500 0%, #180900 50%, #100600 100%)'
+          : 'linear-gradient(180deg, #FFF8ED 0%, #FFFDF7 46%, #F7ECDA 100%)',
       }}
     >
       {/* Header */}
@@ -436,7 +444,7 @@ export default function FreeFall({ onExit, onDig, userContextObj }) {
         <div className="flex items-center gap-2">
           <Ember mood={likedCount > 3 ? 'celebrating' : 'curious'} size="xs" glowIntensity={0.8} />
           <div>
-            <p className="text-[11px] font-mono uppercase tracking-[0.18em]" style={{ color: 'rgba(255,138,90,0.85)' }}>
+            <p className="text-[11px] font-mono uppercase tracking-[0.18em]" style={{ color: isDark ? 'rgba(255,138,90,0.85)' : 'rgba(145,95,58,0.82)' }}>
               Freefall
             </p>
             {likedCount > 0 && (
@@ -445,7 +453,7 @@ export default function FreeFall({ onExit, onDig, userContextObj }) {
                 initial={{ scale: 1.2 }}
                 animate={{ scale: 1 }}
                 className="text-[10px] font-body"
-                style={{ color: 'rgba(255,209,102,0.7)' }}
+                style={{ color: isDark ? 'rgba(255,209,102,0.7)' : 'rgba(61,139,92,0.82)' }}
               >
                 {likedCount} saved ✨
               </motion.p>
@@ -453,16 +461,16 @@ export default function FreeFall({ onExit, onDig, userContextObj }) {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-[10px] font-mono" style={{ color: 'rgba(255,180,100,0.45)' }}>
+          <span className="text-[10px] font-mono" style={{ color: isDark ? 'rgba(255,180,100,0.45)' : 'rgba(72,49,10,0.5)' }}>
             {idx + 1} / {TOPICS.length}
           </span>
           <button
             onClick={onExit}
             className="text-sm font-body transition-colors px-3 py-1.5 rounded-full"
             style={{
-              color: 'rgba(255,180,100,0.65)',
-              background: 'rgba(255,107,53,0.10)',
-              border: '1px solid rgba(255,107,53,0.18)',
+              color: isDark ? 'rgba(255,180,100,0.65)' : 'rgba(72,49,10,0.72)',
+              background: isDark ? 'rgba(255,107,53,0.10)' : 'rgba(255,255,255,0.8)',
+              border: isDark ? '1px solid rgba(255,107,53,0.18)' : '1px solid rgba(42,42,42,0.12)',
             }}
           >
             ← Back
@@ -474,7 +482,7 @@ export default function FreeFall({ onExit, onDig, userContextObj }) {
       <div className="px-4 mb-2 flex-shrink-0">
         <div
           className="h-1 rounded-full overflow-hidden"
-          style={{ background: 'rgba(255,255,255,0.07)' }}
+          style={{ background: isDark ? 'rgba(255,255,255,0.07)' : 'rgba(42,42,42,0.08)' }}
         >
           <motion.div
             className="h-full rounded-full"
@@ -493,7 +501,9 @@ export default function FreeFall({ onExit, onDig, userContextObj }) {
           className="absolute inset-4 rounded-[28px]"
           animate={{ scale: 0.93, y: 12, opacity: 0.5 }}
           style={{
-            background: `linear-gradient(145deg, #1A0900, ${DOMAIN_COLORS[next.domain] || '#FF6B35'}14, #0F0500)`,
+            background: isDark
+              ? `linear-gradient(145deg, #1A0900, ${DOMAIN_COLORS[next.domain] || '#FF6B35'}14, #0F0500)`
+              : `linear-gradient(145deg, rgba(255,255,255,0.92), ${(DOMAIN_COLORS[next.domain] || '#FF6B35')}14, rgba(255,248,236,0.92))`,
             border: `1.5px solid ${DOMAIN_COLORS[next.domain] || '#FF6B35'}22`,
           }}
         />
@@ -516,6 +526,7 @@ export default function FreeFall({ onExit, onDig, userContextObj }) {
               isTop
               zIndex={10}
               liked={liked.has(current.id)}
+              theme={theme}
               onSwipeUp={() => advance('up')}
               onSwipeDown={() => idx > 0 && advance('down')}
               onLike={handleLike}
