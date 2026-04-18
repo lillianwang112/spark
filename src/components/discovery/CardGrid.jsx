@@ -64,8 +64,9 @@ export default function CardGrid({
   totalRounds = DISCOVERY_CONFIG.DEFAULT_ROUNDS,
   mode = 'balanced',
 }) {
-  const [round, setRound] = useState(0);
-  const [cards, setCards] = useState(DEFAULT_ROUND_CARDS[0]);
+  const startRound = mode === 'surprise' ? 2 : mode === 'similar' ? 1 : 0;
+  const [round, setRound] = useState(startRound);
+  const [cards, setCards] = useState(DEFAULT_ROUND_CARDS[startRound]);
   const [isLoadingCards, setIsLoadingCards] = useState(false);
   const [pickedCard, setPickedCard] = useState(null);
   const [emberMood, setEmberMood] = useState('curious');
@@ -148,7 +149,7 @@ export default function CardGrid({
 
   const ageGroup = userContext?.ageGroup || 'college';
   const isKids = ageGroup === 'little_explorer';
-  const progressPct = Math.round(((round + (pickedCard ? 1 : 0)) / totalRounds) * 100);
+  const progressPct = Math.round((((round - startRound) + (pickedCard ? 1 : 0)) / (totalRounds - startRound)) * 100);
   const topDomain = ranked[0]?.domain || cards[0]?.domain;
   const topDomainColor = DOMAIN_COLORS[topDomain] || '#FF6B35';
   const sparkline = useMemo(() => ranked.slice(0, 3).map((r) => r.domain), [ranked]);

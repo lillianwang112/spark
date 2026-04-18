@@ -15,12 +15,12 @@ import { parseAIJson } from '../utils/helpers.js';
 import { hashPath } from '../utils/helpers.js';
 
 const AI_BACKEND = import.meta.env.VITE_AI_BACKEND || 'puter';
-const TIMEOUT_MS = 12000;
+const TIMEOUT_MS = 5000;
 const inflight = new Map();
 
 // ── Wait for Puter.js to load (async script) ──
 // Short timeout so network failures fail fast rather than hanging
-function waitForPuter(timeoutMs = 3000) {
+function waitForPuter(timeoutMs = 1500) {
   if (window.puter) return Promise.resolve(window.puter);
   return new Promise((resolve, reject) => {
     const start = Date.now();
@@ -88,10 +88,7 @@ const FALLBACKS = {
     { text: "Why do some languages have no word for 'no'?", domain: "languages", emoji: "🗣️", imageQuery: "linguistics language diversity", kind: "question", description: "A tiny word can reveal a whole worldview." },
     { text: "What makes a joke actually funny — scientifically?", domain: "philosophy", emoji: "😂", imageQuery: "humor psychology brain", kind: "paradox", description: "Humor lives right where logic and surprise collide." },
   ],
-  nodeChildren: () => [
-    { id: 'fallback_1', label: 'Go deeper', description: 'Explore further into this topic', difficulty: 'intermediate', surpriseFactor: false },
-    { id: 'fallback_2', label: 'Connections', description: 'How this connects to other fields', difficulty: 'beginner', surpriseFactor: true },
-  ],
+  nodeChildren: () => null, // null signals topicGraph to use its richer encyclopedia fallback
   explainer: (params) => `${params?.currentNode || 'This topic'} is a fascinating area of study. It connects to many things you might already know, and opens doors to even more. Keep exploring — the deeper you go, the more interesting it gets.`,
   personalitySummary: () => "You're drawn to the edges of things — where one field bleeds into another. You don't just learn; you connect.",
   journeyNarrative: () => "Your curiosity took some interesting turns. Keep following what pulls you.",
@@ -167,7 +164,7 @@ const AIService = {
         try {
           result = await withTimeout(complete(prompt, systemPrompt), TIMEOUT_MS);
         } catch (err2) {
-          console.error(`[AIService] Both attempts failed for ${type}:`, err2.message);
+          console.warn(`[AIService] Both attempts failed for ${type}:`, err2?.message ?? String(err2));
           return FALLBACKS[type]?.(params) ?? null;
         }
       }

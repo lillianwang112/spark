@@ -435,6 +435,7 @@ const TopicGraph = {
   },
 
   getCachedChildren(topic) {
+    if (!topic) return null;
     const graphTopic = getTopicFromGraph(topic.id || topic.label);
     if (graphTopic?.children?.length) return graphTopic.children;
 
@@ -459,6 +460,7 @@ const TopicGraph = {
 
   async getChildren(topic, userContextObj = {}, options = {}) {
     const resolvedTopic = hydrateTopic(topic);
+    if (!resolvedTopic) return [];
     persistTopic(resolvedTopic);
 
     if (!options.forceFresh) {
@@ -469,59 +471,79 @@ const TopicGraph = {
       }
     }
 
+    // Build instant fallback from curated + encyclopedia data (no AI wait)
+    const curated = getCuratedRabbitHoles(resolvedTopic)
+      .map((child, index) => normalizeChildNode(resolvedTopic, child, index, userContextObj))
+      .filter(Boolean);
+    const encyclopediaFallback = getEncyclopediaChildren(resolvedTopic)
+      .map((child, index) => normalizeChildNode(resolvedTopic, child, index, userContextObj))
+      .filter(Boolean);
+
+    let immediateChildren;
+    if (curated.length > 0) {
+      const merged = new Map();
+      [...curated, ...encyclopediaFallback].forEach((child) => {
+        const key = normalizeTopicKey(child.id || child.label);
+        if (!merged.has(key)) merged.set(key, child);
+      });
+      immediateChildren = Array.from(merged.values()).slice(0, 6);
+    } else if (encyclopediaFallback.length > 0) {
+      immediateChildren = encyclopediaFallback.slice(0, 6);
+    } else {
+      immediateChildren = buildFallbackChildren(resolvedTopic, userContextObj);
+    }
+
+    persistChildren(resolvedTopic, immediateChildren);
+
+    // Enrich with AI in background — updates cache for next visit
     const requestKey = `children:${normalizeTopicKey(resolvedTopic.id || resolvedTopic.label)}:${buildProfileKey(userContextObj)}`;
-    return withInflight(requestKey, async () => {
-      try {
-        const remote = await callTopicApi('/api/topic/children', {
-          topic: resolvedTopic,
-          userContext: userContextObj,
-        });
-        if (Array.isArray(remote?.children) && remote.children.length > 0) {
-          const children = remote.children
+    if (!inflight.has(requestKey)) {
+      const enrichPromise = (async () => {
+        try {
+          const remote = await callTopicApi('/api/topic/children', {
+            topic: resolvedTopic,
+            userContext: userContextObj,
+          });
+          if (Array.isArray(remote?.children) && remote.children.length > 0) {
+            const enriched = remote.children
+              .map((child, index) => normalizeChildNode(resolvedTopic, child, index, userContextObj))
+              .filter(Boolean);
+            if (enriched.length > 0) { persistChildren(resolvedTopic, enriched); return; }
+          }
+        } catch { /* no remote API */ }
+
+        try {
+          const childData = await AIService.call('nodeChildren', buildUserParams(resolvedTopic, userContextObj));
+          const aiChildren = (Array.isArray(childData) ? childData : [])
             .map((child, index) => normalizeChildNode(resolvedTopic, child, index, userContextObj))
             .filter(Boolean);
-          persistChildren(resolvedTopic, children);
-          return children;
-        }
-      } catch {
-        // Fall back to local-first graph below.
-      }
+          if (aiChildren.length >= 3) {
+            const merged = new Map();
+            [...immediateChildren, ...aiChildren].forEach((child) => {
+              const k = normalizeTopicKey(child.id || child.label);
+              if (!merged.has(k)) merged.set(k, child);
+            });
+            persistChildren(resolvedTopic, Array.from(merged.values()).slice(0, 6));
+          }
+        } catch { /* swallow — background only */ }
+      })().finally(() => inflight.delete(requestKey));
+      inflight.set(requestKey, enrichPromise);
+    }
 
-      const childData = await AIService.call('nodeChildren', buildUserParams(resolvedTopic, userContextObj));
-      let children = (Array.isArray(childData) ? childData : [])
-        .map((child, index) => normalizeChildNode(resolvedTopic, child, index, userContextObj))
-        .filter(Boolean);
-
-      const curated = getCuratedRabbitHoles(resolvedTopic)
-        .map((child, index) => normalizeChildNode(resolvedTopic, child, index, userContextObj))
-        .filter(Boolean);
-
-      if (curated.length > 0) {
-        const merged = new Map();
-        [...curated, ...children].forEach((child) => {
-          const key = normalizeTopicKey(child.id || child.label);
-          if (!merged.has(key)) merged.set(key, child);
-        });
-        children = Array.from(merged.values()).slice(0, 6);
-      }
-
-
-      if (children.length === 0) {
-        children = buildFallbackChildren(resolvedTopic, userContextObj);
-      }
-
-      persistChildren(resolvedTopic, children);
-      return children;
-    });
+    return immediateChildren;
   },
 
   getCachedExplainer(topic, userContextObj = {}) {
+    if (!topic) return null;
     const record = getTopicFromGraph(topic.id || topic.label);
     return record?.explainers?.[buildProfileKey(userContextObj)] || null;
   },
 
   async getExplainer(topic, userContextObj = {}, options = {}) {
     const resolvedTopic = hydrateTopic(topic);
+    if (!resolvedTopic) {
+      return getEncyclopediaExplainer({ label: String(topic || 'This topic') });
+    }
     persistTopic(resolvedTopic);
 
     if (!options.forceFresh) {
@@ -529,28 +551,38 @@ const TopicGraph = {
       if (cached) return cached;
     }
 
-    const requestKey = `explainer:${normalizeTopicKey(resolvedTopic.id || resolvedTopic.label)}:${buildProfileKey(userContextObj)}:${hashPath(resolvedTopic.path || [resolvedTopic.label])}`;
-    return withInflight(requestKey, async () => {
-      try {
-        const remote = await callTopicApi('/api/topic/explainer', {
-          topic: resolvedTopic,
-          userContext: userContextObj,
-        });
-        if (typeof remote?.explainer === 'string' && remote.explainer.trim()) {
-          persistExplainer(resolvedTopic, userContextObj, remote.explainer);
-          return remote.explainer;
-        }
-      } catch {
-        // Fall back to local-first graph below.
-      }
+    // Return encyclopedia explainer immediately (no AI wait)
+    const immediateText = getEncyclopediaExplainer(resolvedTopic);
 
-      let text = await AIService.call('explainer', buildUserParams(resolvedTopic, userContextObj));
-      if (!text || typeof text !== 'string' || text.trim().length < 80) {
-        text = getEncyclopediaExplainer(resolvedTopic);
-      }
-      persistExplainer(resolvedTopic, userContextObj, text);
-      return text;
-    });
+    // Enrich with AI in background — updates cache for next visit
+    const requestKey = `explainer:${normalizeTopicKey(resolvedTopic.id || resolvedTopic.label)}:${buildProfileKey(userContextObj)}:${hashPath(resolvedTopic.path || [resolvedTopic.label])}`;
+    if (!inflight.has(requestKey)) {
+      const enrichPromise = (async () => {
+        try {
+          const remote = await callTopicApi('/api/topic/explainer', {
+            topic: resolvedTopic,
+            userContext: userContextObj,
+          });
+          if (typeof remote?.explainer === 'string' && remote.explainer.trim()) {
+            persistExplainer(resolvedTopic, userContextObj, remote.explainer);
+            return;
+          }
+        } catch { /* no remote API */ }
+
+        try {
+          const text = await AIService.call('explainer', buildUserParams(resolvedTopic, userContextObj));
+          if (text && typeof text === 'string' && text.trim().length >= 80) {
+            persistExplainer(resolvedTopic, userContextObj, text);
+            return;
+          }
+        } catch { /* swallow — background only */ }
+
+        persistExplainer(resolvedTopic, userContextObj, immediateText);
+      })().finally(() => inflight.delete(requestKey));
+      inflight.set(requestKey, enrichPromise);
+    }
+
+    return immediateText;
   },
 
   getPredictedPrompts(topic, userContextObj = {}) {
@@ -562,6 +594,7 @@ const TopicGraph = {
 
   async warmTopic(topic, userContextObj = {}) {
     const resolvedTopic = hydrateTopic(topic);
+    if (!resolvedTopic) return { topic: null, children: [], predictions: [] };
     persistTopic(resolvedTopic);
 
     callTopicApi('/api/topic/warm', {

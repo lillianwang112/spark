@@ -285,11 +285,16 @@ export default function Explore({
                   {[
                     ['balanced', 'Balanced'],
                     ['similar', 'More like this'],
-                    ['surprise', 'Surprise me'],
+                    ['surprise', 'Surprise me ✦'],
                   ].map(([value, label]) => (
                     <button
                       key={value}
-                      onClick={() => setDiscoveryMode(value)}
+                      onClick={() => {
+                        setDiscoveryMode(value);
+                        setDeepDiveNode(null);
+                        setDrillStack([]);
+                        setPhase('discovery');
+                      }}
                       className={`rounded-full px-3 py-1.5 text-sm font-body font-semibold transition-all ${
                         discoveryMode === value
                           ? 'bg-spark-ember text-white shadow-[0_6px_16px_rgba(255,107,53,0.28)]'
@@ -353,6 +358,7 @@ export default function Explore({
                 className="py-2"
               >
                 <CardGrid
+                  key={discoveryMode}
                   userContext={userContextObj}
                   onDiscoveryComplete={handleDiscoveryComplete}
                   mode={discoveryMode}
