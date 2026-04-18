@@ -154,6 +154,14 @@ function AppShell() {
   const [pendingDeepDive, setPendingDeepDive] = useState(null);
   const [globalSearchOpen, setGlobalSearchOpen] = useState(false);
   const [pendingGlobalSearch, setPendingGlobalSearch] = useState(null);
+  const [theme, setTheme] = useState(() => {
+    try {
+      const saved = localStorage.getItem('spark_theme');
+      return saved === 'dark' ? 'dark' : 'light';
+    } catch {
+      return 'light';
+    }
+  });
 
   // Demo mode: read ?demo= param once on mount and auto-load
   const demoKey = useMemo(() => {
@@ -180,13 +188,6 @@ function AppShell() {
     name: user.name,
   }), [user.ageGroup, user.personality, user.eloScores, user.name]);
 
-  useEffect(() => {
-    if (!onboardingComplete && onboardingDone) {
-      setOnboardingDone(false);
-      setOnboardingResult(null);
-    }
-  }, [onboardingComplete, onboardingDone]);
-
   const threadSearch = useMemo(() => {
     const params = new URLSearchParams(window.location.search);
     const thread = params.get('thread');
@@ -210,6 +211,12 @@ function AppShell() {
     window.addEventListener(OPEN_DEEP_DIVE_EVENT, handleOpenDeepDive);
     return () => window.removeEventListener(OPEN_DEEP_DIVE_EVENT, handleOpenDeepDive);
   }, []);
+
+  useEffect(() => {
+    const isDark = theme === 'dark';
+    document.body.classList.toggle('theme-dark', isDark);
+    try { localStorage.setItem('spark_theme', theme); } catch { /* ignore */ }
+  }, [theme]);
 
   if (isLoading) {
     return (
@@ -243,6 +250,7 @@ function AppShell() {
         onConsumePendingGlobalSearch={() => setPendingGlobalSearch(null)}
         onSpark={pingStreak}
         streakState={streakState}
+        theme={theme}
       />
     ),
     tracks:       <Tracks onSpark={pingStreak} />,
@@ -254,7 +262,7 @@ function AppShell() {
   const meta = PAGE_META[activeTab] || PAGE_META.explore;
 
   return (
-    <div className="spark-shell px-2 pb-0 pt-2 sm:px-5 sm:pt-4">
+    <div className={`spark-shell px-2 pb-0 pt-2 sm:px-5 sm:pt-4 ${theme === 'dark' ? 'theme-dark' : ''}`}>
       {/* Ambient background orbs */}
       <div className="spark-orb h-40 w-40 sm:h-64 sm:w-64 bg-[rgba(255,107,53,0.34)] left-2 top-4 sm:left-6 sm:top-8" />
       <div className="spark-orb h-44 w-44 sm:h-72 sm:w-72 bg-[rgba(74,111,165,0.26)] right-2 top-32 sm:right-4 sm:top-44" />
@@ -275,6 +283,8 @@ function AppShell() {
           dailyGoal={dailyGoal}
           emberMood={meta.mood}
           label={meta.label}
+          theme={theme}
+          onToggleTheme={() => setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'))}
         />
 
         <main
@@ -301,6 +311,7 @@ function AppShell() {
           activeTab={activeTab}
           onTabChange={setActiveTab}
           onOpenSearch={() => setGlobalSearchOpen(true)}
+          theme={theme}
         />
 
         <GlobalSearch

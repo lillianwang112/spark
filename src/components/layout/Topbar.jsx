@@ -14,6 +14,8 @@ export default function Topbar({
   onTapEmber,
   emberMood = 'idle',
   label = 'Curiosity Engine',
+  theme = 'light',
+  onToggleTheme,
 }) {
   const isKids = ageGroup === 'little_explorer';
   const goalMet = sparksToday >= dailyGoal;
@@ -90,6 +92,19 @@ export default function Topbar({
       </button>
 
       <div className="flex items-center gap-2">
+        <button
+          onClick={onToggleTheme}
+          className="rounded-full px-2.5 py-1.5 text-[10px] font-mono uppercase tracking-[0.14em] transition-colors"
+          style={{
+            background: theme === 'dark' ? 'rgba(255,209,102,0.16)' : 'rgba(42,42,42,0.06)',
+            color: theme === 'dark' ? '#FFD166' : 'rgba(72,49,10,0.72)',
+            border: `1px solid ${theme === 'dark' ? 'rgba(255,209,102,0.32)' : 'rgba(42,42,42,0.12)'}`,
+          }}
+          title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+        >
+          {theme === 'dark' ? '☀ Light' : '🌙 Dark'}
+        </button>
+
         {/* Daily goal ring */}
         <div
           className="relative flex items-center gap-2 rounded-full px-2.5 py-1.5 transition-all"

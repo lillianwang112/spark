@@ -56,6 +56,7 @@ export default function Explore({
   onConsumePendingGlobalSearch,
   onSpark,
   streakState,
+  theme = 'light',
 }) {
   const user = useUserContext();
   const { initRoots, roots, nodes, expandNode, updateNode } = useTree();
@@ -277,7 +278,7 @@ export default function Explore({
           setFreefallMode(false);
           handleGoDeeper(node);
         }}
-        userContextObj={userContextObj}
+        theme={theme}
       />
     );
   }
@@ -287,9 +288,9 @@ export default function Explore({
       <div
         className="sticky top-0 z-10 px-4 pb-2.5 pt-4 backdrop-blur-2xl"
         style={{
-          background: 'rgba(255,252,245,0.90)',
-          borderBottom: '1px solid rgba(255,200,140,0.18)',
-          boxShadow: '0 4px 20px rgba(72,49,10,0.06)',
+          background: theme === 'dark' ? 'rgba(20,18,28,0.82)' : 'rgba(255,252,245,0.90)',
+          borderBottom: theme === 'dark' ? '1px solid rgba(255,255,255,0.12)' : '1px solid rgba(255,200,140,0.18)',
+          boxShadow: theme === 'dark' ? '0 4px 20px rgba(0,0,0,0.28)' : '0 4px 20px rgba(72,49,10,0.06)',
         }}
       >
         <div className="mx-auto max-w-[760px]">

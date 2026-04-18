@@ -125,7 +125,7 @@ const TAB_COLORS = {
   profile: '#FFA62B',
 };
 
-export default function NavBar({ activeTab, onTabChange, onOpenSearch }) {
+export default function NavBar({ activeTab, onTabChange, onOpenSearch, theme = 'light' }) {
   const user = useUserContext();
   const isKids = user.ageGroup === 'little_explorer';
 
