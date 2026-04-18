@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import StreakFlame from '../common/StreakFlame.jsx';
 import ProgressRing from '../common/ProgressRing.jsx';
@@ -19,24 +19,33 @@ export default function Topbar({
   const goalMet = sparksToday >= dailyGoal;
 
   const [showGoalBadge, setShowGoalBadge] = useState(false);
-  const prevGoalMetRef = useState(false);
+  const prevGoalMetRef = useRef(false);
   useEffect(() => {
-    const wasGoalMet = prevGoalMetRef[0];
+    const wasGoalMet = prevGoalMetRef.current;
     if (goalMet && !wasGoalMet) {
-      setShowGoalBadge(true);
+      const showTimer = setTimeout(() => setShowGoalBadge(true), 0);
       const t = setTimeout(() => setShowGoalBadge(false), 2800);
-      prevGoalMetRef[0] = true;
-      return () => clearTimeout(t);
+      prevGoalMetRef.current = true;
+      return () => {
+        clearTimeout(showTimer);
+        clearTimeout(t);
+      };
     }
-    if (!goalMet) prevGoalMetRef[0] = false;
-  }, [goalMet, prevGoalMetRef]);
+    if (!goalMet) prevGoalMetRef.current = false;
+  }, [goalMet]);
 
   return (
     <motion.header
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
-      className="relative z-20 flex items-center justify-between gap-3 px-4 pt-4 pb-3 sm:px-6 sm:pt-5"
+      className="relative z-20 mx-2 mt-2 flex items-center justify-between gap-3 rounded-[24px] border px-4 pt-4 pb-3 sm:mx-4 sm:px-6 sm:pt-5"
+      style={{
+        background: 'linear-gradient(135deg, rgba(255,255,255,0.82), rgba(255,247,235,0.72))',
+        borderColor: 'rgba(255,255,255,0.82)',
+        backdropFilter: 'blur(18px)',
+        boxShadow: '0 10px 34px rgba(72,49,10,0.1), inset 0 1px 0 rgba(255,255,255,0.8)',
+      }}
     >
       {/* Brand + Ember */}
       <button

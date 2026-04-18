@@ -32,6 +32,21 @@ function seededDomainSlice(domains, seed, count = 3) {
   return ordered.slice(0, count);
 }
 
+const EXPLORE_SPOTLIGHT_TOPICS = [
+  { id: 'personal_finance_101', label: 'Personal Finance', domain: 'economics', path: ['Finance & Economics', 'Personal Finance'], description: 'Budgeting, saving, debt, and compound growth in real life.' },
+  { id: 'investing_basics', label: 'Investing Basics', domain: 'economics', path: ['Finance & Economics', 'Investing'], description: 'Index funds, risk, and long-term allocation strategy.' },
+  { id: 'financial_markets', label: 'Market Crashes', domain: 'economics', path: ['Finance & Economics', 'Financial Markets', 'Why Markets Crash'], description: 'Bubbles, leverage, contagion, and panic feedback loops.' },
+  { id: 'behavioral_econ', label: 'Behavioral Econ', domain: 'economics', path: ['Finance & Economics', 'Behavioral Economics'], description: 'How real human behavior bends idealized market models.' },
+  { id: 'public_policy', label: 'Public Policy', domain: 'economics', path: ['Finance & Economics', 'Public Finance', 'Policy'], description: 'Taxes, incentives, and tradeoffs in collective decisions.' },
+  { id: 'geopolitics_energy', label: 'Energy Geopolitics', domain: 'history', path: ['History', 'Modern History', 'Energy Geopolitics'], description: 'How oil, shipping lanes, and supply shocks shape history.' },
+  { id: 'startup_mechanics', label: 'Startup Mechanics', domain: 'cs', path: ['Computer Science', 'Product', 'Startup Mechanics'], description: 'From MVP to product-market fit and growth loops.' },
+  { id: 'design_for_attention', label: 'Attention Design', domain: 'art', path: ['Art & Design', 'Attention Design'], description: 'Why interfaces attract, hold, and redirect human attention.' },
+  { id: 'ai_and_labor', label: 'AI & Jobs', domain: 'economics', path: ['Finance & Economics', 'Labor Economics', 'AI & Labor'], description: 'Automation, augmentation, and shifting labor markets.' },
+  { id: 'science_of_sleep', label: 'Science of Sleep', domain: 'science', path: ['Science', 'Neuroscience', 'Sleep'], description: 'How sleep drives memory consolidation and learning outcomes.' },
+  { id: 'power_and_ethics', label: 'Power & Ethics', domain: 'philosophy', path: ['Philosophy', 'Political Philosophy', 'Power & Ethics'], description: 'Moral tradeoffs in institutions, leadership, and systems.' },
+  { id: 'history_of_money', label: 'History of Money', domain: 'history', path: ['History', 'Economic History', 'Money'], description: 'From shells and coins to fiat, credit, and digital ledgers.' },
+];
+
 export default function Explore({
   initialSearch = null,
   onboardingIntent = null,
@@ -55,10 +70,9 @@ export default function Explore({
   const [discoveryDirection, setDiscoveryDirection] = useState('similar');
   const [freefallMode, setFreefallMode] = useState(onboardingIntent === 'explore');
   const [forceDiscovery, setForceDiscovery] = useState(false);
+  const [showMoreExplore, setShowMoreExplore] = useState(false);
 
-  const userContextObj = useMemo(() => buildUserContext(user), [
-    user.ageGroup, user.personality, user.eloScores, user.knowledgeStates, user.tracks?.length,
-  ]);
+  const userContextObj = useMemo(() => buildUserContext(user), [user]);
   const {
     query,
     suggestions,
@@ -592,7 +606,7 @@ export default function Explore({
                         <p className="text-xs font-body text-text-muted">Jump into any world</p>
                       </div>
                       <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
-                        {DOMAINS.map((domain, i) => {
+                        {(showMoreExplore ? DOMAINS : DOMAINS.slice(0, 10)).map((domain, i) => {
                           const color = DOMAIN_COLORS[domain] || '#FF6B35';
                           return (
                             <motion.button
@@ -640,6 +654,40 @@ export default function Explore({
                           );
                         })}
                       </div>
+                      <div className="mt-3 flex justify-center">
+                        <button
+                          onClick={() => setShowMoreExplore((v) => !v)}
+                          className="rounded-full border border-[rgba(42,42,42,0.1)] bg-[rgba(255,255,255,0.74)] px-4 py-2 text-xs font-body font-semibold text-text-primary transition-colors hover:bg-white"
+                        >
+                          {showMoreExplore ? 'Show core worlds' : 'Show more worlds + finance'}
+                        </button>
+                      </div>
+
+                      {showMoreExplore && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3"
+                        >
+                          {EXPLORE_SPOTLIGHT_TOPICS.map((topic, idx) => {
+                            const color = DOMAIN_COLORS[topic.domain] || '#FF6B35';
+                            return (
+                              <motion.button
+                                key={topic.id}
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ delay: idx * 0.03 }}
+                                onClick={() => setDeepDiveNode(topic)}
+                                className="rounded-[14px] border px-3 py-2 text-left"
+                                style={{ borderColor: `${color}36`, background: `${color}0D` }}
+                              >
+                                <p className="text-xs font-body font-semibold" style={{ color }}>{topic.label}</p>
+                                <p className="mt-0.5 line-clamp-2 text-[11px] font-body text-text-secondary">{topic.description}</p>
+                              </motion.button>
+                            );
+                          })}
+                        </motion.div>
+                      )}
                     </div>
 
                     <div className="mt-5 flex justify-center">

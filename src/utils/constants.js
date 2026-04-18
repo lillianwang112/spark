@@ -17,7 +17,7 @@ export const PERSONALITIES = {
 // ── Domains ──
 export const DOMAINS = [
   'math', 'science', 'cs', 'art', 'music', 'history',
-  'literature', 'philosophy', 'engineering', 'languages',
+  'literature', 'philosophy', 'economics', 'engineering', 'languages',
   'cooking', 'sports', 'dance', 'film', 'architecture',
 ];
 
@@ -30,6 +30,7 @@ export const DOMAIN_LABELS = {
   history: 'History',
   literature: 'Literature',
   philosophy: 'Philosophy',
+  economics: 'Finance & Economics',
   engineering: 'Engineering',
   languages: 'Languages',
   cooking: 'Cooking',
@@ -49,6 +50,7 @@ export const DOMAIN_COLORS = {
   history:      '#8B6914',
   literature:   '#C1666B',
   philosophy:   '#4A6FA5',
+  economics:    '#0E9F6E',
   engineering:  '#D4A373',
   languages:    '#3A7D44',
   cooking:      '#D35400',
@@ -68,6 +70,7 @@ export const DOMAIN_EMOJIS = {
   history:      '📜',
   literature:   '📚',
   philosophy:   '💭',
+  economics:    '💹',
   engineering:  '⚙️',
   languages:    '🌍',
   cooking:      '🍳',

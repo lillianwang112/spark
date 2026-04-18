@@ -141,10 +141,10 @@ export default function NavBar({ activeTab, onTabChange, onOpenSearch }) {
       <div
         className="mx-auto relative flex items-center justify-around rounded-[28px] px-2 py-1.5 overflow-hidden"
         style={{
-          background: 'rgba(255,252,246,0.96)',
-          border: '1px solid rgba(255,255,255,0.80)',
+          background: 'linear-gradient(145deg, rgba(255,252,246,0.98), rgba(255,244,228,0.92))',
+          border: '1px solid rgba(255,255,255,0.88)',
           backdropFilter: 'blur(28px)',
-          boxShadow: '0 -2px 0 rgba(255,255,255,0.5), 0 20px 60px rgba(42,42,10,0.20), 0 6px 18px rgba(72,49,10,0.12)',
+          boxShadow: '0 -2px 0 rgba(255,255,255,0.56), 0 24px 70px rgba(42,42,10,0.22), 0 8px 22px rgba(72,49,10,0.15), inset 0 1px 0 rgba(255,255,255,0.75)',
         }}
       >
         {/* Radial glow wash */}
