@@ -93,9 +93,9 @@ const SIZE_MAP = {
 };
 
 const ORBIT_SPARKS = [
-  { cx: 78, cy: 24, r: 2.6, delay: 0 },
-  { cx: 91, cy: 48, r: 2.2, delay: 0.25 },
-  { cx: 30, cy: 30, r: 2.1, delay: 0.45 },
+  { cx: 76, cy: 22, r: 2.2, delay: 0 },
+  { cx: 88, cy: 44, r: 1.9, delay: 0.25 },
+  { cx: 28, cy: 28, r: 1.8, delay: 0.45 },
 ];
 
 export default function Ember({
@@ -215,9 +215,9 @@ export default function Ember({
         />
 
         <path
-          d="M53 18c5 6 9 10 10 17-7-2-13 2-17 7 1-10 2-17 7-24Z"
-          fill="rgba(255,255,255,0.55)"
-          opacity="0.72"
+          d="M48 26c5-3 10-3 16 1-4 3-7 8-7 13-5-3-9-2-13 0 0-5 1-10 4-14Z"
+          fill="rgba(255,255,255,0.48)"
+          opacity="0.76"
         />
 
         <motion.g
@@ -228,7 +228,7 @@ export default function Ember({
           <ellipse cx="44" cy="58.5" rx="8.5" ry="9.6" fill="rgba(255,255,255,0.26)" />
           <ellipse cx="60" cy="58.5" rx="8.5" ry="9.6" fill="rgba(255,255,255,0.2)" />
           <ellipse
-            cx="44"
+            cx="42"
             cy="58.5"
             rx="6.6"
             ry="8"
@@ -237,7 +237,7 @@ export default function Ember({
             strokeWidth="0.7"
           />
           <ellipse
-            cx="60"
+            cx="62"
             cy="58.5"
             rx="6.6"
             ry="8"
