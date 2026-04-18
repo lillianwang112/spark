@@ -15,6 +15,42 @@ const ALL_SEED_LABELS = Object.values(SEED_INDEX).map((n) => ({
   path: n.path || [n.label],
 }));
 
+// Broad topic pool including freefall topics — enables niche suggestions
+const FREEFALL_TOPICS = [
+  { id: 'black_holes', label: 'Black Holes', domain: 'science' },
+  { id: 'quantum_entanglement', label: 'Quantum Entanglement', domain: 'science' },
+  { id: 'infinity', label: 'Infinity', domain: 'math' },
+  { id: 'prime_numbers', label: 'Prime Numbers', domain: 'math' },
+  { id: 'topology', label: 'Topology', domain: 'math' },
+  { id: 'neural_networks', label: 'Neural Networks', domain: 'cs' },
+  { id: 'chaos_theory', label: 'Chaos Theory', domain: 'science' },
+  { id: 'stoicism', label: 'Stoicism', domain: 'philosophy' },
+  { id: 'golden_ratio', label: 'The Golden Ratio', domain: 'art' },
+  { id: 'music_harmony', label: 'Why Music Moves Us', domain: 'music' },
+  { id: 'fermat_last', label: "Fermat's Last Theorem", domain: 'math' },
+  { id: 'sapir_whorf', label: 'Language Shapes Thought', domain: 'humanities' },
+  { id: 'emergence', label: 'Emergence', domain: 'science' },
+  { id: 'cryptography', label: 'Cryptography', domain: 'cs' },
+  { id: 'dark_matter', label: 'Dark Matter', domain: 'science' },
+  { id: 'consciousness', label: 'Consciousness', domain: 'philosophy' },
+  { id: 'information_theory', label: 'Information Theory', domain: 'cs' },
+  { id: 'evolution', label: 'Evolution', domain: 'science' },
+  { id: 'category_theory', label: 'Category Theory', domain: 'math' },
+  { id: 'epigenetics', label: 'Epigenetics', domain: 'science' },
+  { id: 'four_color', label: 'Four Color Theorem', domain: 'math' },
+  { id: 'compilers', label: 'How Compilers Work', domain: 'cs' },
+  { id: 'markets_crash', label: 'Why Markets Crash', domain: 'economics' },
+  { id: 'sleep_science', label: 'Why We Sleep', domain: 'science' },
+  { id: 'origami_math', label: 'Origami Mathematics', domain: 'math' },
+  { id: 'color_theory', label: 'Color & Perception', domain: 'art' },
+  { id: 'dna', label: 'How DNA Works', domain: 'science' },
+  { id: 'game_theory', label: 'Game Theory', domain: 'math' },
+  { id: 'fermentation', label: 'Fermentation', domain: 'science' },
+  { id: 'byzantine', label: 'The Byzantine Problem', domain: 'cs' },
+  { id: 'fractals', label: 'Fractal Geometry', domain: 'math' },
+  { id: 'antibiotics', label: 'Antibiotic Resistance', domain: 'science' },
+];
+
 export function useSearch(userContextObj) {
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
@@ -24,7 +60,7 @@ export function useSearch(userContextObj) {
   const lastSearchIdRef = useRef(null);
   const debounceRef = useRef(null);
 
-  // Update suggestions as user types (instant from seed)
+  // Update suggestions as user types (instant from seed + freefall topics + encyclopedia)
   const handleQueryChange = useCallback((q) => {
     setQuery(q);
     if (!q || q.length < 2) {
@@ -34,13 +70,19 @@ export function useSearch(userContextObj) {
     clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       const results = fuzzySearch(q, ALL_SEED_LABELS, (item) => item.label);
+      const freefall = fuzzySearch(q, FREEFALL_TOPICS, (item) => item.label);
       const encyclopedia = searchEncyclopediaTopics(q, 12);
       const merged = new Map();
-      [...results, ...encyclopedia].forEach((item) => {
+      [...results, ...freefall, ...encyclopedia].forEach((item) => {
         const key = String(item.id || item.label || '').toLowerCase();
         if (!merged.has(key)) merged.set(key, item);
       });
-      setSuggestions(Array.from(merged.values()).slice(0, 8));
+      const top = Array.from(merged.values()).slice(0, 7);
+      // Always show a catch-all "Search for X" entry so any topic can be explored
+      if (!top.some((s) => s.label.toLowerCase() === q.toLowerCase())) {
+        top.push({ id: `__search__${q}`, label: q, domain: 'general', description: `Search for "${q}"`, _isOpenSearch: true });
+      }
+      setSuggestions(top);
     }, 120);
   }, []);
 

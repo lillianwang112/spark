@@ -196,23 +196,51 @@ export default function SeedSprout({ topDomains = [], onComplete }) {
           <AnimatePresence>
             {stage === 'tree' && (
               <>
+                {/* Small sparkle dots on canopy */}
                 {[
-                  { x: 55,  y: 88  },
-                  { x: 100, y: 72  },
-                  { x: 145, y: 88  },
-                  { x: 78,  y: 96  },
-                  { x: 122, y: 96  },
+                  { x: 55,  y: 88, r: 3.5 },
+                  { x: 100, y: 72, r: 4   },
+                  { x: 145, y: 88, r: 3.5 },
+                  { x: 78,  y: 96, r: 3   },
+                  { x: 122, y: 96, r: 3   },
+                  { x: 100, y: 62, r: 2.5 },
+                  { x: 65,  y: 80, r: 2.5 },
+                  { x: 135, y: 80, r: 2.5 },
                 ].map((pos, i) => (
                   <motion.circle
                     key={`spark-${i}`}
                     cx={pos.x} cy={pos.y}
-                    r={3}
-                    fill="#FFD700"
+                    r={pos.r}
+                    fill={i % 2 === 0 ? '#FFD700' : '#FFF4CF'}
                     initial={{ scale: 0, opacity: 0 }}
-                    animate={{ scale: [0, 1.5, 1], opacity: [0, 1, 0.7] }}
-                    transition={{ delay: i * 0.08, duration: 0.5, type: 'spring' }}
+                    animate={{
+                      scale: [0, 1.6, 1, 1.1, 1],
+                      opacity: [0, 1, 0.9, 1, 0.75],
+                    }}
+                    transition={{ delay: i * 0.06, duration: 0.6, type: 'spring', stiffness: 400, damping: 18 }}
                   />
                 ))}
+                {/* Radial glow pulse */}
+                <motion.circle
+                  cx={100} cy={100}
+                  r={0}
+                  fill="none"
+                  stroke="#FFD70060"
+                  strokeWidth={2}
+                  initial={{ r: 0, opacity: 0.8 }}
+                  animate={{ r: 65, opacity: 0 }}
+                  transition={{ duration: 1.2, delay: 0.1, ease: 'easeOut' }}
+                />
+                <motion.circle
+                  cx={100} cy={100}
+                  r={0}
+                  fill="none"
+                  stroke="#FF8A5A40"
+                  strokeWidth={3}
+                  initial={{ r: 0, opacity: 0.6 }}
+                  animate={{ r: 80, opacity: 0 }}
+                  transition={{ duration: 1.4, delay: 0.25, ease: 'easeOut' }}
+                />
               </>
             )}
           </AnimatePresence>
@@ -223,11 +251,11 @@ export default function SeedSprout({ topDomains = [], onComplete }) {
       <AnimatePresence mode="wait">
         <motion.p
           key={stage}
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-          className="font-display text-text-secondary text-center text-sm max-w-[240px]"
+          initial={{ opacity: 0, y: 8, scale: 0.96 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -6, scale: 0.97 }}
+          transition={{ duration: 0.35, type: stage === 'tree' ? 'spring' : 'tween', stiffness: 320, damping: 22 }}
+          className={`text-center max-w-[240px] ${stage === 'tree' ? 'font-display font-semibold text-text-primary text-base' : 'font-display text-text-secondary text-sm'}`}
         >
           {stage === 'seed'    && 'Your curiosity takes root...'}
           {stage === 'sprout'  && 'Something\'s growing...'}

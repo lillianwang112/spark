@@ -44,22 +44,27 @@ Return ONLY valid JSON array, no markdown fences:
 // ── TYPE 2: Node Children Generation ──
 export function nodeChildrenPrompt({ currentNode, currentPath, ageGroup, topInterests, personality }) {
   const systemPrompt = getSystemPrompt(personality, ageGroup);
-  const pathStr = Array.isArray(currentPath) ? currentPath.join(' → ') : currentPath;
+  // Limit path to last 3 elements to prevent context overload and label echoing
+  const pathArr = Array.isArray(currentPath) ? currentPath : [currentPath];
+  const recentPath = pathArr.slice(-3);
+  const pathStr = recentPath.join(' → ');
+  const parentLabels = pathArr.map((p) => String(p).toLowerCase());
   const interestsStr = topInterests?.join(', ') || 'general curiosity';
 
-  const prompt = `The user is exploring the node "${currentNode}". Their path here was: ${pathStr}.
+  const prompt = `The user is exploring the node "${currentNode}". Recent path: ${pathStr}.
 
-Generate 4-6 child nodes to expand from this point.
+Generate 4-6 child topic nodes to explore from "${currentNode}".
 
-Rules:
-- Mix depth with breadth — some go deeper into "${currentNode}", some branch out sideways
-- Include at least one surprising or non-obvious child node
-- Include at least one accessible to beginners, one deeper than expected
-- Tailor labels and descriptions to age group "${ageGroup}"
-- Connect to their interests when natural: ${interestsStr}
-- Each description should be one compelling sentence that makes you want to go deeper
-- Descriptions for little_explorer: exciting and concrete, max 10 words
-- Descriptions for student/college/adult: intriguing and specific, max 15 words
+STRICT LABEL RULES — violations will break the UI:
+- Each label must be a NOVEL, SPECIFIC topic name (e.g. "Gödel's Incompleteness" not "How ${currentNode} works")
+- NEVER reuse any ancestor label: ${parentLabels.join(', ')}
+- NEVER use colon-prefix formatting like ":category: name" or "${currentNode}: subtopic"
+- NEVER make a label that is just "${currentNode}" + a generic suffix ("in real life", "and you", "basics")
+- Labels must be 2-5 words, specific enough to search for on Wikipedia
+- Mix: some go deeper into "${currentNode}", some branch sideways to surprising connections
+- Include at least one counterintuitive or non-obvious angle
+- Tailor descriptions to age group "${ageGroup}" and interests: ${interestsStr}
+- Each description: one compelling sentence, max 15 words
 
 Return ONLY valid JSON array, no markdown fences:
 [{"id": "snake_case_id", "label": "...", "description": "...", "difficulty": "beginner|intermediate|advanced", "surpriseFactor": true|false}]`;
@@ -136,6 +141,50 @@ Requirements:
 Good visualizations for this concept might include: animated diagrams, interactive formulas, step-by-step processes, comparison charts, cause-effect relationships, or anything that makes the abstract concrete.
 
 Return ONLY the complete HTML document starting with <!DOCTYPE html>, no explanation, no markdown.`;
+
+  return { prompt, systemPrompt };
+}
+
+// ── TYPE 7: Key Takeaways ──
+export function keyTakeawaysPrompt({ currentNode, currentPath, ageGroup }) {
+  const systemPrompt = `You are an expert educator who distills complex concepts into memorable, punchy insights.`;
+  const pathStr = Array.isArray(currentPath) ? currentPath.join(' → ') : currentPath || currentNode;
+  const limit = ageGroup === 'little_explorer' ? 12 : 20;
+
+  const prompt = `Generate exactly 3 key takeaways about "${currentNode}" (learning path: ${pathStr}).
+
+Rules:
+- Age group: ${ageGroup}. Each under ${limit} words.
+- Takeaway 1: A foundational "aha" — something that reframes how you see it
+- Takeaway 2: A surprising or counterintuitive fact
+- Takeaway 3: A "so what" — why this actually matters
+- Each is a full sentence. Punchy, not textbook.
+- No bullet points or numbering in the text itself.
+
+Return ONLY valid JSON array, no markdown fences:
+["Takeaway one.", "Takeaway two.", "Takeaway three."]`;
+
+  return { prompt, systemPrompt };
+}
+
+// ── TYPE 8: Quick Quiz ──
+export function quickQuizPrompt({ currentNode, currentPath, ageGroup }) {
+  const systemPrompt = `You create engaging quiz questions that test genuine conceptual understanding.`;
+  const pathStr = Array.isArray(currentPath) ? currentPath.join(' → ') : currentPath || currentNode;
+
+  const prompt = `Create 1 multiple-choice quiz question about "${currentNode}" (path: ${pathStr}).
+
+Age group: ${ageGroup}.
+- Test conceptual understanding, not memorization
+- Make it genuinely interesting — a question that makes you think
+- One answer is clearly correct; the other three are plausible but wrong
+- Keep the question under 20 words
+- Each option under 10 words
+
+Return ONLY valid JSON, no markdown:
+{"question":"...","options":["A option","B option","C option","D option"],"correct":0,"explanation":"One sentence why the answer is correct."}
+
+"correct" is a 0-indexed integer (0=first option).`;
 
   return { prompt, systemPrompt };
 }

@@ -11,6 +11,7 @@ import Modal from '../components/common/Modal.jsx';
 import EmberErrorBoundary from '../components/common/ErrorBoundary.jsx';
 import DailySpark from '../components/explore/DailySpark.jsx';
 import Toast from '../components/common/Toast.jsx';
+import FreeFall from '../components/freefall/FreeFall.jsx';
 import { useUserContext } from '../hooks/useUserContext.jsx';
 import { useTree } from '../hooks/useTree.jsx';
 import { useSearch } from '../hooks/useSearch.js';
@@ -50,8 +51,12 @@ export default function Explore({
   const [deepDiveNode, setDeepDiveNode] = useState(null);
   const [toast, setToast] = useState(null);
   const [discoveryDirection, setDiscoveryDirection] = useState('similar');
+  const [freefallMode, setFreefallMode] = useState(onboardingIntent === 'explore');
+  const [forceDiscovery, setForceDiscovery] = useState(false);
 
-  const userContextObj = buildUserContext(user);
+  const userContextObj = useMemo(() => buildUserContext(user), [
+    user.ageGroup, user.personality, user.eloScores, user.knowledgeStates, user.tracks?.length,
+  ]);
   const {
     query,
     suggestions,
@@ -102,6 +107,7 @@ export default function Explore({
   }, [clearSearch, initRoots, onConsumePendingDeepDive, pendingDeepDive, roots.length]);
 
   const handleDiscoveryComplete = useCallback(() => {
+    setForceDiscovery(false);
     const topDomains = getTopDomains(user.eloScores, 3);
     const domains = topDomains.length > 0 ? topDomains : ['math', 'science', 'cs'];
     setSproutDomains(domains);
@@ -115,14 +121,14 @@ export default function Explore({
   }, []);
 
   useEffect(() => {
-    if (roots.length === 0 && user.onboardingComplete && !restoredRootsRef.current) {
+    if (roots.length === 0 && user.onboardingComplete && !restoredRootsRef.current && onboardingIntent !== 'explore') {
       restoredRootsRef.current = true;
       const topDomains = getTopDomains(user.eloScores, 3);
       if (topDomains.length > 0) {
         initRoots(topDomains);
       }
     }
-  }, [initRoots, roots.length, user.eloScores, user.onboardingComplete]);
+  }, [initRoots, roots.length, user.eloScores, user.onboardingComplete, onboardingIntent]);
 
   const handleExplainNode = useCallback((node) => {
     setExplainerNode(node);
@@ -187,9 +193,10 @@ export default function Explore({
   const recentSearches = useMemo(() => storage.getSearches().slice(0, 3), []);
   const topDomains = useMemo(() => getTopDomains(user.eloScores, 3), [user.eloScores]);
   const effectivePhase = useMemo(() => {
+    if (forceDiscovery) return 'discovery';
     if (phase === 'discovery' && roots.length > 0) return 'tree';
     return phase;
-  }, [phase, roots.length]);
+  }, [phase, roots.length, forceDiscovery]);
 
   const streak = streakState?.streak ?? 1;
   const sparksToday = streakState?.sparksToday ?? 0;
@@ -236,6 +243,22 @@ export default function Explore({
       ? `${searchExplainer.node?.label || 'This one'} is worth opening — and saving.`
       : 'Tap one of these, or surprise me. Every spark counts toward today.';
 
+  if (freefallMode) {
+    return (
+      <FreeFall
+        onExit={() => {
+          setFreefallMode(false);
+          if (roots.length === 0) setPhase('discovery');
+        }}
+        onDig={(node) => {
+          setFreefallMode(false);
+          handleGoDeeper(node);
+        }}
+        userContextObj={userContextObj}
+      />
+    );
+  }
+
   return (
     <div className="flex h-full flex-col">
       <div className="sticky top-0 z-10 border-b border-[rgba(42,42,42,0.06)] bg-[rgba(255,253,247,0.86)] px-4 pb-2 pt-4 backdrop-blur-xl">
@@ -264,6 +287,12 @@ export default function Explore({
             >
               Surprise me
             </button>
+            <button
+              onClick={() => setFreefallMode(true)}
+              className="px-3 py-1.5 rounded-full text-xs font-body transition-colors text-text-muted hover:text-text-primary hover:bg-[rgba(255,107,53,0.12)]"
+            >
+              ✦ Freefall
+            </button>
           </div>
         </div>
       </div>
@@ -279,10 +308,23 @@ export default function Explore({
               className="mx-auto max-w-[760px] pt-3 pb-2"
             >
               {searchLoading ? (
-                <div className="flex items-center gap-3 py-4 text-text-muted">
-                  <Ember mood="thinking" size="xs" glowIntensity={0.5} />
-                  <span className="font-body text-sm">Ember is thinking...</span>
-                </div>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="flex items-center gap-3 py-4"
+                >
+                  <Ember mood="thinking" size="sm" glowIntensity={0.75} />
+                  <div>
+                    <motion.p
+                      className="font-body text-sm text-text-secondary"
+                      animate={{ opacity: [1, 0.6, 1] }}
+                      transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+                    >
+                      Ember is thinking...
+                    </motion.p>
+                    <p className="font-body text-xs text-text-muted">Crafting an explanation just for you</p>
+                  </div>
+                </motion.div>
               ) : searchExplainer ? (
                 <div className="space-y-3">
                   <ExplainerCard
@@ -292,13 +334,12 @@ export default function Explore({
                     onKnowledgeTag={user.setKnowledgeState}
                     onSave={handleSaveNode}
                     onGoDeeper={(node) => handleGoDeeper(node)}
-                    compact
                   />
                   <button
                     onClick={clearSearch}
                     className="font-body text-sm text-text-muted transition-colors hover:text-text-secondary"
                   >
-                    Clear search
+                    ← Back to exploring
                   </button>
                 </div>
               ) : null}
@@ -347,6 +388,7 @@ export default function Explore({
                         setDeepDiveNode(null);
                         setDrillStack([]);
                         setPhase('discovery');
+                        setForceDiscovery(true);
                       }}
                       className={`rounded-full px-3 py-1.5 text-sm font-body font-semibold transition-all ${
                         discoveryMode === value
@@ -450,18 +492,33 @@ export default function Explore({
                   />
                 ) : (
                   <>
-                    <div className="mb-4 flex items-center justify-between gap-3">
+                    <motion.div
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.35 }}
+                      className="mb-4 flex items-center justify-between gap-3"
+                    >
                       <div>
                         <div className="mb-0.5 flex items-center gap-2">
+                          <motion.span
+                            className="text-xl leading-none"
+                            animate={{ rotate: [0, -5, 5, -3, 0] }}
+                            transition={{ duration: 2.4, delay: 0.5, repeat: Infinity, repeatDelay: 6 }}
+                          >
+                            🌳
+                          </motion.span>
                           <h1 className="font-display text-lg font-semibold text-text-primary">
                             Your Knowledge Tree
                           </h1>
                           <div className="flex items-center gap-1">
-                            {roots.slice(0, 5).map((root) => {
+                            {roots.slice(0, 5).map((root, i) => {
                               const color = DOMAIN_COLORS[root.domain] || '#FF6B35';
                               return (
-                                <div
+                                <motion.div
                                   key={root.id}
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  transition={{ delay: i * 0.08, type: 'spring', stiffness: 300 }}
                                   className="h-2.5 w-2.5 rounded-full"
                                   style={{ backgroundColor: color }}
                                   title={root.label}
@@ -471,10 +528,18 @@ export default function Explore({
                           </div>
                         </div>
                         <p className="font-body text-xs text-text-muted">
-                          {Math.max(user.stats?.nodesExplored || 0, Object.keys(nodes || {}).length)} sparks explored
+                          <motion.span
+                            key={Math.max(user.stats?.nodesExplored || 0, Object.keys(nodes || {}).length)}
+                            initial={{ opacity: 0, y: -4 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3 }}
+                          >
+                            {Math.max(user.stats?.nodesExplored || 0, Object.keys(nodes || {}).length)}
+                          </motion.span>
+                          {' sparks explored · tap any node to go deeper'}
                         </p>
                       </div>
-                    </div>
+                    </motion.div>
 
                     <TreeRenderer
                       userContextObj={userContextObj}
@@ -489,14 +554,23 @@ export default function Explore({
                     <div className="mt-6">
                       <div className="mb-3 flex items-center justify-between">
                         <p className="text-[11px] font-mono uppercase tracking-[0.14em] text-text-muted">Explore freely</p>
-                        <p className="text-xs font-body text-text-muted">Jump into any topic</p>
+                        <p className="text-xs font-body text-text-muted">Jump into any world</p>
                       </div>
                       <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
-                        {DOMAINS.map((domain) => {
+                        {DOMAINS.map((domain, i) => {
                           const color = DOMAIN_COLORS[domain] || '#FF6B35';
                           return (
-                            <button
+                            <motion.button
                               key={domain}
+                              initial={{ opacity: 0, scale: 0.85 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              transition={{ delay: i * 0.03, type: 'spring', stiffness: 260, damping: 22 }}
+                              whileHover={{
+                                scale: 1.07,
+                                boxShadow: `0 8px 24px ${color}28`,
+                                y: -3,
+                              }}
+                              whileTap={{ scale: 0.93 }}
                               onClick={() => {
                                 setDeepDiveNode({
                                   id: domain,
@@ -506,7 +580,7 @@ export default function Explore({
                                   description: `Explore ${DOMAIN_LABELS[domain]} freely`,
                                 });
                               }}
-                              className="flex flex-col items-center gap-1.5 rounded-[18px] p-3 transition-all hover:scale-[1.03] active:scale-95"
+                              className="flex flex-col items-center gap-1.5 rounded-[18px] p-3"
                               style={{
                                 background: `${color}12`,
                                 border: `1px solid ${color}22`,
@@ -519,19 +593,25 @@ export default function Explore({
                               >
                                 {DOMAIN_LABELS[domain].replace(' & Design', '').replace(' & Movement', '')}
                               </span>
-                            </button>
+                            </motion.button>
                           );
                         })}
                       </div>
                     </div>
 
                     <div className="mt-5 flex justify-center">
-                      <button
-                        onClick={() => setPhase('discovery')}
-                        className="flex items-center gap-1.5 rounded-full bg-[rgba(42,42,42,0.05)] px-4 py-2 font-body text-sm text-text-muted transition-colors hover:text-spark-ember"
+                      <motion.button
+                        onClick={() => {
+                          setDeepDiveNode(null);
+                          setDrillStack([]);
+                          setPhase('discovery');
+                          setForceDiscovery(true);
+                        }}
+                        whileHover={{ scale: 1.04, color: '#FF6B35' }}
+                        whileTap={{ scale: 0.96 }}
+                        className="flex items-center gap-1.5 rounded-full bg-[rgba(42,42,42,0.05)] px-5 py-2.5 font-body text-sm text-text-muted hover:bg-[rgba(255,107,53,0.08)] transition-colors"
                       >
-                        ✦ Run discovery again
-                      </button>
+                        ✦ Run discovery again</motion.button>
                     </div>
                   </>
                 )}
@@ -544,7 +624,6 @@ export default function Explore({
       <Modal
         isOpen={showExplainer}
         onClose={() => setShowExplainer(false)}
-        title={explainerNode?.label || ''}
       >
         {explainerNode && (
           <EmberErrorBoundary>

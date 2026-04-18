@@ -168,18 +168,31 @@ export default function JourneyTimeline({ tracks = [], searches = [] }) {
       </div>
 
       <div className="mt-4 grid grid-cols-3 gap-2 text-center">
-        <div className="rounded-[14px] bg-[rgba(255,255,255,0.7)] px-2 py-2">
-          <p className="font-display text-xl font-semibold text-text-primary">{stats.sparks}</p>
-          <p className="text-[10px] font-mono uppercase tracking-[0.14em] text-text-muted">sparks</p>
-        </div>
-        <div className="rounded-[14px] bg-[rgba(255,255,255,0.7)] px-2 py-2">
-          <p className="font-display text-xl font-semibold text-text-primary">{stats.saves}</p>
-          <p className="text-[10px] font-mono uppercase tracking-[0.14em] text-text-muted">saved</p>
-        </div>
-        <div className="rounded-[14px] bg-[rgba(255,255,255,0.7)] px-2 py-2">
-          <p className="font-display text-xl font-semibold text-text-primary">{stats.worlds}</p>
-          <p className="text-[10px] font-mono uppercase tracking-[0.14em] text-text-muted">worlds</p>
-        </div>
+        {[
+          { value: stats.sparks, label: 'sparks' },
+          { value: stats.saves, label: 'saved' },
+          { value: stats.worlds, label: 'worlds' },
+        ].map(({ value, label }, i) => (
+          <motion.div
+            key={label}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.08, duration: 0.3 }}
+            whileHover={{ scale: 1.05, boxShadow: '0 6px 18px rgba(255,107,53,0.12)' }}
+            className="rounded-[14px] bg-[rgba(255,255,255,0.7)] px-2 py-2"
+          >
+            <motion.p
+              key={`${label}-${value}`}
+              initial={{ scale: 0.7, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ type: 'spring', stiffness: 380, damping: 22 }}
+              className="font-display text-xl font-semibold text-text-primary"
+            >
+              {value}
+            </motion.p>
+            <p className="text-[10px] font-mono uppercase tracking-[0.14em] text-text-muted">{label}</p>
+          </motion.div>
+        ))}
       </div>
 
       {dominantDomain && (
@@ -219,12 +232,15 @@ export default function JourneyTimeline({ tracks = [], searches = [] }) {
                     key={e.id}
                     initial={{ opacity: 0, x: -6 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.04 }}
-                    className="relative"
+                    transition={{ delay: i * 0.05, duration: 0.28 }}
+                    whileHover={{ x: 3 }}
+                    className="relative cursor-default"
                   >
-                    <span
+                    <motion.span
                       className="absolute -left-[22px] top-1 h-3 w-3 rounded-full border-2 border-white"
-                      style={{ background: color, boxShadow: `0 0 0 2px ${color}33` }}
+                      style={{ background: color }}
+                      animate={{ boxShadow: [`0 0 0 2px ${color}33`, `0 0 0 5px ${color}18`, `0 0 0 2px ${color}33`] }}
+                      transition={{ duration: 2.5, repeat: Infinity, delay: i * 0.3 }}
                     />
                     <p className="font-body text-sm text-text-primary">{e.label}</p>
                     <p className="text-[10px] font-mono uppercase tracking-[0.12em] text-text-muted">

@@ -1,13 +1,16 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 void motion;
 import Ember from '../components/ember/Ember.jsx';
 import Modal from '../components/common/Modal.jsx';
 import JourneyTimeline from '../components/profile/JourneyTimeline.jsx';
+import LivingTreeViz from '../components/profile/LivingTreeViz.jsx';
 import StreakFlame from '../components/common/StreakFlame.jsx';
 import ProgressRing from '../components/common/ProgressRing.jsx';
 import { useUserContext } from '../hooks/useUserContext.jsx';
-import { DOMAIN_COLORS, DOMAIN_EMOJIS, BADGES } from '../utils/constants.js';
+import { DOMAIN_COLORS, DOMAIN_EMOJIS, BADGE_SYSTEM, TIER_STYLES } from '../utils/constants.js';
+import StudyCalendar from '../components/profile/StudyCalendar.jsx';
+import { loadDemoProfile, clearDemoProfile } from '../data/demoProfile.js';
 import { getRankedDomains, normalizeScores } from '../models/elo.js';
 import { getTreeStage, TREE_STAGE_LABELS } from '../models/node.js';
 import AIService from '../ai/ai.service.js';
@@ -328,38 +331,83 @@ function RobustMonthlyCalendar({ dailyActivity = {} }) {
   );
 }
 
-// ── Badge card ──
-function BadgeCard({ badge, earned }) {
+// ── Tiered badge card ──
+function TieredBadgeCard({ badge, currentTier, nextTier, progress, value }) {
+  const isLocked = !currentTier;
+  const tierStyle = currentTier ? TIER_STYLES[currentTier.tier] : null;
+  const nextStyle = nextTier ? TIER_STYLES[nextTier.tier] : null;
+  const pct = nextTier ? Math.min(100, Math.round((value / nextTier.threshold) * 100)) : 100;
+
   return (
     <motion.div
-      whileHover={earned ? { y: -2, scale: 1.02 } : {}}
+      whileHover={!isLocked ? { y: -2, scale: 1.02 } : { scale: 1.01 }}
       transition={{ duration: 0.2, ease: [0.34, 1.56, 0.64, 1] }}
-      className={`relative flex flex-col items-center gap-1.5 overflow-hidden rounded-[18px] p-3 text-center transition-all ${
-        earned
-          ? 'border border-[rgba(255,107,53,0.28)] shadow-[0_10px_24px_rgba(255,107,53,0.15)]'
-          : 'border border-transparent opacity-45'
-      }`}
+      className="relative flex flex-col gap-1.5 overflow-hidden rounded-[18px] p-3 text-left"
       style={
-        earned
-          ? { background: 'linear-gradient(135deg, rgba(255,209,102,0.22) 0%, rgba(255,138,90,0.18) 60%, rgba(255,255,255,0.8) 100%)' }
-          : { background: 'rgba(255,255,255,0.5)' }
+        tierStyle
+          ? {
+              background: `linear-gradient(135deg, ${tierStyle.color}18 0%, rgba(255,255,255,0.88) 100%)`,
+              border: `1.5px solid ${tierStyle.color}44`,
+              boxShadow: `0 8px 20px ${tierStyle.glow}`,
+            }
+          : { background: 'rgba(255,255,255,0.45)', border: '1.5px solid rgba(42,42,42,0.07)', opacity: 0.65 }
       }
     >
-      {earned && (
-        <span
+      {/* Shimmer for diamond tier */}
+      {currentTier?.tier === 'diamond' && (
+        <motion.span
+          className="pointer-events-none absolute inset-0 rounded-[18px]"
+          animate={{ opacity: [0.4, 0.8, 0.4] }}
+          transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+          style={{ background: 'radial-gradient(circle at 30% 20%, rgba(155,111,232,0.18), transparent 60%)' }}
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 opacity-70"
-          style={{
-            background:
-              'radial-gradient(circle at 30% 20%, rgba(255,255,255,0.75), rgba(255,255,255,0) 55%)',
-          }}
         />
       )}
-      <span className="relative text-2xl" style={earned ? { filter: 'drop-shadow(0 4px 10px rgba(255,107,53,0.25))' } : {}}>
-        {badge.emoji}
-      </span>
-      <p className="relative font-body font-semibold text-text-primary text-xs leading-tight">{badge.title}</p>
-      <p className="relative font-body text-text-muted text-[10px] leading-tight">{badge.description}</p>
+
+      {/* Top row: emoji + tier star */}
+      <div className="flex items-start justify-between gap-1">
+        <span className="text-2xl leading-none" style={tierStyle ? { filter: `drop-shadow(0 3px 8px ${tierStyle.color}55)` } : {}}>
+          {badge.emoji}
+        </span>
+        {tierStyle ? (
+          <span className="text-base leading-none">{tierStyle.star}</span>
+        ) : (
+          <span className="text-[10px] font-mono text-text-muted opacity-60">🔒</span>
+        )}
+      </div>
+
+      {/* Name + tier label */}
+      <div>
+        <p className="font-body font-semibold text-text-primary text-xs leading-tight">{badge.title}</p>
+        {tierStyle ? (
+          <p className="font-mono text-[10px] leading-tight mt-0.5" style={{ color: tierStyle.color }}>
+            {currentTier.label} · {tierStyle.label}
+          </p>
+        ) : (
+          <p className="font-body text-[10px] text-text-muted leading-tight mt-0.5">{badge.description}</p>
+        )}
+      </div>
+
+      {/* Progress toward next tier */}
+      {nextTier && (
+        <div>
+          <div className="h-1 rounded-full bg-[rgba(42,42,42,0.08)] overflow-hidden">
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: `${pct}%` }}
+              transition={{ duration: 0.7, ease: 'easeOut' }}
+              className="h-full rounded-full"
+              style={{ background: nextStyle?.color || '#FF6B35' }}
+            />
+          </div>
+          <p className="font-mono text-[9px] text-text-muted mt-0.5">
+            {value} / {nextTier.threshold} → {nextStyle?.star} {nextTier.label}
+          </p>
+        </div>
+      )}
+      {!nextTier && currentTier && (
+        <p className="font-mono text-[9px] mt-0.5" style={{ color: tierStyle?.color }}>✦ Max tier reached</p>
+      )}
     </motion.div>
   );
 }
@@ -530,6 +578,9 @@ export default function Profile({ streakState }) {
   const [view, setView] = useState('constellation'); // 'constellation' | 'bars'
   const [showFullMap, setShowFullMap] = useState(false);
   const [shareFeedback, setShareFeedback] = useState('');
+  const [demoMode, setDemoMode] = useState(false);
+  const [demoClicks, setDemoClicks] = useState(0);
+  const demoTimerRef = useRef(null);
 
   const ranked = getRankedDomains(user.eloScores);
   const normalized = normalizeScores(user.eloScores);
@@ -550,46 +601,101 @@ export default function Profile({ streakState }) {
   const currentTrack = sortedTracks[0] || null;
   const pinnedThreads = sortedTracks.slice(0, 3);
 
-  // Earned badge computation
-  const earnedBadgeIds = useMemo(() => {
-    const ids = new Set();
-    const domainCount = ranked.filter((r) => (normalized[r.domain] || 0) > 15).length;
+  // Compute stats used by badge system
+  const badgeStats = useMemo(() => {
+    const distinctDomains = new Set(tracks.map((t) => t.domain).filter(Boolean)).size;
+    const maxDepth = tracks.reduce((max, t) => Math.max(max, (t.path?.length || 0)), 0);
+    const knowWellCount = Object.values(user.knowledgeStates || {}).filter((s) => s === 'know_well').length;
+    const deepSavesCount = tracks.filter((t) => (t.path?.length || 0) >= 4).length;
+    // Count domain jumps: consecutive tracks in different domains
+    const sortedByDate = [...tracks].sort((a, b) => new Date(a.savedAt || 0) - new Date(b.savedAt || 0));
+    let distinctDomainJumps = 0;
+    for (let i = 1; i < sortedByDate.length; i++) {
+      if (sortedByDate[i].domain !== sortedByDate[i - 1].domain) distinctDomainJumps++;
+    }
+    return {
+      maxDepth,
+      distinctDomains,
+      tracksCount: tracks.length,
+      streak: streak,
+      knowWellCount,
+      deepSavesCount,
+      distinctDomainJumps,
+    };
+  }, [tracks, user.knowledgeStates, streak]);
 
-    if (tracks.length >= 1)           ids.add('architect');
-    if (domainCount >= 5)             ids.add('polymath');
-    if (domainCount >= 10)            ids.add('cartographer');
-    if (tracks.length >= 3)           ids.add('rabbit');
-    // First principles: has at least one 'know_well' tag + saved at depth > 3
-    const knowledgeStates = user.knowledgeStates || {};
-    const wellKnown = Object.values(knowledgeStates).filter((s) => s === 'know_well').length;
-    if (wellKnown >= 1)               ids.add('first_principles');
-    return ids;
-  }, [tracks, ranked, normalized, user.knowledgeStates]);
+  // Compute tiered badge progress for all badges
+  const badgeProgress = useMemo(() => {
+    return BADGE_SYSTEM.map((badge) => {
+      const value = badge.getValue(badgeStats);
+      let currentTierIdx = -1;
+      for (let i = badge.tiers.length - 1; i >= 0; i--) {
+        if (value >= badge.tiers[i].threshold) { currentTierIdx = i; break; }
+      }
+      const currentTier = currentTierIdx >= 0 ? badge.tiers[currentTierIdx] : null;
+      const nextTier = currentTierIdx < badge.tiers.length - 1 ? badge.tiers[currentTierIdx + 1] : null;
+      return { badge, value, currentTier, nextTier };
+    });
+  }, [badgeStats]);
+
+  const earnedBadgeIds = useMemo(() => new Set(badgeProgress.filter((b) => b.currentTier).map((b) => b.badge.id)), [badgeProgress]);
 
   const loadSummary = async () => {
     if (loadingSummary || personalitySummary) return;
     setLoadingSummary(true);
     try {
+      const maxDepth = tracks.reduce((max, t) => Math.max(max, (t.path?.length || 0)), 0);
+      const explorationStyle = maxDepth >= 5 ? 'spelunker — goes very deep' : topDomains.length >= 4 ? 'cartographer — goes wide' : 'balanced explorer';
       const firstBadge = earnedBadgeIds.size > 0
-        ? BADGES.find((b) => earnedBadgeIds.has(b.id))?.title
+        ? BADGE_SYSTEM.find((b) => earnedBadgeIds.has(b.id))?.title
         : null;
       const result = await AIService.call('personalitySummary', {
         topDomains,
-        explorationStyle: user.explorationStyle || 'balanced',
-        avgDepth: 3,
+        explorationStyle,
+        avgDepth: maxDepth || 3,
         surprisingPath: topDomains[topDomains.length - 1] || 'general curiosity',
-        dominantKnowledge: 'curious',
+        dominantKnowledge: Object.values(user.knowledgeStates || {}).filter(s => s === 'know_well').length > 0 ? 'know_well' : 'curious',
         badge: firstBadge,
       });
       setPersonalitySummary(result);
     } catch {
-      setPersonalitySummary('Your curiosity is building something unique. Keep exploring — the tree has a shape, and it\'s yours.');
+      setPersonalitySummary("Your curiosity is building something unique. Keep exploring — the tree has a shape, and it's yours.");
     } finally {
       setLoadingSummary(false);
     }
   };
 
+  // Auto-load summary if user has enough data
+  useEffect(() => {
+    if (topDomains.length >= 2 && tracks.length >= 3 && !personalitySummary && !loadingSummary) {
+      loadSummary();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [topDomains.length, tracks.length]);
+
   const emberGlow = Math.min(1, 0.2 + (tracks.length / 10) * 0.8);
+
+  const handleEmberSecretClick = useCallback(() => {
+    setDemoClicks((prev) => {
+      const next = prev + 1;
+      if (next >= 7) {
+        if (!demoMode) {
+          loadDemoProfile();
+          setDemoMode(true);
+          window.location.reload();
+        } else {
+          clearDemoProfile();
+          setDemoMode(false);
+          window.location.reload();
+        }
+        return 0;
+      }
+      // Reset after 3s of inactivity
+      clearTimeout(demoTimerRef.current);
+      demoTimerRef.current = setTimeout(() => setDemoClicks(0), 3000);
+      return next;
+    });
+  }, [demoMode, demoTimerRef]);
 
   // Curiosity log — recent search history
   const [recentSearches] = useState(() => storage.getSearches().slice(0, 10));
@@ -598,14 +704,71 @@ export default function Profile({ streakState }) {
     : null;
   const isTreeResting = recentSearchAgeDays !== null && recentSearchAgeDays > 6;
 
+  const heroColor = DOMAIN_COLORS[ranked[0]?.domain] || '#FF6B35';
+  const heroColor2 = DOMAIN_COLORS[ranked[1]?.domain] || '#FFA62B';
+
   return (
     <div className="flex flex-col h-full">
-      <div className="px-4 pt-6 pb-2 border-b border-[rgba(42,42,42,0.06)]">
-        <div className="max-w-[600px] mx-auto">
-          <h1 className="font-display text-2xl font-semibold text-text-primary">Profile</h1>
-          {user.name && (
-            <p className="font-body text-text-muted text-sm mt-0.5">{user.name}</p>
-          )}
+      {/* Hero header */}
+      <div
+        className="relative overflow-hidden px-4 pt-8 pb-6"
+        style={{
+          background: `linear-gradient(135deg, ${heroColor}18 0%, ${heroColor2}0E 45%, rgba(255,253,247,0.96) 100%)`,
+          borderBottom: `1px solid ${heroColor}18`,
+        }}
+      >
+        {/* Ambient orb */}
+        <div
+          className="pointer-events-none absolute -top-8 -right-8 w-44 h-44 rounded-full"
+          style={{ background: `radial-gradient(circle, ${heroColor}22 0%, transparent 70%)` }}
+          aria-hidden="true"
+        />
+        <div className="max-w-[600px] mx-auto relative">
+          <div className="flex items-center justify-between">
+            <div>
+              <motion.p
+                initial={{ opacity: 0, y: -6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4 }}
+                className="text-[11px] font-mono uppercase tracking-[0.18em]"
+                style={{ color: `${heroColor}BB` }}
+              >
+                {stageInfo.emoji} {stageInfo.label}
+              </motion.p>
+              <motion.h1
+                initial={{ opacity: 0, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.06 }}
+                className="font-display text-[1.7rem] font-semibold text-text-primary leading-tight mt-0.5"
+              >
+                {user.name ? `${user.name}'s tree` : 'Your curiosity tree'}
+              </motion.h1>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.4, delay: 0.14 }}
+                className="font-body text-sm text-text-secondary mt-1"
+              >
+                {topDomains.length
+                  ? `Pulling hardest toward ${topDomains.slice(0, 2).join(' and ')}`
+                  : 'Still finding your threads — keep exploring'}
+              </motion.p>
+            </div>
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.45, delay: 0.1, type: 'spring', stiffness: 240, damping: 22 }}
+              className="rounded-[20px] p-3 flex flex-col items-center cursor-pointer select-none"
+              style={{ background: `${heroColor}14`, border: `1px solid ${heroColor}25` }}
+              onClick={handleEmberSecretClick}
+              title={demoClicks > 0 ? `${7 - demoClicks} more...` : undefined}
+            >
+              <Ember mood={demoMode ? 'celebrating' : tracks.length >= 10 ? 'proud' : tracks.length >= 3 ? 'curious' : 'idle'} size="md" glowIntensity={demoMode ? 1 : emberGlow} />
+              <p className="text-[10px] font-mono uppercase tracking-[0.14em] text-text-muted mt-1.5">
+                {demoMode ? '✦ demo' : `${user.stats?.nodesExplored || tracks.length || 0} sparks`}
+              </p>
+            </motion.div>
+          </div>
         </div>
       </div>
 
@@ -629,48 +792,37 @@ export default function Profile({ streakState }) {
             </motion.div>
           )}
 
-          {/* Tree stage + Ember + stats strip */}
+          {/* ── Living Tree — the centerpiece ── */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-bg-secondary rounded-card shadow-card p-5"
+            className="rounded-[28px] border border-[rgba(255,255,255,0.82)] bg-[linear-gradient(160deg,rgba(255,253,247,0.96)_0%,rgba(245,240,230,0.92)_100%)] p-5 shadow-[0_12px_36px_rgba(72,49,10,0.09)]"
           >
-            <div className="flex items-center gap-4 mb-4">
-              <Ember mood="proud" size="lg" glowIntensity={emberGlow} />
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-0.5">
-                  <span className="text-xl">{stageInfo.emoji}</span>
-                  <span className="font-display font-semibold text-text-primary">
-                    {stageInfo.label} Tree
-                  </span>
-                </div>
-                <p className="font-body text-text-muted text-sm truncate">
-                  {stageInfo.description}
+            {/* Header row */}
+            <div className="flex items-center justify-between mb-1">
+              <div>
+                <p className="text-[11px] font-mono uppercase tracking-[0.16em] text-text-muted">Your Living Tree</p>
+                <p className="font-display text-lg font-semibold text-text-primary leading-tight">
+                  Growing in {new Set(tracks.map(t => t.domain).filter(Boolean)).size || 1} world{new Set(tracks.map(t => t.domain).filter(Boolean)).size !== 1 ? 's' : ''}
                 </p>
+              </div>
+              {/* Stats pills */}
+              <div className="flex gap-3">
+                {[
+                  [new Set(tracks.map(t => t.domain).filter(Boolean)).size, 'worlds'],
+                  [tracks.filter(t => t.mode === 'mastering').length, 'mastering'],
+                  [earnedBadgeIds.size, 'badges'],
+                ].map(([val, label]) => (
+                  <div key={label} className="text-center px-3 py-1.5 rounded-[14px] bg-[rgba(255,255,255,0.7)]" style={{ border: `1px solid ${heroColor}14` }}>
+                    <p className="font-display font-semibold text-text-primary text-xl leading-none">{val}</p>
+                    <p className="font-body text-text-muted text-[10px] mt-0.5">{label}</p>
+                  </div>
+                ))}
               </div>
             </div>
 
-            {/* Stats strip */}
-            <div className="grid grid-cols-3 gap-3 pt-3 border-t border-[rgba(42,42,42,0.06)]">
-              <div className="text-center">
-                <p className="font-display font-semibold text-text-primary text-xl">
-                  {user.stats?.nodesExplored || tracks.length || 0}
-                </p>
-                <p className="font-body text-text-muted text-xs">sparks</p>
-              </div>
-              <div className="text-center">
-                <p className="font-display font-semibold text-text-primary text-xl">
-                  {topDomains.length}
-                </p>
-                <p className="font-body text-text-muted text-xs">worlds</p>
-              </div>
-              <div className="text-center">
-                <p className="font-display font-semibold text-text-primary text-xl">
-                  {earnedBadgeIds.size}
-                </p>
-                <p className="font-body text-text-muted text-xs">badges</p>
-              </div>
-            </div>
+            {/* The tree SVG */}
+            <LivingTreeViz tracks={tracks} className="mt-2" />
           </motion.div>
 
           {/* Streak + goal */}
@@ -708,8 +860,7 @@ export default function Profile({ streakState }) {
             </div>
           </motion.div>
 
-          <LearningCalendar dailyActivity={dailyActivity} />
-          <RobustMonthlyCalendar dailyActivity={dailyActivity} />
+          <StudyCalendar dailyActivity={dailyActivity} userTracks={tracks} />
 
           {currentTrack && (
             <motion.div
@@ -932,25 +1083,29 @@ export default function Profile({ streakState }) {
             </motion.div>
           )}
 
-          {/* Badges */}
+          {/* Badges — tiered Duolingo-style */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
             className="bg-bg-secondary rounded-card shadow-card p-5"
           >
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-1">
               <h2 className="font-display font-semibold text-text-primary">Badges</h2>
               <span className="font-body text-text-muted text-xs">
-                {earnedBadgeIds.size} / {BADGES.length} earned
+                {earnedBadgeIds.size} / {BADGE_SYSTEM.length} unlocked · {badgeProgress.filter((b) => b.currentTier?.tier === 'diamond').length} maxed
               </span>
             </div>
-            <div className="grid grid-cols-3 gap-2">
-              {BADGES.map((badge) => (
-                <BadgeCard
+            <p className="font-body text-xs text-text-muted mb-3">Bronze → Silver → Gold → Platinum → Diamond</p>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+              {badgeProgress.map(({ badge, value, currentTier, nextTier }) => (
+                <TieredBadgeCard
                   key={badge.id}
                   badge={badge}
-                  earned={earnedBadgeIds.has(badge.id)}
+                  currentTier={currentTier}
+                  nextTier={nextTier}
+                  progress={value}
+                  value={value}
                 />
               ))}
             </div>
@@ -964,9 +1119,43 @@ export default function Profile({ streakState }) {
             className="bg-bg-secondary rounded-card shadow-card p-5"
           >
             <h2 className="font-display font-semibold text-text-primary mb-3">Settings</h2>
-            <div className="space-y-3 mb-4">
+
+            {/* Inline age picker */}
+            <div className="mb-4">
+              <p className="text-xs font-mono uppercase tracking-[0.14em] text-text-muted mb-2">Age group</p>
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  { id: 'little_explorer', label: 'Little Explorer', emoji: '🧸', range: 'Under 10' },
+                  { id: 'student', label: 'Student', emoji: '🎒', range: '10–17' },
+                  { id: 'college', label: 'Young Adult', emoji: '🎓', range: '18–24' },
+                  { id: 'adult', label: 'Adult', emoji: '🔭', range: '25+' },
+                ].map((opt) => {
+                  const sel = user.ageGroup === opt.id;
+                  return (
+                    <motion.button
+                      key={opt.id}
+                      whileHover={!sel ? { scale: 1.03 } : {}}
+                      whileTap={{ scale: 0.97 }}
+                      onClick={() => user.setAgeGroup?.(opt.id)}
+                      className="flex items-center gap-2 px-3 py-2 rounded-[14px] border-2 text-left transition-colors"
+                      style={{
+                        borderColor: sel ? '#FF6B35' : 'rgba(42,42,42,0.1)',
+                        background: sel ? 'rgba(255,107,53,0.07)' : undefined,
+                      }}
+                    >
+                      <span className="text-lg">{opt.emoji}</span>
+                      <div>
+                        <p className="text-xs font-body font-semibold text-text-primary leading-tight">{opt.label}</p>
+                        <p className="text-[10px] font-mono text-text-muted">{opt.range}</p>
+                      </div>
+                    </motion.button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="space-y-2 mb-4">
               {[
-                ['Age group', user.ageGroup?.replace('_', ' ')],
                 ['Personality', user.personality],
                 ['Learning pref', user.learningPref || 'not set'],
               ].map(([label, value]) => (

@@ -156,14 +156,133 @@ export const MODES = {
 };
 
 // ── Badges ──
-export const BADGES = [
-  { id: 'cartographer', title: 'The Cartographer', emoji: '🗺️', description: '10+ domains explored' },
-  { id: 'spelunker',    title: 'The Spelunker',    emoji: '🔦', description: '7+ levels deep' },
-  { id: 'polymath',     title: 'The Polymath',     emoji: '🧠', description: '5+ unrelated tracks' },
-  { id: 'rabbit',       title: 'The Rabbit',       emoji: '🐰', description: '3+ unrelated detours' },
-  { id: 'architect',    title: 'The Architect',    emoji: '📐', description: 'Longest branch in your tree' },
-  { id: 'first_principles', title: 'First Principles', emoji: '🔍', description: 'Drills to foundations before saving' },
+export const BADGE_TIERS = ['bronze', 'silver', 'gold', 'platinum', 'diamond'];
+
+export const TIER_STYLES = {
+  bronze:   { color: '#CD7F32', glow: 'rgba(205,127,50,0.35)',  label: 'Bronze',   star: '🥉' },
+  silver:   { color: '#9EA8B8', glow: 'rgba(158,168,184,0.35)', label: 'Silver',   star: '🥈' },
+  gold:     { color: '#F5C518', glow: 'rgba(245,197,24,0.40)',  label: 'Gold',     star: '🥇' },
+  platinum: { color: '#70C8D4', glow: 'rgba(112,200,212,0.40)', label: 'Platinum', star: '💎' },
+  diamond:  { color: '#9B6FE8', glow: 'rgba(155,111,232,0.45)', label: 'Diamond',  star: '💠' },
+};
+
+export const BADGE_SYSTEM = [
+  {
+    id: 'depth_diver',
+    title: 'Depth Diver',
+    emoji: '🤿',
+    description: 'Follow ideas deeper and deeper',
+    getValue: (stats) => stats.maxDepth,
+    tiers: [
+      { tier: 'bronze',   label: 'Paddler',      description: 'Reach 3 levels deep',  threshold: 3  },
+      { tier: 'silver',   label: 'Diver',         description: 'Reach 5 levels deep',  threshold: 5  },
+      { tier: 'gold',     label: 'Deep Diver',    description: 'Reach 7 levels deep',  threshold: 7  },
+      { tier: 'platinum', label: 'Abyss Walker',  description: 'Reach 10 levels deep', threshold: 10 },
+      { tier: 'diamond',  label: 'Mariana',        description: 'Reach 15 levels deep', threshold: 15 },
+    ],
+  },
+  {
+    id: 'world_builder',
+    title: 'World Builder',
+    emoji: '🌍',
+    description: 'Explore ideas across many domains',
+    getValue: (stats) => stats.distinctDomains,
+    tiers: [
+      { tier: 'bronze',   label: 'Tourist',      description: 'Explore 2 domains',  threshold: 2  },
+      { tier: 'silver',   label: 'Traveler',      description: 'Explore 4 domains',  threshold: 4  },
+      { tier: 'gold',     label: 'Cartographer',  description: 'Explore 6 domains',  threshold: 6  },
+      { tier: 'platinum', label: 'Globe Trotter', description: 'Explore 9 domains',  threshold: 9  },
+      { tier: 'diamond',  label: 'Omnivore',      description: 'Explore 12 domains', threshold: 12 },
+    ],
+  },
+  {
+    id: 'thread_keeper',
+    title: 'Thread Keeper',
+    emoji: '🧵',
+    description: 'Grow your collection of saved tracks',
+    getValue: (stats) => stats.tracksCount,
+    tiers: [
+      { tier: 'bronze',   label: 'Collector',     description: 'Save 3 tracks',  threshold: 3  },
+      { tier: 'silver',   label: 'Curator',        description: 'Save 8 tracks',  threshold: 8  },
+      { tier: 'gold',     label: 'Archivist',      description: 'Save 15 tracks', threshold: 15 },
+      { tier: 'platinum', label: 'Librarian',      description: 'Save 30 tracks', threshold: 30 },
+      { tier: 'diamond',  label: 'Encyclopedist',  description: 'Save 50 tracks', threshold: 50 },
+    ],
+  },
+  {
+    id: 'streak_master',
+    title: 'Streak Master',
+    emoji: '🔥',
+    description: 'Keep your learning streak alive',
+    getValue: (stats) => stats.streak,
+    tiers: [
+      { tier: 'bronze',   label: 'Sparked',        description: '3-day streak',   threshold: 3  },
+      { tier: 'silver',   label: 'On Fire',         description: '7-day streak',   threshold: 7  },
+      { tier: 'gold',     label: 'Blazing',         description: '14-day streak',  threshold: 14 },
+      { tier: 'platinum', label: 'Unstoppable',     description: '30-day streak',  threshold: 30 },
+      { tier: 'diamond',  label: 'Eternal Flame',   description: '60-day streak',  threshold: 60 },
+    ],
+  },
+  {
+    id: 'polymath',
+    title: 'Polymath',
+    emoji: '🧠',
+    description: 'Build genuine breadth across disciplines',
+    getValue: (stats) => Math.min(stats.distinctDomains, Math.floor(stats.tracksCount / 3)),
+    tiers: [
+      { tier: 'bronze',   label: 'Curious Mind',   description: 'Breadth score of 2',  threshold: 2  },
+      { tier: 'silver',   label: 'Scholar',         description: 'Breadth score of 3',  threshold: 3  },
+      { tier: 'gold',     label: 'Polymath',        description: 'Breadth score of 5',  threshold: 5  },
+      { tier: 'platinum', label: 'Renaissance',     description: 'Breadth score of 7',  threshold: 7  },
+      { tier: 'diamond',  label: 'Leonardo',        description: 'Breadth score of 10', threshold: 10 },
+    ],
+  },
+  {
+    id: 'rabbit_hole',
+    title: 'Rabbit Hole',
+    emoji: '🐰',
+    description: 'Chase ideas across unexpected domain jumps',
+    getValue: (stats) => stats.distinctDomainJumps,
+    tiers: [
+      { tier: 'bronze',   label: 'Curious',        description: '3 domain jumps',   threshold: 3  },
+      { tier: 'silver',   label: 'Wanderer',        description: '6 domain jumps',   threshold: 6  },
+      { tier: 'gold',     label: 'Rabbit',          description: '10 domain jumps',  threshold: 10 },
+      { tier: 'platinum', label: 'Nomad',           description: '15 domain jumps',  threshold: 15 },
+      { tier: 'diamond',  label: 'Chaos Agent',     description: '25 domain jumps',  threshold: 25 },
+    ],
+  },
+  {
+    id: 'scholar',
+    title: 'Scholar',
+    emoji: '📚',
+    description: 'Master topics deeply, not just broadly',
+    getValue: (stats) => stats.knowWellCount,
+    tiers: [
+      { tier: 'bronze',   label: 'Student',        description: 'Know 2 topics well',  threshold: 2  },
+      { tier: 'silver',   label: 'Graduate',        description: 'Know 5 topics well',  threshold: 5  },
+      { tier: 'gold',     label: 'Scholar',         description: 'Know 10 topics well', threshold: 10 },
+      { tier: 'platinum', label: 'Expert',          description: 'Know 20 topics well', threshold: 20 },
+      { tier: 'diamond',  label: 'Sage',            description: 'Know 35 topics well', threshold: 35 },
+    ],
+  },
+  {
+    id: 'architect',
+    title: 'Architect',
+    emoji: '📐',
+    description: 'Build deep, structured chains of knowledge',
+    getValue: (stats) => stats.deepSavesCount,
+    tiers: [
+      { tier: 'bronze',   label: 'Builder',        description: '1 track 4+ levels deep',   threshold: 1  },
+      { tier: 'silver',   label: 'Engineer',        description: '3 tracks 4+ levels deep',  threshold: 3  },
+      { tier: 'gold',     label: 'Architect',       description: '7 tracks 4+ levels deep',  threshold: 7  },
+      { tier: 'platinum', label: 'Mastermind',      description: '12 tracks 4+ levels deep', threshold: 12 },
+      { tier: 'diamond',  label: 'Grand Architect', description: '20 tracks 4+ levels deep', threshold: 20 },
+    ],
+  },
 ];
+
+// Legacy alias — use BADGE_SYSTEM for new code
+export const BADGES = BADGE_SYSTEM;
 
 // ── AI Prompt Types ──
 export const PROMPT_TYPES = {

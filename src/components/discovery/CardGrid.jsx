@@ -1,4 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
+import { motion } from 'framer-motion';
+void motion;
 import DiscoveryCard from './DiscoveryCard.jsx';
 import Loader from '../common/Loader.jsx';
 import Ember from '../ember/Ember.jsx';
@@ -202,18 +204,31 @@ export default function CardGrid({
         </div>
 
         <div className="mt-5 grid gap-3 sm:grid-cols-3">
-          <div className="rounded-[18px] bg-[rgba(255,255,255,0.78)] px-4 py-3">
-            <p className="text-[11px] font-mono uppercase tracking-[0.14em] text-text-muted">Curiosity Signal</p>
-            <p className="mt-1 font-display text-2xl text-text-primary">{progressPct}%</p>
-          </div>
-          <div className="rounded-[18px] bg-[rgba(255,255,255,0.78)] px-4 py-3">
-            <p className="text-[11px] font-mono uppercase tracking-[0.14em] text-text-muted">Mode</p>
-            <p className="mt-1 text-sm font-body capitalize text-text-primary">{mode} discovery</p>
-          </div>
-          <div className="rounded-[18px] bg-[rgba(255,255,255,0.78)] px-4 py-3">
-            <p className="text-[11px] font-mono uppercase tracking-[0.14em] text-text-muted">Emerging Threads</p>
-            <p className="mt-1 text-sm font-body text-text-primary">{sparkline.length ? sparkline.join(' · ') : 'Still calibrating'}</p>
-          </div>
+          {[
+            { label: 'Curiosity Signal', value: `${progressPct}%`, large: true },
+            { label: 'Mode', value: `${mode} discovery`, large: false },
+            { label: 'Emerging Threads', value: sparkline.length ? sparkline.join(' · ') : 'Still calibrating', large: false },
+          ].map(({ label, value, large }, i) => (
+            <motion.div
+              key={label}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.07, duration: 0.28 }}
+              whileHover={{ scale: 1.03, boxShadow: `0 8px 22px ${topDomainColor}18` }}
+              className="rounded-[18px] bg-[rgba(255,255,255,0.78)] px-4 py-3"
+            >
+              <p className="text-[11px] font-mono uppercase tracking-[0.14em] text-text-muted">{label}</p>
+              <motion.p
+                key={value}
+                initial={{ scale: 0.85, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 22, delay: i * 0.07 + 0.1 }}
+                className={`mt-1 font-body capitalize text-text-primary ${large ? 'font-display text-2xl' : 'text-sm'}`}
+              >
+                {value}
+              </motion.p>
+            </motion.div>
+          ))}
         </div>
 
         <div className="mt-5">
@@ -221,22 +236,28 @@ export default function CardGrid({
             <span>Momentum</span>
             <span>{Math.max(totalRounds - round - 1, 0)} rounds left</span>
           </div>
-          <div className="h-2 rounded-full bg-[rgba(42,42,42,0.08)]">
-            <div
-              className="h-full rounded-full transition-all duration-500"
-              style={{ width: `${progressPct}%`, background: `linear-gradient(90deg, ${topDomainColor}, #ffb347)` }}
+          <div className="h-2 rounded-full bg-[rgba(42,42,42,0.08)] overflow-hidden">
+            <motion.div
+              className="h-full rounded-full"
+              initial={{ width: 0 }}
+              animate={{ width: `${progressPct}%` }}
+              transition={{ duration: 0.6, ease: [0.25, 0.8, 0.25, 1] }}
+              style={{ background: `linear-gradient(90deg, ${topDomainColor}, #ffb347)` }}
             />
           </div>
         </div>
 
         <div className="mt-4 flex flex-wrap gap-2">
-          {sampleBranchTypes.map((branch) => (
-            <span
+          {sampleBranchTypes.map((branch, i) => (
+            <motion.span
               key={branch.label}
+              initial={{ opacity: 0, scale: 0.85 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: i * 0.08, type: 'spring', stiffness: 320, damping: 22 }}
               className="rounded-full bg-[rgba(255,255,255,0.74)] px-3 py-1 text-[11px] font-body font-semibold text-text-secondary"
             >
               {branch.emoji} {branch.shortLabel}
-            </span>
+            </motion.span>
           ))}
         </div>
       </div>
@@ -245,25 +266,24 @@ export default function CardGrid({
         <Loader message="Finding interesting things..." />
       ) : (
         <div key={round} className="grid w-full gap-3 sm:grid-cols-2">
-          {cards.map((card, i) => (
-            <div key={`${round}-${card.domain}-${i}`} className="relative">
+          {cards.map((card, i) => {
+            const normalizedCard = normalizeCard(card, i);
+            const isPicked = pickedCard?.text === card.text;
+            const isUnchosen = !!pickedCard && !isPicked;
+            return (
+              <div key={`${round}-${card.domain}-${i}`} className="relative">
                 <DiscoveryCard
-                card={normalizeCard(card, i)}
-                index={i}
-                onPick={handlePick}
-                disabled={!!pickedCard}
-                isKids={isKids}
-              />
-              {pickedCard?.domain === card.domain && (
-                <div
-                  className="absolute inset-0 flex items-center justify-center rounded-card"
-                  style={{ background: `${DOMAIN_COLORS[card.domain]}22` }}
-                >
-                  <span className="text-3xl">✓</span>
-                </div>
-              )}
-            </div>
-          ))}
+                  card={normalizedCard}
+                  index={i}
+                  onPick={handlePick}
+                  disabled={!!pickedCard}
+                  isPicked={isPicked}
+                  isUnchosen={isUnchosen}
+                  isKids={isKids}
+                />
+              </div>
+            );
+          })}
         </div>
       )}
     </div>

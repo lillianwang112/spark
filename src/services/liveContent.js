@@ -225,16 +225,66 @@ export async function fetchTopicImages(query, count = 3) {
   return dedupeBy(merged, (item) => item.url).slice(0, count);
 }
 
+// Try multiple Piped API instances (free YouTube proxy, no API key)
+const PIPED_INSTANCES = [
+  'https://pipedapi.kavin.rocks',
+  'https://api.piped.mah.xyz',
+  'https://piped-api.garudalinux.org',
+];
+
+function formatSeconds(s) {
+  if (!s || s < 0) return '';
+  const m = Math.floor(s / 60);
+  const sec = Math.floor(s % 60);
+  return `${m}:${sec.toString().padStart(2, '0')}`;
+}
+
+export async function fetchYouTubeVideos(query, count = 2) {
+  const searchQuery = `${query} explained educational`;
+  for (const base of PIPED_INSTANCES) {
+    try {
+      const url = `${base}/search?q=${encodeURIComponent(searchQuery)}&filter=videos`;
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 6000);
+      const resp = await fetch(url, { signal: controller.signal });
+      clearTimeout(timer);
+      if (!resp.ok) continue;
+      const data = await resp.json();
+      const items = (data?.items || []).filter((item) => item.type === 'stream' && item.url);
+      if (items.length === 0) continue;
+      return items.slice(0, count).map((item) => {
+        const rawId = item.url?.split('v=')?.[1] || item.url?.split('/')?.pop() || '';
+        const videoId = rawId.split('&')[0];
+        return {
+          id: videoId,
+          title: item.title || '',
+          channel: item.uploaderName || item.uploader || '',
+          duration: formatSeconds(item.duration),
+          thumbnail: item.thumbnail || `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
+          embedUrl: `https://www.youtube-nocookie.com/embed/${videoId}`,
+          watchUrl: `https://www.youtube.com/watch?v=${videoId}`,
+        };
+      }).filter((v) => v.id);
+    } catch {
+      // try next instance
+    }
+  }
+  return [];
+}
+
 export async function fetchTopicContent(query, options = {}) {
   const imageCount = options.imageCount || 4;
   const paperCount = options.paperCount || 4;
   const lessonCount = options.lessonCount || 4;
 
-  const [wiki, images, papers, khanLessons] = await Promise.allSettled([
+  const videoCount = options.videoCount || 2;
+
+  const [wiki, images, papers, khanLessons, videos] = await Promise.allSettled([
     fetchWikipediaTopic(query),
     fetchTopicImages(query, imageCount),
     fetchOpenAlexPapers(query, paperCount),
     fetchKhanLessons(query, lessonCount),
+    fetchYouTubeVideos(query, videoCount),
   ]);
 
   return {
@@ -243,6 +293,7 @@ export async function fetchTopicContent(query, options = {}) {
     images: images.status === 'fulfilled' ? images.value : [],
     papers: papers.status === 'fulfilled' ? papers.value : [],
     lessons: khanLessons.status === 'fulfilled' ? khanLessons.value : [],
+    videos: videos.status === 'fulfilled' ? videos.value : [],
   };
 }
 

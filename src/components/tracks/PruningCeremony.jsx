@@ -79,14 +79,18 @@ export default function PruningCeremony({ track, open, onConfirm, onCancel }) {
                   </p>
                 </div>
                 <div className="mt-2 flex gap-2">
-                  <button
+                  <motion.button
                     onClick={onCancel}
+                    whileHover={{ scale: 1.04, boxShadow: '0 6px 18px rgba(42,42,42,0.12)' }}
+                    whileTap={{ scale: 0.96 }}
                     className="btn btn-secondary"
                   >
                     Keep it
-                  </button>
-                  <button
+                  </motion.button>
+                  <motion.button
                     onClick={() => setPhase('falling')}
+                    whileHover={{ scale: 1.04, boxShadow: '0 12px 28px rgba(193,102,107,0.45)' }}
+                    whileTap={{ scale: 0.96 }}
                     className="btn"
                     style={{
                       background: 'linear-gradient(135deg, #C1666B 0%, #8B3A44 100%)',
@@ -95,7 +99,7 @@ export default function PruningCeremony({ track, open, onConfirm, onCancel }) {
                     }}
                   >
                     Let it fall
-                  </button>
+                  </motion.button>
                 </div>
               </div>
             )}

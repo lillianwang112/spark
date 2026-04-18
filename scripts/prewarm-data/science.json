@@ -1,0 +1,261 @@
+{
+  "ex:science::physics::astrophysics::black_holes:Black Holes:college:spark": "A black hole is not actually a hole — it is the most extreme concentration of mass the universe allows, a point where gravity becomes so overwhelming that not even light can escape. This single fact reshapes everything we thought we knew about space, time, and the nature of reality itself.\n\nWhen a massive star exhausts its nuclear fuel, the outward pressure that kept it inflated vanishes, and gravity wins catastrophically. The core collapses to a singularity — a point of theoretically infinite density — wrapped inside an invisible surface called the event horizon. Cross that boundary and the escape velocity exceeds the speed of light, meaning nothing, no matter, no signal, no information, can ever return. Think of it like a drain in a bathtub: water swirling near the edge can still escape, but past a certain radius the current is simply too strong. The event horizon is that radius, and inside it the flow of spacetime itself points inward.\n\nYet black holes are not the silent voids of science fiction. They power quasars — the brightest objects in the observable universe — by superheating infalling gas into blazing accretion disks. Stephen Hawking showed they slowly evaporate by emitting thermal radiation, raising a profound paradox: if the information about everything that ever fell in eventually radiates away as featureless heat, has the universe permanently forgotten it? This \"information paradox\" sits at the unresolved frontier where general relativity collides with quantum mechanics, and its answer may require a theory of physics we do not yet have.",
+
+  "kt:science::physics::astrophysics::black_holes:Black Holes:college": [
+    "The event horizon is not a physical surface — it is the point of no return for light itself.",
+    "Black holes power the universe's brightest objects by converting infalling matter into radiation.",
+    "Hawking radiation suggests black holes slowly evaporate, creating an unsolved information paradox."
+  ],
+
+  "qq:science::physics::astrophysics::black_holes:Black Holes:college": {
+    "question": "What is the event horizon of a black hole?",
+    "options": [
+      "The physical surface of the collapsed star",
+      "The boundary beyond which escape velocity exceeds the speed of light",
+      "The region where time flows backward",
+      "The outermost ring of the accretion disk"
+    ],
+    "correct": 1,
+    "explanation": "The event horizon is the invisible boundary where escape velocity equals the speed of light, so nothing — including light — can escape from within it."
+  },
+
+  "ex:science::physics::quantum_mechanics::quantum_entanglement:Quantum Entanglement:college:spark": "Two particles, separated by the entire width of a galaxy, can share a connection so intimate that measuring one instantaneously determines the state of the other — a phenomenon Einstein dismissed as \"spooky action at a distance\" and spent years trying to prove impossible. Experiments since the 1980s have confirmed he was wrong.\n\nQuantum entanglement arises when two particles interact in a way that links their quantum states, forming a single unified system even when they are physically apart. Before measurement, each particle exists in a superposition of possible states — say, spin up or spin down. The moment you measure one and find it spin up, its entangled partner is instantly found to be spin down, no matter the distance between them. Crucially, this is not because they secretly agreed on outcomes beforehand, like a pair of pre-matched gloves. Bell's theorem, confirmed by rigorous experiments, rules out all such \"hidden variable\" explanations. The correlation is real, fundamental, and defies classical intuition entirely. Think of it as two dice that are never loaded in advance but always land on complementary numbers the instant either is rolled.\n\nEntanglement does not allow faster-than-light communication — you cannot control which outcome you get, so no message can be encoded. But it does enable entirely new technologies. Quantum cryptography uses entanglement to create theoretically unbreakable encryption keys. Quantum computers exploit entangled qubits to explore exponentially many calculations simultaneously. And quantum teleportation — already demonstrated in labs — uses entanglement to transfer a quantum state perfectly from one location to another, raising questions about identity, information, and what it truly means to \"move\" something.",
+
+  "kt:science::physics::quantum_mechanics::quantum_entanglement:Quantum Entanglement:college": [
+    "Entangled particles share quantum states that are correlated no matter how far apart they are.",
+    "Bell's theorem experiments rule out pre-agreed hidden variables — the connection is genuinely nonlocal.",
+    "Entanglement enables quantum cryptography and quantum computing but cannot transmit information faster than light."
+  ],
+
+  "qq:science::physics::quantum_mechanics::quantum_entanglement:Quantum Entanglement:college": {
+    "question": "Why does quantum entanglement not allow faster-than-light communication?",
+    "options": [
+      "The particles are always too far apart for signals to travel in time",
+      "Measuring one particle destroys the entanglement before the other is measured",
+      "You cannot control which measurement outcome you get, so no message can be encoded",
+      "Entanglement only works for particles with zero mass"
+    ],
+    "correct": 2,
+    "explanation": "Because measurement outcomes are random and uncontrollable, an observer cannot encode a chosen message into the results, preventing any faster-than-light signaling."
+  },
+
+  "ex:science::physics::quantum_mechanics:Quantum Mechanics:college:spark": "At the scale of atoms and subatomic particles, reality behaves in ways so alien that Richard Feynman famously declared that nobody truly understands quantum mechanics — not because physicists are confused, but because the universe genuinely does not play by the rules our macroscopic intuitions expect.\n\nQuantum mechanics is the mathematical framework governing the behavior of matter and energy at the smallest scales. Its central object is the wave function, a probability amplitude that encodes every possible state of a system at once. A particle does not have a definite position or momentum until measured — it exists in a superposition of all possibilities, spreading through space like a wave. When you observe it, the wave function collapses to a single outcome, chosen according to probabilities the theory predicts with extraordinary precision. This is not a limitation of our instruments; the indeterminacy is intrinsic. The famous double-slit experiment demonstrates this viscerally: fire electrons one at a time at two slits, and an interference pattern — the hallmark of waves — builds up on the detector, as though each electron passes through both slits simultaneously. Add a detector to watch which slit it uses, and the interference pattern vanishes. The act of observation changes the result.\n\nQuantum mechanics underpins every piece of modern technology: transistors, lasers, MRI machines, and solar cells are all quantum devices. Yet its interpretation remains fiercely debated. The Copenhagen interpretation says there is no deeper story beneath probabilities. Many-worlds says every measurement splits the universe into parallel branches. Pilot-wave theory restores determinism but requires nonlocal hidden influences. A century in, the math is bulletproof — the meaning of that math is one of the deepest open questions in all of science.",
+
+  "kt:science::physics::quantum_mechanics:Quantum Mechanics:college": [
+    "Particles exist in superpositions of all possible states until the act of measurement forces a single outcome.",
+    "The double-slit experiment shows that observation itself changes quantum behavior — indeterminacy is fundamental.",
+    "Quantum mechanics is experimentally flawless yet philosophically unresolved; its interpretation remains actively debated."
+  ],
+
+  "qq:science::physics::quantum_mechanics:Quantum Mechanics:college": {
+    "question": "In the double-slit experiment, what happens to the interference pattern when a detector is placed to observe which slit each electron passes through?",
+    "options": [
+      "The interference pattern becomes sharper and more defined",
+      "The interference pattern shifts to one side of the screen",
+      "The interference pattern disappears, replaced by two bands",
+      "The electron stops moving and remains at the slit"
+    ],
+    "correct": 2,
+    "explanation": "Detecting which slit the electron uses constitutes a measurement that collapses the superposition, destroying the wave interference and producing a classical two-band pattern."
+  },
+
+  "ex:science::physics::general_relativity:General Relativity:college:spark": "In 1915, Albert Einstein published a set of equations that replaced Newton's picture of gravity as a force with something far stranger: gravity is the curvature of spacetime itself, shaped by mass and energy, and everything — including light — simply follows the straightest possible path through that curved geometry.\n\nGeneral relativity treats space and time not as a fixed backdrop but as a dynamic fabric. Place a massive object like the Sun in that fabric, and it warps spacetime the way a bowling ball warps a stretched rubber sheet. Nearby objects — planets, photons, even clocks — follow the contours of that warp. This explains why Earth orbits the Sun without any invisible string pulling it: Earth is simply traveling in a straight line through curved spacetime. The theory predicts effects with no Newtonian equivalent. Clocks run measurably slower in stronger gravitational fields — GPS satellites must correct for this or navigation errors would accumulate at meters per day. Light bends around massive objects, a phenomenon called gravitational lensing, which astronomers now use to map invisible dark matter and detect distant galaxies. Gravitational waves — ripples in the spacetime fabric itself — were predicted by Einstein in 1916 and first directly detected in 2015, carrying the signal of two merging black holes a billion light-years away.\n\nGeneral relativity breaks down inside black holes and at the moment of the Big Bang, where its equations produce infinities. Reconciling it with quantum mechanics — the other great pillar of modern physics — is arguably the central unsolved problem of theoretical physics. String theory and loop quantum gravity are the leading attempts, but neither has made a confirmed experimental prediction. The geometry of the cosmos is known; the quantum grammar of that geometry is not.",
+
+  "kt:science::physics::general_relativity:General Relativity:college": [
+    "Gravity is not a force but the curvature of spacetime caused by mass and energy.",
+    "Clocks tick slower in stronger gravity — a real effect that GPS satellites must constantly correct for.",
+    "Gravitational waves, ripples in spacetime itself, were detected in 2015 confirming Einstein's 1916 prediction."
+  ],
+
+  "qq:science::physics::general_relativity:General Relativity:college": {
+    "question": "Why must GPS satellites apply corrections based on general relativity?",
+    "options": [
+      "Satellites move so fast that special relativity alone fully accounts for the time difference",
+      "Clocks in weaker gravity at orbital altitude run faster than clocks on Earth's surface",
+      "Gravitational lensing bends the GPS signal around Earth's curvature",
+      "The satellites' antennas experience gravitational redshift from solar radiation"
+    ],
+    "correct": 1,
+    "explanation": "General relativity predicts that clocks in weaker gravitational fields (high altitude) tick faster; without correcting for this, GPS position errors would grow by several meters per day."
+  },
+
+  "ex:science::physics::chaos_theory:Chaos Theory:college:spark": "A butterfly flaps its wings in Brazil and sets off a tornado in Texas — not because the flap is powerful, but because tiny differences in initial conditions can cascade through a complex system into wildly different outcomes. This is chaos theory, and it fundamentally limits how far into the future any deterministic system can be predicted.\n\nChaos does not mean randomness. A chaotic system follows perfectly deterministic rules — given exact initial conditions, its future is fixed. The problem is that \"exact\" is unachievable. In a chaotic system, two starting states that differ by a millionth of a millionth still diverge exponentially over time, a property called sensitive dependence on initial conditions. Edward Lorenz discovered this in 1961 while running weather simulations on an early computer. He re-entered a midpoint value rounded to three decimal places instead of six and returned to find a completely different forecast. That tiny truncation had ballooned into a wholly different storm. The mathematical signature of chaos is the strange attractor — a fractal structure in phase space that the system endlessly orbits without ever exactly repeating. The Lorenz attractor, shaped like butterfly wings, became the iconic image of chaos.\n\nChaos theory has transformed how scientists understand complex systems far beyond weather. It appears in the fluctuations of animal populations, the beating of hearts (whose healthy rhythms are subtly chaotic, while perfectly regular rhythms can signal cardiac risk), the dripping of a leaky faucet, and the orbital mechanics of the solar system over millions of years. The deeper implication is philosophical: a universe that is fully deterministic at the micro level can still be fundamentally unpredictable at the macro level, not because of ignorance but because of the irreducible sensitivity of complex dynamics.",
+
+  "kt:science::physics::chaos_theory:Chaos Theory:college": [
+    "Chaotic systems are fully deterministic but impossibly sensitive to initial conditions, making long-term prediction futile.",
+    "Lorenz discovered chaos by accident when a tiny rounding error in a weather simulation produced a completely different storm.",
+    "Strange attractors reveal that chaotic systems have hidden geometric order — they never repeat but never escape a fractal structure."
+  ],
+
+  "qq:science::physics::chaos_theory:Chaos Theory:college": {
+    "question": "What distinguishes a chaotic system from a truly random one?",
+    "options": [
+      "Chaotic systems involve quantum probability while random systems are purely classical",
+      "Chaotic systems are deterministic but extremely sensitive to initial conditions; random systems have no deterministic rules",
+      "Random systems are more predictable over short timescales than chaotic systems",
+      "Chaotic systems always produce fractal outputs while random systems produce smooth curves"
+    ],
+    "correct": 1,
+    "explanation": "A chaotic system follows exact deterministic rules but is so sensitive to initial conditions that it appears random; a truly random system has no underlying deterministic law governing its outputs."
+  },
+
+  "ex:science::biology::genetics::dna:DNA:college:spark": "Inside nearly every cell of your body sits a molecule that, if fully uncoiled, would stretch about two meters — yet it is crammed into a nucleus roughly six micrometers across, and it contains the complete instruction set for building and running a human being. That molecule is DNA, and its elegance lies not just in what it stores but in how it copies itself.\n\nDNA is a double helix: two long strands of nucleotides wound around each other, held together by specific base pairs — adenine with thymine, cytosine with guanine. The sequence of these four chemical letters along the strand encodes genes, which are instructions for building proteins. Proteins do virtually everything in biology — they form structures, catalyze reactions, send signals, and regulate which other genes are active. When a cell divides, an enzyme called helicase unzips the double helix, and DNA polymerase copies each strand, using the base-pairing rules to reconstruct a perfect complement. The result is two identical daughter molecules from one parent — an error rate of roughly one mistake per billion base pairs, with further proofreading machinery that catches most of those. Your genome contains about three billion base pairs, and your body makes trillions of new cells over a lifetime, yet the fidelity is astonishing.\n\nThe profound strangeness is this: only about two percent of human DNA encodes proteins. The rest was once dismissed as \"junk,\" but decades of research have revealed that much of it regulates when and where genes are expressed, structures the physical architecture of chromosomes, and contains the fossilized remnants of ancient viral infections that became permanently integrated into the human lineage. The genome is not a blueprint — it is a living palimpsest, written, erased, and overwritten across hundreds of millions of years of evolution.",
+
+  "kt:science::biology::genetics::dna:DNA:college": [
+    "Base-pair complementarity (A-T, C-G) is the chemical rule that makes faithful DNA replication possible.",
+    "Only about 2% of the human genome encodes proteins; much of the rest regulates gene expression.",
+    "DNA polymerase copies the genome with roughly one error per billion base pairs, then proofreading reduces that further."
+  ],
+
+  "qq:science::biology::genetics::dna:DNA:college": {
+    "question": "Which base-pairing rule is correct for DNA?",
+    "options": [
+      "Adenine pairs with cytosine; guanine pairs with thymine",
+      "Adenine pairs with guanine; cytosine pairs with thymine",
+      "Adenine pairs with thymine; cytosine pairs with guanine",
+      "Adenine pairs with uracil; cytosine pairs with guanine"
+    ],
+    "correct": 2,
+    "explanation": "In DNA, adenine (A) pairs with thymine (T) and cytosine (C) pairs with guanine (G) through complementary hydrogen bonding, which is the chemical basis for accurate replication."
+  },
+
+  "ex:science::biology::evolution:Evolution:college:spark": "The most powerful idea in biology is also one of the most misunderstood: evolution does not have a goal, it does not move toward complexity, and no species is more \"evolved\" than another — every organism alive today has been evolving for exactly the same amount of time since the origin of life, roughly 3.8 billion years.\n\nEvolution by natural selection operates through four non-negotiable ingredients: variation (individuals in a population differ), heritability (those differences are passed to offspring), differential reproduction (some variants leave more offspring than others), and time. That is the entire mechanism. No foresight, no direction, no purpose. If individuals with longer necks survive droughts better and pass that trait to offspring, neck length shifts across the population over generations — not because any giraffe decided to evolve, but because the geometry of survival and reproduction filters variation. Genetic drift — random fluctuations in allele frequency, especially powerful in small populations — adds a non-selective engine of change. Mutation provides the raw variation on which both mechanisms act. Together, these simple processes have produced the estimated eight million species alive today from a single ancestral cell.\n\nEvolution's explanatory reach is staggering. It explains why bacteria evolve antibiotic resistance in hospitals, why our genomes contain broken copies of genes that other mammals use to synthesize vitamin C, why embryos of vastly different vertebrates look nearly identical in early stages, and why the tree of life reconstructed from DNA sequences matches the one built from fossils. The unity of all life — the fact that every organism from oak trees to octopuses to humans uses the same genetic code — is both the deepest evidence for evolution and perhaps the most humbling fact in science.",
+
+  "kt:science::biology::evolution:Evolution:college": [
+    "Natural selection requires only variation, heritability, differential reproduction, and time — no foresight needed.",
+    "Genetic drift adds a random, non-selective engine of evolutionary change, especially powerful in small populations.",
+    "The shared genetic code across all life forms is both the strongest evidence for common descent and the most astonishing fact in biology."
+  ],
+
+  "qq:science::biology::evolution:Evolution:college": {
+    "question": "Which of the following is NOT a required ingredient for evolution by natural selection?",
+    "options": [
+      "Heritable variation among individuals in a population",
+      "Differential reproductive success linked to that variation",
+      "A directional goal or adaptive purpose driving change",
+      "Sufficient time for trait frequencies to shift across generations"
+    ],
+    "correct": 2,
+    "explanation": "Natural selection is an undirected process; it requires variation, heritability, and differential reproduction, but no goal or purpose — beneficial traits spread simply because their carriers survive and reproduce more."
+  },
+
+  "ex:science::biology::genetics::epigenetics:Epigenetics:college:spark": "Identical twins share the same DNA sequence yet can develop different diseases, personalities, and even physical appearances as they age — and the explanation is epigenetics, a layer of biological information written on top of DNA that controls which genes are switched on or off without changing a single letter of the genetic code.\n\nThe word epigenetics means \"above genetics.\" The mechanisms are chemical tags that attach to DNA or to the histone proteins DNA is wrapped around. Methylation — the addition of a methyl group to a cytosine base — typically silences a gene by blocking the transcription machinery from reading it. Histone modifications can either tighten the physical packaging of DNA, making genes inaccessible, or loosen it, opening genes for expression. These marks are dynamic: they respond to diet, stress, exercise, toxins, and social environment. A pregnant rat fed a diet rich in methyl donors produces offspring with permanently altered coat color and body weight — not through mutation, but through epigenetic programming during development. Human studies have found that children who experienced famine in utero showed altered epigenetic patterns decades later, with measurable effects on disease risk.\n\nThe most provocative frontier is transgenerational epigenetic inheritance — the possibility that some epigenetic marks survive the reprogramming that normally resets the genome between generations, meaning that experiences of parents or grandparents could influence the biology of descendants. The evidence in model organisms is strong; in humans, the field is hotly contested. If confirmed broadly, it would require revising the clean separation between \"nature\" and \"nurture\" that molecular biology inherited from classical genetics. The genome, it turns out, is not a static text but an annotated manuscript, continuously revised by the life being lived.",
+
+  "kt:science::biology::genetics::epigenetics:Epigenetics:college": [
+    "Epigenetic marks control gene expression through chemical tags on DNA and histones without altering the DNA sequence.",
+    "Environmental factors like diet, stress, and toxins can rewrite epigenetic patterns with lasting health consequences.",
+    "Transgenerational epigenetic inheritance suggests some acquired marks can be passed to offspring, blurring nature versus nurture."
+  ],
+
+  "qq:science::biology::genetics::epigenetics:Epigenetics:college": {
+    "question": "How does DNA methylation typically affect gene expression?",
+    "options": [
+      "It increases transcription by attracting RNA polymerase to the promoter region",
+      "It silences the gene by blocking the transcription machinery from accessing it",
+      "It causes the gene to be permanently deleted from the genome",
+      "It triggers alternative splicing of the messenger RNA transcript"
+    ],
+    "correct": 1,
+    "explanation": "Methylation of cytosine bases, particularly in promoter regions, typically represses gene expression by preventing transcription factors and RNA polymerase from binding."
+  },
+
+  "ex:science::physics::astrophysics::dark_matter:Dark Matter:college:spark": "The stars, galaxies, gas, and everything else we can see account for only about five percent of the total mass-energy content of the universe. The rest — roughly 27 percent dark matter, 68 percent dark energy — is invisible, undetected by any telescope or particle detector, and yet we are certain it exists because of what it does to the light and motion of the things we can see.\n\nThe first strong evidence for dark matter came in the 1970s when astronomer Vera Rubin measured the rotation speeds of spiral galaxies. By Newton's laws, stars at the outer edges of a galaxy should orbit more slowly than those near the center, just as Neptune moves more slowly than Mercury around the Sun. Instead, Rubin found that the rotation curves were flat: outer stars moved just as fast as inner ones, as if embedded in a much larger, unseen halo of mass. Other evidence followed: the bending of light by galaxy clusters is too strong to be explained by visible matter alone (gravitational lensing observations); the cosmic microwave background carries acoustic oscillations whose frequencies are only consistent with a large reservoir of matter that does not interact with light; and the observed large-scale structure of the universe — the web of filaments and voids — matches simulations only when dark matter is included. The leading candidate is a weakly interacting massive particle (WIMP), but decades of increasingly sensitive underground detectors have not found one.\n\nThe situation is tantalizing and uncomfortable in equal measure. Dark matter threads the universe like an invisible skeleton, and its gravity shaped every galaxy we see — yet we have no confirmed particle, no laboratory detection, and no direct image. Some physicists argue we are looking for the wrong thing entirely: perhaps dark matter is a primordial black hole, an axion, or a sign that gravity itself behaves differently at large scales. The universe's dominant ingredient remains stubbornly anonymous.",
+
+  "kt:science::physics::astrophysics::dark_matter:Dark Matter:college": [
+    "Flat galactic rotation curves — stars orbiting at uniform speed regardless of radius — were the first strong evidence for dark matter.",
+    "Dark matter makes up about 27% of the universe's total content but has never been directly detected in a laboratory.",
+    "The entire large-scale structure of the cosmos — galaxy filaments and voids — only matches simulations when dark matter is included."
+  ],
+
+  "qq:science::physics::astrophysics::dark_matter:Dark Matter:college": {
+    "question": "What observation by Vera Rubin provided key evidence for dark matter?",
+    "options": [
+      "Galaxies appeared redder than expected at their outer edges due to gravitational redshift",
+      "The rotation speeds of stars in galaxy outer regions were far higher than Newtonian gravity from visible mass could explain",
+      "Galaxy clusters bent light at angles inconsistent with Einstein's general relativity predictions",
+      "Stars at the galactic center moved more slowly than those at the outer rim"
+    ],
+    "correct": 1,
+    "explanation": "Rubin found that outer stars in spiral galaxies orbit at roughly the same speed as inner stars — a flat rotation curve — which requires far more mass than visible matter provides, implying an invisible dark matter halo."
+  },
+
+  "ex:science::complex_systems::emergence:Emergence:college:spark": "A single neuron cannot think. A single water molecule is not wet. A single ant does not know how to build an anthill. Yet billions of neurons together produce consciousness, countless water molecules together produce wetness, and tens of thousands of ants following simple local rules together construct architecturally sophisticated colonies. The property that arises from the collective but is absent in any individual part is called emergence, and it is one of the most profound patterns in all of science.\n\nEmergence occurs when interactions between components at one level of organization produce qualitatively new properties at a higher level — properties that cannot be predicted simply by knowing the parts. This is sometimes called the principle that the whole is more than the sum of its parts. There are two kinds. Weak emergence describes properties that are in principle derivable from the parts, even if the calculation is intractable — the temperature of a gas from molecular velocities, for example. Strong emergence describes properties that are genuinely irreducible: no amount of physics seems to explain why certain neural configurations produce the subjective experience of seeing red. Consciousness remains the canonical hard case. Markets are another: economic booms, crashes, and bubbles emerge from the decisions of millions of individuals, none of whom planned the collective behavior. Traffic jams appear and propagate backward through a highway with no central coordinator, obeying wave equations written by no engineer.\n\nEmergence challenges the reductionist program — the assumption that understanding parts fully explains wholes. Complexity science, which studies emergence systematically, has found universal patterns: power laws, phase transitions, and self-organized criticality appear in contexts as different as earthquake magnitudes, word frequencies, and the size distribution of cities. The universe seems to be organized in nested layers of emergent reality, each with its own laws, and the connections between those layers remain among the deepest mysteries in science.",
+
+  "kt:science::complex_systems::emergence:Emergence:college": [
+    "Emergent properties arise from collective interactions and are absent in any individual component — neurons don't think, brains do.",
+    "Weak emergence is in principle reducible to lower-level rules; strong emergence (like consciousness) may be genuinely irreducible.",
+    "Power laws, phase transitions, and self-organized criticality appear as universal signatures of emergent complex systems."
+  ],
+
+  "qq:science::complex_systems::emergence:Emergence:college": {
+    "question": "Which of the following is the best example of an emergent property?",
+    "options": [
+      "The mass of a molecule being the sum of its atomic masses",
+      "The temperature of a gas being proportional to average molecular kinetic energy",
+      "The liquidity of water arising from hydrogen bonding between individual molecules",
+      "The brightness of a light bulb being proportional to electrical current"
+    ],
+    "correct": 2,
+    "explanation": "Liquidity (wetness) is a collective property of vast numbers of water molecules that is entirely absent in any single molecule — a classic emergent phenomenon that cannot be attributed to any individual component."
+  },
+
+  "ex:science::biology::genetics::crispr:CRISPR:college:spark": "In 1987 a Japanese microbiologist noticed odd repeated sequences in bacterial DNA, flanked by spacers of unknown origin. Thirty years later, those sequences turned out to be the bacterial immune system — and the molecular machinery they encode is now rewriting the genome of every organism scientists choose to target. CRISPR-Cas9 is the most powerful tool for editing DNA ever developed, and it arrived with a speed that caught even its discoverers off guard.\n\nCRISPR stands for Clustered Regularly Interspaced Short Palindromic Repeats. Bacteria use these sequences to store snippets of viral DNA from previous infections, building a genetic memory. If the same virus returns, a CRISPR-associated enzyme called Cas9 uses an RNA guide complementary to the stored sequence to find and cut the viral DNA with surgical precision. Scientists realized in 2012 that they could reprogram this system with a synthetic guide RNA of their own design, directing Cas9 to cut any DNA sequence they chose — including that of human cells. The cut triggers DNA repair, and researchers can either disable the gene outright or insert a new sequence at the break site. The entire system fits in a syringe; it is cheap, fast, and works in virtually any organism. Clinical trials are already using CRISPR to edit T-cells to attack cancer, to correct the mutation causing sickle cell disease, and to knock out a gene that causes a blinding inherited disorder.\n\nThe ethical landscape is as consequential as the science. In 2018, a Chinese researcher produced the world's first CRISPR-edited babies, editing embryos before implantation to confer resistance to HIV — an act condemned globally as premature and reckless. Germline edits — changes to eggs, sperm, or embryos — are inherited by all future descendants, creating heritable modifications the subjects cannot consent to and whose long-term consequences are unknown. CRISPR is not just a tool; it is a threshold, and humanity is still deciding whether and how to cross it.",
+
+  "kt:science::biology::genetics::crispr:CRISPR:college": [
+    "CRISPR-Cas9 is a bacterial immune system repurposed to cut and edit any DNA sequence with guide RNA precision.",
+    "CRISPR is already in clinical trials treating sickle cell disease, cancer, and inherited blindness.",
+    "Germline CRISPR edits are heritable by all future descendants, raising profound and unresolved ethical questions."
+  ],
+
+  "qq:science::biology::genetics::crispr:CRISPR:college": {
+    "question": "What is the function of the guide RNA in the CRISPR-Cas9 system?",
+    "options": [
+      "It carries the replacement DNA sequence that will be inserted at the cut site",
+      "It activates the Cas9 enzyme by providing it with energy",
+      "It directs the Cas9 enzyme to the specific DNA target sequence by complementary base pairing",
+      "It repairs the double-strand break after Cas9 cuts the DNA"
+    ],
+    "correct": 2,
+    "explanation": "The guide RNA is a synthetic RNA sequence complementary to the target DNA; it binds to that sequence and escorts the Cas9 enzyme there, where Cas9 makes the double-strand cut."
+  },
+
+  "ex:science::physics::quantum_mechanics::heisenberg_uncertainty_principle:Heisenberg Uncertainty Principle:college:spark": "One of the most misquoted ideas in all of physics is the Heisenberg Uncertainty Principle — it does not say that the act of measurement disturbs a particle, as if a careful enough instrument would eliminate the uncertainty. It says something far stranger: certain pairs of physical properties are fundamentally incompatible, and no possible measurement, no matter how perfect, can pin down both simultaneously.\n\nFormulated by Werner Heisenberg in 1927, the principle states that the product of the uncertainties in a particle's position and momentum can never be smaller than a fixed constant (ħ/2, where ħ is the reduced Planck constant). This is not engineering noise — it is a mathematical theorem that follows directly from the wave nature of matter. The more precisely you define a wave in space (pin down its position), the more frequencies you must superimpose to produce that sharp localization, and a mix of frequencies means a spread of momenta. Compress the wave packet in space and you inevitably broaden it in momentum; stretch it in space and momentum narrows. Position and momentum are conjugate variables, and their uncertainties are linked by the Fourier transform, not by measurement clumsiness. Energy and time share the same relationship: a quantum state with a very short lifetime has a correspondingly uncertain energy, which is why the spectral lines of short-lived excited atoms are broader.\n\nThe principle has tangible physical consequences. It is the reason atoms do not collapse: electrons cannot simultaneously have zero energy (sitting still at the nucleus) and zero positional uncertainty (known to be exactly at the nucleus). The uncertainty in position demands a spread in momentum, which manifests as a zero-point kinetic energy that keeps electrons in stable orbits. The same logic explains why liquid helium never freezes at atmospheric pressure — its zero-point motion, mandated by uncertainty, prevents the atoms from locking into a crystal lattice no matter how cold the temperature.",
+
+  "kt:science::physics::quantum_mechanics::heisenberg_uncertainty_principle:Heisenberg Uncertainty Principle:college": [
+    "The uncertainty principle is not about measurement disturbance — it reflects the wave nature of matter at the quantum level.",
+    "Position and momentum are conjugate variables linked by the Fourier transform; pinning down one inherently spreads the other.",
+    "Zero-point energy from the uncertainty principle prevents electrons from collapsing into atomic nuclei and keeps helium liquid near absolute zero."
+  ],
+
+  "qq:science::physics::quantum_mechanics::heisenberg_uncertainty_principle:Heisenberg Uncertainty Principle:college": {
+    "question": "What is the correct reason for the Heisenberg Uncertainty Principle?",
+    "options": [
+      "Measuring instruments inevitably transfer energy to the particle, changing its state",
+      "Quantum particles are too small for any instrument to observe without physically disturbing them",
+      "Position and momentum are conjugate variables whose uncertainties are mathematically linked by the wave nature of matter",
+      "Relativity prevents simultaneous measurement of position and momentum at high speeds"
+    ],
+    "correct": 2,
+    "explanation": "The uncertainty principle is a fundamental mathematical consequence of wave mechanics: localizing a wave in space requires a superposition of many momenta, so greater positional precision inherently means greater momentum uncertainty."
+  },
+
+  "ex:science::physics::thermodynamics::second_law_of_thermodynamics:Second Law of Thermodynamics:college:spark": "The Second Law of Thermodynamics is the only fundamental law of physics that points in a single direction through time — it is the reason why you can scramble an egg but never unscramble one, why heat flows from hot to cold but never spontaneously from cold to hot, and why the arrow of time exists at all. In a universe governed otherwise by time-reversible equations, the Second Law is the one irreversible ratchet.\n\nThe law states that the total entropy of an isolated system never decreases. Entropy is a measure of the number of microscopic arrangements — microstates — consistent with a macroscopic description. A concentrated, ordered system (an egg, a hot iron, a room full of gas crammed into one corner) has few arrangements consistent with its macrostate. A dispersed, disordered system (scrambled egg, cool room, gas filling the whole room) has vastly more. Because randomly occurring processes are overwhelmingly more likely to move a system toward the more numerous, higher-entropy arrangements, order spontaneously decays into disorder — not because the universe prefers disorder, but because there are so many more ways to be disordered. The probabilistic character is important: the Second Law is statistically overwhelming, not logically absolute. A broken glass could theoretically reassemble itself; it simply will not, because the probability is roughly 10 to the power of the number of atoms in the glass.\n\nThe implications reach from engineering to cosmology to information theory. No engine can be perfectly efficient — some energy must always be wasted as heat, because converting heat entirely into work would require decreasing entropy. The universe as a whole is marching toward a state of maximum entropy called \"heat death,\" where temperature everywhere is uniform and no free energy remains to drive any process. Claude Shannon recognized in 1948 that information has the same mathematical structure as entropy, linking the thermodynamics of physical systems to the logic of communication and computation — a connection that continues to yield profound insights about the nature of information itself.",
+
+  "kt:science::physics::thermodynamics::second_law_of_thermodynamics:Second Law of Thermodynamics:college": [
+    "Entropy is the number of microscopic arrangements consistent with a macrostate; systems evolve toward higher entropy because more arrangements exist there.",
+    "The Second Law is the physical origin of time's arrow — the only fundamental law that distinguishes past from future.",
+    "Shannon's information entropy has the identical mathematical form as thermodynamic entropy, connecting physics to communication theory."
+  ],
+
+  "qq:science::physics::thermodynamics::second_law_of_thermodynamics:Second Law of Thermodynamics:college": {
+    "question": "Why does entropy spontaneously increase in isolated systems, according to the statistical interpretation?",
+    "options": [
+      "The universe contains a force that actively pushes systems toward disorder",
+      "High-entropy states have more possible microscopic arrangements, making them overwhelmingly more probable to occur randomly",
+      "Energy is always converted to heat, which physically destroys ordered structures",
+      "Quantum uncertainty prevents the exact reversal of any physical process"
+    ],
+    "correct": 1,
+    "explanation": "Higher-entropy states correspond to vastly more microscopic arrangements; random processes are therefore statistically almost certain to move a system toward them, making entropy increase the overwhelmingly likely outcome without any external driving force."
+  }
+}

@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import Ember from '../ember/Ember.jsx';
 import Sparkles from './Sparkles.jsx';
 
@@ -29,9 +30,14 @@ export default function Loader({ message = 'Thinking...', size = 'sm', withSpark
         <Ember mood="thinking" size={size} glowIntensity={0.75} />
       </div>
       {message && (
-        <p className="font-body text-sm text-text-muted" aria-hidden="true">
+        <motion.p
+          className="font-body text-sm text-text-muted"
+          animate={{ opacity: [1, 0.55, 1] }}
+          transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+          aria-hidden="true"
+        >
           {message}
-        </p>
+        </motion.p>
       )}
     </div>
   );

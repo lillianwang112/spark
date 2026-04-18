@@ -22,7 +22,7 @@ function getBranchCta(kind) {
   }
 }
 
-export default function DiscoveryCard({ card, index, onPick, disabled, isKids = false }) {
+export default function DiscoveryCard({ card, index, onPick, disabled, isPicked = false, isUnchosen = false, isKids = false }) {
   const color = DOMAIN_COLORS[card.domain] || '#FF6B35';
   const branchStyle = BRANCH_TYPE_STYLES[card._kind] || null;
   const cta = getBranchCta(card._kind);
@@ -52,22 +52,54 @@ export default function DiscoveryCard({ card, index, onPick, disabled, isKids = 
   return (
     <motion.button
       initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.06, duration: 0.35, ease: [0.34, 1.56, 0.64, 1] }}
-      whileHover={{ y: -5, boxShadow: '0 18px 44px rgba(42,42,42,0.16)' }}
-      whileTap={{ scale: 0.97 }}
+      animate={{
+        opacity: isUnchosen ? 0.35 : 1,
+        y: 0,
+        scale: isPicked ? 1.02 : 1,
+        filter: isUnchosen ? 'saturate(0.4)' : 'saturate(1)',
+      }}
+      transition={{
+        delay: isUnchosen || isPicked ? 0 : index * 0.06,
+        duration: isUnchosen || isPicked ? 0.3 : 0.35,
+        ease: [0.34, 1.56, 0.64, 1],
+      }}
+      whileHover={disabled ? {} : { y: -5, boxShadow: '0 18px 44px rgba(42,42,42,0.16)' }}
+      whileTap={disabled ? {} : { scale: 0.97 }}
       onClick={() => !disabled && onPick(card)}
       disabled={disabled}
       className={`
         group relative w-full text-left overflow-hidden
-        rounded-[22px] border border-[rgba(255,255,255,0.82)]
+        rounded-[22px] border
         transition-all duration-200
         focus-visible:outline-2 focus-visible:outline-spark-ember
-        ${disabled ? 'opacity-50 pointer-events-none' : 'cursor-pointer'}
+        ${disabled && !isPicked ? 'pointer-events-none' : 'cursor-pointer'}
         bg-[rgba(255,255,255,0.88)] shadow-[0_12px_28px_rgba(72,49,10,0.08)]
       `}
+      style={{
+        borderColor: isPicked ? `${color}60` : 'rgba(255,255,255,0.82)',
+        boxShadow: isPicked ? `0 0 0 3px ${color}28, 0 16px 40px ${color}22` : undefined,
+      }}
       aria-label={card.text}
     >
+      {/* Picked state: color burst overlay */}
+      {isPicked && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="absolute inset-0 z-10 pointer-events-none flex items-center justify-center"
+          style={{ background: `linear-gradient(135deg, ${color}18, ${color}08)` }}
+        >
+          <motion.div
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+            className="absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold shadow-md"
+            style={{ background: color }}
+          >
+            ✓
+          </motion.div>
+        </motion.div>
+      )}
       {/* Hover sheen overlay */}
       <span
         aria-hidden="true"

@@ -226,11 +226,24 @@ function buildSubstantiveFallbackDescription(topicLabel, childLabel, kind, ageGr
   return templates[kind] || templates.connection;
 }
 
+function sanitizeChildLabel(raw, parentPath = []) {
+  // Strip ":word:" or ":word word:" colon-prefix patterns the AI sometimes generates
+  let label = String(raw).replace(/^:[^:]+:\s*/g, '').trim();
+  // Strip trailing ": subtopic" echoing patterns
+  label = label.replace(/^[^:]+:\s+/, '').trim() || label;
+  // If the label exactly matches any ancestor, return null to filter it out
+  const lower = label.toLowerCase();
+  if (parentPath.some((p) => String(p).toLowerCase() === lower)) return null;
+  return label || null;
+}
+
 function normalizeChildNode(topic, child, index = 0, userContextObj = {}) {
   if (!child?.label) return null;
   const kind = child.kind || FALLBACK_CHILD_KIND_ORDER[index % FALLBACK_CHILD_KIND_ORDER.length];
   const difficulty = child.difficulty || FALLBACK_DIFFICULTY_ORDER[index % FALLBACK_DIFFICULTY_ORDER.length];
-  const label = String(child.label).trim();
+  const rawLabel = String(child.label).trim();
+  const label = sanitizeChildLabel(rawLabel, topic.path || []);
+  if (!label) return null; // filtered — duplicate ancestor label
 
   return hydrateTopic({
     id: child.id || normalizeTopicKey(label),

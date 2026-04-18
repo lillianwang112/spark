@@ -119,3 +119,27 @@ export async function getNodeCache(pathHash, ageGroup) {
     return null;
   }
 }
+
+// ── Shared AI response cache — shared across all users ──
+// Keyed by "{type}:{cacheKey}" — allows instant delivery of pre-warmed content
+export async function getSharedAICache(docId) {
+  if (!db) return null;
+  try {
+    const snap = await getDoc(doc(db, 'aiCache', docId));
+    return snap.exists() ? snap.data().value : null;
+  } catch {
+    return null;
+  }
+}
+
+export async function setSharedAICache(docId, value) {
+  if (!db) return;
+  try {
+    await setDoc(doc(db, 'aiCache', docId), {
+      value,
+      generatedAt: new Date().toISOString(),
+    });
+  } catch {
+    // non-critical
+  }
+}

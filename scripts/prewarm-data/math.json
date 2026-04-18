@@ -1,0 +1,241 @@
+{
+  "ex:mathematics::algebra::linear_algebra:Linear Algebra:college:spark": "The GPS in your phone, the algorithm that recommends your next favorite song, and the software rendering every frame of a modern video game all rely on the same mathematical backbone — a field invented to solve mundane systems of equations that turned out to secretly describe the geometry of space itself.\n\nLinear algebra is the study of vectors, matrices, and the transformations between them. Think of a vector as an arrow pointing in some direction, and a matrix as a machine that stretches, rotates, or reflects that arrow. When you multiply a matrix by a vector, you're applying a geometric transformation. This is why rotating a 3D character in a game is just a matrix multiplication: the entire digital world is a ballet of linear transformations dancing on top of coordinates. The concept of a basis — a minimal set of building-block vectors that can reach every point in a space — reveals that seemingly complex spaces can be navigated with a surprisingly compact map.\n\nBut the real rabbit hole opens when you encounter eigenvalues and eigenvectors — the special directions a transformation leaves unchanged except for scaling. Google's original PageRank algorithm was essentially finding the principal eigenvector of a massive web-link matrix. Quantum mechanics describes particle states as vectors in an abstract space called Hilbert space, and physical measurements correspond to matrix operations on those vectors. The further you go, the more linear algebra starts to feel less like a tool and more like a fundamental language the universe chose to write itself in.",
+
+  "kt:mathematics::algebra::linear_algebra:Linear Algebra:college": [
+    "Matrix multiplication is geometric transformation — every rotation, scaling, and reflection is a matrix acting on vectors.",
+    "Eigenvalues reveal hidden structure: they're the reason Google's PageRank and quantum mechanics share the same math.",
+    "Any high-dimensional dataset can be compressed into its most informative directions using singular value decomposition."
+  ],
+
+  "qq:mathematics::algebra::linear_algebra:Linear Algebra:college": {
+    "question": "A transformation matrix has eigenvalue 0. What does this definitively tell you about the transformation?",
+    "options": [
+      "It collapses space into a lower dimension, destroying information",
+      "It rotates all vectors by 90 degrees",
+      "It scales every vector by the same factor",
+      "It has no effect on the input space"
+    ],
+    "correct": 0,
+    "explanation": "An eigenvalue of 0 means the matrix is singular — it maps some nonzero vector to the zero vector, collapsing the space into a lower-dimensional subspace and making the transformation irreversible."
+  },
+
+  "ex:mathematics::algebra::abstract_algebra:Abstract Algebra:college:spark": "What do the rotations of a triangle, the integers under addition, and the symmetries of a crystal lattice all have in common? They are all groups — and the discovery that such wildly different things share identical algebraic DNA is one of the most startling unifications in all of mathematics.\n\nAbstract algebra strips away the specific objects we're used to calculating with — numbers, polynomials, matrices — and asks: what are the minimum rules needed for a mathematical system to work? A group is just a set with an operation satisfying four properties: closure, associativity, an identity element, and inverses. That's it. From those four axioms springs an enormous theory. Rings add a second operation. Fields add division. What looks like ascetic minimalism turns out to be explosive generativity. The group of rotations of a pentagon and the group of integers modulo five are the same structure wearing different clothes — a fact captured by the concept of isomorphism.\n\nThe deepest payoff came when Évariste Galois — a 20-year-old who died in a duel — used group theory to prove once and for all that there is no general formula for solving fifth-degree polynomial equations, settling a 250-year-old question by reimagining it as a question about symmetry. Today, abstract algebra underlies the encryption keeping your credit card safe (elliptic curve groups), the error-correcting codes in your phone's data transmission (ring theory), and physicists' best descriptions of fundamental particles (Lie groups and representation theory). The abstraction was the point: by forgetting specifics, mathematicians gained universal power.",
+
+  "kt:mathematics::algebra::abstract_algebra:Abstract Algebra:college": [
+    "Groups, rings, and fields are defined by minimal axioms — stripping away specifics reveals universal mathematical structure.",
+    "Galois proved at age 20 that fifth-degree polynomials have no general formula, using symmetry groups of equations.",
+    "The encryption protecting internet transactions today is built on abstract algebraic structures called elliptic curve groups."
+  ],
+
+  "qq:mathematics::algebra::abstract_algebra:Abstract Algebra:college": {
+    "question": "Which of the following is NOT a group under its stated operation?",
+    "options": [
+      "The natural numbers {1, 2, 3, ...} under multiplication",
+      "The integers under addition",
+      "The nonzero real numbers under multiplication",
+      "The set of 2×2 invertible matrices under matrix multiplication"
+    ],
+    "correct": 0,
+    "explanation": "The natural numbers under multiplication lack inverses — there is no natural number you can multiply 2 by to get the identity element 1, since 1/2 is not a natural number."
+  },
+
+  "ex:mathematics::geometry::topology:Topology:college:spark": "To a topologist, a coffee mug and a donut are the same object — both are simply a surface with exactly one hole through it, and any continuous deformation that doesn't tear or glue counts as a valid equivalence. This sounds like a joke, but the idea powers everything from the analysis of DNA supercoiling to the classification of the shape of the universe.\n\nTopology is the study of properties that survive continuous deformation. Unlike geometry, which cares about distances and angles, topology only cares about connectedness, holes, and the global shape of a space. The central question is: what features of a shape are truly intrinsic, unchanged by stretching or bending? The answer is captured in invariants — numbers or algebraic structures that remain constant. The Euler characteristic, for instance, satisfies V − E + F = 2 for any convex polyhedron, whether it's a tetrahedron or a soccer ball. The number of holes in a surface — its genus — is another such invariant. A sphere has genus 0, a torus genus 1, a pretzel with two holes genus 2.\n\nThe rabbit hole deepens with the Poincaré conjecture, which asks whether every three-dimensional space with no holes is equivalent to a sphere. This problem took a century to solve and was cracked in 2003 by Grigori Perelman, who declined the million-dollar Millennium Prize. Modern applications are equally wild: topological data analysis can find the 'shape' of high-dimensional datasets, and physicists use topological invariants to classify exotic states of matter like topological insulators — materials that insulate in their interior but conduct perfectly on their surface.",
+
+  "kt:mathematics::geometry::topology:Topology:college": [
+    "A coffee mug and a donut are topologically identical — topology ignores distance and cares only about holes and connectivity.",
+    "Topological invariants like the Euler characteristic stay constant under any continuous deformation, no matter how extreme.",
+    "Perelman solved the century-old Poincaré conjecture in 2003 and refused the $1 million prize — a truly unprecedented act."
+  ],
+
+  "qq:mathematics::geometry::topology:Topology:college": {
+    "question": "A topologist is told a closed surface has Euler characteristic 0. Which surface could this be?",
+    "options": [
+      "A torus (donut shape)",
+      "A sphere",
+      "A figure-eight surface",
+      "A Klein bottle"
+    ],
+    "correct": 0,
+    "explanation": "A torus has Euler characteristic 0 (V − E + F = 0), the sphere has χ = 2, and the Klein bottle has χ = 0 as well — but among the standard orientable surfaces, the torus is the classic example with genus 1 and χ = 0."
+  },
+
+  "ex:mathematics::geometry::fractal_geometry:Fractal Geometry:college:spark": "Measure the coastline of Britain with a 100-kilometer ruler and you get one answer. Switch to a 10-kilometer ruler and the length jumps dramatically, because now you're catching smaller bays and inlets. Measure with a 1-kilometer ruler and the length jumps again. As your ruler shrinks toward zero, the measured length approaches infinity — the British coastline is, in a rigorous mathematical sense, infinitely long.\n\nThis paradox, articulated by mathematician Benoit Mandelbrot in 1967, launched the field of fractal geometry. A fractal is a shape that is self-similar across scales: zoom into any part of it and you see the same structure repeating. The Koch snowflake is constructed by repeatedly adding triangles to each edge — after infinite iterations, it has infinite perimeter but encloses finite area. The Mandelbrot set, defined by a single deceptively simple equation in the complex plane, conceals infinite complexity at every scale. Fractals also have non-integer dimensions: the Koch curve has a dimension of roughly 1.26, more than a line but less than a surface, which is why it can pack infinite length into finite space.\n\nFractal geometry turned out to describe nature far better than Euclidean geometry. Mountains, clouds, river networks, bronchial tubes, and financial market fluctuations all exhibit fractal scaling. Medical researchers use fractal dimension to detect early signs of disease: a healthy heartbeat is slightly irregular in a fractal way, and a perfectly regular heartbeat is paradoxically a warning sign. The mathematics born from a puzzle about coastlines gave us a new lens for seeing the texture of reality itself.",
+
+  "kt:mathematics::geometry::fractal_geometry:Fractal Geometry:college": [
+    "The coastline paradox shows that a country's border can be mathematically infinite — length depends entirely on measurement scale.",
+    "Fractals have non-integer dimensions: the Koch snowflake is more than 1D but less than 2D, with dimension ≈1.26.",
+    "A healthy heartbeat has fractal irregularity; perfectly regular heart rhythms are actually a medical warning sign."
+  ],
+
+  "qq:mathematics::geometry::fractal_geometry:Fractal Geometry:college": {
+    "question": "The Cantor set is constructed by repeatedly removing the middle third of line segments, starting from [0,1]. What is true of the resulting set after infinite iterations?",
+    "options": [
+      "It contains uncountably many points but has total length zero",
+      "It contains finitely many points",
+      "It has the same length as the original interval",
+      "It is empty"
+    ],
+    "correct": 0,
+    "explanation": "The Cantor set has measure zero (total length removed converges to 1) but is uncountably infinite — a perfect example of a fractal that is simultaneously 'almost nothing' and 'enormously large' depending on how you measure it."
+  },
+
+  "ex:mathematics::number_theory:Number Theory:college:spark": "Pierre de Fermat scribbled a note in the margin of a book in 1637 claiming he had a proof too large to fit — and it took mathematicians 358 years to finally verify the result he claimed was trivial. That single margin note launched centuries of mathematical exploration and ultimately required entirely new mathematical machinery that reshaped the field.\n\nNumber theory is the study of the integers — the whole numbers — and their properties, particularly divisibility, prime factorization, and the solutions to equations in whole numbers. It's the part of mathematics that asks: which whole numbers are sums of two perfect squares? Can you find integers satisfying a^n + b^n = c^n for n greater than 2 (Fermat's Last Theorem: no, you cannot)? These questions are elementary to state but fiendishly difficult to answer. The prime factorization theorem — every integer factors uniquely into primes — seems obvious but requires careful proof and breaks down in more exotic number systems. Modular arithmetic, the mathematics of clocks and remainders, unlocks patterns invisible in ordinary arithmetic.\n\nThe deeper you go, the stranger and more beautiful number theory becomes. The Riemann hypothesis — the most famous unsolved problem in mathematics — is a statement about where a certain complex-valued function equals zero, and proving it would simultaneously prove deep facts about the distribution of prime numbers. Number theory was once called 'the queen of mathematics' because it seemed delightfully useless and pure — and then the internet was built on top of it, because RSA encryption relies entirely on the fact that multiplying two large primes is easy while factoring their product is computationally catastrophic.",
+
+  "kt:mathematics::number_theory:Number Theory:college": [
+    "Fermat's Last Theorem took 358 years to prove, requiring 20th-century mathematical machinery Fermat could never have possessed.",
+    "RSA encryption — securing the internet — depends entirely on the asymmetry between multiplying primes and factoring their product.",
+    "The Riemann hypothesis, still unsolved, would unlock deep secrets about the distribution of prime numbers across the integers."
+  ],
+
+  "qq:mathematics::number_theory:Number Theory:college": {
+    "question": "By Fermat's Little Theorem, if p is prime and gcd(a,p) = 1, then a^(p-1) ≡ 1 (mod p). What is 7^(16) mod 17?",
+    "options": [
+      "1",
+      "7",
+      "0",
+      "16"
+    ],
+    "correct": 0,
+    "explanation": "Since 17 is prime and gcd(7,17)=1, Fermat's Little Theorem gives 7^16 ≡ 1 (mod 17) — the exponent p−1 = 16 hits exactly the period of the cyclic group."
+  },
+
+  "ex:mathematics::number_theory::prime_numbers:Prime Numbers:college:spark": "The primes look almost random — 2, 3, 5, 7, 11, 13, 17, 19, 23 — and yet they are completely determined. There is no randomness in their pattern, only the appearance of randomness, which is itself one of the deepest and most maddening facts in all of mathematics.\n\nA prime number is a positive integer greater than 1 whose only divisors are 1 and itself. Euclid proved around 300 BCE that there are infinitely many primes, using one of history's most elegant arguments: assume there are finitely many, multiply them all together and add 1, and the resulting number is divisible by none of them — contradiction. The fundamental theorem of arithmetic tells us primes are the atoms of the integers: every whole number factors uniquely into primes, making them the irreducible building blocks of all multiplicative structure. Primes thin out as numbers grow larger — there are 25 primes below 100 but only 21 primes between 1,000 and 1,100 — but the prime number theorem precisely quantifies this thinning: the number of primes up to N is approximately N divided by ln(N).\n\nThe twin prime conjecture — that there are infinitely many pairs of primes exactly 2 apart, like (11,13) and (17,19) — remains unproven despite being so natural a child could state it. In 2013, Yitang Zhang proved a finite bound on prime gaps (primes that are at most 70 million apart appear infinitely often), and subsequent work compressed that bound to 246. But 2 remains out of reach. Meanwhile the Riemann hypothesis, which would tell us the primes are distributed as 'randomly as possible' given their constraints, is one of the six remaining Millennium Prize Problems, worth a million dollars to whoever cracks it.",
+
+  "kt:mathematics::number_theory::prime_numbers:Prime Numbers:college": [
+    "Euclid proved infinitely many primes exist using a 2,300-year-old argument elegant enough to fit in a paragraph.",
+    "Every integer factors uniquely into primes — they are the indivisible atoms from which all multiplicative structure is built.",
+    "The twin prime conjecture (are there infinitely many prime pairs like 11,13?) remains unsolved despite being trivially statable."
+  ],
+
+  "qq:mathematics::number_theory::prime_numbers:Prime Numbers:college": {
+    "question": "The prime number theorem states the number of primes up to N is approximately N/ln(N). Roughly how many primes are there up to 1,000,000?",
+    "options": [
+      "About 72,000",
+      "About 1,000",
+      "About 500,000",
+      "About 10,000"
+    ],
+    "correct": 0,
+    "explanation": "The prime number theorem gives 1,000,000 / ln(1,000,000) ≈ 1,000,000 / 13.8 ≈ 72,400, and the actual count is 78,498 — a remarkably accurate approximation for such a simple formula."
+  },
+
+  "ex:mathematics::analysis::calculus:Calculus:college:spark": "Newton and Leibniz independently invented calculus within a decade of each other in the 1670s-80s, then became embroiled in one of history's most bitter priority disputes. Neither knew that they were each discovering a framework so foundational that it would make the modern world possible — from predicting planetary orbits to modeling how drugs diffuse through your bloodstream.\n\nCalculus has two sides joined by one stunning theorem. Differential calculus asks: how fast is something changing right now? It defines the derivative as the limit of the ratio of a change in output to a change in input as the input change shrinks to zero. The derivative of position is velocity; the derivative of velocity is acceleration. Integral calculus asks the reverse question: given a rate of change, what is the cumulative total? The integral sums infinitely many infinitely thin slices — the area under a curve is the integral of the curve's height. The Fundamental Theorem of Calculus then reveals these two operations are inverses of each other, which is as surprising as discovering that multiplication and division are the same operation run backwards — and equally transformative once you see it.\n\nThe philosophical puzzle of calculus — how can you divide by a number approaching zero without dividing by zero? — wasn't rigorously resolved until Cauchy and Weierstrass formalized the concept of a limit in the 1800s, nearly 200 years after Newton. Before that, calculus worked brilliantly but its foundations were genuinely suspect. Bishop Berkeley famously mocked derivatives as 'ghosts of departed quantities.' Today, every differential equation modeling climate change, population dynamics, electrical circuits, or quantum mechanics is a direct descendant of that contested 17th-century invention — built on a concept of infinity tamed.",
+
+  "kt:mathematics::analysis::calculus:Calculus:college": [
+    "Derivatives and integrals are inverse operations — a relationship so deep it took 200 years after calculus was invented to prove rigorously.",
+    "Calculus was used for 200 years before its logical foundations were made rigorous, proving that useful math can precede its own justification.",
+    "The derivative is a limit: the instantaneous rate of change captured by asking what happens as the time interval shrinks to zero."
+  ],
+
+  "qq:mathematics::analysis::calculus:Calculus:college": {
+    "question": "A function f(x) has f'(x) = 0 at x = 3 and f''(3) > 0. What does this tell you about x = 3?",
+    "options": [
+      "It is a local minimum of f",
+      "It is a local maximum of f",
+      "It is an inflection point of f",
+      "f is discontinuous at x = 3"
+    ],
+    "correct": 0,
+    "explanation": "The second derivative test says: when f'(x)=0 and f''(x)>0, the function is concave up at that critical point, making it a local minimum — the curve bowls upward like a cup."
+  },
+
+  "ex:mathematics::probability::bayesian_inference:Bayesian Inference:college:spark": "A doctor tells you that you tested positive for a rare disease affecting 1 in 1,000 people, and that the test is 99% accurate. Most people assume they almost certainly have the disease. The actual probability, calculated correctly, is still only about 9%. Our intuitions about probability are broken — and Bayesian inference is the framework that fixes them.\n\nBayesian inference is a method for updating beliefs in light of new evidence. At its core is Bayes' theorem: the posterior probability of a hypothesis given data equals the prior probability of the hypothesis, multiplied by the likelihood of the data given the hypothesis, divided by the overall probability of the data. In the disease example, the prior probability of having the disease is 1/1,000. The test's 99% accuracy means it also produces false positives 1% of the time. In a population of 100,000 people, 100 have the disease and ~99 test positive; but 99,900 don't have it and ~999 also test positive. So of the ~1,098 positive tests, only 99 are true positives — about 9%. The data updates your prior, but the prior matters enormously.\n\nThe Bayesian versus frequentist debate is one of the most heated in all of statistics. Frequentists say probability only means long-run frequencies of events and refuse to assign probability to fixed-but-unknown facts. Bayesians say probability represents degrees of belief, updated rationally as evidence arrives. Machine learning models, spam filters, and medical diagnostic AI are largely built on Bayesian principles. The insight that evidence strength depends on prior plausibility — that extraordinary claims require extraordinary evidence — is Bayes' theorem restated in plain English.",
+
+  "kt:mathematics::probability::bayesian_inference:Bayesian Inference:college": [
+    "Testing positive for a rare disease often means you probably don't have it — base rates dominate over test accuracy.",
+    "Bayes' theorem quantifies exactly how much new evidence should shift your beliefs, replacing intuition with calculation.",
+    "The frequentist vs. Bayesian debate is unresolved — they disagree on the fundamental meaning of the word 'probability.'"
+  ],
+
+  "qq:mathematics::probability::bayesian_inference:Bayesian Inference:college": {
+    "question": "You flip a coin 10 times and get 8 heads. A Bayesian approach would say:",
+    "options": [
+      "Update your prior belief about the coin's fairness based on this evidence, arriving at a posterior distribution",
+      "The coin's true probability of heads is exactly 0.8",
+      "The result is statistically significant at p < 0.05, rejecting fairness",
+      "Prior beliefs are irrelevant — only the data matters"
+    ],
+    "correct": 0,
+    "explanation": "Bayesian inference combines a prior distribution over possible coin biases with the likelihood of the observed data (8 heads in 10 flips) to produce a posterior distribution — rather than a single point estimate or binary reject/accept decision."
+  },
+
+  "ex:mathematics::game_theory:Game Theory:college:spark": "In 1950, a RAND Corporation researcher posed a thought experiment: two suspects are interrogated separately. If both stay silent, both get one year in prison. If one betrays the other, the betrayer goes free and the silent one gets three years. If both betray, both get two years. Rationally, each prisoner should betray — and yet both betraying is worse for both than both staying silent. This paradox, the Prisoner's Dilemma, launched modern game theory.\n\nGame theory is the mathematical study of strategic interaction — how rational agents should behave when their outcomes depend on the choices of others. The central concept is the Nash equilibrium, named after mathematician John Nash (of 'A Beautiful Mind' fame): a set of strategies where no player can improve their outcome by unilaterally switching strategy, given what everyone else is doing. The Prisoner's Dilemma has a Nash equilibrium at mutual betrayal, even though mutual cooperation would make everyone better off — a result that explains price wars, arms races, and environmental tragedies of the commons. Nash won the Nobel Prize for proving that every finite game has at least one Nash equilibrium (possibly in mixed strategies involving randomization).\n\nGame theory has colonized economics, evolutionary biology, political science, and computer science. Evolutionarily stable strategies explain how cooperative behaviors can survive natural selection. Auction theory — a subfield of game theory — was used to design the spectrum auctions that allocated wireless licenses worth hundreds of billions of dollars. Online advertising is a real-time game played algorithmically billions of times per day. The deepest lesson is uncomfortable: rational individual behavior can produce collectively irrational outcomes, which is a mathematical way of saying that free markets can fail.",
+
+  "kt:mathematics::game_theory:Game Theory:college": [
+    "Nash equilibria can trap rational players in mutually bad outcomes — the mathematics of why arms races and price wars persist.",
+    "Nash proved every finite game has at least one equilibrium, a result requiring a topological fixed-point theorem to establish.",
+    "Auction design for wireless spectrum — allocating hundreds of billions in licenses — was directly engineered using game theory."
+  ],
+
+  "qq:mathematics::game_theory:Game Theory:college": {
+    "question": "In a Nash equilibrium, what is true by definition?",
+    "options": [
+      "No single player can improve their payoff by changing only their own strategy",
+      "All players receive equal payoffs",
+      "The total payoff across all players is maximized",
+      "Every player is playing their dominant strategy"
+    ],
+    "correct": 0,
+    "explanation": "A Nash equilibrium is defined as a strategy profile where no individual player has a profitable unilateral deviation — it's a fixed point of mutual best responses, not necessarily optimal for the group or based on dominant strategies."
+  },
+
+  "ex:mathematics::category_theory:Category Theory:college:spark": "Category theory is sometimes called 'abstract nonsense' — and not always as an insult. It operates at such a level of generality that it can simultaneously describe set theory, logic, topology, and quantum mechanics using the same diagrams, revealing that apparently unrelated mathematical theories are secretly the same structure seen from different angles.\n\nA category consists of just two things: objects and morphisms (arrows between objects). The morphisms must compose: if there's an arrow from A to B and from B to C, there must be an arrow from A to C. And each object must have an identity arrow pointing to itself. That's it. Everything else in category theory — functors, natural transformations, adjunctions, limits — is built from those spare ingredients. A functor is a structure-preserving map between categories. A natural transformation is a map between functors. These layers of abstraction let mathematicians prove theorems that apply simultaneously to groups, spaces, and logical systems by identifying the common structural pattern beneath them. The famous Yoneda lemma captures the surprising fact that any mathematical object is completely characterized by its relationships to all other objects — its identity is relational, not intrinsic.\n\nCategory theory has leaked far outside pure mathematics. Functional programming languages like Haskell are explicitly designed around categorical concepts: monads, functors, and type systems are directly imported from category theory. Physicists use categorical structures to formalize quantum field theories. Linguists have applied it to grammar. Some philosophers see it as offering a new foundation for mathematics that replaces sets with relationships as the primitive concept — flipping the traditional metaphysical priority entirely. The joke about abstract nonsense stops being funny when it starts solving problems in every field it touches.",
+
+  "kt:mathematics::category_theory:Category Theory:college": [
+    "Category theory finds identical structure beneath group theory, topology, and logic — proving these fields are secretly the same.",
+    "The Yoneda lemma states any mathematical object is fully determined by its relationships to all other objects — identity is relational.",
+    "Functional programming languages like Haskell are explicitly built on category theory — monads are a direct import from pure math."
+  ],
+
+  "qq:mathematics::category_theory:Category Theory:college": {
+    "question": "In category theory, a functor between two categories must do which of the following?",
+    "options": [
+      "Map objects to objects and morphisms to morphisms while preserving composition and identities",
+      "Map every object to a single fixed object",
+      "Reverse the direction of all morphisms",
+      "Establish a bijection between the objects of both categories"
+    ],
+    "correct": 0,
+    "explanation": "A functor is a structure-preserving map: it sends objects to objects and arrows to arrows such that F(g∘f) = F(g)∘F(f) and F(id_A) = id_{F(A)} — capturing the idea that it respects the relational structure of both categories."
+  },
+
+  "ex:mathematics::infinity:Infinity:college:spark": "In 1891, Georg Cantor proved something that seemed impossible: some infinities are strictly larger than others. The infinity of real numbers is not just bigger than the infinity of integers — it is a fundamentally different size of infinite, and no correspondence between them can ever be complete. Mathematicians who first encountered Cantor's work called it a disease. Hilbert called it paradise.\n\nCantor's key tool was the diagonal argument. Suppose you tried to list all real numbers between 0 and 1: first number, second number, and so on. Cantor showed you can always construct a new real number not on your list by changing the first digit of the first number, the second digit of the second number, and so on diagonally — this new number differs from every number on your list in at least one decimal place. Therefore no list can be complete. The integers are countably infinite (the smallest infinity, called aleph-null); the reals are uncountably infinite (a strictly larger infinity). Between these two infinities lies the continuum hypothesis: is there an infinity strictly between aleph-null and the continuum? In 1963, Paul Cohen proved that this question is mathematically undecidable — neither provably true nor provably false within standard set theory.\n\nThe theory of infinite sets continues to produce vertiginous results. The Banach-Tarski paradox proves that a sphere can be decomposed into a finite number of pieces and reassembled — using only rotations and translations — into two spheres identical to the original. This is not physically possible, but it is mathematically true, provided you're allowed to use the axiom of choice to select the pieces. Infinity in mathematics is not just 'very large.' It is a kingdom with its own strange and counterintuitive laws.",
+
+  "kt:mathematics::infinity:Infinity:college": [
+    "Cantor proved some infinities are larger than others — the real numbers are strictly more infinite than the counting numbers.",
+    "The diagonal argument constructs, for any supposed list of real numbers, a number provably missing from that list.",
+    "Whether an infinity exists between integers and reals is mathematically undecidable — neither true nor false in standard set theory."
+  ],
+
+  "qq:mathematics::infinity:Infinity:college": {
+    "question": "Cantor proved the set of real numbers is 'larger' than the set of natural numbers. What technique did he use?",
+    "options": [
+      "Diagonalization: constructing a real number that differs from every element of any proposed enumeration",
+      "Showing real numbers include all natural numbers plus more",
+      "Counting the real numbers and finding the total exceeds any integer",
+      "Proving the real numbers cannot be ordered"
+    ],
+    "correct": 0,
+    "explanation": "Cantor's diagonal argument assumes a complete list of reals and constructs a new number by flipping the nth digit of the nth entry, producing a number differing from every listed entry — so no complete enumeration of the reals exists."
+  },
+
+  "ex:mathematics::gödel's_incompleteness_theorems:Gödel's Incompleteness Theorems:college:spark": "In 1931, a 25-year-old logician named Kurt Gödel published a proof that shattered a dream that had animated mathematics for decades: the hope that every mathematical truth could, in principle, be proven from a fixed set of axioms. Gödel showed that in any sufficiently powerful consistent formal system, there exist true statements that cannot be proven within that system. Mathematics contains truths it cannot reach.\n\nGödel's proof works through a stunning act of self-reference. He showed that within any formal system capable of doing basic arithmetic, you can encode statements about the system itself as numbers. He then constructed a statement that essentially says 'this statement is not provable in this system.' If the system could prove it, the statement would be false — making the system inconsistent. If the system cannot prove it, the statement is true — making it a true but unprovable statement. This is Gödel's first incompleteness theorem. The second is even more devastating: no sufficiently powerful consistent formal system can prove its own consistency. You cannot, from within mathematics, give mathematics a clean bill of health.\n\nThe philosophical fallout was enormous. Hilbert's program — to build a complete, consistent foundation for all of mathematics — was formally impossible. Alan Turing's proof that no algorithm can decide whether an arbitrary program will halt is a direct consequence of the same logical structure. Gödel himself believed his theorems showed that human mathematical intuition transcends any formal system, because mathematicians can see the truth of unprovable statements that machines cannot reach. Whether that inference is correct remains one of the deepest unsettled questions at the intersection of mathematics, logic, and the philosophy of mind.",
+
+  "kt:mathematics::gödel's_incompleteness_theorems:Gödel's Incompleteness Theorems:college": [
+    "Gödel proved every sufficiently powerful formal system contains true statements that cannot be proven within that system.",
+    "His proof works through self-reference: a mathematical statement that says 'I am not provable' exposes incompleteness.",
+    "Turing's halting problem is a direct cousin of Gödel's theorems — undecidability in computation mirrors unprovability in logic."
+  ],
+
+  "qq:mathematics::gödel's_incompleteness_theorems:Gödel's Incompleteness Theorems:college": {
+    "question": "Gödel's second incompleteness theorem states that a sufficiently powerful consistent formal system cannot prove its own consistency. What is the most significant implication of this?",
+    "options": [
+      "No formal system can fully justify its own foundations from within — mathematics cannot prove it is free from contradiction",
+      "Mathematics contains no true statements",
+      "Computers can never perform valid mathematical proofs",
+      "Arithmetic is internally contradictory"
+    ],
+    "correct": 0,
+    "explanation": "The second theorem means any consistency proof for a system strong enough to express arithmetic must use assumptions outside that system — you always need a stronger foundation to validate a weaker one, creating an infinite regress."
+  }
+}

@@ -1,0 +1,151 @@
+{
+  "ex:art_&_design::principles::the_golden_ratio:the_golden_ratio:college:spark": "Have you ever looked at a seashell, a sunflower, or a Renaissance painting and felt an inexplicable sense of harmony? That feeling may be the Golden Ratio at work. Approximately equal to 1.618 and often denoted by the Greek letter phi, the Golden Ratio is a mathematical proportion that appears throughout nature and has captivated artists, architects, and philosophers for millennia.\n\nAt its core, the Golden Ratio describes a relationship between two quantities where the ratio of the larger to the smaller equals the ratio of their sum to the larger. Think of it like a perfectly balanced seesaw: one side is always exactly 1.618 times the other. This proportion can be visualized as a rectangle where, if you cut off a square, the remaining piece is a smaller version of the original rectangle. Artists like Leonardo da Vinci used this ratio to compose The Vitruvian Man and The Last Supper, embedding it in the proportions of figures and architectural elements to create a sense of natural beauty.\n\nWhat makes the Golden Ratio truly fascinating is its deep connection to the Fibonacci sequence, where each number is the sum of the two before it (1, 1, 2, 3, 5, 8, 13...). As you divide successive Fibonacci numbers, the result converges toward 1.618. This link between art, mathematics, and the natural world raises profound questions: Is beauty a mathematical truth? Do humans perceive certain proportions as beautiful because evolution wired us to recognize growth patterns found in nature? Exploring the Golden Ratio opens a door into the surprising unity between art and science.",
+
+  "kt:art_&_design::principles::the_golden_ratio:the_golden_ratio:college": [
+    "The Golden Ratio (~1.618) is a proportion found in nature, art, and architecture worldwide.",
+    "It connects to the Fibonacci sequence, where successive terms approximate phi.",
+    "Artists like Leonardo da Vinci intentionally used it to create visual harmony."
+  ],
+
+  "qq:art_&_design::principles::the_golden_ratio:the_golden_ratio:college": {
+    "question": "Which sequence of numbers converges toward the Golden Ratio as you divide successive terms?",
+    "options": ["Prime numbers", "Fibonacci sequence", "Pascal's triangle", "Powers of two"],
+    "correct": 1,
+    "explanation": "Dividing consecutive Fibonacci numbers (e.g., 8/5, 13/8, 21/13) produces values that converge toward phi, approximately 1.618, establishing a deep link between this sequence and the Golden Ratio."
+  },
+
+  "ex:art_&_design::color_theory:color_theory:college:spark": "Imagine you walk into a fast-food restaurant painted bright red and yellow, then into a spa decorated in soft blues and greens. Without a word being spoken, your mood has shifted. This is color theory in action: the systematic study of how colors interact, combine, and communicate meaning to the human eye and mind.\n\nColor theory is built on a few foundational frameworks. The traditional color wheel, pioneered by figures like Johann Wolfgang von Goethe and later Johannes Itten, organizes hues into primary colors (red, blue, yellow), secondary colors formed by mixing primaries, and tertiary colors that blend primary and secondary hues. From this wheel emerge key relationships: complementary colors sit opposite each other and create vibrant contrast (think blue and orange on a basketball court), while analogous colors sit side by side and produce harmony. Artists and designers also work with properties of color beyond hue, including saturation (intensity) and value (lightness or darkness), to evoke specific emotions and guide the viewer's eye.\n\nModern color theory has expanded into color psychology and digital applications. We now understand that warm colors like red and orange tend to energize and attract attention, while cool colors like blue and violet tend to calm and recede. Digital design uses the RGB model (red, green, blue light), while print uses CMYK (cyan, magenta, yellow, black pigments). Understanding color theory is not just for painters; it is a core literacy for anyone crafting visual communication, from app interfaces to film cinematography, making it one of the most practical artistic disciplines you can study.",
+
+  "kt:art_&_design::color_theory:color_theory:college": [
+    "The color wheel organizes hues into primary, secondary, and tertiary relationships.",
+    "Complementary colors contrast; analogous colors harmonize in compositions.",
+    "Color psychology shows warm tones energize while cool tones calm viewers."
+  ],
+
+  "qq:art_&_design::color_theory:color_theory:college": {
+    "question": "What are complementary colors?",
+    "options": ["Colors that are next to each other on the color wheel", "Colors that are opposite each other on the color wheel", "Colors with the same saturation level", "Colors derived from a single primary hue"],
+    "correct": 1,
+    "explanation": "Complementary colors sit directly opposite each other on the color wheel (e.g., red and green, blue and orange). When placed side by side they create maximum contrast and visual vibrance."
+  },
+
+  "ex:music::theory::music_theory:music_theory:college:spark": "Every song you have ever heard, from a nursery rhyme to a symphony, is built on a hidden architecture. Music theory is the language used to describe, analyze, and construct that architecture. Far from being a dry rulebook, music theory is the map that reveals why certain combinations of sounds feel tense or peaceful, why a chorus feels like a release, and how composers across centuries have shaped emotional journeys out of nothing but organized sound.\n\nAt its foundation, music theory deals with the building blocks of music: pitch (how high or low a note is), rhythm (the organization of sounds in time), melody (a sequence of single pitches), harmony (multiple pitches sounding together), and form (the large-scale structure of a piece). The Western system organizes pitches into scales, twelve notes per octave, and groups notes into keys that give music its tonal home base. A major scale tends to sound bright and happy; a minor scale sounds darker and more somber. These aren't arbitrary: the intervals between notes in each scale create predictable patterns of tension and resolution that listeners internalize from years of exposure.\n\nWhat makes music theory endlessly rich is that the rules are made to be broken. Jazz musicians exploit unexpected chord substitutions. Rock guitarists bend notes outside the scale. Electronic producers layer rhythms that cross and collide. Understanding the theory lets you appreciate exactly what these artists are breaking and why it works. Music theory is ultimately the grammar of an emotional language, and like any grammar, learning it does not constrain creativity but rather expands the vocabulary available to you.",
+
+  "kt:music::theory::music_theory:music_theory:college": [
+    "Music theory describes pitch, rhythm, melody, harmony, and form as music's core elements.",
+    "Major scales sound bright; minor scales sound darker due to different interval patterns.",
+    "Knowing theory helps artists understand what rules they are intentionally breaking."
+  ],
+
+  "qq:music::theory::music_theory:music_theory:college": {
+    "question": "How many pitches are in a single octave in the Western musical system?",
+    "options": ["7", "8", "10", "12"],
+    "correct": 3,
+    "explanation": "The Western system uses 12 equally spaced pitches per octave (the chromatic scale). Scales like major and minor select 7 of these 12 notes to create a tonal framework."
+  },
+
+  "ex:music::theory::harmony:harmony:college:spark": "Close your eyes and listen to a single note played on a piano. Now imagine a second note added, then a third. Something remarkable happens: individual tones fuse into a unified sound that carries an emotional weight no single note could achieve alone. This fusion is harmony, one of the most powerful forces in all of music.\n\nHarmony refers to the simultaneous combination of pitches to create chords, and the way those chords move in relation to each other over time. At its simplest, a chord is three or more notes stacked in a pattern called thirds. A major chord sounds stable and bright; a minor chord sounds introspective or sad; a diminished chord sounds tense and unresolved. The real magic of harmony, however, lies in chord progressions: the sequence in which chords follow one another. The I-IV-V-I progression (tonic, subdominant, dominant, back to tonic) underpins hundreds of folk songs, blues tunes, and pop hits because it creates a satisfying journey from home, away, and back again. The tension-and-resolution engine built into tonal harmony is nearly universal across cultures that have adopted the Western system.\n\nHarmony also operates on a spectrum from consonance (notes that sound stable together) to dissonance (notes that create tension). Composers like Bach perfected the art of voice leading, moving each harmonic voice smoothly while building complex chord progressions. Jazz composers like Duke Ellington pushed harmony into rich extended chords and unexpected substitutions. Modern film composers use dissonance to signal danger and consonance to signal safety. Understanding harmony is like understanding the emotional grammar of music: once you hear it, you can never unhear it.",
+
+  "kt:music::theory::harmony:harmony:college": [
+    "Harmony is the simultaneous combination of pitches forming chords and progressions.",
+    "The I-IV-V-I progression creates a universal tension-and-resolution emotional arc.",
+    "Consonance sounds stable; dissonance creates tension that composers resolve or exploit."
+  ],
+
+  "qq:music::theory::harmony:harmony:college": {
+    "question": "What does the term 'chord progression' refer to in music theory?",
+    "options": ["The speed at which a chord is played", "A sequence of chords that follow one another over time", "The number of notes within a single chord", "The tuning system used to define each pitch"],
+    "correct": 1,
+    "explanation": "A chord progression is an ordered sequence of chords. The movement from one chord to the next creates harmonic momentum, tension, and resolution, forming the emotional backbone of most musical compositions."
+  },
+
+  "ex:music::jazz::jazz_improvisation:jazz_improvisation:college:spark": "What if music could be composed and performed at the exact same moment? That is the promise of jazz improvisation, arguably the most sophisticated form of real-time musical creativity humanity has developed. When a jazz musician steps to the microphone and begins to improvise, they are having a conversation with the band, with the audience, and with a century of musical tradition, all simultaneously.\n\nJazz improvisation is not random. It is disciplined spontaneity. An improvising musician is guided by the chord changes: the underlying harmonic progression that the rhythm section is playing. Over these changes, the soloist draws from a deep well of scales, arpeggios, rhythmic patterns, and memorized melodic fragments called licks, recombining them in real time to create something new. A musician playing over a C major 7 chord might use the C major scale or the Lydian mode; over a dominant 7 chord, they might reach for the Mixolydian mode or the blues scale. The art is in choosing the right notes, but also in the phrasing: the rhythm, the dynamics, the spaces between notes, and the emotional arc of the solo.\n\nWhat makes jazz improvisation culturally revolutionary is what it says about identity and expression. Emerging from African American communities in New Orleans in the early 20th century, jazz improvisation was a radical assertion that music could be a living, breathing conversation rather than a fixed text. Musicians like Louis Armstrong, Charlie Parker, and Miles Davis did not just play notes; they developed instantly recognizable voices, personalities expressed through sound. Learning to improvise is, at its heart, learning to speak authentically in a musical language, and jazz remains the world's greatest school for that kind of expressive freedom.",
+
+  "kt:music::jazz::jazz_improvisation:jazz_improvisation:college": [
+    "Jazz improvisation is disciplined spontaneity guided by underlying chord changes.",
+    "Soloists draw from scales, arpeggios, and licks, recombining them in real time.",
+    "Jazz emerged from African American communities as radical musical self-expression."
+  ],
+
+  "qq:music::jazz::jazz_improvisation:jazz_improvisation:college": {
+    "question": "What are 'chord changes' in the context of jazz improvisation?",
+    "options": ["Alterations a musician makes to a chord mid-performance", "The underlying harmonic progression that guides an improvisation", "Notation symbols that indicate chord voicings", "Tempo shifts that occur between sections of a jazz piece"],
+    "correct": 1,
+    "explanation": "Chord changes are the sequence of chords that the rhythm section plays, forming the harmonic roadmap. Improvising soloists navigate these changes in real time, choosing notes and scales that fit each passing chord."
+  },
+
+  "ex:music::psychology::why_music_moves_us:why_music_moves_us:college:spark": "A film score swells and your eyes fill with tears. A pop song from ten years ago plays and suddenly you are right back in that summer. A fast drumbeat makes your foot tap before you even realize it. Music reaches into us and moves things that language alone cannot touch. But why? Neuroscience and psychology have been working to answer this question, and the answers are as fascinating as the experience itself.\n\nOne key mechanism is expectation and surprise. Music sets up patterns, rhythmic, melodic, and harmonic, and our brains constantly predict what comes next. When a melody resolves exactly as we expected, we feel a small sense of satisfaction. When it surprises us with an unexpected turn, we feel a tiny jolt of delight or unease. The neurochemical behind much of this pleasure is dopamine, the same reward chemical released by food, social bonding, and other pleasurable experiences. Brain imaging studies show that dopamine floods certain areas during peak emotional moments in music, sometimes called chills or frisson, that involuntary shiver you feel when a song hits just right.\n\nMusic also leverages our deeply social and evolutionary history. Rhythm synchronizes bodies: it is nearly impossible to hear a strong beat without entraining to it, a phenomenon that likely helped early human communities coordinate movement and strengthen social bonds. Lullabies, war drums, and religious chants have been used across virtually every culture to regulate emotion and create collective identity. Personal associations layer on top of these biological responses: a song tied to a powerful memory carries that emotional charge forward indefinitely. Understanding why music moves us reveals not just something about music, but something profound about what it means to be human.",
+
+  "kt:music::psychology::why_music_moves_us:why_music_moves_us:college": [
+    "Music triggers dopamine release through expectation, surprise, and emotional peaks.",
+    "Rhythmic entrainment is a biological response that synchronizes bodies to a beat.",
+    "Personal memory associations amplify music's emotional power over our lifetime."
+  ],
+
+  "qq:music::psychology::why_music_moves_us:why_music_moves_us:college": {
+    "question": "What neurochemical is most associated with the emotional pleasure of listening to music?",
+    "options": ["Serotonin", "Cortisol", "Dopamine", "Oxytocin"],
+    "correct": 2,
+    "explanation": "Dopamine, the brain's primary reward chemical, is released during peak emotional moments in music. Brain imaging studies confirm dopamine flooding reward regions during the 'chills' or 'frisson' that intensely moving music can produce."
+  },
+
+  "ex:art_&_design::mathematics::origami_mathematics:origami_mathematics:college:spark": "Most people think of origami as a peaceful craft, a sheet of paper folded into a crane or a lotus. But behind every crease is a universe of mathematics so rich that it is now driving breakthroughs in engineering, medicine, and space exploration. Origami mathematics is the study of the geometric and algebraic principles that govern what can and cannot be created by folding a flat sheet.\n\nThe field is organized around a set of axioms, most famously the Huzita-Hatori axioms, which describe the seven fundamental operations you can perform by aligning points and lines on paper. Remarkably, these axioms are more powerful than classical compass-and-straightedge construction: origami can trisect an arbitrary angle and double a cube, two tasks that are provably impossible with compass and straightedge alone. Flat-foldability, another key concept, asks: can a crease pattern be folded so the result lies flat? This question touches on graph theory and computational geometry, and checking flat-foldability for complex patterns is computationally difficult.\n\nThe practical applications of origami mathematics are extraordinary. NASA engineers used origami principles to design the folding mechanism for the James Webb Space Telescope's 6.5-meter mirror, which had to pack into a rocket fairing and unfold perfectly in space. Medical researchers are designing origami-inspired stents that can be inserted through a small incision and unfold inside an artery. Robotics engineers build self-folding machines inspired by origami geometry. What began as an ancient paper-folding art turns out to encode deep mathematical truths, proving once again that art and science are rarely as separate as we assume.",
+
+  "kt:art_&_design::mathematics::origami_mathematics:origami_mathematics:college": [
+    "Origami is governed by the Huzita-Hatori axioms, more powerful than compass-and-straightedge.",
+    "Origami can trisect angles and double cubes, tasks impossible with classical construction.",
+    "NASA used origami principles to fold the James Webb Space Telescope's giant mirror."
+  ],
+
+  "qq:art_&_design::mathematics::origami_mathematics:origami_mathematics:college": {
+    "question": "Which geometric task can origami accomplish that classical compass-and-straightedge construction cannot?",
+    "options": ["Bisecting an angle", "Drawing a perpendicular line", "Trisecting an arbitrary angle", "Constructing an equilateral triangle"],
+    "correct": 2,
+    "explanation": "Trisecting an arbitrary angle is provably impossible with compass and straightedge alone, but the Huzita-Hatori origami axioms provide operations powerful enough to accomplish this feat through specific folding sequences."
+  },
+
+  "ex:art_&_design::movements::surrealism:surrealism:college:spark": "A melting clock droops over a barren landscape. A bowler-hatted man has an apple for a face. A woman's body morphs into a cello. These images are instantly recognizable as surrealist, but what exactly were the surrealists trying to say, and why did this art movement shake the foundations of Western culture in the 20th century?\n\nSurrealism emerged in Paris in the 1920s, formally launched by the poet Andre Breton's Surrealist Manifesto of 1924. Deeply influenced by the psychoanalytic theories of Sigmund Freud, the surrealists believed that rational, conscious thought had imprisoned human creativity. Freud's concept of the unconscious mind, a vast reservoir of desires, fears, and images beneath the surface of everyday awareness, offered an escape route. The surrealists sought to tap this reservoir directly, through dream imagery, automatic writing (writing without conscious editorial control), and disorienting juxtapositions of unrelated objects. Salvador Dali painted his infamous melting clocks to represent the fluid, irrational experience of time in dreams. Rene Magritte placed ordinary objects in impossible relationships to expose the gap between image and reality.\n\nSurrealism was more than an art style; it was a philosophical and political revolt. Breton and many surrealists were aligned with leftist politics and believed that liberating the unconscious was inseparable from liberating society from oppression. The movement's influence spread far beyond painting: into literature, film (Luis Bunuel), photography, and eventually into the visual language of advertising and popular culture, which borrowed surrealism's techniques of shocking juxtaposition to grab attention. Today, when an advertisement places a car on a mountain floating in space, it is, knowingly or not, speaking the language of surrealism.",
+
+  "kt:art_&_design::movements::surrealism:surrealism:college": [
+    "Surrealism launched in 1924, aiming to unlock the unconscious mind through art.",
+    "Freud's psychoanalytic theory of the unconscious heavily influenced surrealist techniques.",
+    "Surrealism influenced film, literature, and modern advertising's visual language."
+  ],
+
+  "qq:art_&_design::movements::surrealism:surrealism:college": {
+    "question": "Which psychologist's theories most directly inspired the Surrealist movement?",
+    "options": ["Carl Jung", "B.F. Skinner", "Sigmund Freud", "William James"],
+    "correct": 2,
+    "explanation": "Sigmund Freud's theories of the unconscious mind and dream interpretation were the primary intellectual foundation of Surrealism. Andre Breton and other surrealists sought to visualize Freud's concept of the unconscious through dreamlike, irrational imagery."
+  },
+
+  "ex:art_&_design::principles::sacred_geometry:sacred_geometry:college:spark": "Long before modern science explained the structure of DNA or the formation of galaxies, ancient cultures across the world noticed that certain geometric patterns repeated everywhere: in flowers, in crystals, in the proportions of the human body, and in the heavens. They called these patterns sacred, not as mere superstition, but as an expression of the belief that geometry was the language in which the cosmos was written.\n\nSacred geometry refers to the symbolic and cosmological significance assigned to certain geometric forms and proportions. The circle, representing infinity and the divine, appears in mandalas across Hindu and Buddhist traditions. The Flower of Life, a pattern of overlapping circles, was carved into ancient Egyptian temples and appears in Da Vinci's notebooks. The Vesica Piscis, the almond-shaped intersection of two equally sized circles, was used in Gothic cathedral architecture and in early Christian iconography. Regular polyhedra, the five Platonic solids (tetrahedron, cube, octahedron, dodecahedron, icosahedron), were associated by Plato with the classical elements of fire, earth, air, spirit, and water respectively, and they do appear as structural forms in viruses, minerals, and carbon molecules.\n\nThe modern scientific perspective neither fully confirms nor dismisses sacred geometry. While it is true that geometry underlies much of physical reality, from the hexagonal cells of a beehive to the spiral arms of galaxies, the specific symbolic meanings attributed to these forms are cultural constructs. What is undeniable is that engaging with sacred geometry has inspired extraordinary art, architecture, and spiritual practice across millennia, and that the question it poses, is the universe fundamentally mathematical?, remains one of the deepest open questions in philosophy and physics.",
+
+  "kt:art_&_design::principles::sacred_geometry:sacred_geometry:college": [
+    "Sacred geometry assigns cosmological meaning to recurring geometric forms in nature.",
+    "Plato associated the five regular polyhedra with the classical elements of existence.",
+    "Patterns like the Flower of Life appear across Egyptian, Hindu, and Renaissance traditions."
+  ],
+
+  "qq:art_&_design::principles::sacred_geometry:sacred_geometry:college": {
+    "question": "How many Platonic solids (regular polyhedra) exist in three-dimensional geometry?",
+    "options": ["3", "4", "5", "6"],
+    "correct": 2,
+    "explanation": "There are exactly five Platonic solids: the tetrahedron, cube, octahedron, dodecahedron, and icosahedron. Each has faces that are identical regular polygons and the same number of faces meeting at every vertex. Plato associated each with a classical element."
+  },
+
+  "ex:art_&_design::design::typography:typography:college:spark": "Every day you read thousands of words, but have you ever stopped to think about the shapes of the letters themselves? Typography is the art and science of arranging type to make written language not just legible, but expressive, persuasive, and beautiful. It is one of the most pervasive design disciplines in the world, shaping everything from the logo on your coffee cup to the novel on your nightstand.\n\nTypography has a vocabulary as precise as any technical field. A typeface is a family of related letterforms (like Helvetica or Times New Roman); a font is a specific instance within that family (bold, 12pt). Type is categorized into broad styles: serif typefaces (with small decorative strokes at the letter ends) are traditionally associated with authority and readability in long text; sans-serif typefaces (without those strokes) feel modern and clean. Beyond style, typographers work with kerning (space between specific letter pairs), leading (line spacing), tracking (overall letter spacing), and hierarchy (using size, weight, and placement to guide the reader's eye through a page).\n\nThe history of typography is also the history of communication itself. Gutenberg's movable type in the 15th century democratized the written word. The Bauhaus school in the 20th century married typography with modernist design philosophy, arguing that form must follow function. Digital type design has now freed letterforms from physical constraints, enabling variable fonts that smoothly morph between weights and widths in real time. Understanding typography means understanding how the invisible scaffolding of visual communication shapes what we believe, how we feel, and whether we trust what we read.",
+
+  "kt:art_&_design::design::typography:typography:college": [
+    "Typography arranges type to make language legible, expressive, and emotionally resonant.",
+    "Serif fonts feel traditional and authoritative; sans-serif fonts feel modern and clean.",
+    "Gutenberg's movable type democratized literacy and transformed Western civilization."
+  ],
+
+  "qq:art_&_design::design::typography:typography:college": {
+    "question": "What does 'kerning' refer to in typography?",
+    "options": ["The overall line spacing between rows of text", "The weight or boldness of a typeface", "The adjustment of space between specific pairs of letters", "The decorative strokes at the ends of letterforms"],
+    "correct": 2,
+    "explanation": "Kerning is the process of adjusting the spacing between specific letter pairs (e.g., 'AV' or 'To') to achieve visually consistent spacing. Poor kerning can make text look awkward even when the overall tracking and leading are correct."
+  }
+}

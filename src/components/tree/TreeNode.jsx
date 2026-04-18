@@ -158,35 +158,45 @@ export default function TreeNode({
                 )}
 
                 <div className="flex flex-wrap gap-2">
-                  <button
+                  <motion.button
                     onClick={(e) => { e.stopPropagation(); onSelect?.(node); }}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[rgba(255,107,53,0.1)] text-spark-ember text-xs font-medium hover:bg-[rgba(255,107,53,0.2)] transition-colors min-h-[32px]"
+                    whileHover={{ scale: 1.05, boxShadow: `0 6px 18px ${displayColor}30` }}
+                    whileTap={{ scale: 0.96 }}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[rgba(255,107,53,0.1)] text-spark-ember text-xs font-medium min-h-[32px]"
                     aria-label={`Explain ${node.label}`}
                   >
                     ✨ Explain this
-                  </button>
+                  </motion.button>
 
                   {!isSaved ? (
-                    <button
+                    <motion.button
                       onClick={(e) => { e.stopPropagation(); onSave?.(node); }}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[rgba(42,42,42,0.06)] text-text-secondary text-xs font-medium hover:bg-[rgba(42,42,42,0.1)] transition-colors min-h-[32px]"
+                      whileHover={{ scale: 1.05, boxShadow: '0 6px 16px rgba(42,42,42,0.1)' }}
+                      whileTap={{ scale: 0.96 }}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[rgba(42,42,42,0.06)] text-text-secondary text-xs font-medium min-h-[32px]"
                       aria-label={`Save ${node.label} to tracks`}
                     >
                       📌 Add to Tracks
-                    </button>
+                    </motion.button>
                   ) : (
-                    <span className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-[rgba(45,147,108,0.1)] text-[#2D936C] text-xs font-medium">
+                    <motion.span
+                      initial={{ scale: 0.85, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ type: 'spring', stiffness: 350, damping: 22 }}
+                      className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-[rgba(45,147,108,0.1)] text-[#2D936C] text-xs font-medium"
+                    >
                       ✓ Saved
-                    </span>
+                    </motion.span>
                   )}
 
-                  {/* Share this thread */}
-                  <button
+                  <motion.button
                     onClick={(e) => {
                       e.stopPropagation();
                       share([...(node.path || []), node.label]);
                     }}
-                    className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium transition-all min-h-[32px] ${
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.96 }}
+                    className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium min-h-[32px] transition-colors ${
                       copied
                         ? 'bg-[rgba(45,147,108,0.12)] text-[#2D936C]'
                         : 'bg-[rgba(42,42,42,0.06)] text-text-muted hover:bg-[rgba(42,42,42,0.1)]'
@@ -194,7 +204,7 @@ export default function TreeNode({
                     aria-label="Share this thread"
                   >
                     {copied ? '✓ Copied!' : '↗ Share'}
-                  </button>
+                  </motion.button>
                 </div>
               </div>
             </motion.div>

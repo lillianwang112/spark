@@ -83,13 +83,12 @@ export default function NavBar({ activeTab, onTabChange }) {
 
   return (
     <nav
-      className="fixed bottom-0 left-1/2 z-40 w-full -translate-x-1/2 px-3 pb-3 sm:px-5 sm:pb-5"
-      style={{ maxWidth: 'calc(var(--app-shell-width) + 2.5rem)' }}
+      className="fixed bottom-0 left-1/2 z-40 w-full -translate-x-1/2 px-3 sm:px-5"
+      style={{ maxWidth: 'calc(var(--app-shell-width) + 2.5rem)', paddingBottom: 'max(8px, env(safe-area-inset-bottom, 8px))' }}
       aria-label="Main navigation"
     >
       <div
         className="mx-auto relative flex items-center justify-around rounded-[26px] border border-[rgba(255,255,255,0.72)] bg-[rgba(255,253,247,0.94)] px-2 py-1.5 shadow-[0_18px_50px_rgba(42,42,42,0.16)] backdrop-blur-xl overflow-hidden"
-        style={{ paddingBottom: 'max(0.3rem, env(safe-area-inset-bottom, 0px))' }}
       >
         {/* Glow wash behind the active tab */}
         <div className="pointer-events-none absolute inset-0">
@@ -124,11 +123,28 @@ export default function NavBar({ activeTab, onTabChange }) {
               )}
               <div className="relative z-10">
                 <motion.div
-                  animate={isActive ? { scale: [1, 1.18, 1] } : { scale: 1 }}
-                  transition={{ duration: 0.45, ease: [0.34, 1.56, 0.64, 1] }}
+                  animate={isActive ? { scale: [1, 1.22, 1] } : { scale: 1 }}
+                  transition={{ duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
                 >
                   <Icon active={isActive} />
                 </motion.div>
+                {isActive && (
+                  <motion.div
+                    key={`glow-${tab.id}`}
+                    initial={{ scale: 0.6, opacity: 0.7 }}
+                    animate={{ scale: 1.8, opacity: 0 }}
+                    transition={{ duration: 0.55, ease: 'easeOut' }}
+                    className="pointer-events-none absolute inset-0 rounded-full"
+                    style={{
+                      background: tab.id === 'explore'
+                        ? 'radial-gradient(circle, rgba(255,107,53,0.5) 0%, transparent 70%)'
+                        : tab.id === 'tracks'
+                          ? 'radial-gradient(circle, rgba(45,147,108,0.5) 0%, transparent 70%)'
+                          : 'radial-gradient(circle, rgba(255,166,43,0.5) 0%, transparent 70%)',
+                    }}
+                    aria-hidden="true"
+                  />
+                )}
                 {showBadge && (
                   <span
                     className="absolute -top-1 -right-2 min-w-[18px] h-[18px] px-1 rounded-full text-[9px] font-bold flex items-center justify-center text-white shadow-[0_4px_10px_rgba(255,107,53,0.4)]"

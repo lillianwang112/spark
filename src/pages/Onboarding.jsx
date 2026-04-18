@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-void motion;
 import Ember from '../components/ember/Ember.jsx';
 import Button from '../components/common/Button.jsx';
+import Sparkles from '../components/common/Sparkles.jsx';
 import { useUserContext } from '../hooks/useUserContext.jsx';
 import { AGE_GROUPS, PERSONALITIES } from '../utils/constants.js';
 import { initEloScores } from '../models/elo.js';
@@ -227,7 +227,7 @@ export default function Onboarding({ onComplete }) {
       personality,
       eloScores: initEloScores(),
       intent,
-      searchSeed: intent === 'idea' ? searchText.trim() : null,
+      searchSeed: (intent === 'idea' || intent === 'major') ? searchText.trim() : null,
     };
     completeOnboarding(profile);
     onComplete(profile);
@@ -239,48 +239,85 @@ export default function Onboarding({ onComplete }) {
     <div className="relative min-h-screen overflow-hidden px-4 py-8">
       <div className="spark-orb h-48 w-48 bg-[rgba(255,107,53,0.24)] left-[-3rem] top-[-2rem]" />
       <div className="spark-orb h-56 w-56 bg-[rgba(74,111,165,0.15)] right-[-4rem] top-32" />
+      <div className="spark-orb h-40 w-40 bg-[rgba(255,209,102,0.2)] left-[30%] bottom-10" />
 
       <div className="mx-auto grid w-full max-w-5xl items-center gap-8 lg:grid-cols-[1.05fr_0.95fr]">
         <div className="hidden lg:block">
           <div className="max-w-xl">
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full bg-[rgba(255,255,255,0.76)] px-4 py-2 shadow-card">
+            <motion.div
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="mb-5 inline-flex items-center gap-2 rounded-full bg-[rgba(255,255,255,0.76)] px-4 py-2 shadow-card"
+            >
               <Ember mood="curious" size="sm" glowIntensity={0.7} />
               <span className="text-xs font-mono uppercase tracking-[0.18em] text-text-muted">Spark OS for curiosity</span>
-            </div>
-            <h1 className="font-display text-5xl font-semibold leading-[1.02] text-text-primary">
-              A learning app that starts before the syllabus.
-            </h1>
-            <p className="mt-4 max-w-lg font-body text-lg leading-relaxed text-text-secondary">
+            </motion.div>
+            <motion.h1
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, delay: 0.08 }}
+              className="font-display text-5xl font-semibold leading-[1.02] text-text-primary"
+            >
+              A learning app that starts{' '}
+              <span style={{ color: '#FF6B35' }}>before</span>{' '}
+              the syllabus.
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.16 }}
+              className="mt-4 max-w-lg font-body text-lg leading-relaxed text-text-secondary"
+            >
               Spark finds your entry point, turns scattered intrigue into momentum, and keeps opening better rabbit holes as it learns your taste.
-            </p>
+            </motion.p>
             <div className="mt-8 grid gap-3">
               {VIBE_POINTS.map((point, index) => (
-                <div
+                <motion.div
                   key={point}
+                  initial={{ opacity: 0, x: -16 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.4, delay: 0.28 + index * 0.1 }}
                   className="flex items-center gap-3 rounded-[20px] bg-[rgba(255,255,255,0.72)] px-4 py-3 shadow-card"
                 >
                   <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[rgba(255,107,53,0.12)] font-mono text-sm text-spark-ember">
                     0{index + 1}
                   </span>
                   <span className="font-body text-text-primary">{point}</span>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
         </div>
 
-        <div className="spark-surface w-full max-w-md rounded-[30px] px-5 py-6 sm:px-7">
-          <div className="mb-7 flex flex-col items-center gap-3 text-center">
-            <Ember mood="curious" size="lg" glowIntensity={0.7} />
-            <div>
+        <div className="relative spark-surface w-full max-w-md rounded-[30px] px-5 py-6 sm:px-7 overflow-hidden">
+          <Sparkles count={5} color="#FFD166" seed={42} />
+          <div className="mb-7 flex flex-col items-center gap-3 text-center relative">
+            <motion.div
+              initial={{ scale: 0, rotate: -15 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 22, delay: 0.1 }}
+            >
+              <Ember mood="curious" size="lg" glowIntensity={0.7} />
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.25 }}
+            >
               <h1 className="font-display text-3xl font-bold text-text-primary">Spark</h1>
               <p className="font-body text-text-secondary text-sm mt-1">The curiosity engine</p>
-            </div>
-            <div className="flex flex-wrap justify-center gap-2">
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              className="flex flex-wrap justify-center gap-2"
+            >
               <span className="rounded-full bg-[rgba(255,107,53,0.08)] px-3 py-1 text-xs font-body font-semibold text-spark-ember">Discovery</span>
               <span className="rounded-full bg-[rgba(45,147,108,0.08)] px-3 py-1 text-xs font-body font-semibold text-[#2D936C]">Deep Dives</span>
               <span className="rounded-full bg-[rgba(91,94,166,0.08)] px-3 py-1 text-xs font-body font-semibold text-[#5B5EA6]">Mastery Loops</span>
-            </div>
+            </motion.div>
           </div>
 
         <div className="flex items-center gap-1.5 mb-6 justify-center">
@@ -315,24 +352,46 @@ export default function Onboarding({ onComplete }) {
                 </p>
               </div>
               <div className="grid grid-cols-2 gap-3">
-                {AGE_OPTIONS.map((opt) => (
-                  <button
-                    key={opt.id}
-                    onClick={() => setAgeGroupLocal(opt.id)}
-                    className={`
-                      flex flex-col items-center gap-1.5 p-4 rounded-card border-2 transition-all duration-150
-                      focus-visible:outline-2 focus-visible:outline-spark-ember
-                      ${ageGroup === opt.id
-                        ? 'border-spark-ember bg-[rgba(255,107,53,0.06)]'
-                        : 'border-[rgba(42,42,42,0.1)] bg-bg-secondary hover:border-[rgba(255,107,53,0.4)]'}
-                    `}
-                    aria-pressed={ageGroup === opt.id}
-                  >
-                    <span className="text-2xl">{opt.emoji}</span>
-                    <span className="font-body font-semibold text-text-primary text-sm">{opt.label}</span>
-                    <span className="font-body text-text-muted text-xs">{opt.range}</span>
-                  </button>
-                ))}
+                {AGE_OPTIONS.map((opt, i) => {
+                  const isSelected = ageGroup === opt.id;
+                  return (
+                    <motion.button
+                      key={opt.id}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.06, type: 'spring', stiffness: 300, damping: 24 }}
+                      whileHover={!isSelected ? { scale: 1.03, y: -2 } : {}}
+                      whileTap={{ scale: 0.96 }}
+                      onClick={() => setAgeGroupLocal(opt.id)}
+                      className="relative flex flex-col items-center gap-1.5 p-4 rounded-card border-2 transition-colors focus-visible:outline-2 focus-visible:outline-spark-ember overflow-hidden"
+                      style={{
+                        borderColor: isSelected ? '#FF6B35' : 'rgba(42,42,42,0.1)',
+                        background: isSelected ? 'rgba(255,107,53,0.07)' : undefined,
+                        boxShadow: isSelected ? '0 0 0 3px rgba(255,107,53,0.18), 0 8px 24px rgba(255,107,53,0.12)' : undefined,
+                      }}
+                      aria-pressed={isSelected}
+                    >
+                      {isSelected && (
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          className="pointer-events-none absolute inset-0"
+                          style={{ background: 'radial-gradient(circle at 50% 0%, rgba(255,107,53,0.12), transparent 70%)' }}
+                          aria-hidden="true"
+                        />
+                      )}
+                      <motion.span
+                        className="text-2xl relative"
+                        animate={isSelected ? { scale: [1, 1.25, 1] } : {}}
+                        transition={{ duration: 0.4, ease: [0.34, 1.56, 0.64, 1] }}
+                      >
+                        {opt.emoji}
+                      </motion.span>
+                      <span className="font-body font-semibold text-text-primary text-sm relative">{opt.label}</span>
+                      <span className="font-body text-text-muted text-xs relative">{opt.range}</span>
+                    </motion.button>
+                  );
+                })}
               </div>
               <Button onClick={() => setStep(1)} className="w-full mt-2">
                 Continue →
@@ -356,44 +415,74 @@ export default function Onboarding({ onComplete }) {
                 <p className="text-text-secondary font-body text-sm">This shapes your first rabbit hole.</p>
               </div>
               <div className="flex flex-col gap-3">
-                {INTENT_OPTIONS.map((opt) => (
-                  <button
-                    key={opt.id}
-                    onClick={() => setIntent(opt.id)}
-                    className={`
-                      flex items-center gap-4 p-4 rounded-card border-2 text-left transition-all duration-150
-                      focus-visible:outline-2 focus-visible:outline-spark-ember min-h-[64px]
-                      ${intent === opt.id
-                        ? 'border-spark-ember bg-[rgba(255,107,53,0.06)]'
-                        : 'border-[rgba(42,42,42,0.1)] bg-bg-secondary hover:border-[rgba(255,107,53,0.4)]'}
-                    `}
-                    aria-pressed={intent === opt.id}
-                  >
-                    <span className="text-2xl flex-shrink-0">{opt.emoji}</span>
-                    <div>
-                      <p className="font-body font-semibold text-text-primary">{opt.label}</p>
-                      <p className="font-body text-text-muted text-sm">{opt.desc}</p>
-                    </div>
-                  </button>
-                ))}
+                {INTENT_OPTIONS.map((opt, i) => {
+                  const isSelected = intent === opt.id;
+                  return (
+                    <motion.button
+                      key={opt.id}
+                      initial={{ opacity: 0, x: -12 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.07, type: 'spring', stiffness: 280, damping: 24 }}
+                      whileHover={!isSelected ? { x: 4, boxShadow: '0 4px 16px rgba(255,107,53,0.14)' } : {}}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setIntent(opt.id)}
+                      className="relative flex items-center gap-4 p-4 rounded-card border-2 text-left transition-colors focus-visible:outline-2 focus-visible:outline-spark-ember min-h-[64px] overflow-hidden"
+                      style={{
+                        borderColor: isSelected ? '#FF6B35' : 'rgba(42,42,42,0.1)',
+                        background: isSelected ? 'rgba(255,107,53,0.07)' : undefined,
+                        boxShadow: isSelected ? '0 0 0 2px rgba(255,107,53,0.2), 0 6px 20px rgba(255,107,53,0.1)' : undefined,
+                      }}
+                      aria-pressed={isSelected}
+                    >
+                      {isSelected && (
+                        <motion.div
+                          initial={{ scaleX: 0 }}
+                          animate={{ scaleX: 1 }}
+                          className="pointer-events-none absolute inset-y-0 left-0 w-0.5 origin-top"
+                          style={{ backgroundColor: '#FF6B35' }}
+                          aria-hidden="true"
+                        />
+                      )}
+                      <motion.span
+                        className="text-2xl flex-shrink-0"
+                        animate={isSelected ? { scale: [1, 1.2, 1] } : {}}
+                        transition={{ duration: 0.35, ease: [0.34, 1.56, 0.64, 1] }}
+                      >
+                        {opt.emoji}
+                      </motion.span>
+                      <div>
+                        <p className="font-body font-semibold text-text-primary">{opt.label}</p>
+                        <p className="font-body text-text-muted text-sm">{opt.desc}</p>
+                      </div>
+                    </motion.button>
+                  );
+                })}
               </div>
 
               <AnimatePresence>
-                {intent === 'idea' && (
+                {(intent === 'idea' || intent === 'major') && (
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
+                    className="overflow-hidden"
                   >
                     <input
                       type="text"
                       value={searchText}
                       onChange={(e) => setSearchText(e.target.value)}
                       onKeyDown={(e) => e.key === 'Enter' && searchText.trim() && setStep(2)}
-                      placeholder="What do you want to explore?"
+                      placeholder={intent === 'major'
+                        ? 'e.g. Computer Science, Economics, Biology…'
+                        : 'What do you want to explore?'}
                       className="w-full px-4 py-3 rounded-card bg-bg-secondary border border-[rgba(42,42,42,0.1)] font-body text-text-primary placeholder-text-muted outline-none focus:border-spark-ember transition-colors"
                       autoFocus
                     />
+                    {intent === 'major' && (
+                      <p className="text-[11px] font-body text-text-muted mt-1.5 pl-1">
+                        Spark will show you real day-in-the-life rabbit holes for that field.
+                      </p>
+                    )}
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -403,7 +492,7 @@ export default function Onboarding({ onComplete }) {
                 <Button
                   onClick={() => setStep(2)}
                   className="flex-1"
-                  disabled={!intent || (intent === 'idea' && !searchText.trim())}
+                  disabled={!intent || ((intent === 'idea' || intent === 'major') && !searchText.trim())}
                 >
                   Continue →
                 </Button>
@@ -427,26 +516,48 @@ export default function Onboarding({ onComplete }) {
                 <p className="text-text-secondary font-body text-sm">You can change this any time.</p>
               </div>
               <div className="grid grid-cols-2 gap-3">
-                {PERSONALITY_OPTIONS.map((opt) => (
-                  <button
-                    key={opt.id}
-                    onClick={() => setPersonalityLocal(opt.id)}
-                    className={`
-                      flex flex-col gap-1.5 p-4 rounded-card border-2 text-left transition-all duration-150
-                      focus-visible:outline-2 focus-visible:outline-spark-ember
-                      ${personality === opt.id
-                        ? 'border-spark-ember bg-[rgba(255,107,53,0.06)]'
-                        : 'border-[rgba(42,42,42,0.1)] bg-bg-secondary hover:border-[rgba(255,107,53,0.4)]'}
-                    `}
-                    aria-pressed={personality === opt.id}
-                  >
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-lg">{opt.emoji}</span>
-                      <span className="font-body font-semibold text-text-primary text-sm">{opt.label}</span>
-                    </div>
-                    <span className="font-body text-xs text-text-muted leading-snug">{opt.description}</span>
-                  </button>
-                ))}
+                {PERSONALITY_OPTIONS.map((opt, i) => {
+                  const isSelected = personality === opt.id;
+                  return (
+                    <motion.button
+                      key={opt.id}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: i * 0.07, type: 'spring', stiffness: 300, damping: 22 }}
+                      whileHover={!isSelected ? { scale: 1.03, y: -2 } : {}}
+                      whileTap={{ scale: 0.96 }}
+                      onClick={() => setPersonalityLocal(opt.id)}
+                      className="relative flex flex-col gap-1.5 p-4 rounded-card border-2 text-left transition-colors focus-visible:outline-2 focus-visible:outline-spark-ember overflow-hidden"
+                      style={{
+                        borderColor: isSelected ? '#FF6B35' : 'rgba(42,42,42,0.1)',
+                        background: isSelected ? 'rgba(255,107,53,0.07)' : undefined,
+                        boxShadow: isSelected ? '0 0 0 2px rgba(255,107,53,0.2), 0 8px 20px rgba(255,107,53,0.1)' : undefined,
+                      }}
+                      aria-pressed={isSelected}
+                    >
+                      {isSelected && (
+                        <motion.div
+                          initial={{ scale: 2, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          className="pointer-events-none absolute inset-0"
+                          style={{ background: 'radial-gradient(circle at 50% 0%, rgba(255,107,53,0.14), transparent 65%)' }}
+                          aria-hidden="true"
+                        />
+                      )}
+                      <div className="flex items-center gap-1.5 relative">
+                        <motion.span
+                          className="text-lg"
+                          animate={isSelected ? { scale: [1, 1.3, 1], rotate: [0, -10, 10, 0] } : {}}
+                          transition={{ duration: 0.45 }}
+                        >
+                          {opt.emoji}
+                        </motion.span>
+                        <span className="font-body font-semibold text-text-primary text-sm">{opt.label}</span>
+                      </div>
+                      <span className="font-body text-xs text-text-muted leading-snug relative">{opt.description}</span>
+                    </motion.button>
+                  );
+                })}
               </div>
 
               <div className="flex gap-3 mt-2">

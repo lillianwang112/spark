@@ -37,14 +37,15 @@ export default function Modal({ isOpen, onClose, children, title, maxWidth = 'ma
 
           {/* Panel */}
           <motion.div
-            className={`relative w-full ${maxWidth} bg-bg-primary rounded-card shadow-2xl overflow-hidden`}
+            className={`relative w-full ${maxWidth} bg-bg-primary rounded-card shadow-2xl flex flex-col`}
+            style={{ maxHeight: '90vh' }}
             initial={{ y: 40, opacity: 0, scale: 0.97 }}
             animate={{ y: 0, opacity: 1, scale: 1 }}
             exit={{ y: 40, opacity: 0, scale: 0.97 }}
             transition={{ type: 'spring', stiffness: 400, damping: 30 }}
           >
             {title && (
-              <div className="flex items-center justify-between px-6 pt-5 pb-3 border-b border-[rgba(42,42,42,0.08)]">
+              <div className="flex-shrink-0 flex items-center justify-between px-6 pt-5 pb-3 border-b border-[rgba(42,42,42,0.08)]">
                 <h2 className="font-display text-lg font-semibold text-text-primary">{title}</h2>
                 <button
                   onClick={onClose}
@@ -55,7 +56,21 @@ export default function Modal({ isOpen, onClose, children, title, maxWidth = 'ma
                 </button>
               </div>
             )}
-            <div className="px-6 py-5">{children}</div>
+
+            {/* Floating close when no title */}
+            {!title && (
+              <button
+                onClick={onClose}
+                className="absolute top-3 right-3 z-20 w-8 h-8 rounded-full flex items-center justify-center bg-[rgba(42,42,42,0.12)] hover:bg-[rgba(42,42,42,0.22)] text-text-muted hover:text-text-primary transition-colors backdrop-blur-sm"
+                aria-label="Close"
+              >
+                ✕
+              </button>
+            )}
+
+            <div className={`overflow-y-auto flex-1 ${title ? 'px-6 py-5' : ''}`}>
+              {children}
+            </div>
           </motion.div>
         </motion.div>
       )}

@@ -1,0 +1,241 @@
+{
+  "ex:information_theory:Information Theory:college:spark": "In 1948, a Bell Labs mathematician named Claude Shannon asked one of the strangest questions in the history of science: what is the fundamental unit of surprise? Not surprise in an emotional sense, but surprise in a mathematical one — how much does a message actually tell you? His answer upended communications, computing, biology, and philosophy. Shannon defined information as the reduction of uncertainty, and he measured it in bits — not because of computers, but because a bit is the minimum chunk of uncertainty you can resolve: yes or no, heads or tails, zero or one.\n\nThe key insight is that information is not about meaning — it is about unpredictability. A message that says 'the sun rose this morning' has almost no information, because you already knew it would. A message that says 'it snowed in the Sahara' is packed with information precisely because it was so unlikely. Shannon formalized this as entropy: the average unpredictability in a set of possible messages. Counterintuitively, a channel carrying pure random noise has maximum entropy — it is the most information-dense thing possible, even though it is meaningless. This is why compressed files and encrypted files look identical to random noise.\n\nInformation theory quietly governs your entire digital life: every zip file, every Netflix stream, every Wi-Fi packet is shaped by Shannon's equations. But the rabbit hole goes much deeper. Physicists now believe information is not just a metaphor — it may be the most fundamental thing in the universe. Black holes appear to destroy information, which violates quantum mechanics, and resolving that paradox might rewrite physics entirely. Biologists use entropy to measure gene expression. Neuroscientists use it to study how the brain encodes sensation. One equation, infinite reach.",
+
+  "kt:information_theory:Information Theory:college": [
+    "A totally random signal carries more 'information' than a meaningful one — information measures surprise, not sense.",
+    "Claude Shannon invented the bit in 1948, before transistors made binary computing mainstream.",
+    "Black holes may destroy information, which would violate quantum mechanics — physicists call this the information paradox."
+  ],
+
+  "qq:information_theory:Information Theory:college": {
+    "question": "According to Shannon's information theory, which message contains the MOST information?",
+    "options": [
+      "The sun rose in the east this morning",
+      "A fair coin flip landed heads",
+      "A magnitude 10 earthquake struck Antarctica yesterday",
+      "Water froze at 0 degrees Celsius"
+    ],
+    "correct": 2,
+    "explanation": "Information is measured by unpredictability. An event that almost never happens (like a magnitude 10 earthquake) carries far more information than a certain or common event. The sun rising and water freezing are near-certain, while a coin flip is only moderately surprising."
+  },
+
+  "ex:complex_systems:Complex Systems:college:spark": "Forget the idea that understanding the parts of something means you understand the whole. A single neuron cannot think. A single ant cannot build a colony. A single water molecule cannot form a wave. Complex systems are collections of interacting parts whose collective behavior is fundamentally different from — and irreducible to — the behavior of the individual parts. This is not mysticism; it is a rigorous scientific framework that has quietly unified economics, ecology, neuroscience, traffic engineering, and epidemiology under a single mathematical roof.\n\nThe defining features of complex systems are feedback loops, nonlinearity, and sensitive dependence on initial conditions. Feedback means that outputs circle back to become inputs — your body's temperature regulation, the stock market, the climate. Nonlinearity means that doubling an input does not double the output — sometimes it causes a collapse, sometimes an explosion, sometimes nothing at all. And sensitive dependence is the famous butterfly effect: tiny differences in starting conditions cascade into wildly different outcomes. This is why long-range weather forecasting is fundamentally impossible, not just technically difficult.\n\nHere is what makes complex systems genuinely mind-bending: they produce order spontaneously, without any central controller giving instructions. Traffic jams appear and dissolve with no one in charge of being the jam. Financial crashes emerge from millions of individually rational decisions. Evolution designs organisms with no designer. The science of complex systems asks: where does structure come from when no one is in charge? And the deeper you go, the more you realize that almost everything interesting in the universe — life, consciousness, economies, ecosystems — is the answer to that question.",
+
+  "kt:complex_systems:Complex Systems:college": [
+    "Traffic jams are complex systems: they move backward through traffic while no individual car moves backward.",
+    "Long-range weather forecasting is mathematically impossible, not just a technology problem — chaos is fundamental.",
+    "Economies, ecosystems, and brains are all complex systems: they produce global order with no central coordinator."
+  ],
+
+  "qq:complex_systems:Complex Systems:college": {
+    "question": "Why is it impossible to predict weather more than about two weeks in advance, no matter how good our computers get?",
+    "options": [
+      "We don't have enough weather stations to collect sufficient data",
+      "Computers aren't yet fast enough to run the required simulations",
+      "The atmosphere is a chaotic system where tiny input differences cause exponentially diverging outcomes",
+      "Weather patterns repeat on a 14-day cycle that resets predictions"
+    ],
+    "correct": 2,
+    "explanation": "The atmosphere is a chaotic complex system with sensitive dependence on initial conditions. Any unmeasurable difference in starting state (a butterfly flapping its wings) grows exponentially over time. This is a mathematical limit, not a technological one — more computing power cannot overcome it."
+  },
+
+  "ex:systems_thinking:Systems Thinking:college:spark": "When a hospital reduces wait times in the emergency room by hiring more doctors, it sometimes makes wait times longer. When a city builds more highways to reduce traffic, congestion gets worse within years. When a predator is hunted to extinction to protect livestock, the livestock population eventually crashes too. These are not accidents or ironies — they are predictable consequences of ignoring feedback loops, and systems thinking is the discipline designed to see them coming.\n\nSystems thinking asks you to shift your gaze from events to structures. Most of us explain the world with event-level stories: the economy crashed because of bad loans, the patient got sick because of a virus, the company failed because of the CEO. Systems thinkers ask: what is the underlying structure — the stocks, flows, and feedback loops — that made those events not just possible but nearly inevitable? A 'stock' is anything that accumulates: money, population, water in a reservoir, trust in an institution. A 'flow' is what changes the stock: income and spending, births and deaths, rainfall and evaporation. And 'feedback loops' are what make systems behave in surprising ways: reinforcing loops that amplify change (compound interest, viral spread), and balancing loops that resist it (a thermostat, a predator-prey cycle).\n\nThe most counterintuitive lesson of systems thinking is that the leverage points — the places where a small intervention can reshape an entire system — are almost never where you expect them to be. Changing a tax rate or a law is low-leverage. Changing the goals of the system, or the rules that govern who can change the rules, is high-leverage. Donella Meadows, who virtually invented the field, argued the highest leverage point of all is changing the paradigm — the shared belief system — from which the entire structure emerges. That is why the most powerful revolutions are not political but conceptual.",
+
+  "kt:systems_thinking:Systems Thinking:college": [
+    "Building more highways often increases traffic — 'induced demand' is a systems feedback loop engineers ignored for decades.",
+    "The highest leverage in any system is changing the paradigm — the shared beliefs — not the rules or the numbers.",
+    "Systems thinkers look for structures (stocks and flows) that make surprising events inevitable, not just possible."
+  ],
+
+  "qq:systems_thinking:Systems Thinking:college": {
+    "question": "A city builds a new highway to reduce traffic congestion, but within five years congestion is worse than before. What systems concept best explains this?",
+    "options": [
+      "Population growth outpaced the highway expansion",
+      "A balancing feedback loop caused by induced demand — new road capacity attracts more drivers",
+      "The construction phase caused irreversible traffic pattern changes",
+      "Government underfunded highway maintenance, reducing effective capacity"
+    ],
+    "correct": 1,
+    "explanation": "This is 'induced demand,' a classic balancing feedback loop. New road capacity lowers travel time, which attracts more drivers who previously avoided that route or trip, which fills the new capacity and restores or worsens congestion. The fix created the very problem it was meant to solve."
+  },
+
+  "ex:emergence:Emergence:college:spark": "How does wetness emerge from water molecules that are not themselves wet? How does consciousness emerge from neurons that are not themselves conscious? How does 'being alive' emerge from chemicals that are not themselves alive? These questions all share the same structure, and they point to one of the deepest puzzles in science: emergence, the phenomenon where a system's collective properties are genuinely new and cannot be predicted from or reduced to the properties of its parts.\n\nThere are two kinds of emergence, and the distinction is explosive. Weak emergence is surprising but in principle explainable by the parts — the way traffic jams emerge from individual driving decisions, or the way the temperature of a gas emerges from the average kinetic energy of its molecules. In principle you could simulate it from scratch. Strong emergence is something else entirely: properties that are not just surprising but in principle irreducible, that cannot be derived from complete knowledge of the parts. Consciousness is the prime candidate. No matter how precisely you describe the firing of neurons, there seems to be an explanatory gap between those physical facts and the felt experience of seeing red or tasting coffee. Philosophers call this the 'hard problem of consciousness,' and it is the most uncomfortable question in science because it suggests physics might be incomplete.\n\nEmergence reshapes what it means to explain something. Reductionism — the great success story of science, splitting things into ever-smaller parts — hits a wall at emergent phenomena. You cannot find love in a neurotransmitter or democracy in a single vote. The properties that matter most to human life appear precisely at the level of the whole, and emergence is the reason science needs more than physics, even if everything is made of physics.",
+
+  "kt:emergence:Emergence:college": [
+    "Wetness is an emergent property — individual water molecules are not wet, but enough of them together are.",
+    "Consciousness may be 'strongly emergent' — impossible to derive from neurons even with complete physical knowledge.",
+    "Reductionism, science's greatest tool, cannot fully explain life, mind, or meaning — emergence is the reason why."
+  ],
+
+  "qq:emergence:Emergence:college": {
+    "question": "What is the 'hard problem of consciousness' as it relates to emergence?",
+    "options": [
+      "Scientists lack sufficiently powerful brain-scanning technology to observe consciousness forming",
+      "There is an explanatory gap between physical brain processes and the subjective felt experience of being conscious",
+      "Consciousness emerges too slowly to be studied in real time with current methods",
+      "We cannot agree on a scientific definition of what consciousness actually is"
+    ],
+    "correct": 1,
+    "explanation": "The hard problem, coined by philosopher David Chalmers, is the challenge of explaining why physical processes in the brain produce subjective experience at all. Even a complete map of every neuron firing doesn't explain why there is 'something it is like' to be you — the felt redness of red, the painfulness of pain. This gap may point to strong emergence or to physics being fundamentally incomplete."
+  },
+
+  "ex:fermat's_last_theorem:Fermat's Last Theorem:college:spark": "In 1637, Pierre de Fermat scribbled a note in the margin of a book that tortured mathematicians for 358 years. He wrote that no three positive integers can satisfy the equation a^n + b^n = c^n for any integer n greater than 2 — and then, infuriatingly, he added: 'I have discovered a truly marvelous proof of this, which this margin is too narrow to contain.' Whether Fermat actually had a proof has never been established. What is certain is that every mathematician who followed him failed to find one. The theorem became the most famous unsolved problem in mathematics, attracting amateurs and geniuses alike for three and a half centuries.\n\nThe proof finally came in 1995, delivered by British mathematician Andrew Wiles — and the story of how is as dramatic as any in science. Wiles worked in secret for seven years, emerging only to announce a proof at a Cambridge conference in 1993. A flaw was discovered weeks later. He spent another year fixing it, coming close to abandoning the work entirely, before a sudden insight — 'so beautiful and unexpected that I stared at it in disbelief for twenty minutes' — resolved everything. The final proof was 129 pages long and required two entire subfields of mathematics that did not exist when Fermat wrote his margin note, including the theory of elliptic curves and modular forms.\n\nThe truly astonishing part is what the proof connected. Wiles proved Fermat's theorem by proving the Taniyama-Shimura conjecture, a bridge between two completely unrelated areas of mathematics. The proof revealed that two mathematical worlds — number theory and geometry — were secretly the same world in disguise. A 17th-century riddle about whole numbers was solved with 20th-century geometry, suggesting the universe of mathematics is far more unified than anyone suspected.",
+
+  "kt:fermat's_last_theorem:Fermat's Last Theorem:college": [
+    "Fermat's Last Theorem was unsolved for 358 years and required mathematics that didn't exist in Fermat's time to prove.",
+    "Andrew Wiles worked in secret for 7 years, had a flaw exposed publicly, then fixed it with a moment of sudden insight.",
+    "The proof linked number theory and geometry — showing two apparently unrelated mathematical worlds are secretly one."
+  ],
+
+  "qq:fermat's_last_theorem:Fermat's Last Theorem:college": {
+    "question": "Andrew Wiles proved Fermat's Last Theorem by first proving which other mathematical conjecture?",
+    "options": [
+      "The Riemann Hypothesis",
+      "The Poincaré Conjecture",
+      "The Taniyama-Shimura Conjecture connecting elliptic curves and modular forms",
+      "Goldbach's Conjecture about prime numbers"
+    ],
+    "correct": 2,
+    "explanation": "Wiles proved the Taniyama-Shimura conjecture (at least the semistable case), which established a deep link between elliptic curves and modular forms. Mathematicians had previously shown that this conjecture would imply Fermat's Last Theorem — so proving Taniyama-Shimura meant Fermat fell as a consequence. It revealed a profound unity between number theory and geometry."
+  },
+
+  "ex:arrow's_impossibility_theorem:Arrow's Impossibility Theorem:college:spark": "Imagine you want to design the perfect voting system — one that faithfully translates individual preferences into a fair collective decision. It seems like a solvable engineering problem. In 1951, a 29-year-old economist named Kenneth Arrow proved mathematically that it is not. He showed that no voting system can simultaneously satisfy four basic fairness conditions that any reasonable person would demand. This result, which won Arrow the Nobel Prize in Economics, is called the Impossibility Theorem, and it means that democracy is, in a precise mathematical sense, impossible to do perfectly.\n\nThe four conditions Arrow required seem obviously reasonable: if everyone prefers A to B, the group should prefer A to B (unanimity); the group's preference between A and B should depend only on how individuals rank A vs. B, not on how they feel about some third option C (independence of irrelevant alternatives); the system should not just reflect whatever one dictator prefers (non-dictatorship); and the system should produce a complete, consistent ranking (transitivity). Arrow proved these four conditions are mathematically incompatible — you cannot satisfy all four at once with any voting system. Something has to give.\n\nThe real-world consequences are immediate and unsettling. Arrow's theorem explains why election outcomes can change depending on whether a third-party candidate enters the race — not because voters changed their minds, but because different voting rules handle the same preferences differently. It explains why ranked-choice voting, plurality voting, and approval voting all produce different winners from identical preferences. It suggests that 'the will of the people' is not a stable object waiting to be discovered — it is an artifact of the procedure used to measure it. Every democracy is making a tradeoff that Arrow proved cannot be avoided.",
+
+  "kt:arrow's_impossibility_theorem:Arrow's Impossibility Theorem:college": [
+    "No voting system can satisfy all four basic fairness criteria simultaneously — Arrow proved this mathematically in 1951.",
+    "A third-party candidate can change an election outcome without winning a single vote — Arrow's theorem explains why.",
+    "'The will of the people' is not a stable fact — it changes depending on how you design the ballot and counting system."
+  ],
+
+  "qq:arrow's_impossibility_theorem:Arrow's Impossibility Theorem:college": {
+    "question": "Arrow's Impossibility Theorem proves that no voting system can simultaneously satisfy which set of conditions?",
+    "options": [
+      "Majority rule, proportional representation, geographic balance, and speed of counting",
+      "Unanimity, independence of irrelevant alternatives, non-dictatorship, and transitivity",
+      "One-person-one-vote, anonymity, neutrality, and monotonicity",
+      "Fairness, efficiency, simplicity, and resistance to strategic voting"
+    ],
+    "correct": 1,
+    "explanation": "Arrow's four conditions are: unanimity (if all prefer A over B, society should too), independence of irrelevant alternatives (rankings of A vs B shouldn't change if C is added), non-dictatorship (no single voter's preference determines outcomes), and transitivity (consistent group rankings). Arrow proved no system can satisfy all four — any voting method must violate at least one."
+  },
+
+  "ex:the_observer_effect:The Observer Effect:college:spark": "In classical physics, you could in principle measure anything without disturbing it — measurement was a passive act of reading a pre-existing fact. Quantum mechanics demolished this assumption. In the quantum world, the act of observation does not merely reveal a particle's properties; it actively determines them. Before you measure, a quantum particle exists in a superposition — a ghostly combination of multiple possible states simultaneously. The moment you measure, the superposition collapses into a single definite outcome. The observer effect is not a limitation of measuring instruments. It is a fundamental feature of reality.\n\nThe classic demonstration is the double-slit experiment. Fire electrons one at a time at a barrier with two slits, and they build up an interference pattern on a screen behind it — a pattern that only makes sense if each electron passes through both slits simultaneously as a wave. Now add a detector to observe which slit the electron goes through. Instantly, the interference pattern vanishes. Simply knowing which path the electron took — even without physically blocking either path — destroys the wave behavior. The electron 'knows' it is being watched, and acts like a particle instead of a wave. Information alone changes the outcome.\n\nThis spills far beyond physics. The observer effect appears in psychology, where being observed changes human behavior (the Hawthorne effect). It appears in economics, where measuring a metric changes the behavior the metric was designed to track (Goodhart's Law: when a measure becomes a target, it ceases to be a good measure). It appears in medicine, where knowing you are in a clinical trial changes patient outcomes regardless of the treatment. Reality, at every scale, is a negotiation between the observer and the observed — and the quantum world makes that disturbingly literal.",
+
+  "kt:the_observer_effect:The Observer Effect:college": [
+    "In quantum mechanics, observation doesn't just measure reality — it creates it by collapsing the wave function.",
+    "The double-slit experiment shows electrons 'know' when they're being watched — information alone changes their behavior.",
+    "Goodhart's Law mirrors the observer effect: measuring something changes it, especially when stakes are attached."
+  ],
+
+  "qq:the_observer_effect:The Observer Effect:college": {
+    "question": "In the double-slit experiment, what happens to the electron interference pattern when a detector is added to observe which slit each electron passes through?",
+    "options": [
+      "The pattern becomes sharper and more defined",
+      "The pattern shifts sideways toward the detector",
+      "The interference pattern disappears and electrons behave like particles",
+      "The pattern doubles in intensity due to quantum amplification"
+    ],
+    "correct": 2,
+    "explanation": "When a detector observes which slit electrons use, the interference pattern vanishes — electrons suddenly behave like particles rather than waves. The act of gaining 'which-path information' collapses the quantum superposition. Crucially, it doesn't matter if the detector physically interferes with the electron — the mere existence of the information destroys the wave behavior."
+  },
+
+  "ex:science::physics::quantum_mechanics::the_many-worlds_interpretation:The Many-Worlds Interpretation:college:spark": "Every time a quantum event can go one of multiple ways — a radioactive atom decays or doesn't, a photon hits one detector or another — the standard interpretation of quantum mechanics says the universe 'chooses' one outcome and the others cease to exist. In 1957, a Princeton graduate student named Hugh Everett III proposed a scandalous alternative: the universe does not choose. Every possible outcome happens, in a separate branch of a reality that is constantly, silently, unstoppably splitting. You are, right now, branching. Every quantum event in every atom of your body is spawning parallel versions of the universe — versions where different things happened, where you made different choices, where history went differently.\n\nMany-worlds is not science fiction — it is a serious interpretation held by a significant fraction of quantum physicists, including some of the most eminent. Its appeal is that it requires no mysterious 'wave function collapse,' no special role for observers, no arbitrary moment when quantum becomes classical. The Schrödinger equation simply runs forward, always, and 'branching' is what the math actually predicts when quantum systems interact. The branches are real, parallel, and completely causally isolated from each other after splitting — you can never visit your other selves, and they can never visit you.\n\nThe mind-bending implications cascade outward. If many-worlds is true, then every quantum suicide thought experiment has a disturbing answer: there is always a branch where you survived. It changes the meaning of probability — what does '70% chance of rain' mean if every outcome happens? It suggests reality is almost incomprehensibly vaster than what we observe, with complexity multiplying every Planck instant across an uncountable tree of histories. And it raises the deepest question: if you and your parallel selves share a past, in what sense are you a single person making choices?",
+
+  "kt:science::physics::quantum_mechanics::the_many-worlds_interpretation:The Many-Worlds Interpretation:college": [
+    "Many-worlds requires no wave function collapse — the Schrödinger equation runs forward and 'branching' is just what it predicts.",
+    "Many-worlds implies you have uncountable parallel selves right now, produced by every quantum event in every atom of your body.",
+    "If many-worlds is true, probability becomes philosophically strange — every outcome happens, so what does 'likely' even mean?"
+  ],
+
+  "qq:science::physics::quantum_mechanics::the_many-worlds_interpretation:The Many-Worlds Interpretation:college": {
+    "question": "What is the main reason many physicists find the Many-Worlds Interpretation appealing compared to the Copenhagen Interpretation?",
+    "options": [
+      "It has been experimentally confirmed by observing communication between parallel branches",
+      "It eliminates the need for a mysterious wave function collapse and treats the Schrödinger equation as always valid",
+      "It requires fewer parallel universes than other interpretations, making it more parsimonious",
+      "It explains why we experience time moving forward rather than backward"
+    ],
+    "correct": 1,
+    "explanation": "The Copenhagen Interpretation requires an unexplained 'collapse' of the wave function upon measurement — a process with no equation describing it, no clear trigger, and a mysterious special role for observers. Many-worlds eliminates collapse entirely: the Schrödinger equation simply always applies, and what we call 'collapse' is actually branching. Many physicists find this more mathematically satisfying, even if the philosophical cost (uncountably many universes) is enormous."
+  },
+
+  "ex:mathematics::number_theory::cryptography:Cryptography:college:spark": "The entire security of the internet — your bank account, your messages, your medical records — rests on a single mathematical suspicion that has never been proven. Mathematicians believe multiplying two large prime numbers together is easy, but reversing the process (factoring the product back into its primes) is computationally hard. No one has proven this is true. It might be possible to factor large numbers efficiently, in which case modern cryptography collapses. The foundation of digital civilization is an unproven conjecture about the difficulty of arithmetic.\n\nThe system built on this conjecture is called RSA encryption, invented in 1977. To encrypt a message for you, I use your public key — two numbers derived from a product of large primes — to scramble it in a way that can only be unscrambled using your private key, which contains the prime factors. Anyone can see your public key; no one can efficiently reverse-engineer your private key from it, because that would require factoring the product. Every time you see a padlock in your browser, this mathematical trapdoor is what protects you. It is beautiful, fragile, and almost entirely dependent on a fact we cannot prove.\n\nThe arms race is accelerating. Quantum computers, using Shor's algorithm, can factor large numbers exponentially faster than classical computers — which means RSA is theoretically broken by sufficiently powerful quantum hardware. The race to build 'post-quantum cryptography' — encryption resistant to quantum attacks — is one of the most urgent problems in computer science right now. Governments are stockpiling today's encrypted communications to decrypt them once quantum computers arrive. The math that protects your secrets is in a deeper crisis than most people realize, and the resolution will reshape who can keep secrets and who cannot.",
+
+  "kt:mathematics::number_theory::cryptography:Cryptography:college": [
+    "RSA encryption rests on a mathematical conjecture that has never been proven — if it's wrong, the internet's security collapses.",
+    "Quantum computers running Shor's algorithm can break RSA encryption — governments are already stockpiling data for future decryption.",
+    "Your browser's padlock icon represents a mathematical trapdoor: easy to go through one way, impossibly hard to reverse."
+  ],
+
+  "qq:mathematics::number_theory::cryptography:Cryptography:college": {
+    "question": "Why does RSA encryption work, and what is its fundamental unproven assumption?",
+    "options": [
+      "It works because random number generation is truly unpredictable; the assumption is that randomness exists",
+      "It works because multiplying primes is easy but factoring the product is hard; the assumption is that no efficient factoring algorithm exists",
+      "It works because quantum entanglement makes keys uncopyable; the assumption is that entanglement cannot be faked",
+      "It works because hash functions are irreversible; the assumption is that hash collisions are computationally impossible"
+    ],
+    "correct": 1,
+    "explanation": "RSA exploits the asymmetry between multiplication (fast) and factorization (apparently slow for large numbers). Your public key is a product of two large primes; your private key contains those primes. Recovering the private key from the public key requires factoring, which seems computationally intractable. But 'seems' is the operative word — no one has proven that factoring is inherently hard, and Shor's quantum algorithm shows it isn't hard for quantum computers."
+  },
+
+  "ex:science::biology::microbiology::antibiotic_resistance:Antibiotic Resistance:college:spark": "In 1928, Alexander Fleming noticed that mold was killing bacteria in his petri dish and accidentally launched the antibiotic era — one of medicine's greatest triumphs. In the century since, we have treated infections that were once death sentences, performed surgeries that require suppressing immune responses, and enabled chemotherapy by preventing bacterial infections in immunocompromised patients. Now bacteria are fighting back, and we are losing. Antibiotic resistance is not a future problem. It already kills more people annually than HIV or malaria, and projections suggest it could kill ten million people per year by 2050 — more than cancer.\n\nThe mechanism is elegantly brutal: evolution. Every time you take an antibiotic, most bacteria die — but any individual bacterium with a mutation that confers even slight resistance is more likely to survive. It reproduces, passing the resistance gene to its offspring, and bacteria can also share resistance genes horizontally with neighboring bacteria of entirely different species — swapping genetic tools the way humans share recipes. The more antibiotics we use, the more selection pressure we apply, and the faster resistance evolves. Misuse — not finishing a course, using antibiotics for viral infections, feeding antibiotics to livestock for growth promotion — accelerates the process dramatically.\n\nThe economic problem compounds the biological one. Developing a new antibiotic takes over a billion dollars and a decade of trials. But antibiotics are used for days or weeks, not lifetimes, and doctors are encouraged to hold new ones in reserve as drugs of last resort — which means they generate almost no revenue. Pharmaceutical companies have largely abandoned antibiotic development. We are racing against evolution with an emptying arsenal and almost no one building new weapons. The post-antibiotic era, where routine surgery becomes life-threatening and minor infections are fatal, is not a dystopian fantasy — it is the extrapolation of current trends.",
+
+  "kt:science::biology::microbiology::antibiotic_resistance:Antibiotic Resistance:college": [
+    "Antibiotic resistance already kills more people than HIV or malaria — and could surpass cancer deaths by 2050.",
+    "Bacteria share resistance genes across species horizontally — a gene in your gut bacteria could spread to a pathogen.",
+    "Pharmaceutical companies barely develop new antibiotics because they're too unprofitable — evolution is outpacing capitalism."
+  ],
+
+  "qq:science::biology::microbiology::antibiotic_resistance:Antibiotic Resistance:college": {
+    "question": "Which mechanism allows antibiotic resistance genes to spread between entirely different species of bacteria?",
+    "options": [
+      "Vertical gene transfer, where resistance is inherited by daughter cells after division",
+      "Viral transduction, where bacteriophages accidentally carry resistance genes between hosts",
+      "Horizontal gene transfer, where bacteria directly exchange genetic material across species",
+      "Epigenetic imprinting, where environmental exposure permanently alters gene expression"
+    ],
+    "correct": 2,
+    "explanation": "Horizontal gene transfer (via plasmids, conjugation, or transformation) allows bacteria to share resistance genes directly with neighboring bacteria — even across species barriers. A resistance gene that evolved in a harmless gut bacterium can spread to a deadly pathogen without any reproduction or inheritance. This is why resistance can spread so explosively through bacterial communities and is why antibiotic use in livestock directly threatens human medicine."
+  },
+
+  "ex:science::biology::neuroscience:Neuroscience:college:spark": "You are a ghost haunting a biological machine that you did not build and do not fully control. Your brain makes decisions before your conscious mind is aware of them, confabulates reasons for choices driven by processes you cannot introspect, and edits your memories each time you retrieve them. Neuroscience is the discipline attempting to bridge the most profound gap in all of science: the distance between electrochemical signals in fatty tissue and the felt experience of being a self with a past and a future.\n\nThe brain is staggering in its complexity: 86 billion neurons, each connected to up to 10,000 others, producing roughly 100 trillion synaptic connections — more than the number of stars in a thousand Milky Way galaxies. But complexity alone is not the mystery. The mystery is that this physical system generates something that physical systems are not supposed to generate: subjective experience. The redness of red. The painfulness of pain. The particular quality of nostalgia for a summer you half remember. Neuroscience can map which regions activate when you feel these things; it cannot yet explain why any physical process feels like anything at all.\n\nThe practical findings are already unnerving. Benjamin Libet's famous experiments showed that brain activity predicting a voluntary movement begins up to 500 milliseconds before subjects report deciding to move — which raises unsettling questions about free will. Studies of patients with split brains reveal that the left hemisphere will confidently invent explanations for actions initiated by the right hemisphere, suggesting that much of conscious reasoning is post-hoc storytelling about unconscious processes. And neuroplasticity research shows that experience literally reshapes brain structure — the London taxi drivers who memorized street maps grew enlarged hippocampi. You are, right now, physically rewriting your brain by reading this.",
+
+  "kt:science::biology::neuroscience:Neuroscience:college": [
+    "Your brain shows activity predicting a movement up to 500ms before you consciously decide to move — Libet's challenge to free will.",
+    "Every time you retrieve a memory, you slightly alter it — memories are reconstructed, not replayed, each time you access them.",
+    "London taxi drivers who memorize city streets develop physically larger hippocampi — experience literally reshapes the brain."
+  ],
+
+  "qq:science::biology::neuroscience:Neuroscience:college": {
+    "question": "What did Benjamin Libet's experiments reveal about conscious decision-making and brain activity?",
+    "options": [
+      "Conscious decisions are made first, then motor cortex activity follows to execute them",
+      "Brain activity predicting a voluntary movement begins up to 500ms before subjects report consciously deciding to move",
+      "The left and right hemispheres make decisions simultaneously, creating the feeling of unified conscious will",
+      "Decision-related brain activity and conscious awareness occur at exactly the same moment"
+    ],
+    "correct": 1,
+    "explanation": "Libet measured 'readiness potential' — electrical activity in motor areas — and found it begins 300-500 milliseconds before subjects report feeling the urge to move. This suggests the brain 'decides' before consciousness is aware of deciding. The implications for free will are hotly debated: some argue consciousness can still 'veto' the action; others argue we are narrators of decisions made without us."
+  },
+
+  "ex:self-organization:Self-Organization:college:spark": "No one tells a murmuration of starlings how to move — hundreds of thousands of birds wheel and ripple and fold through the sky in breathtaking coordination with no leader, no plan, no central signal. No one tells a snowflake to be hexagonal — it crystallizes into perfect six-fold symmetry from water molecules responding only to their immediate neighbors. No one tells the Belousov-Zhabotinsky chemical reaction to form spiraling bull's-eye patterns — it does so spontaneously in a dish, patterns emerging from chaos with no instructions. Self-organization is the universe's deepest trick: order arising from disorder with no architect.\n\nThe mechanism behind self-organization is local rules producing global patterns. Each starling in the murmuration follows three simple rules: match your neighbors' speed, stay close to your neighbors, avoid collisions. That is all. From those three rules applied locally by each bird, the magnificent global pattern emerges. Similarly, the hexagonal cells of a honeycomb emerge because molten wax minimizes surface tension — bees do not measure angles. Termite mounds with sophisticated ventilation systems emerge from termites following pheromone trails with no blueprint in mind. Cities develop distinct neighborhoods, financial districts, and slums from millions of individual decisions with no urban planner coordinating the pattern.\n\nSelf-organization challenges a deep assumption in Western thought: that complex order requires a complex mind to produce it. The Enlightenment gave us the watchmaker metaphor — complex mechanisms imply designers. Self-organization suggests the opposite: the most complex and beautiful structures in nature are precisely the ones with no designer at all. Evolution is self-organization over time. The structure of the cosmos is self-organization over vast scales. And consciousness itself may be what self-organization looks like from the inside.",
+
+  "kt:self-organization:Self-Organization:college": [
+    "A murmuration of 500,000 starlings follows just three local rules per bird — the global pattern has no conductor.",
+    "Termite mounds have sophisticated ventilation systems, but no termite has the blueprint — it emerges from pheromone trails.",
+    "Evolution is self-organization over time: complexity without a designer, order without instructions."
+  ],
+
+  "qq:self-organization:Self-Organization:college": {
+    "question": "Which of the following is the best example of self-organization?",
+    "options": [
+      "A military unit executing a coordinated maneuver according to a commanding officer's orders",
+      "A factory assembly line producing cars according to a pre-programmed sequence",
+      "A flock of birds wheeling in complex coordinated patterns with each bird following only simple local rules",
+      "A computer sorting algorithm arranging numbers in ascending order"
+    ],
+    "correct": 2,
+    "explanation": "Self-organization requires order emerging from local interactions with no central controller. Bird flocking (like starling murmurations) is a classic example: each bird follows simple rules about its nearest neighbors, and the stunning global coordination emerges from those local interactions alone. The other examples all involve centralized control or pre-designed instructions — the opposite of self-organization."
+  }
+}

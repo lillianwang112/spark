@@ -301,7 +301,14 @@ export default function TendingSession({ tracks, userContextObj = {}, onTend, on
           <div className="relative z-0 p-6">
             {/* Topic header */}
             <div className="mb-3 flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full" style={{ backgroundColor: color }} />
+              <div className="relative flex-shrink-0">
+                <motion.span
+                  className="block h-2.5 w-2.5 rounded-full"
+                  style={{ backgroundColor: color }}
+                  animate={{ boxShadow: [`0 0 0 0px ${color}60`, `0 0 0 4px ${color}20`, `0 0 0 0px ${color}60`] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                />
+              </div>
               <span className="text-[10px] font-mono uppercase tracking-[0.16em] text-text-muted capitalize">
                 {current.domain}
               </span>
@@ -324,28 +331,40 @@ export default function TendingSession({ tracks, userContextObj = {}, onTend, on
                 </div>
 
                 <div className="mt-5 flex flex-wrap items-center gap-2">
-                  <button
+                  <motion.button
+                    whileHover={{ y: -3, scale: 1.03, boxShadow: '0 12px 28px rgba(74,111,165,0.4)' }}
+                    whileTap={{ scale: 0.96 }}
                     onClick={handleWater}
-                    className="inline-flex items-center gap-2 rounded-full bg-[linear-gradient(135deg,#8ec5fc,#4A6FA5)] px-4 py-2.5 font-body text-sm font-semibold text-white shadow-[0_8px_20px_rgba(74,111,165,0.35)] transition hover:-translate-y-0.5"
+                    className="inline-flex items-center gap-2 rounded-full bg-[linear-gradient(135deg,#8ec5fc,#4A6FA5)] px-4 py-2.5 font-body text-sm font-semibold text-white shadow-[0_8px_20px_rgba(74,111,165,0.35)]"
                   >
-                    <span>💧</span>
+                    <motion.span
+                      animate={{ y: [0, -3, 0] }}
+                      transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 2 }}
+                    >💧</motion.span>
                     Water
                     <span className="text-[10px] font-mono uppercase tracking-[0.14em] opacity-80">Active Recall</span>
-                  </button>
-                  <button
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ y: -3, scale: 1.03, boxShadow: '0 12px 28px rgba(255,166,43,0.4)' }}
+                    whileTap={{ scale: 0.96 }}
                     onClick={handleSunlight}
-                    className="inline-flex items-center gap-2 rounded-full bg-[linear-gradient(135deg,#ffd166,#ff8a5a)] px-4 py-2.5 font-body text-sm font-semibold text-[#6b4b10] shadow-[0_8px_20px_rgba(255,166,43,0.35)] transition hover:-translate-y-0.5"
+                    className="inline-flex items-center gap-2 rounded-full bg-[linear-gradient(135deg,#ffd166,#ff8a5a)] px-4 py-2.5 font-body text-sm font-semibold text-[#6b4b10] shadow-[0_8px_20px_rgba(255,166,43,0.35)]"
                   >
-                    <span>☀️</span>
+                    <motion.span
+                      animate={{ rotate: [0, 15, -10, 0], scale: [1, 1.1, 1] }}
+                      transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 3 }}
+                    >☀️</motion.span>
                     Sunlight
                     <span className="text-[10px] font-mono uppercase tracking-[0.14em] opacity-70">Go Deeper</span>
-                  </button>
-                  <button
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.04 }}
+                    whileTap={{ scale: 0.96 }}
                     onClick={handleSkip}
                     className="inline-flex items-center gap-2 rounded-full bg-[rgba(42,42,42,0.06)] px-4 py-2.5 font-body text-sm font-semibold text-text-muted hover:bg-[rgba(42,42,42,0.12)]"
                   >
                     Skip
-                  </button>
+                  </motion.button>
                 </div>
               </>
             )}
@@ -364,29 +383,35 @@ export default function TendingSession({ tracks, userContextObj = {}, onTend, on
                 />
 
                 {phase === 'water-revealed' && (
-                  <div className="space-y-2">
-                    <p className="font-body text-xs text-text-muted text-center">How well did you remember this?</p>
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2, type: 'spring', stiffness: 300, damping: 26 }}
+                    className="space-y-2"
+                  >
+                    <p className="font-body text-[11px] font-mono uppercase tracking-[0.14em] text-text-muted text-center">How well did you remember?</p>
                     <div className="flex gap-2 justify-center flex-wrap">
-                      <button
-                        onClick={() => handleRating('got_it')}
-                        className="flex-1 min-w-[80px] rounded-full bg-[rgba(45,147,108,0.12)] text-[#2D936C] px-3 py-2.5 font-body text-sm font-semibold hover:bg-[rgba(45,147,108,0.22)] transition-colors"
-                      >
-                        ✅ Got it
-                      </button>
-                      <button
-                        onClick={() => handleRating('kinda')}
-                        className="flex-1 min-w-[80px] rounded-full bg-[rgba(255,166,43,0.12)] text-[#8B6914] px-3 py-2.5 font-body text-sm font-semibold hover:bg-[rgba(255,166,43,0.22)] transition-colors"
-                      >
-                        🤔 Kinda
-                      </button>
-                      <button
-                        onClick={() => handleRating('nope')}
-                        className="flex-1 min-w-[80px] rounded-full bg-[rgba(230,57,70,0.1)] text-[#E63946] px-3 py-2.5 font-body text-sm font-semibold hover:bg-[rgba(230,57,70,0.18)] transition-colors"
-                      >
-                        ❌ Blanked
-                      </button>
+                      {[
+                        { id: 'got_it', emoji: '✅', label: 'Got it', color: '#2D936C', bg: 'rgba(45,147,108,0.12)' },
+                        { id: 'kinda',  emoji: '🤔', label: 'Kinda',  color: '#8B6914', bg: 'rgba(255,166,43,0.12)' },
+                        { id: 'nope',   emoji: '❌', label: 'Blanked', color: '#E63946', bg: 'rgba(230,57,70,0.1)' },
+                      ].map((opt, i) => (
+                        <motion.button
+                          key={opt.id}
+                          initial={{ opacity: 0, scale: 0.85 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: i * 0.06, type: 'spring', stiffness: 360, damping: 22 }}
+                          whileHover={{ scale: 1.06, y: -2, boxShadow: `0 6px 16px ${opt.color}28` }}
+                          whileTap={{ scale: 0.94 }}
+                          onClick={() => handleRating(opt.id)}
+                          className="flex-1 min-w-[80px] rounded-full px-3 py-2.5 font-body text-sm font-semibold transition-colors"
+                          style={{ background: opt.bg, color: opt.color }}
+                        >
+                          {opt.emoji} {opt.label}
+                        </motion.button>
+                      ))}
                     </div>
-                  </div>
+                  </motion.div>
                 )}
               </div>
             )}

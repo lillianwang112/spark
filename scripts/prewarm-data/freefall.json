@@ -1,0 +1,309 @@
+{
+  "ex:science::physics::astrophysics::black_holes:Black Holes:college:spark": {
+    "text": "A black hole is not a hole — it is the most violent object in the universe wearing the disguise of empty space. When enough mass collapses into a small enough volume, gravity wins so completely that not even light can escape, and the laws of physics as we know them break down at a single point called the singularity.\n\nAt the boundary of a black hole — the event horizon — something stranger than fiction occurs. An astronaut falling through it would feel nothing unusual in that instant, but to anyone watching from outside, they would appear to freeze and slowly fade, stretched and redshifted by gravity, never seeming to cross. Both descriptions are simultaneously true, which is exactly why physicists lose sleep over black holes. Stephen Hawking showed that black holes aren't truly black: quantum effects cause them to radiate particles slowly, meaning they eventually evaporate over timescales so vast they dwarf the current age of the universe. This raises a devastating puzzle — when a black hole evaporates completely, where does the information about everything that fell in go? Physics says information cannot be destroyed. The black hole disagrees.\n\nThe deeper you look, the stranger it gets: black holes may be responsible for the largest structures in the cosmos, they may be connected to other regions of spacetime through Einstein-Rosen bridges, and some physicists argue our entire universe might be the interior of a black hole sitting inside a larger one. You've only scratched the event horizon."
+  },
+  "kt:science::physics::astrophysics::black_holes:Black Holes:college": {
+    "items": [
+      "Time passes slower near a black hole — a year at the event horizon could be thousands of years elsewhere.",
+      "Hawking radiation means black holes slowly evaporate, dissolving over timescales longer than the universe's age.",
+      "The largest known black hole, TON 618, is 66 billion times more massive than our Sun."
+    ]
+  },
+  "qq:science::physics::astrophysics::black_holes:Black Holes:college": {
+    "question": "You watch a friend fall into a black hole. According to you (the outside observer), your friend:",
+    "options": [
+      "Instantly disappears as they cross the event horizon",
+      "Appears to slow down and freeze at the event horizon, fading out but never quite crossing",
+      "Crosses the event horizon normally but you lose radio contact",
+      "Gets visibly stretched and torn apart before reaching the event horizon"
+    ],
+    "correctIndex": 1,
+    "explanation": "Due to gravitational time dilation, time for the infalling observer runs slower and slower relative to the outside observer. From outside, they appear to asymptotically freeze at the event horizon and redshift into invisibility — never actually crossing in finite external time. The falling friend, however, crosses normally and feels nothing special at the horizon."
+  },
+
+  "ex:science::physics::quantum_mechanics::quantum_entanglement:Quantum Entanglement:college:spark": {
+    "text": "Two particles, separated by the entire width of the galaxy, can be connected in a way that measuring one instantly determines the other — and Einstein called this 'spooky action at a distance' because it horrified him. Quantum entanglement is not a metaphor or a theory-in-progress; it has been experimentally confirmed thousands of times and is now being used to build the internet of the future.\n\nHere's what actually happens: when two particles become entangled, they share a single quantum state. Neither particle has a definite property — say, spin — until one is measured. The instant you measure it, the other particle's spin is determined, instantaneously, regardless of distance. This was Bell's Theorem confirmed experimentally in 1982: nature really is 'non-local' in this sense. But — and this is crucial — you can't use this to send information faster than light, because the outcome of each measurement is random. You can only compare results after the fact through a classical channel. Nature found a loophole in its own rules: correlated without communicating.\n\nEntanglement isn't just a quirk — it is the engine behind quantum computing, where entangled qubits can explore vast solution spaces simultaneously. It underpins quantum cryptography, where any eavesdropper collapses the entanglement and is immediately detected. Scientists have entangled particles across 1,200 kilometers via satellite. The question physicists are wrestling with now is not whether entanglement is real — it obviously is — but what it tells us about the fundamental fabric of spacetime itself."
+  },
+  "kt:science::physics::quantum_mechanics::quantum_entanglement:Quantum Entanglement:college": {
+    "items": [
+      "Entangled particles share a quantum state instantly across any distance — confirmed up to 1,200 km via satellite.",
+      "Entanglement cannot transmit information faster than light because each individual measurement outcome is random.",
+      "Quantum cryptography uses entanglement so eavesdroppers are automatically detected by collapsing the quantum state."
+    ]
+  },
+  "qq:science::physics::quantum_mechanics::quantum_entanglement:Quantum Entanglement:college": {
+    "question": "Why can't quantum entanglement be used to send a message faster than light?",
+    "options": [
+      "The entangled particles are too small to carry meaningful information",
+      "The signal degrades over long distances before it arrives",
+      "Each individual measurement result is random, so no controlled information is encoded in it",
+      "Einstein's relativity equations prohibit any form of quantum communication"
+    ],
+    "correctIndex": 2,
+    "explanation": "When you measure an entangled particle, you get a random result — heads or tails, up or down. You cannot choose the outcome, so you cannot encode a message. The correlation only becomes apparent when you compare results through a normal (slower-than-light) channel. The randomness is what saves relativity."
+  },
+
+  "ex:mathematics::infinity:Infinity:college:spark": {
+    "text": "Infinity is not a big number — it is not a number at all, and the moment you treat it like one, mathematics hands you absurdities that somehow turn out to be true. In the late 19th century, Georg Cantor proved something that got him denounced by peers and drove him to a breakdown: there are different sizes of infinity, and some infinities are larger than others.\n\nConsider the counting numbers — 1, 2, 3, forever. Now consider all the real numbers between 0 and 1 — every decimal, every fraction, every irrational like 0.7182... Cantor proved these two infinities are not the same size. He showed this with a diagonal argument so simple a high schooler can follow it and so devastating it reshaped all of mathematics: assume you could list every real number between 0 and 1. He constructed a new number that differs from the first number in the first decimal place, from the second in the second place, and so on — guaranteed not to be on your list, no matter how you arranged it. The infinity of real numbers is strictly larger than the infinity of counting numbers. He called these different sizes 'cardinal numbers': aleph-null, aleph-one, and beyond, a tower of infinities stacked on each other.\n\nThe Continuum Hypothesis — whether there is an infinity between the countable and the reals — was so baffling that mathematicians proved it is literally undecidable: you can build a consistent mathematics where it is true, and an equally consistent one where it is false. Infinity doesn't just go on forever. It fractures."
+  },
+  "kt:mathematics::infinity:Infinity:college": {
+    "items": [
+      "Cantor proved some infinities are larger than others — the real numbers are a strictly bigger infinity than counting numbers.",
+      "The diagonal argument shows you can always construct a real number missing from any supposedly complete list.",
+      "The Continuum Hypothesis is formally undecidable — it can be neither proved nor disproved from standard axioms."
+    ]
+  },
+  "qq:mathematics::infinity:Infinity:college": {
+    "question": "Cantor showed the set of even numbers is the same 'size' of infinity as the set of all counting numbers. Why?",
+    "options": [
+      "There are infinitely many of both, so they must be equal",
+      "You can pair every even number with exactly one counting number (1↔2, 2↔4, 3↔6…), with nothing left over",
+      "Both sets have the same density along the number line",
+      "Even numbers grow at the same rate as counting numbers, keeping them proportional forever"
+    ],
+    "correctIndex": 1,
+    "explanation": "Infinite set sizes (cardinalities) are compared by one-to-one correspondence, not by intuitive notions of 'more' or 'less.' Because every counting number n can be paired with the even number 2n — no gaps, no doubles — the two sets have identical cardinality (aleph-null), even though one looks like a 'subset' of the other. This is what makes infinity unintuitive."
+  },
+
+  "ex:mathematics::number_theory::prime_numbers:Prime Numbers:college:spark": {
+    "text": "Prime numbers — divisible only by one and themselves — look like random noise scattered through the number line, and yet they are the atoms of all arithmetic, the irreducible building blocks from which every integer is uniquely constructed. The fact that 6 is 2×3 and can be decomposed in no other way into primes is not a convenience — it is the Fundamental Theorem of Arithmetic, and without it, mathematics as we know it collapses.\n\nThe primes grow rarer as numbers get larger, but they never stop — Euclid proved this over 2,300 years ago with an argument of jaw-dropping elegance: assume there are finitely many primes. Multiply them all together and add one. The resulting number is either itself prime (contradiction — it's not on your list) or divisible by a prime not on your list (also a contradiction). Therefore the list can never be complete. Despite their apparent randomness, the Riemann Hypothesis — the most famous unsolved problem in mathematics, worth a $1 million Millennium Prize — claims the primes follow a hidden harmonic pattern encoded in the zeros of a complex function. No one has proved it in 165 years. But here's the twist: whether or not it's true, every time you make a secure payment online, you are betting your financial life on the fact that multiplying two large primes together is easy but finding those primes back from the product is computationally infeasible.\n\nThe deeper you look at primes, the more they feel like they're hiding something — a secret frequency of the integers that mathematics can hear but not yet fully explain."
+  },
+  "kt:mathematics::number_theory::prime_numbers:Prime Numbers:college": {
+    "items": [
+      "Every integer greater than 1 factors into primes in exactly one way — the Fundamental Theorem of Arithmetic.",
+      "RSA encryption secures the internet by exploiting how hard it is to factor the product of two large primes.",
+      "The Riemann Hypothesis, predicting hidden prime patterns, has resisted proof for 165 years and carries a $1M prize."
+    ]
+  },
+  "qq:mathematics::number_theory::prime_numbers:Prime Numbers:college": {
+    "question": "Euclid's proof that primes are infinite works by assuming finitely many primes exist and then:",
+    "options": [
+      "Showing the largest prime can always be doubled to get a new prime",
+      "Finding an explicit formula that generates infinitely many primes",
+      "Constructing a number that is either a new prime or divisible by one not on the list — contradicting the assumption",
+      "Proving that prime gaps grow without bound, implying the list never ends"
+    ],
+    "correctIndex": 2,
+    "explanation": "Euclid multiplies all supposed primes together and adds 1. This new number shares no factors with any prime on the list (it leaves remainder 1 when divided by each). So it is either itself prime, or has a prime factor not on the list. Either way, the 'complete' list was incomplete — a contradiction that proves the assumption false."
+  },
+
+  "ex:mathematics::geometry::topology:Topology:college:spark": {
+    "text": "To a topologist, a coffee mug and a donut are the same object — and that sentence is not a joke. Topology is the mathematics of shape without measurement, studying which properties survive when you stretch, twist, and deform an object without tearing it or gluing it. A mug and a donut both have exactly one hole, so topologically, they are identical.\n\nThis sounds like a parlor trick until you realize topology underlies the structure of the entire universe and the data that describes it. The famous Möbius strip — a loop with a half-twist — has only one surface and one edge. An ant walking along it visits 'both' sides without ever crossing an edge. The Klein bottle goes further: it is a closed surface with no inside or outside at all, impossible to construct without self-intersection in three dimensions. These are not curiosities — they are examples of how the number and type of 'holes' in a space (captured by objects called homology groups) encode profound information about its structure. The Poincaré Conjecture, proved by Grigori Perelman in 2003, established that any simply connected closed 3-manifold is equivalent to a 3-sphere — a result so deep that Perelman turned down the $1 million prize, calling the recognition irrelevant.\n\nTopology now powers MRI brain imaging (by mapping neural connectivity), machine learning (via topological data analysis that finds shapes in high-dimensional datasets), and our best guesses about whether the universe is flat, spherical, or something stranger. The shape of everything depends on topology."
+  },
+  "kt:mathematics::geometry::topology:Topology:college": {
+    "items": [
+      "A coffee mug and a donut are topologically identical — both have exactly one hole.",
+      "A Möbius strip has only one surface and one edge; an ant can traverse both 'sides' without crossing an edge.",
+      "Perelman proved the Poincaré Conjecture in 2003 and declined the $1 million Millennium Prize."
+    ]
+  },
+  "qq:mathematics::geometry::topology:Topology:college": {
+    "question": "Which pair of objects is topologically equivalent (homeomorphic)?",
+    "options": [
+      "A sphere and a donut",
+      "A sphere and a cube",
+      "A donut and a figure-eight pretzel",
+      "A Möbius strip and a cylinder"
+    ],
+    "correctIndex": 1,
+    "explanation": "A sphere and a cube are topologically equivalent because you can continuously deform one into the other without tearing or gluing — neither has any holes. A donut has one hole; a sphere has none; so they are not equivalent. A figure-eight pretzel has two holes, making it different from a one-hole donut. A Möbius strip is non-orientable (one-sided) while a cylinder is orientable (two-sided), so they are topologically distinct."
+  },
+
+  "ex:science::physics::chaos_theory:Chaos Theory:college:spark": {
+    "text": "A butterfly flaps its wings in Brazil and — three weeks later — a tornado forms in Texas. This is not poetry; it is the operational definition of chaos, and it means that long-term prediction of complex systems is not a matter of needing more data or better computers. It is mathematically impossible. Chaos Theory reveals that some systems are so sensitive to initial conditions that any measurement error, no matter how tiny, eventually explodes into a completely different outcome.\n\nEdward Lorenz discovered this in 1961 while running a weather simulation. He re-ran a sequence by entering a rounded number — 0.506 instead of 0.506127 — and came back to find the simulation had diverged into an entirely different weather pattern. That rounding error, smaller than the variation caused by a single raindrop, had changed everything. When he plotted the equations, he found something breathtaking: the system traced a shape called the Lorenz attractor — an infinite, non-repeating trajectory that never crosses itself, always staying in a butterfly-shaped region of possibility. This is order hiding inside chaos: deterministic equations that produce behavior indistinguishable from randomness, yet always orbiting the same strange attractor.\n\nChaos is not a failure of physics — it is a feature of the universe. It appears in heartbeats (healthy hearts are slightly chaotic), in population dynamics, in the dripping of a faucet, in stock markets, and in the mixing of cream in coffee. The sobering implication is that even a perfectly deterministic universe can be fundamentally unpredictable. Free will might just be sensitive dependence on initial conditions wearing a philosophical costume."
+  },
+  "kt:science::physics::chaos_theory:Chaos Theory:college": {
+    "items": [
+      "Chaotic systems are deterministic but unpredictable — tiny measurement differences compound into wildly different outcomes.",
+      "Lorenz discovered chaos by accident when a rounding error of 0.000127 in a simulation changed the entire weather pattern.",
+      "Healthy heartbeats are slightly chaotic — too-regular rhythms actually signal cardiac problems."
+    ]
+  },
+  "qq:science::physics::chaos_theory:Chaos Theory:college": {
+    "question": "A chaotic system is best described as one that is:",
+    "options": [
+      "Truly random, with no underlying rules governing its behavior",
+      "Deterministic but exponentially sensitive to initial conditions, making long-term prediction impossible",
+      "Unpredictable because we lack enough computing power to model it fully",
+      "Governed by probability distributions rather than fixed equations"
+    ],
+    "correctIndex": 1,
+    "explanation": "Chaos is not randomness. Chaotic systems follow exact deterministic rules — every future state is fully determined by the present state. The problem is that any real measurement has finite precision, and in a chaotic system that error grows exponentially. Beyond a certain time horizon, no amount of computational power can compensate for the imprecision in the initial measurement."
+  },
+
+  "ex:philosophy::ethics::stoicism:Stoicism:college:spark": {
+    "text": "The Roman Emperor Marcus Aurelius led the largest empire on earth by day and spent his evenings writing private notes reminding himself that his power, his reputation, and his life were all temporary and largely irrelevant. Those notes became the Meditations — one of the most influential philosophical texts in history — and they reveal the core of Stoicism: the relentless distinction between what is and is not in your control.\n\nThe Stoics — Epictetus, Seneca, Marcus Aurelius — built a philosophy not in universities but in the hardest circumstances imaginable. Epictetus was a slave. Seneca was sentenced to death by Nero, then reprieved. Marcus ruled an empire while watching half his children die and fending off constant military crises. Their answer was not detachment or cold indifference, as the word 'stoic' has come to mean colloquially. It was a precise analysis of what the mind owns: your judgments, your intentions, your responses. Everything else — health, reputation, wealth, other people's behavior — falls outside your control. Suffering comes from demanding that the uncontrollable conform to your wishes. When you stop making that demand, you become undefeatable, because nothing external can truly harm you. The Stoics called this the dichotomy of control, and it turns out to be the conceptual foundation of modern Cognitive Behavioral Therapy.\n\nThe Stoics also believed in amor fati — love of fate — not grudging acceptance, but the active embrace of everything that happens as necessary and even beautiful. That single idea has more practical power for navigating a difficult life than almost any other philosophy produced in 2,500 years of trying."
+  },
+  "kt:philosophy::ethics::stoicism:Stoicism:college": {
+    "items": [
+      "Stoicism's core idea: distinguish what you control (your thoughts, responses) from what you don't (everything else).",
+      "Cognitive Behavioral Therapy is structurally rooted in Stoic philosophy, specifically the idea that beliefs cause suffering.",
+      "Epictetus was a slave; Marcus Aurelius was emperor — Stoicism was tested against the extremes of human experience."
+    ]
+  },
+  "qq:philosophy::ethics::stoicism:Stoicism:college": {
+    "question": "According to Stoic philosophy, which of the following is 'up to us' (within our control)?",
+    "options": [
+      "Our health and physical wellbeing",
+      "How others perceive and treat us",
+      "Our judgments, desires, and responses to events",
+      "The outcome of our actions in the world"
+    ],
+    "correctIndex": 2,
+    "explanation": "Epictetus opens the Enchiridion by stating that only our opinions, impulses, desires, and aversions are truly 'up to us.' Health, reputation, outcomes, and others' behavior all fall outside our control. Stoic practice means accepting external events with equanimity while directing full effort toward what is internal — the quality and character of your own reasoning and response."
+  },
+
+  "ex:art_&_design::principles::the_golden_ratio:The Golden Ratio:college:spark": {
+    "text": "There is a number — approximately 1.618, denoted by the Greek letter phi — that appears when you divide a line so that the ratio of the whole to the larger part equals the ratio of the larger part to the smaller. This ratio, the Golden Ratio, has been described as the universe's preferred proportion, embedded in nautilus shells, flower petals, galaxy spirals, and the human body. Most of those claims are myths. The truth is even more interesting.\n\nPhi arises inevitably from the Fibonacci sequence — 1, 1, 2, 3, 5, 8, 13, 21... — where each term is the sum of the two before it. Divide any term by the previous one and the ratio approaches 1.618 with uncanny speed. Plants 'know' this: a sunflower seeds its face in Fibonacci spirals (typically 34 going one way, 55 the other) because this packing emerges naturally from each new seed growing at the golden angle (137.5°) from the last. This is optimal packing, not mystical design — nature discovered it through evolution because it wastes no space. The Golden Rectangle, whose sides are in ratio 1:1.618, generates a logarithmic spiral that reappears in diverse growth patterns — not because nature has an aesthetic preference, but because the mathematics of growth under constraint produces it.\n\nThe Parthenon, the Mona Lisa, Le Corbusier's architecture — the claim that these were deliberately designed around phi is mostly romantic retrofitting. But designers who understand why phi feels visually balanced — it is self-similar, infinitely subdividable into itself — can use it intentionally. The ratio doesn't mystically appear everywhere. But where growth and proportion interact, it emerges like an inevitability."
+  },
+  "kt:art_&_design::principles::the_golden_ratio:The Golden Ratio:college": {
+    "items": [
+      "The Fibonacci sequence converges on the golden ratio — consecutive terms' ratio approaches 1.618 rapidly.",
+      "Sunflower seeds grow at the golden angle (137.5°) from each other, creating optimal, no-waste packing.",
+      "Most claims that ancient art and architecture deliberately used phi are historically unverified romantic retrofitting."
+    ]
+  },
+  "qq:art_&_design::principles::the_golden_ratio:The Golden Ratio:college": {
+    "question": "Why do sunflower seeds naturally arrange themselves in Fibonacci-number spirals?",
+    "options": [
+      "Sunflowers evolved to mimic the golden ratio because it is aesthetically pleasing to pollinators",
+      "Each seed grows at the golden angle from the previous one, and this angle produces optimal packing with no wasted space",
+      "The genetic code of sunflowers contains the Fibonacci sequence directly",
+      "Sunflower growth is driven by the Fibonacci sequence, which the plant computes chemically"
+    ],
+    "correctIndex": 1,
+    "explanation": "The golden angle (≈137.5°, derived from the golden ratio) is the irrational rotation that prevents seeds from ever perfectly aligning into straight rows. This maximizes packing density — each new seed finds the largest open gap. The Fibonacci spirals are a consequence of counting the resulting pattern, not a cause. Nature 'discovers' this through natural selection, not mathematical awareness."
+  },
+
+  "ex:music::psychology::why_music_moves_us:Why Music Moves Us:college:spark": {
+    "text": "Music is the only stimulus that predictably causes chills to run down the spine of a healthy, non-threatened human being — a response called frisson — and neuroscientists have discovered that the brain treats music not as sound but as prediction. Every note you hear is a brain's hypothesis about what comes next, and the emotional power of music lives entirely in the gap between prediction and reality.\n\nYour auditory cortex is a pattern-completion machine. It builds a model of musical structure — rhythm, harmony, melody — and silently predicts the next moment. When a chord resolves to the expected tonic, there is small satisfaction. When it delays resolution, tension builds. When it resolves unexpectedly — a deceptive cadence, a key change you didn't see coming — the brain releases dopamine. This is the same circuit that fires for food, sex, and drugs. Music hacks a survival system. The brain also cannot fully distinguish between music-induced emotions and 'real' ones: sad music activates the same neural circuits as actual grief, which is why we sometimes seek music to amplify emotions we're already feeling — a phenomenon called 'emotional deepening.'\n\nThe universals of music are genuinely universal: fast tempo and major keys produce perceived happiness in cultures with no contact with Western music. Lullabies across all cultures share the same gentle rhythm and descending melody. There is likely a biological grammar of music built into the human brain — but every culture writes its own sentences with it. The song that makes you cry is exploiting deep evolutionary wiring, a cheat code baked into the architecture of consciousness."
+  },
+  "kt:music::psychology::why_music_moves_us:Why Music Moves Us:college": {
+    "items": [
+      "Music triggers dopamine in the brain's reward circuit — the same pathway activated by food, sex, and drugs.",
+      "Emotional power in music comes from violated predictions: tension builds when expected resolutions are delayed or subverted.",
+      "Lullabies share the same gentle tempo and descending melody across all known cultures, suggesting innate musical grammar."
+    ]
+  },
+  "qq:music::psychology::why_music_moves_us:Why Music Moves Us:college": {
+    "question": "The 'chills' (frisson) some people feel from music are most closely associated with:",
+    "options": [
+      "The volume of the music exceeding a threshold that triggers a mild startle response",
+      "Music evoking explicit autobiographical memories through the hippocampus",
+      "The brain releasing dopamine in response to moments that violate or fulfill musical predictions",
+      "Mirror neurons simulating the physical movements of the musicians performing"
+    ],
+    "correctIndex": 2,
+    "explanation": "Research by Salimpoor et al. (2011) using PET and fMRI showed that musical chills correlate with dopamine release in the nucleus accumbens — the brain's core reward region. The trigger is predictive: anticipation of a musical peak or a surprising harmonic event causes the dopamine spike. People with more white matter connectivity between auditory and emotional brain regions experience frisson more strongly."
+  },
+
+  "ex:philosophy::philosophy_of_mind::consciousness:Consciousness:college:spark": {
+    "text": "You are reading these words, and there is something it is like to be you reading them — a felt quality of experience, a redness to red, a sharpness to pain. That simple fact is the hardest problem in all of science. We can fully explain how the brain processes light waves into neural signals. We cannot explain why that processing is accompanied by any experience at all.\n\nThis is David Chalmers' Hard Problem of Consciousness, and it is distinct from the 'easy' problems — explaining attention, memory, behavior, even the ability to report internal states. Those are hard in practice but tractable in principle: sufficiently detailed neuroscience will eventually crack them. The Hard Problem is different in kind. Even if you knew every neuron firing in a person's brain, you would know everything about the mechanism of vision — and still have no logical reason why there should be any experience accompanying it. Why isn't all of this just information processing in the dark, with no inner light? Philosophers call an entity that behaves exactly like a conscious being but has no inner experience a 'philosophical zombie.' There is no known physical law that forbids them from existing — which is a devastating problem if you believe physics is complete.\n\nThe leading frameworks are at war: Integrated Information Theory claims consciousness is identical to a specific mathematical property of information integration (phi) and implies that even simple systems may be conscious. Global Workspace Theory says consciousness is a broadcasting system that makes information widely available across the brain. Illusionism says the Hard Problem is a cognitive illusion — there is no felt quality to explain, just the mistaken belief that there is one. Each theory explains something and leaves something monstrous unexplained. Consciousness remains the only thing in the universe we know for certain exists — and the thing we understand least."
+  },
+  "kt:philosophy::philosophy_of_mind::consciousness:Consciousness:college": {
+    "items": [
+      "The 'Hard Problem' asks why brain activity is accompanied by subjective experience at all — not just how it processes information.",
+      "A philosophical zombie is a being identical to a human in behavior and biology but with no inner experience — and nothing forbids it.",
+      "Integrated Information Theory implies even simple systems may have some degree of consciousness, based on information integration."
+    ]
+  },
+  "qq:philosophy::philosophy_of_mind::consciousness:Consciousness:college": {
+    "question": "What makes the Hard Problem of Consciousness 'hard' in a way that distinguishing it from explaining attention or memory?",
+    "options": [
+      "It requires more advanced neuroscience equipment than we currently have",
+      "It involves the entire brain rather than specific regions, making it technically complex",
+      "Even a complete physical explanation of brain function leaves unexplained why there is any subjective experience at all",
+      "Consciousness involves quantum effects that classical neuroscience cannot model"
+    ],
+    "correctIndex": 2,
+    "explanation": "Chalmers distinguishes 'easy' problems (explaining cognitive functions, which are hard in practice but tractable in principle) from the Hard Problem: why physical processes give rise to subjective experience. A complete functional account of vision would explain discrimination and behavior but would not logically entail the existence of any 'what it's like' quality. The explanatory gap between mechanism and experience is the Hard Problem."
+  },
+
+  "ex:science::biology::evolution:Evolution:college:spark": {
+    "text": "Evolution is not a theory in the casual sense of 'a guess' — it is the central organizing principle of all biology, confirmed by fossils, genetics, observed speciation, and the fact that every living thing on earth uses the same genetic code. But the mechanism Darwin proposed — natural selection — is only part of the story, and the parts he couldn't know are even more astonishing.\n\nNatural selection works on a breathtakingly simple logic: heritable variation exists, some variants survive and reproduce better than others, and over generations, the population shifts toward more successful variants. No foresight, no goal, no designer — just differential reproduction compounding over millions of generations. The results are staggering: the eye evolved at least 40 independent times in different lineages. The same aerodynamic constraints produced convergent wing shapes in insects, birds, and bats that share no common winged ancestor. The human immune system generates billions of unique antibodies through a process that is literally Darwinian evolution happening inside your body, in real time, within days of infection. But Darwin's engine has been turbocharged by discoveries he could not have imagined: horizontal gene transfer (bacteria swap DNA directly, bypassing inheritance), endosymbiosis (your mitochondria were once free-living bacteria absorbed into cells over a billion years ago), and epigenetics (learned experiences can alter gene expression across generations).\n\nEvolution has no endpoint, no trajectory, no progress — only fit and unfit for a specific environment at a specific moment. The implication is quietly radical: humans are not the goal of evolution. We are one more temporary solution to the problem of surviving on a particular planet, and the bacteria we're failing to outrun with antibiotics have been playing this game three billion years longer."
+  },
+  "kt:science::biology::evolution:Evolution:college": {
+    "items": [
+      "The eye evolved independently at least 40 times across different lineages — convergent evolution driven by the same physics of light.",
+      "Your immune system runs real-time Darwinian evolution — antibody-producing cells mutate and compete within days of infection.",
+      "Your mitochondria were once free-living bacteria that were engulfed by ancestral cells over a billion years ago."
+    ]
+  },
+  "qq:science::biology::evolution:Evolution:college": {
+    "question": "Antibiotic resistance evolves so rapidly in bacteria primarily because:",
+    "options": [
+      "Bacteria sense the antibiotic and intentionally mutate to survive it",
+      "Antibiotics are mutagenic chemicals that cause helpful mutations to appear",
+      "Bacteria with pre-existing resistance mutations survive and reproduce while others die, rapidly shifting the population",
+      "Bacteria share antibiotic resistance genes only after they have been exposed and have adapted"
+    ],
+    "correctIndex": 2,
+    "explanation": "Resistance mutations exist in bacterial populations before antibiotics are introduced — they arise randomly. When antibiotics kill susceptible bacteria, the rare resistant variants survive and reproduce, passing resistance genes to offspring. With millions of bacteria reproducing every 20 minutes, selection pressure sweeps resistant variants through the population with terrifying speed. Bacteria don't 'learn' or 'try' — they just survive differentially."
+  },
+
+  "ex:mathematics::game_theory:Game Theory:college:spark": {
+    "text": "In 1950, the RAND Corporation — doing classified Cold War research — stumbled onto a mathematical structure that explained why rational actors reliably produce terrible collective outcomes. The Prisoner's Dilemma showed that two people, each acting in perfect self-interest, will always choose an outcome worse for both than the one they could have reached by cooperating. This was not a psychological curiosity. It was a proof.\n\nThe core concept is the Nash Equilibrium — named for John Nash, whose schizophrenia and Nobel Prize both became biographical legend. A Nash Equilibrium is a set of strategies where no player can improve their outcome by changing their strategy alone, given what everyone else is doing. Crucially, equilibria are not necessarily good. In the Prisoner's Dilemma, mutual betrayal is a Nash Equilibrium even though mutual cooperation would make both players better off. Neither prisoner can unilaterally switch to cooperation without getting worse results — so rational self-interest locks both into a worse outcome. This structure explains arms races (both nations would prefer to spend on schools, but each fears unilateral disarmament), environmental collapse (each firm benefits from polluting while others clean up), and why auctions can make rational bidders overpay systematically.\n\nGame Theory also explains cooperation: when the game is played repeatedly, a strategy called Tit-for-Tat — cooperate first, then mirror your opponent's last move — consistently outcompetes pure defection in tournaments. Evolution discovered this too: reciprocal altruism in animals follows Tit-for-Tat logic across thousands of species. The mathematics of self-interest turns out to be the mathematics of how cooperation emerges from conflict — and why it sometimes doesn't."
+  },
+  "kt:mathematics::game_theory:Game Theory:college": {
+    "items": [
+      "A Nash Equilibrium is where no player can improve outcomes by changing strategy alone — but equilibria can be mutually terrible.",
+      "The Prisoner's Dilemma proves rational self-interest reliably produces worse outcomes than cooperation would.",
+      "Tit-for-Tat (cooperate first, then mirror) consistently beats pure defection in repeated games — and evolution found this too."
+    ]
+  },
+  "qq:mathematics::game_theory:Game Theory:college": {
+    "question": "In a one-shot Prisoner's Dilemma, two rational, self-interested players will both defect even though mutual cooperation would benefit both. This happens because:",
+    "options": [
+      "Players cannot communicate, so they default to the worst-case assumption",
+      "Defection is each player's dominant strategy — it yields a better outcome regardless of what the other player does",
+      "Players are uncertain about the rules, so they choose the safest option",
+      "Rational players always choose the option that maximizes total social welfare"
+    ],
+    "correctIndex": 1,
+    "explanation": "Defection is a strictly dominant strategy: if the other player cooperates, defecting gives you the best possible payoff; if the other player defects, defecting minimizes your loss. Since defecting is better in every scenario, a rational player defects regardless of what they expect the other to do. When both players reason this way, both defect — even though mutual cooperation would have made both better off. The tragedy is that individual rationality produces collective irrationality."
+  },
+
+  "ex:science::biology::genetics::epigenetics:Epigenetics:college:spark": {
+    "text": "Your DNA is not a fixed blueprint — it is a library, and epigenetics is the system of annotations that tells the cell which books to open and which to leave permanently shut. Identical twins share the exact same genome, yet by age 50 they have measurably different epigenetic profiles, different disease risks, and sometimes strikingly different personalities. The genome is the hardware; the epigenome is the software, and unlike hardware, software changes with experience.\n\nMethylation is the primary mechanism: a methyl group (a carbon atom with three hydrogens) attaches to specific points on the DNA strand, typically silencing the associated gene. Histone modification works differently — histones are the protein spools DNA wraps around, and chemical tags on histones control how tightly DNA is wound, which in turn controls accessibility to the gene. Crucially, some of these marks are heritable. The Dutch Hunger Winter of 1944-45, when Nazi forces blockaded Holland and thousands starved, produced a natural experiment: children conceived during the famine were born smaller, had higher rates of obesity and diabetes in adulthood — and so did their children, who never experienced famine themselves. Starvation left epigenetic marks that traveled down the generations.\n\nThe implications are seismic. Childhood trauma, chronic stress, and even diet can alter which genes are expressed in ways that persist for decades and may be transmitted to offspring. This is not Lamarckism — the genome itself doesn't change — but the pattern of which genes speak does. We are just beginning to understand the degree to which the environment writes itself into the genome's margins, and those annotations become the inheritance no blood test can currently read."
+  },
+  "kt:science::biology::genetics::epigenetics:Epigenetics:college": {
+    "items": [
+      "Identical twins have the same DNA but diverge in epigenetic profiles with age — same genome, different gene expression.",
+      "Children of Dutch Hunger Winter famine survivors showed higher obesity and diabetes rates — epigenetic marks inherited across generations.",
+      "Epigenetic changes don't alter DNA sequence but control which genes are silenced or activated through methylation and histone modification."
+    ]
+  },
+  "qq:science::biology::genetics::epigenetics:Epigenetics:college": {
+    "question": "Why does epigenetics NOT simply confirm the Lamarckian idea that acquired traits are inherited?",
+    "options": [
+      "Epigenetic changes are reversed before they can be passed to offspring",
+      "Epigenetic inheritance only occurs in plants, not animals",
+      "Epigenetic marks alter gene expression without changing the DNA sequence itself, while Lamarck proposed changes to the underlying genetic code",
+      "Lamarck's theory applies only to physical traits, while epigenetics affects only disease risk"
+    ],
+    "correctIndex": 2,
+    "explanation": "Lamarck proposed that organisms develop new traits through use or experience and pass those altered structures to offspring (implying changes to the underlying heritable material). Epigenetics changes which genes are expressed — via methylation and histone modification — without altering the DNA sequence. The genome is unchanged; only the pattern of expression is inherited. This is a subtler, mechanistically distinct form of non-genetic inheritance that doesn't require rewriting the genome."
+  },
+
+  "ex:art_&_design::color_theory:Color Theory:college:spark": {
+    "text": "Color does not exist in the physical world. Light exists — electromagnetic waves at different frequencies — but 'red' is a creation of your nervous system, a label your brain invents to summarize certain wavelengths. Two people looking at the identical wavelength of light may genuinely experience different colors, and there is no scientific instrument that can prove otherwise. The 2015 viral sensation 'The Dress' — seen as blue-black by half the internet and white-gold by the other half — was not an illusion or a trick. It was two different visual systems making legitimately different assumptions about the color of the ambient light.\n\nColor theory begins with this biology and builds into design practice. The retina has three types of cone cells — sensitive to roughly red, green, and blue light — and color vision is the brain's comparison of their signals. This is why every color you see on a screen is produced by mixing just red, green, and blue phosphors (RGB), while printing uses cyan, magenta, yellow, and black (CMYK) — two different models derived from the same underlying biology. The color wheel — red, yellow, blue primaries that were standard art education — is actually wrong for mixing light; it was derived from painters' pigments, which obey subtractive rather than additive mixing. Complementary colors (opposite on the wheel) produce maximum contrast because they activate different opponent channels in the visual system — the brain processes color in red/green, blue/yellow, and light/dark pairs.\n\nColor carries cultural weight that is entirely learned: white signals mourning in parts of Asia and purity in the West; red means danger in traffic signals but luck in Chinese culture. A designer who treats color as purely aesthetic misses the deeper grammar — color is a language written in neuroscience, and like all languages, it means different things to different readers."
+  },
+  "kt:art_&_design::color_theory:Color Theory:college": {
+    "items": [
+      "Color exists only in the brain — physical light has wavelengths, but 'red' is a neural construction.",
+      "The traditional red-yellow-blue color wheel is wrong for mixing light — screens use RGB because light is additive, not subtractive.",
+      "Complementary colors produce maximum visual contrast because they activate opposite opponent channels in the visual system."
+    ]
+  },
+  "qq:art_&_design::color_theory:Color Theory:college": {
+    "question": "Why does mixing red, green, and blue light produce white, while mixing red, yellow, and blue pigments produces a muddy dark color?",
+    "options": [
+      "Light and pigment contain different chemicals that react differently when combined",
+      "Light mixing is additive (combining wavelengths increases brightness), while pigment mixing is subtractive (each pigment absorbs more wavelengths, reducing reflected light)",
+      "The primary colors of light and pigment are identical, but the mixing process differs in temperature",
+      "Pigments reflect multiple wavelengths while light sources emit only one, causing the difference"
+    ],
+    "correctIndex": 1,
+    "explanation": "Additive color mixing (light) starts from black and adds wavelengths: red + green + blue light adds up to white because together they stimulate all three cone types. Subtractive mixing (pigments) starts from white and removes wavelengths: each pigment absorbs certain colors from white light and reflects the rest. Mixing multiple pigments means more wavelengths are absorbed, so less is reflected — moving toward black. This is why print uses CMYK: cyan absorbs red, magenta absorbs green, yellow absorbs blue."
+  }
+}

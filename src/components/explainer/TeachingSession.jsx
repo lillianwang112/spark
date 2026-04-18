@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Ember from '../ember/Ember.jsx';
 import AIService from '../../ai/ai.service.js';
 import { getSystemPrompt } from '../../ai/personalities.js';
+import { DOMAIN_COLORS } from '../../utils/domainColors.js';
 
 function buildSystemPrompt(node, userContextObj) {
   const { ageGroup, name, topInterests, personality } = userContextObj || {};
@@ -26,6 +28,21 @@ function buildOpeningPrompt(node, userContextObj) {
   return `Start teaching "${node.label}" to someone (age group: "${ageGroup}", interests: ${interests}). Open with ONE surprising hook sentence about this topic, then ask what they already know or think about "${node.label}". Stay under 70 words. Be direct, warm, and engaging.`;
 }
 
+function TypingDots() {
+  return (
+    <div className="flex gap-1 items-center h-4">
+      {[0, 1, 2].map((i) => (
+        <motion.span
+          key={i}
+          className="w-1.5 h-1.5 rounded-full bg-text-muted"
+          animate={{ y: [0, -4, 0] }}
+          transition={{ duration: 0.7, repeat: Infinity, delay: i * 0.15, ease: 'easeInOut' }}
+        />
+      ))}
+    </div>
+  );
+}
+
 export default function TeachingSession({ node, userContextObj, onExit }) {
   const [history, setHistory] = useState([]);
   const [messages, setMessages] = useState([]);
@@ -35,6 +52,7 @@ export default function TeachingSession({ node, userContextObj, onExit }) {
   const scrollRef = useRef(null);
   const inputRef = useRef(null);
 
+  const color = DOMAIN_COLORS[node?.domain] || '#FF6B35';
   const systemPrompt = buildSystemPrompt(node, userContextObj);
 
   useEffect(() => {
@@ -109,20 +127,31 @@ export default function TeachingSession({ node, userContextObj, onExit }) {
   };
 
   return (
-    <div className="flex flex-col">
-      {/* Header */}
+    <div className="flex flex-col" style={{ minHeight: 360 }}>
+      {/* Gradient header with domain color */}
       <div
-        className="flex items-center gap-3 px-5 pt-4 pb-3"
-        style={{ borderBottom: '1px solid rgba(42,42,42,0.08)' }}
+        className="flex items-center gap-3 px-5 pt-4 pb-3 relative overflow-hidden"
+        style={{
+          background: `linear-gradient(135deg, ${color}18 0%, ${color}08 60%, transparent 100%)`,
+          borderBottom: `1px solid ${color}20`,
+        }}
       >
-        <Ember mood={emberMood} size="sm" glowIntensity={emberMood === 'thinking' ? 0.9 : 0.6} />
+        {/* Ambient glow behind Ember */}
+        <div
+          className="absolute left-4 top-1/2 -translate-y-1/2 w-16 h-16 rounded-full pointer-events-none"
+          style={{ background: `radial-gradient(circle, ${color}22, transparent 70%)` }}
+          aria-hidden="true"
+        />
+        <Ember mood={emberMood} size="sm" glowIntensity={emberMood === 'thinking' ? 0.9 : 0.65} />
         <div className="flex-1 min-w-0">
-          <p className="text-[10px] font-mono uppercase tracking-[0.14em] text-text-muted">Teaching session</p>
+          <p className="text-[10px] font-mono uppercase tracking-[0.16em]" style={{ color: `${color}CC` }}>
+            Teaching session · {node.domain || 'topic'}
+          </p>
           <p className="font-display font-semibold text-text-primary text-base leading-tight truncate">{node.label}</p>
         </div>
         <button
           onClick={onExit}
-          className="flex-shrink-0 px-3 py-1.5 rounded-full bg-[rgba(42,42,42,0.05)] text-xs font-body text-text-muted hover:text-text-primary transition-colors"
+          className="flex-shrink-0 px-3 py-1.5 rounded-full bg-[rgba(42,42,42,0.06)] text-xs font-body text-text-muted hover:text-text-primary hover:bg-[rgba(42,42,42,0.1)] transition-colors min-h-[32px]"
         >
           ← Back
         </button>
@@ -131,62 +160,79 @@ export default function TeachingSession({ node, userContextObj, onExit }) {
       {/* Messages */}
       <div
         ref={scrollRef}
-        className="overflow-y-auto px-5 py-4 space-y-4"
-        style={{ maxHeight: '44vh', minHeight: '180px' }}
+        className="flex-1 overflow-y-auto px-5 py-4 space-y-3"
+        style={{ maxHeight: '42vh', minHeight: '200px' }}
       >
         {isLoading && messages.length === 0 ? (
-          <div className="flex items-center gap-2 text-text-muted py-2">
-            <Ember mood="thinking" size="xs" glowIntensity={0.7} />
-            <span className="font-body text-sm italic">Ember is preparing...</span>
-          </div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="flex items-center gap-3 py-4 text-text-muted"
+          >
+            <Ember mood="thinking" size="xs" glowIntensity={0.8} />
+            <span className="font-body text-sm">Ember is preparing your first lesson...</span>
+          </motion.div>
         ) : (
-          messages.map((msg, i) => (
-            <div
-              key={i}
-              className={`flex gap-2 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-            >
-              {msg.role === 'assistant' && (
-                <div className="flex-shrink-0 mt-1 w-5 h-5">
-                  <Ember
-                    mood={i === messages.length - 1 ? emberMood : 'idle'}
-                    size="xs"
-                    glowIntensity={0.4}
-                  />
-                </div>
-              )}
-              <div
-                className={`max-w-[85%] rounded-[18px] px-4 py-2.5 ${
-                  msg.role === 'user'
-                    ? 'bg-spark-ember text-white rounded-br-sm'
-                    : 'bg-[rgba(42,42,42,0.06)] text-text-primary rounded-bl-sm'
-                }`}
+          <AnimatePresence initial={false}>
+            {messages.map((msg, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 8, scale: 0.97 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.28, ease: [0.25, 0.8, 0.25, 1] }}
+                className={`flex gap-2 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
-                <p className="font-body text-sm leading-relaxed whitespace-pre-wrap">{msg.content}</p>
-              </div>
-            </div>
-          ))
+                {msg.role === 'assistant' && (
+                  <div className="flex-shrink-0 mt-1 w-5 h-5">
+                    <Ember
+                      mood={i === messages.length - 1 ? emberMood : 'idle'}
+                      size="xs"
+                      glowIntensity={0.4}
+                    />
+                  </div>
+                )}
+                <div
+                  className={`max-w-[85%] rounded-[18px] px-4 py-3 ${
+                    msg.role === 'user'
+                      ? 'rounded-br-sm text-white shadow-[0_4px_12px_rgba(255,107,53,0.3)]'
+                      : 'rounded-bl-sm text-text-primary shadow-[0_2px_8px_rgba(42,42,42,0.06)]'
+                  }`}
+                  style={
+                    msg.role === 'user'
+                      ? { background: `linear-gradient(135deg, ${color}, ${color}CC)` }
+                      : { background: 'rgba(255,255,255,0.78)', border: '1px solid rgba(42,42,42,0.07)' }
+                  }
+                >
+                  <p className="font-body text-sm leading-relaxed whitespace-pre-wrap">{msg.content}</p>
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         )}
 
         {isLoading && messages.length > 0 && (
-          <div className="flex items-center gap-2">
+          <motion.div
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex items-center gap-2"
+          >
             <div className="w-5 h-5 flex-shrink-0">
               <Ember mood="thinking" size="xs" glowIntensity={0.8} />
             </div>
-            <div className="bg-[rgba(42,42,42,0.06)] rounded-[18px] rounded-bl-sm px-4 py-3">
-              <div className="flex gap-1 items-center">
-                <span className="w-1.5 h-1.5 bg-text-muted rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                <span className="w-1.5 h-1.5 bg-text-muted rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                <span className="w-1.5 h-1.5 bg-text-muted rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-              </div>
+            <div
+              className="rounded-[18px] rounded-bl-sm px-4 py-3 shadow-[0_2px_8px_rgba(42,42,42,0.06)]"
+              style={{ background: 'rgba(255,255,255,0.78)', border: '1px solid rgba(42,42,42,0.07)' }}
+            >
+              <TypingDots />
             </div>
-          </div>
+          </motion.div>
         )}
       </div>
 
       {/* Input */}
       <div
-        className="px-5 pb-4 pt-3"
-        style={{ borderTop: '1px solid rgba(42,42,42,0.08)' }}
+        className="px-5 pb-5 pt-3"
+        style={{ borderTop: `1px solid ${color}14` }}
       >
         <div className="flex gap-2">
           <input
@@ -197,17 +243,29 @@ export default function TeachingSession({ node, userContextObj, onExit }) {
             onKeyDown={handleKey}
             placeholder={isLoading && messages.length === 0 ? 'Ember is thinking...' : 'Reply to Ember...'}
             disabled={isLoading && messages.length === 0}
-            className="flex-1 bg-[rgba(42,42,42,0.05)] rounded-full px-4 py-2.5 font-body text-sm text-text-primary placeholder-text-muted outline-none border border-transparent focus:border-[rgba(255,107,53,0.35)] transition-colors disabled:opacity-50"
+            className="flex-1 rounded-full px-4 py-2.5 font-body text-sm text-text-primary placeholder-text-muted outline-none transition-all disabled:opacity-50"
+            style={{
+              background: 'rgba(42,42,42,0.05)',
+              border: `1px solid transparent`,
+              boxShadow: 'none',
+            }}
+            onFocus={(e) => { e.target.style.border = `1px solid ${color}50`; e.target.style.boxShadow = `0 0 0 3px ${color}12`; }}
+            onBlur={(e) => { e.target.style.border = '1px solid transparent'; e.target.style.boxShadow = 'none'; }}
           />
-          <button
+          <motion.button
             onClick={handleSend}
             disabled={!input.trim() || (isLoading && messages.length === 0)}
-            className="px-4 py-2.5 rounded-full bg-spark-ember text-white font-medium text-sm disabled:opacity-40 hover:bg-orange-600 active:scale-95 transition-all"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="px-4 py-2.5 rounded-full text-white font-medium text-sm disabled:opacity-40 transition-colors"
+            style={{ background: `linear-gradient(135deg, ${color}, ${color}CC)` }}
           >
             →
-          </button>
+          </motion.button>
         </div>
-        <p className="mt-2 text-[10px] font-body text-text-muted text-center">Enter to send</p>
+        <p className="mt-2 text-[10px] font-body text-text-muted text-center opacity-70">
+          ↵ Enter to send · shift+enter for new line
+        </p>
       </div>
     </div>
   );

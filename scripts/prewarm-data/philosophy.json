@@ -1,0 +1,241 @@
+{
+  "ex:philosophy::ethics::stoicism:Stoicism:college:spark": "Most people think Stoicism is about suppressing emotions and enduring pain with a stiff upper lip — but the ancient Stoics were actually teaching something far more radical: that nearly everything you worry about is none of your business.\n\nStoicism, developed in Athens around 300 BCE by Zeno of Citium and later championed by the Roman emperor Marcus Aurelius and the freed slave Epictetus, rests on one deceptively simple distinction: some things are \"up to us\" (our judgments, desires, and actions) and some things are not (wealth, reputation, other people's behavior, even our own health). The Stoics argued that suffering arises not from events themselves but from our opinions about events. When Epictetus was enslaved and his master broke his leg, he reportedly said, calmly, \"I told you it would break.\" This wasn't callousness — it was the practiced discipline of refusing to place his peace of mind in the hands of circumstances he couldn't control.\n\nBut here's where it gets uncomfortable: if the Stoics are right, then almost all of your anxiety is self-inflicted — a story you're telling yourself about external events. Does that mean injustice doesn't matter? Or does it mean something stranger — that the only truly free person is the one who has made peace with their own powerlessness?",
+
+  "kt:philosophy::ethics::stoicism:Stoicism:college": [
+    "Stoics divide the world into what's 'up to us' and what isn't — your peace depends on accepting that line.",
+    "Emotions aren't the enemy; irrational judgments about events are the real source of suffering.",
+    "Marcus Aurelius ruled an empire while practicing daily Stoic journaling — philosophy as a survival skill."
+  ],
+
+  "qq:philosophy::ethics::stoicism:Stoicism:college": {
+    "question": "According to Stoic philosophy, what is the primary source of human suffering?",
+    "options": [
+      "Our judgments and opinions about events, not the events themselves",
+      "External misfortunes like poverty, illness, and loss",
+      "The absence of pleasure and comfort in daily life",
+      "Social inequality and political oppression"
+    ],
+    "correct": 0,
+    "explanation": "Stoics held that events are neutral — it is our evaluations of them that create distress or equanimity."
+  },
+
+  "ex:philosophy::philosophy_of_mind::consciousness:Consciousness:college:spark": "You are reading these words right now, and somewhere in your skull, electrochemical signals are firing in patterns — but neither you nor any neuroscientist can fully explain why those signals feel like anything at all.\n\nConsciousness is the fact that there is \"something it is like\" to be you — a phrase coined by philosopher Thomas Nagel in his famous 1974 essay asking what it's like to be a bat. A bat navigates by echolocation, processing a form of sensory information utterly foreign to us. We can describe the bat's neurology in exhaustive detail, yet Nagel argued we could never know what the bat's inner experience actually feels like. This gap between objective physical description and subjective experience sits at the center of philosophy of mind. Theories abound: physicalists claim consciousness is simply what complex information processing feels like from the inside; dualists like Descartes argued mind and matter are fundamentally different substances; panpsychists suggest that consciousness might be a basic feature of reality, present even in simple particles.\n\nHere is the unsettling part: every scientific advance in neuroscience tells us more about which brain regions activate during experience, but none of it tells us why activation feels like anything. Could a machine ever be conscious? Could you be conscious and simply not know it in the way your friends know it? The question isn't just philosophical curiosity — it determines how we treat animals, build AI, and define what it means to be a person.",
+
+  "kt:philosophy::philosophy_of_mind::consciousness:Consciousness:college": [
+    "Consciousness is the 'what it's like' quality of experience — and no physical description fully captures it.",
+    "Thomas Nagel's bat thought experiment shows we can know everything about a mind yet miss its inner life.",
+    "The mind-body problem remains unsolved: no one knows why brain activity feels like anything at all."
+  ],
+
+  "qq:philosophy::philosophy_of_mind::consciousness:Consciousness:college": {
+    "question": "What does philosopher Thomas Nagel's bat thought experiment primarily illustrate?",
+    "options": [
+      "The subjective character of experience cannot be captured by objective physical descriptions",
+      "Bats are more conscious than previously thought by scientists",
+      "Echolocation is a superior sensory system compared to human vision",
+      "Consciousness requires a large and complex brain to emerge"
+    ],
+    "correct": 0,
+    "explanation": "Nagel used the bat to show that no amount of objective neurological information captures what subjective experience actually feels like."
+  },
+
+  "ex:philosophy::metaphysics::free_will:Free Will:college:spark": "Every choice you've ever made — what to eat for breakfast, whether to tell the truth, who to love — may have been the only thing you could possibly have done, given the state of every particle in the universe at that moment.\n\nThe free will debate pits determinism against the felt reality of human agency. Hard determinists argue that since every event is caused by prior events according to physical laws, human decisions are no exception — your \"choice\" to read this sentence was fixed at the Big Bang. Compatibilists like David Hume and Daniel Dennett push back, arguing that free will doesn't require breaking the laws of physics; it only requires that your actions flow from your own desires and reasoning rather than from external coercion. A person who steals because they want to is acting freely in the meaningful sense, even if that want was itself caused by prior events. Hard incompatibilists, meanwhile, agree with the determinists but draw a darker conclusion: moral responsibility is an illusion, and praise and blame are as irrational as being angry at a rock for falling.\n\nThe stakes are not merely academic. If a neuroscientist could predict your \"choices\" from brain scans before you were aware of making them — as Benjamin Libet's experiments suggested — does the criminal justice system make any sense? Is rehabilitation more rational than punishment? The answer depends entirely on what you think freedom actually is.",
+
+  "kt:philosophy::metaphysics::free_will:Free Will:college": [
+    "Hard determinism says every choice was fixed by prior causes — free will may be a comforting illusion.",
+    "Compatibilists redefine freedom as acting from your own desires, not requiring escape from causality.",
+    "Libet's brain experiments showed neural activity preceding conscious awareness of a decision by half a second."
+  ],
+
+  "qq:philosophy::metaphysics::free_will:Free Will:college": {
+    "question": "Compatibilism holds that free will is compatible with determinism because:",
+    "options": [
+      "Freedom means your actions flow from your own desires, not that they are uncaused",
+      "Quantum mechanics introduces genuine randomness into brain processes",
+      "Human consciousness operates outside the normal laws of physics",
+      "Moral responsibility requires that alternative choices were physically possible"
+    ],
+    "correct": 0,
+    "explanation": "Compatibilists define freedom as self-determination — acting on one's own reasons — rather than the ability to violate causal laws."
+  },
+
+  "ex:philosophy::epistemology:Epistemology:college:spark": "René Descartes sat alone by a fire in 1641 and asked the most dangerous question in philosophy: is there anything at all I can know for certain — and if so, how?\n\nEpistemology is the branch of philosophy concerned with the nature, sources, and limits of knowledge. Descartes decided to doubt everything he possibly could — his senses (which sometimes deceive), mathematical truths (perhaps an evil demon was misleading him), and even his own existence — until he arrived at the one thing that resisted doubt: the very act of doubting proved that a doubter existed. \"I think, therefore I am\" became the foundation stone of modern epistemology. From there the field exploded into debates about where knowledge comes from. Rationalists like Descartes and Leibniz argued that reason alone can deliver genuine knowledge independent of experience. Empiricists like John Locke and David Hume countered that all knowledge ultimately traces back to sensory experience — the mind begins as a blank slate. Kant tried to reconcile both, arguing that the mind brings its own structure (space, time, causality) to raw experience, shaping what we can know.\n\nBut the deeper problem lurks: even if you have a justified true belief, is that enough for knowledge? Edmund Gettier's 1963 three-page paper demolished centuries of philosophical consensus by showing you can have justified true belief and still not \"know\" something. We've been scrambling to define knowledge ever since — and that scramble turns out to matter enormously for science, law, and artificial intelligence.",
+
+  "kt:philosophy::epistemology:Epistemology:college": [
+    "Descartes doubted everything to find bedrock certainty — only the fact of thinking itself survived.",
+    "Rationalists trust reason; empiricists trust experience — Kant argued the mind shapes both.",
+    "Gettier's 1963 paper showed that justified true belief isn't sufficient for knowledge, reopening the debate."
+  ],
+
+  "qq:philosophy::epistemology:Epistemology:college": {
+    "question": "What did Edmund Gettier's famous 1963 paper demonstrate?",
+    "options": [
+      "You can have a justified true belief and still not possess genuine knowledge",
+      "Empiricism is superior to rationalism as a theory of knowledge",
+      "Descartes' cogito argument contains a hidden logical fallacy",
+      "Sensory experience is always more reliable than rational deduction"
+    ],
+    "correct": 0,
+    "explanation": "Gettier constructed counterexamples showing that the classic 'justified true belief' definition of knowledge is incomplete."
+  },
+
+  "ex:philosophy::ethics::utilitarianism:Utilitarianism:college:spark": "If you could save five strangers by pushing one person in front of a runaway trolley, should you? Your answer — and the revulsion or conviction with which you hold it — reveals your implicit relationship to utilitarianism.\n\nUtilitarianism, developed by Jeremy Bentham in the late 18th century and refined by John Stuart Mill, holds that the morally right action is whichever one produces the greatest happiness for the greatest number of people. It's a beautifully democratic idea: every person's pleasure and pain counts equally, regardless of their social class, nationality, or relationship to you. Bentham even designed a \"hedonic calculus\" to measure and compare units of pleasure. Mill modified this, distinguishing between higher pleasures (intellectual and moral) and lower ones (physical), arguing that it is better to be Socrates dissatisfied than a fool satisfied. Applied to policy, utilitarianism has driven genuine reforms: it was among the first ethical frameworks to support animal welfare (since animals can suffer), oppose slavery, and advocate for women's equality.\n\nBut the trolley problem exposes utilitarianism's sharpest edge: pure calculation seems to permit — even demand — terrible acts if the math works out. Torture one innocent person to save a hundred? The utilitarian calculus says yes. This is why critics argue that utilitarianism treats people as mere containers of pleasure and pain rather than as beings with dignity that cannot be traded away. The debate between utility and rights is not a historical curiosity — it surfaces in every policy decision about healthcare rationing, surveillance, and criminal sentencing.",
+
+  "kt:philosophy::ethics::utilitarianism:Utilitarianism:college": [
+    "Utilitarianism judges actions solely by outcomes — the greatest happiness for the greatest number.",
+    "Mill elevated 'higher pleasures' to avoid the conclusion that a happy pig beats a dissatisfied philosopher.",
+    "The trolley problem exposes utilitarianism's limit: pure calculation can justify harming the innocent."
+  ],
+
+  "qq:philosophy::ethics::utilitarianism:Utilitarianism:college": {
+    "question": "John Stuart Mill's modification of Bentham's utilitarianism primarily added:",
+    "options": [
+      "A distinction between higher and lower pleasures, not all satisfactions count equally",
+      "The requirement that only intentions, not outcomes, determine moral worth",
+      "A categorical prohibition against harming individuals for collective benefit",
+      "The idea that only measurable physical pleasures should factor into moral calculations"
+    ],
+    "correct": 0,
+    "explanation": "Mill argued that intellectual and moral pleasures are qualitatively superior to mere physical gratification, refining the hedonic calculus."
+  },
+
+  "ex:philosophy::existentialism:Existentialism:college:spark": "Jean-Paul Sartre once argued that humans are \"condemned to be free\" — not liberated, not blessed, but condemned, because freedom means you can never escape the weight of choosing who you are.\n\nExistentialism emerged in the 19th and 20th centuries as a response to a world where traditional religious and social structures were losing their grip on meaning. Its core claim is captured in Sartre's slogan: \"existence precedes essence.\" Classical philosophy assumed humans have a fixed nature or purpose (essence) that precedes their lives. Existentialists flipped this: you exist first, bare and purposeless, and then through your choices you create an essence — a self. Søren Kierkegaard, often called the first existentialist, saw authentic selfhood as a terrifying leap of individual commitment. Friedrich Nietzsche declared God dead and challenged humans to become their own creators of values. Albert Camus took the bleakest view: life is fundamentally absurd, meaning doesn't exist, and the only serious philosophical question is whether to commit suicide — to which his answer, defiantly, was no.\n\nWhat makes existentialism enduringly resonant is that it refuses easy comfort. You cannot blame your genes, your upbringing, or your society for who you are, because in the moment of choice, you are always free — and always responsible. \"Bad faith,\" for Sartre, was the act of pretending otherwise: telling yourself you had no choice, that you were just following orders, that this is just who you are. The existentialists insist that this self-deception is the deepest betrayal of what it means to be human.",
+
+  "kt:philosophy::existentialism:Existentialism:college": [
+    "Existence precedes essence: you have no fixed nature — your choices create who you are.",
+    "Sartre's 'bad faith' is the self-deception of pretending you have no freedom or responsibility.",
+    "Camus called life absurd but argued we must imagine Sisyphus happy — rebellion without illusion."
+  ],
+
+  "qq:philosophy::existentialism:Existentialism:college": {
+    "question": "What does Sartre mean by 'bad faith' (mauvaise foi)?",
+    "options": [
+      "Deceiving yourself into believing you have no freedom or that your choices are determined for you",
+      "Claiming to believe in God while secretly doubting His existence",
+      "Prioritizing social obligations over authentic personal desires",
+      "Accepting absurdity and refusing to create personal meaning"
+    ],
+    "correct": 0,
+    "explanation": "Bad faith is Sartre's term for the self-deception of denying one's own radical freedom, treating oneself as a fixed thing rather than a free being."
+  },
+
+  "ex:philosophy::philosophy_of_mind::the_hard_problem_of_consciousness:The Hard Problem of Consciousness:college:spark": "Neuroscience can tell you exactly which neurons fire when you see red — but it cannot tell you why red looks like anything at all. That gap is the hardest problem in all of science and philosophy.\n\nPhilosopher David Chalmers coined the term \"hard problem of consciousness\" in 1995 to distinguish it from what he called the \"easy problems\" — explaining attention, memory, learning, and behavioral responses. Those problems are hard in practice but tractable in principle: you just need to figure out the right mechanisms. The hard problem is different in kind. It asks why physical processes give rise to subjective experience — to qualia, the redness of red, the painfulness of pain, the taste of coffee. Chalmers illustrated this with the thought experiment of \"philosophical zombies\": creatures physically identical to humans, neuron for neuron, but with no inner experience whatsoever. If such zombies are even conceivable, then physical facts don't logically entail conscious experience, which suggests consciousness is something over and above the physical.\n\nChalmers' zombie argument enrages many scientists and philosophers because it seems to put consciousness permanently beyond scientific reach. Physicalists counter that the \"explanatory gap\" is an illusion produced by the limits of our concepts, not a real gap in nature. Illusionists like Daniel Dennett argue that qualia as we conceive them don't actually exist — we're mistaken about our own experience. The stakes are enormous: if the hard problem is genuinely hard, then no matter how sophisticated our AI systems become, we may never know if they feel anything at all.",
+
+  "kt:philosophy::philosophy_of_mind::the_hard_problem_of_consciousness:The Hard Problem of Consciousness:college": [
+    "The 'hard problem' asks why physical brain processes produce subjective experience at all — not just how.",
+    "Chalmers' zombie thought experiment: a being physically identical to you but with no inner experience.",
+    "If the hard problem is real, we may never scientifically confirm whether AI systems are conscious."
+  ],
+
+  "qq:philosophy::philosophy_of_mind::the_hard_problem_of_consciousness:The Hard Problem of Consciousness:college": {
+    "question": "What is a 'philosophical zombie' in Chalmers' sense?",
+    "options": [
+      "A being physically identical to a human in every way but with no subjective inner experience",
+      "A person who acts mechanically without genuine emotion or self-awareness",
+      "An AI system that passes the Turing Test but lacks true intelligence",
+      "A thought experiment about the walking dead used to explore mortality"
+    ],
+    "correct": 0,
+    "explanation": "Chalmers' philosophical zombie is a conceptual tool: physically indistinguishable from a human but 'dark inside,' used to argue consciousness isn't entailed by physical facts."
+  },
+
+  "ex:philosophy::metaphysics::simulation_theory:Simulation Theory:college:spark": "In 2003, philosopher Nick Bostrom published a paper arguing that at least one of three things must be true about our civilization — and the third option is that you are almost certainly not real in the way you think you are.\n\nSimulation theory proposes that our experienced reality is a computer simulation run by an advanced civilization. Bostrom's \"trilemma\" states: either (1) virtually all civilizations go extinct before reaching the technological capacity to run realistic simulations; (2) civilizations with that capacity choose not to run such simulations; or (3) we are almost certainly living in a simulation right now. If even one advanced civilization ever runs millions of simulated histories, simulated minds would vastly outnumber \"real\" ones — making it statistically likely that any given conscious being is simulated. The idea gained mainstream credibility when figures like Elon Musk and Neil deGrasse Tyson endorsed its plausibility, and it connects to genuine physics research: in 2012, a team at the University of Washington proposed looking for the computational artifacts — glitches in the \"code\" — that a simulated universe might leave behind in cosmic ray distributions.\n\nThe philosophical implications are vertiginous. If simulation theory is true, the \"simulators\" would be indistinguishable from gods. Questions about consciousness, free will, and the nature of reality acquire an entirely new valence. And yet — does it matter? If your experiences are real to you and the laws governing your simulated world are consistent, what exactly would be missing? Perhaps the simulation theory is most interesting not as a cosmological claim but as a way of asking: what does \"real\" even mean?",
+
+  "kt:philosophy::metaphysics::simulation_theory:Simulation Theory:college": [
+    "Bostrom's trilemma: civilizations die out, decline to simulate, or we're already in a simulation.",
+    "If simulated minds vastly outnumber real ones, statistics suggest you're probably simulated.",
+    "Simulation theory reframes questions about God, free will, and reality in computational terms."
+  ],
+
+  "qq:philosophy::metaphysics::simulation_theory:Simulation Theory:college": {
+    "question": "Nick Bostrom's simulation argument concludes that at least one of three propositions must be true. Which is the third?",
+    "options": [
+      "We are almost certainly living in a computer simulation right now",
+      "Consciousness cannot be replicated in any computational system",
+      "Advanced civilizations always choose to simulate ancestor societies",
+      "The laws of physics break down at the quantum level due to computational limits"
+    ],
+    "correct": 0,
+    "explanation": "Bostrom's third option follows from statistical reasoning: if simulations proliferate, simulated beings will far outnumber 'real' ones."
+  },
+
+  "ex:philosophy::logic::occam's_razor:Occam's Razor:college:spark": "When two explanations both fit the facts equally well, one of the most powerful heuristics in human thought says: pick the simpler one. But Occam's Razor is far stranger and more contested than that tidy summary suggests.\n\nWilliam of Ockham, a 14th-century Franciscan friar, didn't actually say \"the simplest explanation is best.\" His principle — \"entities must not be multiplied beyond necessity\" — was a methodological injunction against inventing unnecessary metaphysical entities. He used it as a theological scalpel, cutting away elaborate scholastic constructions he considered unsupported speculation. Over time, the principle was generalized into a scientific norm: do not add assumptions, causes, or mechanisms to your theory that aren't doing real explanatory work. This is why Copernicus's heliocentric model eventually won over Ptolemy's epicycle-laden geocentric model — not because heliocentrism was immediately simpler, but because it didn't require perpetually adding new complications to fit observations. In modern statistics, Occam's Razor shows up as \"Occam's hill\" — a balance between model complexity and fit, formalized in Bayesian inference and Minimum Description Length.\n\nBut here's the challenge: why should the universe be simple? Nature is under no obligation to accommodate our preference for tidy theories. Quantum mechanics is deeply weird, dark matter is an invisible entity invented to explain anomalies, and some of the most accurate theories in physics are ferociously complex. When does parsimony guide us to truth, and when does it just reflect the limits of our imagination?",
+
+  "kt:philosophy::logic::occam's_razor:Occam's Razor:college": [
+    "Occam's Razor: don't multiply entities beyond necessity — cut explanatory fat from your theories.",
+    "It's a heuristic, not a law — the universe has no obligation to be simple or convenient.",
+    "In statistics, it appears as the bias-variance tradeoff: simpler models generalize better."
+  ],
+
+  "qq:philosophy::logic::occam's_razor:Occam's Razor:college": {
+    "question": "Occam's Razor is best understood as:",
+    "options": [
+      "A methodological heuristic preferring theories that don't introduce unnecessary assumptions",
+      "A logical proof that simpler explanations are always more likely to be true",
+      "A scientific law stating that nature always follows the path of least complexity",
+      "A theological argument against the existence of supernatural entities"
+    ],
+    "correct": 0,
+    "explanation": "Occam's Razor is a methodological guide, not a logical truth — it counsels parsimony without guaranteeing simpler theories are correct."
+  },
+
+  "ex:philosophy::ethics::kant's_categorical_imperative:Kant's Categorical Imperative:college:spark": "Immanuel Kant thought that whether an action is moral has absolutely nothing to do with its consequences — and that a single formula, derivable by reason alone, could determine the morality of every possible action.\n\nKant's categorical imperative, developed in his 1785 Groundwork for the Metaphysics of Morals, comes in several formulations. The most famous: \"Act only according to that maxim whereby you can at the same time will that it should become a universal law.\" In other words, before you act, ask: what if everyone did this? If the universalization of your maxim produces a logical contradiction, the action is impermissible. Lying, for instance, fails this test — a world where everyone lied whenever convenient would destroy the institution of truth-telling itself, making lying pointless. Kant's second formulation adds a deeper intuition: \"Act so that you treat humanity, whether in your own person or in that of another, always as an end and never as a means only.\" Humans have dignity — a worth beyond any price — and to use a person purely as a tool, even for great collective benefit, is always wrong.\n\nThis is precisely where Kant and the utilitarians part ways. Kant would say you must not push the one person in front of the trolley even to save five, because doing so treats the one as a mere means to your ends. For Kant, a good action done for the wrong reason has no moral worth — only actions done from duty, for duty's sake, count as genuinely moral. It's a demanding vision, but it explains our deepest intuitions about human rights and dignity.",
+
+  "kt:philosophy::ethics::kant's_categorical_imperative:Kant's Categorical Imperative:college": [
+    "Act only on maxims you could will to be universal laws — lying fails because universal lying is self-defeating.",
+    "Kant's second formula: never treat persons merely as means; human dignity has no price.",
+    "For Kant, consequences are morally irrelevant — only acting from duty gives an action moral worth."
+  ],
+
+  "qq:philosophy::ethics::kant's_categorical_imperative:Kant's Categorical Imperative:college": {
+    "question": "According to Kant's categorical imperative, lying is impermissible because:",
+    "options": [
+      "Universalizing lying would destroy the practice of truth-telling on which lying itself depends",
+      "Lying produces more unhappiness than happiness in most real-world situations",
+      "God has commanded humans to tell the truth as a foundational moral law",
+      "Lying treats oneself as an exception to rules that apply to everyone else"
+    ],
+    "correct": 0,
+    "explanation": "Kant's universalizability test reveals that a world of universal lying is self-contradictory — the maxim cannot be consistently willed as universal law."
+  },
+
+  "ex:philosophy::metaphysics::identity::the_ship_of_theseus:The Ship of Theseus:college:spark": "The city of Athens preserved the legendary ship of their hero Theseus as a monument — but as planks rotted, they replaced them one by one. Eventually every single original plank had been replaced. Was it still the same ship?\n\nThis ancient thought experiment, recorded by Plutarch, is the foundational puzzle of personal identity. It asks: what makes something the same thing over time when its components change? Applied to the human body, the puzzle sharpens — your cells are replaced continuously, your memories are reconstructed rather than replayed, your beliefs and personality shift across decades. Are you the same person you were at age seven? Philosophers have proposed competing criteria for identity through change. The continuity theory holds that what matters is an unbroken causal chain — gradual replacement preserves identity where sudden replacement does not. The psychological continuity theory, favored by John Locke and Derek Parfit, says identity is about overlapping chains of memories and intentions. A teleporter that destroys and recreates you might fail this test even if the atoms are perfectly replicated.\n\nParfit radicalized the debate in his 1984 book Reasons and Persons by suggesting that personal identity might not be what matters at all. What we care about — psychological continuity, the persistence of our projects and relationships — can in principle come apart from strict numerical identity. This thought experiment isn't merely academic: it undergirds debates about whether convicted criminals are the \"same person\" who committed their crime, what death actually is, and whether continuity of consciousness is the right criterion for a good life.",
+
+  "kt:philosophy::metaphysics::identity::the_ship_of_theseus:The Ship of Theseus:college": [
+    "Replace every plank one at a time and you may preserve identity; replace all at once and you clearly don't.",
+    "Psychological continuity theory: identity is chains of memory and personality, not material composition.",
+    "Parfit argued personal identity may not be what matters — psychological continuity is what we actually care about."
+  ],
+
+  "qq:philosophy::metaphysics::identity::the_ship_of_theseus:The Ship of Theseus:college": {
+    "question": "Derek Parfit's contribution to the Ship of Theseus debate was to argue that:",
+    "options": [
+      "Personal identity may not be what matters — psychological continuity can come apart from strict identity",
+      "Material continuity is the only reliable criterion for identity over time",
+      "The ship of Theseus ceases to be the same ship after even a single plank is replaced",
+      "Identity is entirely a social construct with no objective philosophical foundation"
+    ],
+    "correct": 0,
+    "explanation": "Parfit argued that what we actually care about — psychological continuity — can be preserved even when strict personal identity breaks down."
+  },
+
+  "ex:philosophy::nietzsche:Nietzsche:college:spark": "Friedrich Nietzsche declared that God is dead — and then made clear that this was not a celebration but a catastrophe, one whose full consequences humanity had barely begun to reckon with.\n\nNietzsche (1844–1900) is one of philosophy's most explosive and misunderstood figures. His proclamation in The Gay Science was not an atheist victory lap but a diagnosis: Western civilization had built its entire value system on the foundation of Christian morality — sin, guilt, humility, equality before God — and now that foundation was crumbling. Without it, Nietzsche worried, nihilism would flood in. His proposed response was the Übermensch (Overman): not a racial category (his sister disastrously edited his work for Nazi propaganda, which he would have despised) but a metaphor for a person who creates their own values rather than inheriting them. His concept of the \"will to power\" is similarly misread — it's not about political domination but about the drive to overcome, create, and excel that Nietzsche saw as the wellspring of all great human achievement. His critique of \"slave morality\" argued that Christianity had glorified weakness and resentment as virtues, inverting the natural aristocratic values of strength and vitality.\n\nWhat makes Nietzsche enduringly provocative is that he took seriously questions most philosophers tiptoe around: Are our moral systems genuinely good, or are they tools of the weak to constrain the strong? Does equality serve human flourishing, or does it flatten excellence? He didn't give comfortable answers — he gave questions sharp enough to draw blood.",
+
+  "kt:philosophy::nietzsche:Nietzsche:college": [
+    "'God is dead' was a warning, not a celebration — Nietzsche feared the nihilism it would unleash.",
+    "The Übermensch creates their own values rather than accepting inherited moral frameworks.",
+    "Nietzsche's 'slave morality' critique: resentment dressed up as virtue to constrain the powerful."
+  ],
+
+  "qq:philosophy::nietzsche:Nietzsche:college": {
+    "question": "When Nietzsche declared 'God is dead,' his primary meaning was:",
+    "options": [
+      "Western culture had lost its foundational value system and faced a crisis of meaning",
+      "Atheism had scientifically proven that no God exists",
+      "Christianity had been politically defeated by secular governments",
+      "Religious belief was declining and this was a positive sign of human progress"
+    ],
+    "correct": 0,
+    "explanation": "Nietzsche saw the death of God as a cultural catastrophe — the collapse of the moral framework that had structured Western civilization."
+  }
+}

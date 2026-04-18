@@ -85,7 +85,135 @@ function ModeToggle({ mode, onChange }) {
   );
 }
 
-// Branch state badge replaced by imported BranchStateBadge component.
+// ── Garden Health Panel ──
+function GardenHealthPanel({ tracksWithSRS, careTracks, dueNow, onTendAll, onStartReview }) {
+  const domainStats = useMemo(() => {
+    const stats = {};
+    tracksWithSRS.forEach((t) => {
+      const d = t.domain || 'general';
+      if (!stats[d]) stats[d] = { total: 0, healthy: 0, thirsty: 0, wilting: 0, dormant: 0, flowering: 0 };
+      stats[d].total++;
+      const state = deriveBranchState(t);
+      stats[d][state] = (stats[d][state] || 0) + 1;
+    });
+    return stats;
+  }, [tracksWithSRS]);
+
+  const overallScore = useMemo(() => {
+    if (!tracksWithSRS.length) return 100;
+    const W = { flowering: 1.0, healthy: 0.8, thirsty: 0.5, wilting: 0.2, dormant: 0.05 };
+    const total = tracksWithSRS.reduce((sum, t) => sum + (W[deriveBranchState(t)] ?? 0.5), 0);
+    return Math.round((total / tracksWithSRS.length) * 100);
+  }, [tracksWithSRS]);
+
+  const emberMood = overallScore >= 80 ? 'proud' : overallScore >= 60 ? 'attentive' : overallScore >= 40 ? 'encouraging' : 'sheepish';
+  const healthLabel = overallScore >= 80 ? 'Thriving' : overallScore >= 55 ? 'Growing well' : overallScore >= 35 ? 'Needs tending' : 'Struggling';
+  const domains = Object.keys(domainStats);
+  const strokeScore = Math.round(overallScore * 0.942);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="rounded-[24px] overflow-hidden"
+      style={{
+        background: 'linear-gradient(135deg, rgba(45,147,108,0.09) 0%, rgba(255,209,102,0.07) 60%, rgba(255,255,255,0.8) 100%)',
+        border: '1px solid rgba(45,147,108,0.16)',
+        boxShadow: '0 2px 16px rgba(45,147,108,0.08)',
+      }}
+    >
+      <div className="p-4">
+        {/* Header row */}
+        <div className="flex items-center gap-3 mb-3.5">
+          <Ember mood={emberMood} size="sm" glowIntensity={overallScore >= 70 ? 0.65 : 0.3} aria-hidden="true" />
+          <div className="flex-1 min-w-0">
+            <p className="font-display font-semibold text-text-primary text-sm leading-tight">
+              Garden · {healthLabel}
+            </p>
+            <p className="font-body text-[11px] text-text-muted mt-0.5">
+              {tracksWithSRS.length} branch{tracksWithSRS.length !== 1 ? 'es' : ''} across {domains.length} world{domains.length !== 1 ? 's' : ''}
+            </p>
+          </div>
+          {/* Health ring */}
+          <div className="relative flex-shrink-0 w-9 h-9">
+            <svg viewBox="0 0 36 36" className="w-full h-full -rotate-90" aria-hidden="true">
+              <circle cx="18" cy="18" r="15" fill="none" stroke="rgba(42,42,42,0.08)" strokeWidth="3" />
+              <circle
+                cx="18" cy="18" r="15" fill="none"
+                stroke={overallScore >= 70 ? '#2D936C' : overallScore >= 45 ? '#FFA62B' : '#E63946'}
+                strokeWidth="3"
+                strokeDasharray={`${strokeScore} 94.2`}
+                strokeLinecap="round"
+              />
+            </svg>
+            <span className="absolute inset-0 flex items-center justify-center font-mono text-[9px] font-bold text-text-secondary">
+              {overallScore}
+            </span>
+          </div>
+        </div>
+
+        {/* Domain health bars */}
+        {domains.length > 0 && (
+          <div className="space-y-1.5 mb-3.5">
+            {domains.slice(0, 5).map((domain) => {
+              const s = domainStats[domain];
+              const color = DOMAIN_COLORS[domain] || '#FF6B35';
+              const healthPct = Math.round(
+                ((s.flowering || 0) * 100 + (s.healthy || 0) * 80 + (s.thirsty || 0) * 50 + (s.wilting || 0) * 20 + (s.dormant || 0) * 5)
+                / (s.total * 100) * 100,
+              );
+              const worstState = s.dormant > 0 ? 'dormant' : s.wilting > 0 ? 'wilting' : s.thirsty > 0 ? 'thirsty' : s.flowering > 0 ? 'flowering' : 'healthy';
+              const stateEmoji = { dormant: '🪵', wilting: '🥀', thirsty: '🍂', flowering: '🌸', healthy: '' }[worstState];
+
+              return (
+                <div key={domain} className="flex items-center gap-2">
+                  <span className="text-[10px] font-body font-semibold w-14 truncate capitalize" style={{ color }}>{domain}</span>
+                  <div className="flex-1 h-1.5 rounded-full bg-[rgba(42,42,42,0.07)] overflow-hidden">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${healthPct}%` }}
+                      transition={{ duration: 0.55, ease: 'easeOut', delay: 0.1 }}
+                      className="h-full rounded-full"
+                      style={{ backgroundColor: color, opacity: healthPct > 60 ? 0.85 : 0.55 }}
+                    />
+                  </div>
+                  <span className="text-[10px] font-mono text-text-muted w-5 text-right">{s.total}</span>
+                  {stateEmoji && <span className="text-[10px] leading-none">{stateEmoji}</span>}
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Quick action buttons */}
+        {(careTracks.length > 0 || dueNow.length > 0) ? (
+          <div className="flex gap-2">
+            {careTracks.length > 0 && (
+              <button
+                onClick={onTendAll}
+                className="flex-1 rounded-full bg-[rgba(45,147,108,0.14)] text-[#2D936C] py-2 text-xs font-semibold hover:bg-[rgba(45,147,108,0.22)] transition-colors min-h-[32px]"
+              >
+                💧 Tend {careTracks.length}
+              </button>
+            )}
+            {dueNow.length > 0 && (
+              <button
+                onClick={onStartReview}
+                className="flex-1 rounded-full bg-spark-ember text-white py-2 text-xs font-semibold hover:bg-orange-600 transition-colors min-h-[32px]"
+              >
+                ⏰ Review {dueNow.length}
+              </button>
+            )}
+          </div>
+        ) : (
+          <p className="text-center font-body text-xs text-text-muted py-0.5">
+            ✓ All clear — nothing needs tending right now
+          </p>
+        )}
+      </div>
+    </motion.div>
+  );
+}
 
 // ── Single track card ──
 function TrackCard({ track, ageGroup, onExplain, onReview, onRemove, onToggleMode, onConnect, onShare, onTend, connectMode, isConnectSource }) {
@@ -117,16 +245,23 @@ function TrackCard({ track, ageGroup, onExplain, onReview, onRemove, onToggleMod
         opacity: 1, y: 0,
         boxShadow: (justConnected || isConnectSource)
           ? `0 0 0 2px ${color}60, 0 4px 16px ${color}20`
-          : undefined,
+          : '0 2px 12px rgba(42,42,42,0.08)',
       }}
+      whileHover={!isInConnectMode ? {
+        y: -3,
+        boxShadow: `0 12px 32px ${color}18, 0 4px 12px rgba(42,42,42,0.06)`,
+      } : {}}
       exit={{ opacity: 0, x: -20, height: 0 }}
       transition={{ layout: { duration: 0.2 } }}
-      className={`bg-bg-secondary rounded-card shadow-card overflow-hidden transition-all ${
+      className={`bg-bg-secondary rounded-card overflow-hidden transition-colors ${
         isInConnectMode ? 'cursor-pointer ring-2 ring-[rgba(255,107,53,0.3)] hover:ring-spark-ember' : ''
       }`}
       onClick={isInConnectMode ? handleConnect : undefined}
     >
-      <div className="h-1" style={{ backgroundColor: color }} />
+      <div
+        className="h-1.5"
+        style={{ backgroundColor: color, boxShadow: `0 2px 8px ${color}60` }}
+      />
       <div className="p-4">
         {/* Header */}
         <div className="flex items-start justify-between gap-2 mb-1.5">
@@ -811,25 +946,62 @@ export default function Tracks({ onSpark }) {
     );
   }
 
+  const gardenColor = (() => {
+    const topDomain = tracksWithSRS[0]?.domain;
+    return DOMAIN_COLORS[topDomain] || '#2D936C';
+  })();
+
   // ── Main tracks view ──
   return (
     <div className="flex flex-col h-full">
-      <div className="px-4 pt-6 pb-3 border-b border-[rgba(42,42,42,0.06)]">
-        <div className="max-w-[600px] mx-auto flex items-start justify-between gap-3">
-          <div>
-            <h1 className="font-display text-2xl font-semibold text-text-primary">Tracks</h1>
-            <p className="font-body text-text-muted text-sm mt-0.5">
-              {tracks.length} saved · {dueNow.length > 0 ? `${dueNow.length} due` : 'all clear'}
-            </p>
+      <div
+        className="relative overflow-hidden px-4 pt-6 pb-4"
+        style={{
+          background: `linear-gradient(135deg, ${gardenColor}14 0%, rgba(45,147,108,0.06) 50%, rgba(255,253,247,0.96) 100%)`,
+          borderBottom: `1px solid ${gardenColor}18`,
+        }}
+      >
+        <div
+          className="pointer-events-none absolute -top-8 -right-8 w-40 h-40 rounded-full"
+          style={{ background: `radial-gradient(circle, ${gardenColor}18 0%, transparent 70%)` }}
+          aria-hidden="true"
+        />
+        <div className="max-w-[600px] mx-auto relative">
+          <div className="flex items-center justify-between">
+            <div>
+              <motion.div
+                initial={{ opacity: 0, y: -4 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex items-center gap-2 mb-0.5"
+              >
+                <motion.span
+                  className="text-xl leading-none"
+                  animate={{ rotate: [0, -8, 8, -4, 0] }}
+                  transition={{ duration: 2.8, delay: 1, repeat: Infinity, repeatDelay: 7 }}
+                >
+                  🌿
+                </motion.span>
+                <h1 className="font-display text-2xl font-semibold text-text-primary">Your Garden</h1>
+              </motion.div>
+              <p className="font-body text-text-muted text-sm">
+                {tracks.length === 0
+                  ? 'Plant your first seed in Explore →'
+                  : `${tracks.length} branch${tracks.length !== 1 ? 'es' : ''} · ${masteringTracks.length} mastering · ${dueNow.length > 0 ? `${dueNow.length} due for review` : 'all tended'}`}
+              </p>
+            </div>
+            {tracks.length > 0 && (
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.15, type: 'spring', stiffness: 240, damping: 22 }}
+                className="rounded-[18px] px-3 py-2 text-center"
+                style={{ background: `${gardenColor}14`, border: `1px solid ${gardenColor}25` }}
+              >
+                <p className="font-display text-xl font-semibold text-text-primary leading-none">{tracks.length}</p>
+                <p className="text-[10px] font-mono uppercase tracking-[0.14em] text-text-muted mt-0.5">branches</p>
+              </motion.div>
+            )}
           </div>
-          {dueNow.length > 0 && (
-            <button
-              onClick={() => handleStartReview()}
-              className="flex-shrink-0 flex items-center gap-1.5 px-4 py-2.5 rounded-card bg-spark-ember text-white text-sm font-medium hover:bg-orange-600 transition-colors shadow-sm min-h-[44px]"
-            >
-              ⏰ Review {dueNow.length} due
-            </button>
-          )}
         </div>
       </div>
 
@@ -860,39 +1032,36 @@ export default function Tracks({ onSpark }) {
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              className="flex flex-col items-center gap-4 py-16 text-center"
+              className="flex flex-col items-center gap-5 py-16 text-center"
             >
-              <Ember mood="curious" size="lg" glowIntensity={0.4} />
+              <div className="relative">
+                <Ember mood="curious" size="lg" glowIntensity={0.5} />
+                <motion.div
+                  className="absolute -bottom-2 left-1/2 -translate-x-1/2 text-2xl"
+                  initial={{ scale: 0 }} animate={{ scale: 1 }}
+                  transition={{ delay: 0.4, type: 'spring', stiffness: 300 }}
+                >
+                  🌱
+                </motion.div>
+              </div>
               <div>
-                <p className="font-display text-lg font-semibold text-text-primary mb-1">
-                  Nothing saved yet
+                <p className="font-display text-xl font-semibold text-text-primary mb-1.5">
+                  Your garden is empty
                 </p>
-                <p className="font-body text-text-muted text-sm max-w-[260px] mx-auto leading-relaxed">
-                  When you find something worth returning to in Explore, tap "Add to Tracks"
+                <p className="font-body text-text-muted text-sm max-w-[280px] mx-auto leading-relaxed">
+                  When you find something worth returning to in Explore, save it and watch it grow here.
                 </p>
               </div>
             </motion.div>
           ) : (
             <div className="space-y-5">
-              <div className="grid gap-3 md:grid-cols-3">
-                <div className="rounded-[22px] bg-[rgba(255,255,255,0.72)] p-4 shadow-card">
-                  <p className="text-[11px] font-mono uppercase tracking-[0.14em] text-text-muted">Active Tracks</p>
-                  <p className="mt-1 font-display text-3xl text-text-primary">{tracks.length}</p>
-                  <p className="text-xs font-body text-text-muted">Ideas worth returning to.</p>
-                </div>
-                <div className="rounded-[22px] bg-[rgba(255,107,53,0.08)] p-4 shadow-card">
-                  <p className="text-[11px] font-mono uppercase tracking-[0.14em] text-text-muted">Due Right Now</p>
-                  <p className="mt-1 font-display text-3xl text-text-primary">{dueNow.length}</p>
-                  <p className="text-xs font-body text-text-muted">The tightest loop for retention.</p>
-                </div>
-                <div className="rounded-[22px] bg-[rgba(91,94,166,0.08)] p-4 shadow-card">
-                  <p className="text-[11px] font-mono uppercase tracking-[0.14em] text-text-muted">Connections</p>
-                  <p className="mt-1 font-display text-3xl text-text-primary">
-                    {tracks.reduce((sum, track) => sum + (track.connections?.length || 0), 0)}
-                  </p>
-                  <p className="text-xs font-body text-text-muted">Cross-topic bridges in your map.</p>
-                </div>
-              </div>
+              <GardenHealthPanel
+                tracksWithSRS={tracksWithSRS}
+                careTracks={careTracks}
+                dueNow={dueNow}
+                onTendAll={handleTendAll}
+                onStartReview={() => handleStartReview()}
+              />
 
               {masteringTracks.length > 0 && (
                 <motion.div
@@ -1089,9 +1258,13 @@ export default function Tracks({ onSpark }) {
               {/* Mastering section */}
               {masteringTracks.length > 0 && (
                 <section>
-                  <h2 className="font-body font-semibold text-text-secondary text-xs uppercase tracking-wider mb-3">
-                    🎯 Mastering
-                  </h2>
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="h-px flex-1 bg-[rgba(42,42,42,0.07)]" />
+                    <span className="text-[11px] font-mono uppercase tracking-[0.16em] text-text-muted px-2">
+                      🎯 Mastering · {masteringTracks.length}
+                    </span>
+                    <div className="h-px flex-1 bg-[rgba(42,42,42,0.07)]" />
+                  </div>
                   <div className="space-y-3">
                     <AnimatePresence>
                       {masteringTracks.map((track) => (
@@ -1118,9 +1291,13 @@ export default function Tracks({ onSpark }) {
               {/* Exploring section */}
               {exploringTracks.length > 0 && (
                 <section>
-                  <h2 className="font-body font-semibold text-text-secondary text-xs uppercase tracking-wider mb-3">
-                    🏔 Exploring
-                  </h2>
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="h-px flex-1 bg-[rgba(42,42,42,0.07)]" />
+                    <span className="text-[11px] font-mono uppercase tracking-[0.16em] text-text-muted px-2">
+                      🏔 Exploring · {exploringTracks.length}
+                    </span>
+                    <div className="h-px flex-1 bg-[rgba(42,42,42,0.07)]" />
+                  </div>
                   <div className="space-y-3">
                     <AnimatePresence>
                       {exploringTracks.map((track) => (

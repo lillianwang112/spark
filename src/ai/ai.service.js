@@ -10,9 +10,28 @@ import {
   personalitySummaryPrompt,
   journeyNarrativePrompt,
   interactiveDiagramPrompt,
+  keyTakeawaysPrompt,
+  quickQuizPrompt,
 } from './prompts.js';
 import { parseAIJson } from '../utils/helpers.js';
 import { hashPath } from '../utils/helpers.js';
+import { getSharedAICache, setSharedAICache } from '../services/firebase.js';
+
+// Only cache-shareable types (not personalized responses)
+const SHARED_CACHEABLE = new Set(['explainer', 'keyTakeaways', 'quickQuiz', 'nodeChildren']);
+
+// Static pre-warmed cache — zero latency, bundled at build time
+let _staticCache = null;
+async function getStaticCache() {
+  if (_staticCache !== null) return _staticCache;
+  try {
+    const mod = await import('../data/prewarmed.json', { with: { type: 'json' } });
+    _staticCache = mod.default || {};
+  } catch {
+    _staticCache = {};
+  }
+  return _staticCache;
+}
 
 const AI_BACKEND = import.meta.env.VITE_AI_BACKEND || 'puter';
 const TIMEOUT_MS = 12000;
@@ -126,6 +145,8 @@ const FALLBACKS = {
   personalitySummary: () => "You're drawn to the edges of things — where one field bleeds into another. You don't just learn; you connect.",
   journeyNarrative: () => "Your curiosity took some interesting turns. Keep following what pulls you.",
   interactiveDiagram: () => null, // No fallback — just don't show if AI fails
+  keyTakeaways: () => null,
+  quickQuiz: () => null,
 };
 
 // ── Cache key builders ──
@@ -144,6 +165,10 @@ function getCacheKey(type, params) {
       return `jn:${params.period}:${hashPath(params.nodeSequence)}`;
     case 'interactiveDiagram':
       return `id:${hashPath(params.currentPath)}:${params.currentNode}:${params.ageGroup || 'college'}`;
+    case 'keyTakeaways':
+      return `kt:${hashPath(params.currentPath)}:${params.currentNode}:${params.ageGroup || 'college'}`;
+    case 'quickQuiz':
+      return `qq:${hashPath(params.currentPath)}:${params.currentNode}:${params.ageGroup || 'college'}`;
     default:
       return `${type}:${JSON.stringify(params).slice(0, 100)}`;
   }
@@ -158,6 +183,8 @@ function buildPrompt(type, params) {
     case 'personalitySummary': return personalitySummaryPrompt(params);
     case 'journeyNarrative':     return journeyNarrativePrompt(params);
     case 'interactiveDiagram':   return interactiveDiagramPrompt(params);
+    case 'keyTakeaways':         return keyTakeawaysPrompt(params);
+    case 'quickQuiz':            return quickQuizPrompt(params);
     default: throw new Error(`Unknown prompt type: ${type}`);
   }
 }
@@ -177,8 +204,9 @@ const AIService = {
   // Structured call with cache + retry + fallback
   async call(type, params, options = {}) {
     const cacheKey = getCacheKey(type, params);
+    const sharedDocId = `${type}__${cacheKey}`.replace(/[^a-zA-Z0-9_-]/g, '_').slice(0, 500);
 
-    // 1. Check cache
+    // 1. Local cache (instant)
     if (!options.skipCache) {
       const cached = AICache.get(type, cacheKey);
       if (cached !== null) return cached;
@@ -190,10 +218,36 @@ const AIService = {
     }
 
     const request = (async () => {
-      // 2. Build prompt
+      // 2. Static pre-warmed cache (bundled, zero network)
+      if (!options.skipCache && SHARED_CACHEABLE.has(type)) {
+        try {
+          const staticData = await getStaticCache();
+          const staticVal = staticData[cacheKey];
+          if (staticVal !== undefined) {
+            AICache.set(type, cacheKey, staticVal);
+            return staticVal;
+          }
+        } catch {
+          // fall through
+        }
+      }
+
+      // 3. Firebase shared cache (pre-warmed by other users)
+      if (!options.skipCache && SHARED_CACHEABLE.has(type)) {
+        try {
+          const shared = await getSharedAICache(sharedDocId);
+          if (shared !== null) {
+            AICache.set(type, cacheKey, shared);
+            return shared;
+          }
+        } catch {
+          // fall through to generation
+        }
+      }
+
+      // 3. Build prompt + generate
       const { prompt, systemPrompt } = buildPrompt(type, params);
 
-      // 3. Try with timeout, retry once on failure
       let result;
       try {
         result = await withTimeout(complete(prompt, systemPrompt), TIMEOUT_MS);
@@ -208,7 +262,7 @@ const AIService = {
       }
 
       // 4. Parse JSON types
-      const jsonTypes = ['discoveryCards', 'nodeChildren'];
+      const jsonTypes = ['discoveryCards', 'nodeChildren', 'keyTakeaways', 'quickQuiz'];
       if (jsonTypes.includes(type)) {
         const parsed = parseAIJson(result);
         if (!parsed) {
@@ -216,11 +270,18 @@ const AIService = {
           return FALLBACKS[type]?.(params) ?? null;
         }
         AICache.set(type, cacheKey, parsed);
+        // Write back to Firebase so future users get it instantly
+        if (SHARED_CACHEABLE.has(type)) {
+          setSharedAICache(sharedDocId, parsed).catch(() => {});
+        }
         return parsed;
       }
 
       // 5. String types
       AICache.set(type, cacheKey, result);
+      if (SHARED_CACHEABLE.has(type)) {
+        setSharedAICache(sharedDocId, result).catch(() => {});
+      }
       return result;
     })();
 

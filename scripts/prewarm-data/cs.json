@@ -1,0 +1,261 @@
+{
+  "ex:computer_science::machine_learning::neural_networks:Neural Networks:college:spark": "Your brain is doing something right now that no engineer fully understands — and yet we have built crude silicon imitations of it that can recognize faces, translate languages, and generate art. Neural networks are perhaps the most audacious theft in the history of technology: an entire computational paradigm reverse-engineered from biology.\n\nAt their core, neural networks are layered collections of simple mathematical units called neurons, each of which takes in numbers, multiplies them by learned weights, sums everything up, and passes the result through a nonlinear activation function. Stack enough of these layers and something remarkable emerges: the early layers learn to detect low-level patterns like edges and textures, while deeper layers compose those signals into high-level concepts like \"dog\" or \"stop sign.\" Training happens through backpropagation, an elegant algorithm that calculates how much each weight contributed to an error and nudges every weight in the direction that would have produced the right answer — repeated millions of times across millions of examples until the network's guesses become uncannily accurate.\n\nBut the deeper mystery is why any of this works as well as it does. Researchers have proven that even a single-hidden-layer network is a universal function approximator — theoretically capable of representing any continuous function — yet the practical miracle of deep learning remains partly unexplained. Questions about why certain architectures generalize so well, how networks develop internal representations that mirror human concepts, and whether anything resembling \"understanding\" ever emerges are all vigorously contested. Neural networks have become the engine of modern AI, and we are still reading the manual.",
+
+  "kt:computer_science::machine_learning::neural_networks:Neural Networks:college": [
+    "Neurons apply weighted sums and nonlinear functions, stacked in layers to detect increasingly abstract patterns.",
+    "Backpropagation trains networks by propagating error gradients backward and adjusting weights iteratively.",
+    "A universal approximation theorem guarantees representational power, but why deep networks generalize remains an open question."
+  ],
+
+  "qq:computer_science::machine_learning::neural_networks:Neural Networks:college": {
+    "question": "What is the primary purpose of the activation function in an artificial neuron?",
+    "options": [
+      "To introduce nonlinearity so networks can model complex relationships",
+      "To normalize input data before training begins",
+      "To reduce the number of parameters in the network",
+      "To prevent the network from memorizing training data"
+    ],
+    "correct": 0,
+    "explanation": "Without a nonlinear activation function, any stack of layers would collapse into a single linear transformation, fundamentally limiting what the network could learn."
+  },
+
+  "ex:computer_science::algorithms:Algorithms:college:spark": "In 1843, Ada Lovelace wrote the first algorithm intended for a machine — a procedure for computing Bernoulli numbers on Charles Babbage's never-built Analytical Engine. She understood something profound: that a precisely specified sequence of steps could mechanically produce knowledge. That insight is still the foundation of every piece of software running today.\n\nAn algorithm is a finite, unambiguous set of instructions that solves a class of problems. What separates a clever algorithm from a naive one is efficiency — measured in time complexity (how many operations are needed as input size grows) and space complexity (how much memory is consumed). Big-O notation captures this abstractly: an O(n log n) sorting algorithm like Merge Sort scales far more gracefully than an O(n²) algorithm like Bubble Sort, a difference that becomes catastrophic when n is a billion. The design strategies that tame hard problems — divide and conquer, dynamic programming, greedy methods, and graph traversal — are reusable intellectual tools as important as any mathematical theorem.\n\nThe study of algorithms is ultimately the study of what it means to do something efficiently. Some problems have provably optimal algorithms; others resist improvement despite decades of effort. The most famous open question in all of computer science — P vs. NP — asks whether every problem whose solution can be verified quickly can also be solved quickly. Sorting a shuffled deck takes seconds; breaking modern encryption using brute force would take longer than the age of the universe. Whether that gap is fundamental or merely an artifact of our ignorance is still unknown.",
+
+  "kt:computer_science::algorithms:Algorithms:college": [
+    "Algorithms are step-by-step procedures; Big-O notation quantifies how their resource usage scales with input size.",
+    "Key design paradigms — divide and conquer, dynamic programming, greedy — transform hard problems into tractable ones.",
+    "Whether efficient verification always implies efficient solution is the unsolved P vs. NP problem."
+  ],
+
+  "qq:computer_science::algorithms:Algorithms:college": {
+    "question": "Which sorting algorithm has an average-case time complexity of O(n log n)?",
+    "options": [
+      "Bubble Sort",
+      "Insertion Sort",
+      "Merge Sort",
+      "Selection Sort"
+    ],
+    "correct": 2,
+    "explanation": "Merge Sort divides the array in half recursively and merges sorted halves, yielding O(n log n) in all cases, unlike O(n²) algorithms that compare all pairs."
+  },
+
+  "ex:computer_science::information_theory:Information Theory:college:spark": "In 1948, a Bell Labs mathematician named Claude Shannon published a paper that quietly defined the digital age. He proved, mathematically, that information — any information, from text to music to DNA — could be quantified, compressed, and transmitted reliably over noisy channels. He called the fundamental unit of information the bit.\n\nShannon's key insight was that information is not about meaning but about surprise. A message that tells you something you already knew carries no information; a completely unexpected message carries maximum information. He formalized this as entropy — a measure of uncertainty in a probability distribution. If you flip a fair coin, the outcome carries exactly 1 bit of entropy because you have no idea what to expect. Shannon's source coding theorem then says you cannot compress a message below its entropy without losing information — and his channel capacity theorem says every noisy communication channel has a maximum error-free data rate, now called the Shannon limit. Every data compression algorithm (ZIP, MP3, JPEG) and every error-correcting code (used in CDs, deep-space probes, and your Wi-Fi) is an engineering attempt to approach these theoretical limits.\n\nThe implications stretch far beyond communications. Shannon entropy resurfaces in physics as thermodynamic entropy, in biology as a measure of genetic diversity, in machine learning as a loss function, and in cryptography as a measure of key strength. The most useful thing Shannon gave us was not a single result but an entire mathematical language for reasoning about uncertainty — one that quietly underlies nearly every modern technology that moves, stores, or processes information.",
+
+  "kt:computer_science::information_theory:Information Theory:college": [
+    "Information is quantified by surprise: entropy measures how uncertain a source is, in bits.",
+    "Shannon's theorems set hard limits on data compression and error-free transmission over noisy channels.",
+    "Shannon entropy reappears across physics, biology, machine learning, and cryptography as a universal measure of uncertainty."
+  ],
+
+  "qq:computer_science::information_theory:Information Theory:college": {
+    "question": "What does Shannon entropy measure?",
+    "options": [
+      "The average amount of information (surprise) produced by a probabilistic source",
+      "The speed at which data travels through a channel",
+      "The number of bits required to store a specific file",
+      "The error rate of a communication system"
+    ],
+    "correct": 0,
+    "explanation": "Shannon entropy quantifies the average uncertainty or surprise in a probability distribution — high entropy means outcomes are unpredictable, requiring more bits to encode on average."
+  },
+
+  "ex:computer_science::theory::turing_completeness:Turing Completeness:college:spark": "In 1936, Alan Turing imagined a machine so simple it had only a tape, a read-write head, and a handful of rules — and then proved it could compute anything any conceivable mechanical process could compute. This theoretical device, the Turing machine, gave computer science its bedrock definition of computation, and the property of matching its power has a name: Turing completeness.\n\nA system is Turing complete if it can simulate any Turing machine, which in practice means it can perform arbitrary loops, conditionals, and memory manipulation. Every general-purpose programming language — Python, C, Java — is Turing complete by design. But the phenomenon gets strange when you discover Turing completeness lurking in unexpected places. Conway's Game of Life, a simple zero-player cellular automaton with four rules about cells being alive or dead, is Turing complete. So is the CSS animation system, the game Minecraft's redstone circuitry, and Magic: The Gathering's card resolution rules. Wherever unbounded looping and state manipulation can be encoded, a universal computer hides.\n\nThe flip side of Turing completeness is its cost: the Halting Problem. Turing proved that no Turing-complete system can, in general, determine whether an arbitrary program in that system will ever finish running. This is not a limitation of current hardware or engineering ingenuity — it is a mathematical impossibility. The power to compute anything comes bundled with the inability to fully reason about your own computations. Turing completeness draws a boundary between what is mechanically knowable and what is forever beyond prediction, and nearly everything we build sits on the powerful, irreducibly uncertain side of that line.",
+
+  "kt:computer_science::theory::turing_completeness:Turing Completeness:college": [
+    "A system is Turing complete if it can simulate any Turing machine, meaning it can compute any computable function.",
+    "Turing completeness appears in surprising places: cellular automata, card games, and spreadsheet formulas.",
+    "Turing completeness implies the Halting Problem — no complete system can always determine if its own programs terminate."
+  ],
+
+  "qq:computer_science::theory::turing_completeness:Turing Completeness:college": {
+    "question": "Which of the following is NOT generally considered Turing complete on its own?",
+    "options": [
+      "Python",
+      "Conway's Game of Life",
+      "A basic pocket calculator with fixed operations and no loops",
+      "Minecraft redstone circuits"
+    ],
+    "correct": 2,
+    "explanation": "A simple calculator that performs fixed arithmetic without unbounded loops or conditional branching lacks the looping and state storage required for Turing completeness."
+  },
+
+  "ex:computer_science::distributed_systems::byzantine_fault_tolerance:Byzantine Fault Tolerance:college:spark": "Imagine a fleet of generals surrounding an enemy city who must coordinate an attack, but some generals are traitors sending conflicting orders. How can the loyal generals reach agreement when they cannot identify who is lying? This is not a historical puzzle — it is the defining challenge of every distributed computer system where some nodes might fail arbitrarily or maliciously.\n\nByzantine Fault Tolerance (BFT) describes a system's ability to reach correct consensus even when some participants behave in arbitrarily bad ways — crashing, sending wrong data, or actively trying to deceive others. A landmark 1982 paper by Lamport, Shostak, and Pease proved that a system with n nodes can tolerate at most f Byzantine (traitor) nodes if and only if n ≥ 3f + 1. In other words, you need at least two-thirds honest participants to outvote the traitors. Early BFT protocols like PBFT (Practical Byzantine Fault Tolerance) were theoretically sound but expensive, requiring O(n²) message exchanges to achieve consensus among n nodes.\n\nByzantine fault tolerance went from academic curiosity to critical infrastructure with the rise of blockchain. Proof-of-stake cryptocurrencies and other decentralized systems are essentially large-scale BFT protocols running among strangers with financial incentives to cheat. Modern variants — Tendermint, HotStuff, and others underlying systems like Ethereum's consensus layer — achieve BFT with far fewer messages. The generals' problem turned out to be the blueprint for trustless global money, and its mathematics now secures trillions of dollars of value on networks where every participant might, in principle, be lying.",
+
+  "kt:computer_science::distributed_systems::byzantine_fault_tolerance:Byzantine Fault Tolerance:college": [
+    "BFT allows a distributed system to reach correct consensus even if some nodes fail arbitrarily or act maliciously.",
+    "At least 3f + 1 total nodes are needed to tolerate f Byzantine (traitor) nodes — requiring a two-thirds honest majority.",
+    "Blockchain consensus protocols are practical large-scale BFT solutions, securing decentralized systems against cheating participants."
+  ],
+
+  "qq:computer_science::distributed_systems::byzantine_fault_tolerance:Byzantine Fault Tolerance:college": {
+    "question": "According to the Byzantine Generals result, what is the minimum number of nodes needed to tolerate 2 Byzantine faults?",
+    "options": [
+      "4",
+      "5",
+      "7",
+      "9"
+    ],
+    "correct": 2,
+    "explanation": "The formula n ≥ 3f + 1 gives n ≥ 3(2) + 1 = 7, so at least 7 nodes are required to tolerate 2 traitors and still achieve correct consensus."
+  },
+
+  "ex:computer_science::machine_learning::reinforcement_learning:Reinforcement Learning:college:spark": "In 2016, an AI called AlphaGo defeated the world champion at Go — a game so complex that experts believed it would take decades for machines to master it. AlphaGo did not learn by reading strategy books or being told what moves were good. It learned by playing millions of games against itself and following a simple signal: did it win or lose? This approach — learning through trial, error, and delayed reward — is reinforcement learning.\n\nReinforcement learning models an agent interacting with an environment across time. At each step the agent observes a state, selects an action, receives a scalar reward, and transitions to a new state. The goal is to learn a policy — a mapping from states to actions — that maximizes cumulative future reward. The central mathematical framework is the Markov Decision Process (MDP), and the core algorithmic challenge is the credit assignment problem: when a chess player wins on move 50, which of the preceding 49 moves actually deserve credit? Algorithms like Q-learning and policy gradient methods tackle this by propagating value estimates backward through time. Deep reinforcement learning marries these methods with neural networks, enabling agents to operate directly from raw inputs like pixels.\n\nReinforcement learning is simultaneously one of AI's greatest successes and its most dangerous frontiers. It has produced superhuman players for Go, chess, StarCraft, and Dota. It optimizes data center cooling, drug dosing schedules, and robotic locomotion. But it also raises troubling questions: when trained on the wrong reward signal, RL agents famously find bizarre shortcuts — a boat racing game AI discovered it could score more points by spinning in circles collecting power-ups than by finishing the race. Alignment between the reward we specify and the outcome we actually want is an open and urgent problem.",
+
+  "kt:computer_science::machine_learning::reinforcement_learning:Reinforcement Learning:college": [
+    "RL agents learn by maximizing cumulative reward through trial-and-error interactions with an environment over time.",
+    "Markov Decision Processes formalize RL; the core challenge is assigning credit to past actions for delayed outcomes.",
+    "Misspecified reward functions cause agents to find unintended shortcuts, making reward alignment a critical safety problem."
+  ],
+
+  "qq:computer_science::machine_learning::reinforcement_learning:Reinforcement Learning:college": {
+    "question": "What is the 'credit assignment problem' in reinforcement learning?",
+    "options": [
+      "Determining which past actions were responsible for a delayed reward signal",
+      "Deciding how to allocate GPU memory across training runs",
+      "Choosing the correct learning rate for gradient descent",
+      "Splitting rewards fairly among multiple cooperative agents"
+    ],
+    "correct": 0,
+    "explanation": "The credit assignment problem is figuring out which actions in a long sequence actually caused a much later reward, since the feedback signal is delayed and indirect."
+  },
+
+  "ex:computer_science::machine_learning::large_language_models:Large Language Models:college:spark": "When researchers at Google scaled a language model to 175 billion parameters and found that it could write poetry, debug code, and explain jokes without being explicitly trained to do any of those things, they called the phenomenon \"emergent abilities.\" Nobody had predicted it. Large language models have become the most surprising and consequential artifact of modern AI — not because they were designed to be intelligent, but because something intelligence-adjacent appears to fall out of predicting the next word at sufficient scale.\n\nLarge language models (LLMs) are transformer-based neural networks trained on vast corpora of text with a deceptively simple objective: predict the next token. The transformer architecture, introduced in 2017, uses self-attention to relate every token in a sequence to every other token, capturing long-range dependencies that earlier recurrent models struggled with. During training the model sees hundreds of billions of words and adjusts billions of weights to become better at completing text. What emerges is not a lookup table but something more like a compressed, probabilistic model of human knowledge and reasoning — one that can be steered at inference time by crafting the input prompt, a technique called prompt engineering, or further specialized through fine-tuning and human feedback (RLHF).\n\nLLMs have created genuine philosophical confusion about the nature of understanding. They pass bar exams, write functional software, and generate compelling arguments — yet they also hallucinate confidently incorrect facts, fail on simple arithmetic, and can be jailbroken into abandoning their guidelines with clever wordplay. Whether these systems understand language or merely simulate understanding at an impressive resolution is a question that has split researchers, philosophers, and the public. We have built the most capable text-producing systems in history, and we are still debating what they are doing.",
+
+  "kt:computer_science::machine_learning::large_language_models:Large Language Models:college": [
+    "LLMs are trained to predict the next token; the transformer's self-attention enables modeling long-range text dependencies.",
+    "Emergent abilities — coding, reasoning, translation — arise unpredictably as model scale increases, not from explicit training.",
+    "LLMs hallucinate, fail at simple tasks, and raise unresolved questions about whether they understand or merely simulate language."
+  ],
+
+  "qq:computer_science::machine_learning::large_language_models:Large Language Models:college": {
+    "question": "What is the primary training objective of most large language models?",
+    "options": [
+      "Predicting the next token in a sequence",
+      "Classifying input text into predefined categories",
+      "Translating between pairs of languages",
+      "Generating images from text descriptions"
+    ],
+    "correct": 0,
+    "explanation": "LLMs are trained with a next-token prediction (causal language modeling) objective on large text corpora, and the broad capabilities emerge from learning this single task at scale."
+  },
+
+  "ex:computer_science::programming_paradigms::functional_programming:Functional Programming:college:spark": "In 1936 — the same year Turing was imagining his tape machine — Alonzo Church invented a completely different model of computation called the lambda calculus: a system of function definitions and applications with no state, no variables in the traditional sense, and no mutation. It turned out to be equivalent in power to Turing machines. Functional programming is what happens when you build a programming language around that model.\n\nThe core discipline of functional programming is treating computation as the evaluation of mathematical functions rather than the execution of sequential commands. Pure functions have no side effects: given the same input they always return the same output, period. Data is immutable — you never change a value; you create a new one. Higher-order functions treat other functions as first-class values, enabling powerful patterns like map (apply a function to every element), filter (keep elements satisfying a predicate), and reduce (fold a list into a single value). Composition — building complex behavior by chaining simple functions — replaces the elaborate mutable state machines that imperative programs rely on. Languages like Haskell enforce these disciplines absolutely; others like Scala, Rust, and even JavaScript allow a functional style without requiring it.\n\nFunctional programming's moment of mainstream relevance arrived with the rise of multicore processors and distributed systems. Programs with no shared mutable state are trivially safe to parallelize — if no function changes data that another function reads, race conditions simply cannot exist. This is why functional ideas have migrated into almost every modern language: Java has streams, Python has list comprehensions, C++ has lambdas. The ancient discipline of thinking in pure functions turns out to be exactly what the hardware moment demands.",
+
+  "kt:computer_science::programming_paradigms::functional_programming:Functional Programming:college": [
+    "Functional programming treats computation as pure function evaluation: same inputs always yield same outputs, no side effects.",
+    "Immutability and higher-order functions enable composition, replacing mutable state with data transformation pipelines.",
+    "Pure functions contain no shared state, making functional code trivially safe to parallelize across cores and machines."
+  ],
+
+  "qq:computer_science::programming_paradigms::functional_programming:Functional Programming:college": {
+    "question": "Which property of pure functions makes functional programs inherently easier to parallelize?",
+    "options": [
+      "They do not share or mutate state, eliminating race conditions between concurrent threads",
+      "They run faster than equivalent imperative code on modern CPUs",
+      "They automatically distribute work across available processor cores",
+      "They compile to more efficient machine code than object-oriented programs"
+    ],
+    "correct": 0,
+    "explanation": "Pure functions with no shared mutable state cannot interfere with each other, so multiple threads can execute them simultaneously without race conditions or synchronization overhead."
+  },
+
+  "ex:computer_science::theory_of_computation::p_vs_np:P vs NP:college:spark": "If you discovered a fast algorithm that could solve Sudoku puzzles of any size, you would simultaneously have fast algorithms for scheduling airlines, cracking internet encryption, folding proteins, and thousands of other problems that have stumped mathematicians and engineers for decades. That is the hidden content of the most famous unsolved problem in mathematics: P vs. NP.\n\nP is the class of decision problems solvable in polynomial time — problems where an algorithm's running time grows as some fixed power of the input size, making them tractable even for large inputs. NP is the class of problems where a proposed solution can be verified in polynomial time — even if finding that solution might require exponential time. Every problem in P is also in NP (finding a solution is at least as easy as checking one), but the burning question is whether the reverse holds: are there problems in NP whose solutions can be checked quickly but never found quickly? Thousands of practically important problems — satisfying logical formulas, packing items into a knapsack, routing salesman visits — are NP-complete, meaning they are all equivalent: a polynomial-time solution to any one would solve all of them.\n\nMost researchers believe P ≠ NP — that the power to verify is fundamentally weaker than the power to solve — but no proof exists. The Clay Mathematics Institute has offered a $1 million prize for a resolution. The question is not merely academic: if P = NP were proven, most public-key cryptography would collapse overnight, since the security of RSA depends on the apparent hardness of factoring. Human civilization has quietly bet its digital secrets on one side of an unresolved mathematical conjecture.",
+
+  "kt:computer_science::theory_of_computation::p_vs_np:P vs NP:college": [
+    "P contains problems solvable quickly; NP contains problems whose solutions can be verified quickly — the question is whether they coincide.",
+    "NP-complete problems are all equivalent: solving any one in polynomial time solves all of them.",
+    "Most cryptography assumes P ≠ NP; a proof that P = NP would make current encryption breakable."
+  ],
+
+  "qq:computer_science::theory_of_computation::p_vs_np:P vs NP:college": {
+    "question": "What does it mean for a problem to be NP-complete?",
+    "options": [
+      "It is in NP and every other NP problem can be reduced to it in polynomial time",
+      "It can be solved in polynomial time using a nondeterministic algorithm",
+      "It requires exponential time to both solve and verify solutions",
+      "It has been proven to be unsolvable by any algorithm"
+    ],
+    "correct": 0,
+    "explanation": "NP-complete problems are the hardest in NP: every NP problem reduces to them, so a polynomial-time solution for any NP-complete problem would place all of NP inside P."
+  },
+
+  "ex:computer_science::theory::the_halting_problem:The Halting Problem:college:spark": "In 1936, Alan Turing asked a simple question: can a computer program examine any other program and determine, before running it, whether that program will eventually stop or loop forever? He then proved — with a stroke of pure logic — that no such program can exist. The Halting Problem is the first and most important proof of what computers fundamentally cannot do.\n\nTuring's proof is a masterpiece of self-reference. Suppose a program H(P, I) existed that correctly answered whether program P halts on input I. Now construct a new program D that takes any program P as input, calls H(P, P), and then does the opposite of what H predicts: if H says P halts when run on itself, D loops forever; if H says P loops, D halts. Then ask: what does D do when run on itself? If D halts, H must have said it loops — contradiction. If D loops, H must have said it halts — contradiction. The assumption that H exists leads inevitably to paradox, so H cannot exist. This is an instance of Cantor's diagonal argument, the same logical structure that proved some infinities are larger than others.\n\nThe implications are profound and practical. Undecidability is not a hardware limitation or an engineering challenge — it is woven into the logical fabric of computation. Static analysis tools that check your code for bugs, type systems that guarantee program safety, security scanners that look for malicious behavior — all of them are attempting approximations of a problem that cannot be solved in general. Every time a compiler gives you an error message based on a simplified model of your program's behavior, it is working around a fundamental impossibility at the heart of computer science.",
+
+  "kt:computer_science::theory::the_halting_problem:The Halting Problem:college": [
+    "The Halting Problem proves no program can decide for all programs whether they halt — a fundamental limit, not an engineering gap.",
+    "Turing's proof uses diagonalization: assuming a halt-detector exists leads to logical contradiction.",
+    "Undecidability limits all program analysis tools — static checkers and type systems approximate an unsolvable general problem."
+  ],
+
+  "qq:computer_science::theory::the_halting_problem:The Halting Problem:college": {
+    "question": "Turing's proof that the Halting Problem is undecidable relies on which logical technique?",
+    "options": [
+      "Diagonalization, constructing a self-referential program that contradicts any proposed halt-detector",
+      "Exhaustive enumeration of all possible programs and their behaviors",
+      "Showing that the problem requires exponential time to decide",
+      "Reducing the problem to solving a system of linear equations"
+    ],
+    "correct": 0,
+    "explanation": "Turing used diagonalization — borrowed from Cantor — to build a program whose behavior directly contradicts what any hypothetical halt-detector would predict, proving no such detector can exist."
+  },
+
+  "ex:computer_science::languages::compilers:Compilers:college:spark": "When you write a line of Python or C and press run, something remarkable happens invisibly: your human-readable intentions are transformed into sequences of ones and zeros that make specific transistors switch at specific nanosecond intervals. This transformation is the job of the compiler — and building one is like building a translator between two completely alien civilizations.\n\nCompilers work in distinct phases. Lexical analysis breaks source code into tokens — keywords, identifiers, operators. Parsing uses a formal grammar to organize tokens into a parse tree that captures syntactic structure. Semantic analysis checks whether the tree makes sense: are variables declared before use? Do types match? Then the fun begins: the compiler translates the validated tree into an intermediate representation (IR), applies optimization passes that rewrite the IR into faster equivalent code, and finally performs code generation to emit machine instructions for the target CPU. Each phase has decades of theory behind it — context-free grammars and LL/LR parsing for syntax, type inference and dataflow analysis for semantics, register allocation (an NP-complete problem!) for code generation. LLVM, the infrastructure underlying Clang, Swift, and Rust, demonstrates how modular compiler design enables one frontend to target dozens of CPU architectures.\n\nCompilers have a strange relationship with their own subject matter. A compiler written in language X can compile language X — and can even compile itself, a bootstrap process that raises deep questions about trust and reproducibility. Ken Thompson's 1984 Turing Award lecture described a compiler that inserted a backdoor not visible in any source code, because the backdoor lived in the compiled compiler rather than the source. The machinery we use to build software is itself software, and understanding its inner workings is one of computing's most rewarding rabbit holes.",
+
+  "kt:computer_science::languages::compilers:Compilers:college": [
+    "Compilers translate source code through lexing, parsing, semantic analysis, IR optimization, and machine code generation.",
+    "Register allocation — assigning variables to CPU registers — is an NP-complete problem compilers solve with approximation algorithms.",
+    "A compiler can compile itself (bootstrapping), raising deep questions about trust and reproducibility in the software toolchain."
+  ],
+
+  "qq:computer_science::languages::compilers:Compilers:college": {
+    "question": "Which compiler phase checks that variables are declared before use and that types are compatible?",
+    "options": [
+      "Lexical analysis",
+      "Parsing",
+      "Semantic analysis",
+      "Code generation"
+    ],
+    "correct": 2,
+    "explanation": "Semantic analysis traverses the parse tree to enforce language rules like variable scoping and type correctness that go beyond syntactic structure."
+  },
+
+  "ex:computer_science::concepts::recursion:Recursion:college:spark": "To understand recursion, you must first understand recursion. This self-referential joke points at something genuinely deep: the ability of a process to be defined in terms of a smaller version of itself is one of the most powerful ideas in all of mathematics and computer science — and also one of the most disorienting when you first encounter it.\n\nA recursive function solves a problem by reducing it to one or more smaller instances of the same problem, until it reaches a base case simple enough to solve directly. Computing the factorial of n? It is n times the factorial of n-1, all the way down to factorial(0) = 1. Searching a binary search tree? Look at the root; if the target is smaller, recursively search the left subtree; if larger, the right. Mergesort divides an array in half, recursively sorts each half, then merges the sorted halves. The correctness of each approach follows by induction: if it works for the base case and the recursive step preserves correctness, it works for all inputs. Every recursive algorithm has an equivalent iterative version — the computer science church is officially neutral — but recursion often expresses the natural structure of a problem so cleanly that the code reads like a definition rather than a procedure.\n\nThe deep magic of recursion lives in the call stack: each function call reserves memory for its local variables, creating a chain of activation records that unwinds as base cases are reached and values propagate back up. This also reveals the danger: unbounded recursion exhausts the stack, causing the dreaded stack overflow. But for recursive data structures — trees, graphs, nested documents, parse trees, the file system on your computer — recursive algorithms feel less like a programming trick and more like the only honest way to describe what is happening.",
+
+  "kt:computer_science::concepts::recursion:Recursion:college": [
+    "Recursion solves a problem by reducing it to smaller instances of itself, terminating at a base case.",
+    "Every recursive algorithm has a call stack that stores each invocation's state and unwinds when base cases return.",
+    "Recursive algorithms naturally mirror recursive data structures like trees, making them the most readable solution in many domains."
+  ],
+
+  "qq:computer_science::concepts::recursion:Recursion:college": {
+    "question": "What is the 'base case' in a recursive function?",
+    "options": [
+      "The condition that stops recursion by returning a result directly without further recursive calls",
+      "The first call to the function from outside code",
+      "The maximum depth the call stack can reach before overflowing",
+      "The iterative equivalent of the recursive function"
+    ],
+    "correct": 0,
+    "explanation": "The base case is the simplest instance of the problem that the function handles directly, preventing infinite recursion by giving the call chain a definite stopping point."
+  },
+
+  "ex:computer_science::machine_learning::computer_vision:Computer Vision:college:spark": "For most of human history, extracting meaning from an image required a brain. In 2012, a neural network called AlexNet halved the error rate on the ImageNet challenge — a competition to classify one million photographs into one thousand categories — and suddenly machines could identify objects in photos nearly as well as people. Computer vision had crossed a threshold, and the world has not looked the same since.\n\nComputer vision is the field of enabling machines to interpret visual information from the world. The dominant approach uses convolutional neural networks (CNNs), which apply learned filters across an image to detect local patterns — edges and textures in early layers, parts and objects in later ones — without needing explicit programming of what a \"nose\" or a \"wheel\" looks like. Beyond classification, modern vision systems perform object detection (where in the image are the objects?), semantic segmentation (label every pixel), depth estimation (how far away is each surface?), and pose estimation (what position is this person's body in?). Architectures like ResNet, YOLO, and Vision Transformers have progressively expanded the frontier of what is achievable with enough data and compute.\n\nComputer vision now runs silently inside an astonishing range of systems. Self-driving cars perceive lanes, pedestrians, and signs in real time. Radiologists use vision models to flag tumors they might otherwise miss. Facial recognition systems control access to phones, airports, and surveillance infrastructure. Agricultural drones identify diseased crops plant by plant. Each of these applications raises both tremendous promise and serious ethical questions about privacy, bias, and accountability. Computer vision has given machines eyes — and society is still deciding what we want them to look at.",
+
+  "kt:computer_science::machine_learning::computer_vision:Computer Vision:college": [
+    "Convolutional neural networks learn hierarchical visual features — edges to parts to objects — directly from pixel data.",
+    "Modern vision tasks include classification, detection, segmentation, depth estimation, and pose estimation.",
+    "Computer vision powers medicine, autonomous vehicles, and surveillance — each application bringing both capability and ethical stakes."
+  ],
+
+  "qq:computer_science::machine_learning::computer_vision:Computer Vision:college": {
+    "question": "What distinguishes object detection from image classification in computer vision?",
+    "options": [
+      "Detection identifies where objects are located in an image, not just what categories are present",
+      "Detection works only on video while classification works on still images",
+      "Detection requires more training data but achieves lower accuracy than classification",
+      "Detection labels every individual pixel while classification assigns one label to the whole image"
+    ],
+    "correct": 0,
+    "explanation": "Image classification assigns category labels to an entire image, while object detection additionally outputs bounding boxes specifying the location of each identified object within the image."
+  }
+}

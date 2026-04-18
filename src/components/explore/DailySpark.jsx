@@ -37,6 +37,20 @@ export default function DailySpark({
           'linear-gradient(135deg, rgba(255,233,196,0.94) 0%, rgba(255,214,158,0.9) 45%, rgba(255,249,238,0.95) 100%)',
       }}
     >
+      {/* Slow breathing gradient pulse */}
+      <motion.div
+        className="pointer-events-none absolute inset-0"
+        animate={{
+          background: [
+            'radial-gradient(ellipse at 20% 30%, rgba(255,209,102,0.35) 0%, transparent 60%)',
+            'radial-gradient(ellipse at 70% 60%, rgba(255,138,90,0.3) 0%, transparent 60%)',
+            'radial-gradient(ellipse at 40% 20%, rgba(255,209,102,0.32) 0%, transparent 60%)',
+            'radial-gradient(ellipse at 20% 30%, rgba(255,209,102,0.35) 0%, transparent 60%)',
+          ],
+        }}
+        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+        aria-hidden="true"
+      />
       <Sparkles count={8} color="#FFD166" />
 
       <div className="relative flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
@@ -61,22 +75,38 @@ export default function DailySpark({
               {suggestion?.body || 'Tap one of these, or surprise me. The tree remembers what tugs on your attention.'}
             </p>
             <div className="mt-3 flex flex-wrap gap-2">
-              {prompts.map((prompt) => (
-                <button
+              {prompts.map((prompt, i) => (
+                <motion.button
                   key={prompt}
+                  initial={{ opacity: 0, y: 6, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ delay: 0.2 + i * 0.07, type: 'spring', stiffness: 300, damping: 22 }}
+                  whileHover={{ y: -3, scale: 1.02, boxShadow: '0 10px 24px rgba(255,107,53,0.28)' }}
+                  whileTap={{ scale: 0.96 }}
                   onClick={() => onSearch?.(prompt)}
-                  className="group inline-flex items-center gap-1.5 rounded-full border border-[rgba(255,107,53,0.18)] bg-[rgba(255,255,255,0.88)] px-3 py-1.5 text-sm font-body font-semibold text-spark-ember shadow-[0_4px_10px_rgba(255,107,53,0.12)] transition-all hover:shadow-[0_8px_18px_rgba(255,107,53,0.25)] hover:-translate-y-0.5"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-[rgba(255,107,53,0.18)] bg-[rgba(255,255,255,0.88)] px-3 py-1.5 text-sm font-body font-semibold text-spark-ember shadow-[0_4px_10px_rgba(255,107,53,0.1)]"
                 >
-                  <span aria-hidden="true">✨</span>
+                  <motion.span
+                    aria-hidden="true"
+                    animate={{ rotate: [0, 14, -8, 0], scale: [1, 1.2, 1] }}
+                    transition={{ duration: 2, delay: 0.5 + i * 0.4, repeat: Infinity, repeatDelay: 4 }}
+                  >
+                    ✨
+                  </motion.span>
                   <span>{prompt}</span>
-                </button>
+                </motion.button>
               ))}
-              <button
+              <motion.button
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.4, type: 'spring', stiffness: 300, damping: 24 }}
+                whileHover={{ y: -3, scale: 1.02 }}
+                whileTap={{ scale: 0.96 }}
                 onClick={() => onStartDiscovery?.()}
-                className="inline-flex items-center gap-1.5 rounded-full bg-[rgba(42,42,42,0.85)] px-3 py-1.5 text-sm font-body font-semibold text-white shadow-[0_6px_14px_rgba(42,42,42,0.25)] transition hover:bg-[#111] hover:-translate-y-0.5"
+                className="inline-flex items-center gap-1.5 rounded-full bg-[rgba(42,42,42,0.85)] px-3 py-1.5 text-sm font-body font-semibold text-white shadow-[0_6px_14px_rgba(42,42,42,0.25)] transition hover:bg-[#111]"
               >
                 Surprise me →
-              </button>
+              </motion.button>
             </div>
           </div>
         </div>

@@ -34,6 +34,14 @@ function AppShell() {
   const [onboardingResult, setOnboardingResult] = useState(null);
   const [pendingDeepDive, setPendingDeepDive] = useState(null);
 
+  // When "Rediscover interests" resets onboardingComplete, re-show onboarding
+  useEffect(() => {
+    if (!onboardingComplete && onboardingDone) {
+      setOnboardingDone(false);
+      setOnboardingResult(null);
+    }
+  }, [onboardingComplete, onboardingDone]);
+
   const threadSearch = useMemo(() => {
     const params = new URLSearchParams(window.location.search);
     const thread = params.get('thread');
@@ -45,7 +53,7 @@ function AppShell() {
       const parts = threadSearch.split('/').filter(Boolean);
       return parts[parts.length - 1]?.replace(/-/g, ' ') || null;
     }
-    if (onboardingResult?.intent === 'idea') return onboardingResult.searchSeed;
+    if (onboardingResult?.intent === 'idea' || onboardingResult?.intent === 'major') return onboardingResult.searchSeed;
     return null;
   }, [threadSearch, onboardingResult]);
 
@@ -100,10 +108,10 @@ function AppShell() {
 
   return (
     <div className="spark-shell px-2 pb-0 pt-2 sm:px-5 sm:pt-4">
-      {/* Ambient background orbs */}
-      <div className="spark-orb hidden sm:block h-48 w-48 bg-[rgba(255,107,53,0.24)] left-6 top-8" />
-      <div className="spark-orb hidden sm:block h-56 w-56 bg-[rgba(74,111,165,0.18)] right-4 top-40" />
-      <div className="spark-orb hidden sm:block h-40 w-40 bg-[rgba(255,209,102,0.22)] left-[40%] bottom-20" />
+      {/* Ambient background orbs — visible on all sizes, larger on desktop */}
+      <div className="spark-orb h-28 w-28 sm:h-48 sm:w-48 bg-[rgba(255,107,53,0.28)] left-3 top-5 sm:left-6 sm:top-8" />
+      <div className="spark-orb h-32 w-32 sm:h-56 sm:w-56 bg-[rgba(74,111,165,0.20)] right-2 top-28 sm:right-4 sm:top-40" />
+      <div className="spark-orb h-24 w-24 sm:h-40 sm:w-40 bg-[rgba(255,209,102,0.26)] left-[35%] bottom-14 sm:left-[40%] sm:bottom-20" />
 
       <div
         className="spark-surface relative flex flex-col overflow-hidden rounded-[32px]"
