@@ -700,6 +700,13 @@ export default function Profile({ streakState }) {
 
   // Curiosity log — recent search history
   const [recentSearches] = useState(() => storage.getSearches().slice(0, 10));
+  const [studySessions] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('spark_study_sessions') || '[]').slice(0, 80);
+    } catch {
+      return [];
+    }
+  });
   const recentSearchAgeDays = recentSearches[0]?.timestamp
     ? Math.floor((Date.now() - new Date(recentSearches[0].timestamp).getTime()) / (1000 * 60 * 60 * 24))
     : null;
@@ -710,13 +717,13 @@ export default function Profile({ streakState }) {
 
   return (
     <div className="flex flex-col h-full">
-      {/* ── Dark cinematic hero ── */}
+      {/* ── Hero ── */}
       <div
         className="relative overflow-hidden px-4 pt-8 pb-7"
         style={{
-          background: `linear-gradient(155deg, #110600 0%, #1E0A00 35%, #130800 65%, #0D0400 100%)`,
-          borderBottom: '1px solid rgba(255,138,90,0.16)',
-          boxShadow: '0 4px 30px rgba(0,0,0,0.15)',
+          background: `linear-gradient(140deg, rgba(255,252,246,0.97) 0%, rgba(255,243,224,0.94) 52%, rgba(245,238,255,0.9) 100%)`,
+          borderBottom: '1px solid rgba(255,168,114,0.2)',
+          boxShadow: '0 6px 24px rgba(72,49,10,0.08)',
         }}
       >
         {/* Aurora sweep */}
@@ -1049,7 +1056,7 @@ export default function Profile({ streakState }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.07 }}
           >
-            <JourneyTimeline tracks={tracks} searches={recentSearches} />
+            <JourneyTimeline tracks={tracks} searches={recentSearches} sessions={studySessions} />
           </motion.div>
 
           {pinnedThreads.length > 0 && (

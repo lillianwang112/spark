@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useUserContext } from '../hooks/useUserContext.jsx';
 import { DOMAIN_COLORS } from '../utils/domainColors.js';
@@ -8,6 +8,7 @@ import { parseAIJson } from '../utils/helpers.js';
 void motion;
 
 const OPTIN_KEY = 'spark_opportunities_optin';
+const HISTORY_KEY = 'spark_opportunities_history';
 
 const GOAL_OPTIONS = [
   { value: 'research',  label: 'Find research opportunities' },
@@ -97,16 +98,35 @@ function SkeletonCard({ index }) {
 
 export default function Opportunities({ userContextObj }) {
   const user = useUserContext();
+  const demoKey = useMemo(() => {
+    try { return localStorage.getItem('spark_demo_key'); } catch { return null; }
+  }, []);
+  const loadHistory = useCallback(() => {
+    try {
+      const raw = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+      return Array.isArray(raw) ? raw : [];
+    } catch {
+      return [];
+    }
+  }, []);
+
   const [optedIn, setOptedIn] = useState(() => {
-    try { return localStorage.getItem(OPTIN_KEY) === 'true'; } catch { return false; }
+    try {
+      if (localStorage.getItem('spark_demo_key')) return true;
+      return localStorage.getItem(OPTIN_KEY) === 'true';
+    } catch { return false; }
   });
   const [location, setLocation] = useState('');
   const [school, setSchool] = useState('');
   const [goal, setGoal] = useState('open');
   const [loading, setLoading] = useState(false);
-  const [opportunities, setOpportunities] = useState([]);
+  const [history, setHistory] = useState(() => loadHistory());
+  const [opportunities, setOpportunities] = useState(() => {
+    const initialHistory = loadHistory();
+    return initialHistory[0]?.items || [];
+  });
   const [error, setError] = useState('');
-  const [searched, setSearched] = useState(false);
+  const [searched, setSearched] = useState(() => loadHistory().length > 0);
 
   const topDomains = useMemo(() => getTopDomains(user.eloScores, 3), [user.eloScores]);
   const tracks = useMemo(() => user.tracks || [], [user.tracks]);
@@ -164,6 +184,17 @@ Prioritize specificity over comprehensiveness. 5 highly relevant opportunities b
       const parsed = parseAIJson(raw);
       if (Array.isArray(parsed) && parsed.length > 0) {
         setOpportunities(parsed);
+        const entry = {
+          id: `opp-${Date.now()}`,
+          timestamp: new Date().toISOString(),
+          goal,
+          location: location || null,
+          school: school || null,
+          items: parsed,
+        };
+        const nextHistory = [entry, ...history].slice(0, 8);
+        setHistory(nextHistory);
+        try { localStorage.setItem(HISTORY_KEY, JSON.stringify(nextHistory)); } catch { /* ignore */ }
       } else {
         setError('Could not parse opportunities. Try again!');
       }
@@ -173,7 +204,7 @@ Prioritize specificity over comprehensiveness. 5 highly relevant opportunities b
     } finally {
       setLoading(false);
     }
-  }, [buildFingerprint, goal, location, school, topDomains, tracks, user.ageGroup, userContextObj?.ageGroup]);
+  }, [buildFingerprint, goal, history, location, school, topDomains, tracks, user.ageGroup, userContextObj?.ageGroup]);
 
   return (
     <div className="flex flex-col min-h-full px-4 pb-28 pt-5">
@@ -192,6 +223,35 @@ Prioritize specificity over comprehensiveness. 5 highly relevant opportunities b
             Real opportunities that connect to what you've been learning.
           </p>
         </motion.div>
+
+        {demoKey && history.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="rounded-card p-4 border border-[rgba(255,255,255,0.72)] bg-[rgba(255,255,255,0.72)] shadow-soft"
+          >
+            <div className="mb-2 flex items-center justify-between gap-2">
+              <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-text-muted">Demo opportunity history</p>
+              <span className="rounded-full bg-[rgba(14,159,110,0.12)] px-2 py-1 text-[10px] font-mono text-[#0E9F6E]">{history.length} runs</span>
+            </div>
+            <div className="space-y-2">
+              {history.slice(0, 3).map((h) => (
+                <button
+                  key={h.id}
+                  onClick={() => setOpportunities(h.items || [])}
+                  className="w-full rounded-[12px] border border-[rgba(42,42,42,0.08)] bg-white px-3 py-2 text-left transition-colors hover:bg-[rgba(255,253,247,0.95)]"
+                >
+                  <p className="text-xs font-body font-semibold text-text-primary">
+                    {h.items?.[0]?.name || 'Saved opportunity set'}
+                  </p>
+                  <p className="text-[11px] font-body text-text-muted">
+                    {new Date(h.timestamp).toLocaleDateString()} · {h.items?.length || 0} opportunities
+                  </p>
+                </button>
+              ))}
+            </div>
+          </motion.div>
+        )}
 
         {/* Thread fingerprint display */}
         {(topDomains.length > 0 || threadCount > 0) && (
