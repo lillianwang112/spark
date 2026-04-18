@@ -50,9 +50,9 @@ function DemoSwitcher({ activeKey }) {
   useEffect(() => {
     const handler = (e) => {
       if (!e.shiftKey) return;
-      if (e.key === '1') switchTo('alex');
-      if (e.key === '2') switchTo('maya');
-      if (e.key === '3') switchTo('james');
+      if (e.code === 'Digit1') switchTo('alex');
+      if (e.code === 'Digit2') switchTo('maya');
+      if (e.code === 'Digit3') switchTo('james');
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
@@ -69,13 +69,13 @@ function DemoSwitcher({ activeKey }) {
             transition={{ type: 'spring', stiffness: 400, damping: 28 }}
             className="mb-2 rounded-[20px] p-2 flex flex-col gap-1.5 min-w-[170px]"
             style={{
-              background: 'rgba(18,8,0,0.95)',
-              border: '1px solid rgba(255,138,90,0.25)',
-              boxShadow: '0 20px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,138,90,0.12)',
+              background: 'rgba(255,252,246,0.96)',
+              border: '1px solid rgba(255,170,120,0.35)',
+              boxShadow: '0 18px 44px rgba(72,49,10,0.18), 0 0 0 1px rgba(255,170,120,0.18)',
               backdropFilter: 'blur(20px)',
             }}
           >
-            <p className="text-[9px] font-mono uppercase tracking-[0.22em] px-2 pt-1 pb-0.5" style={{ color: 'rgba(255,138,90,0.6)' }}>
+            <p className="text-[9px] font-mono uppercase tracking-[0.22em] px-2 pt-1 pb-0.5" style={{ color: 'rgba(145,95,58,0.65)' }}>
               Demo Profiles
             </p>
             {DEMO_ORDER.map((key, i) => {
@@ -90,17 +90,17 @@ function DemoSwitcher({ activeKey }) {
                   onClick={() => { setOpen(false); switchTo(key); }}
                   className="flex items-center gap-2.5 rounded-[14px] px-3 py-2 text-left transition-all"
                   style={{
-                    background: isActive ? `${m.color}30` : 'rgba(255,255,255,0.05)',
+                    background: isActive ? `${m.color}30` : 'rgba(72,49,10,0.05)',
                     border: isActive ? `1px solid ${m.color}50` : '1px solid transparent',
                     boxShadow: isActive ? `0 4px 14px ${m.color}28` : 'none',
                   }}
                 >
                   <span className="text-lg leading-none">{m.emoji}</span>
                   <div>
-                    <p className="text-[11px] font-body font-bold" style={{ color: isActive ? '#FFF7EC' : 'rgba(255,220,170,0.8)' }}>
+                    <p className="text-[11px] font-body font-bold" style={{ color: isActive ? '#2A2A2A' : 'rgba(72,49,10,0.88)' }}>
                       {m.name}
                     </p>
-                    <p className="text-[9px] font-mono" style={{ color: isActive ? m.color : 'rgba(255,180,100,0.4)' }}>
+                    <p className="text-[9px] font-mono" style={{ color: isActive ? m.color : 'rgba(145,95,58,0.55)' }}>
                       {m.label} {isActive ? '← active' : `[Shift+${i + 1}]`}
                     </p>
                   </div>
@@ -117,9 +117,9 @@ function DemoSwitcher({ activeKey }) {
         onClick={() => setOpen((v) => !v)}
         className="flex items-center gap-2 rounded-full px-3 py-2 shadow-lg"
         style={{
-          background: 'rgba(18,8,0,0.92)',
+          background: 'rgba(255,252,246,0.95)',
           border: `1.5px solid ${meta?.color || '#FF6B35'}50`,
-          boxShadow: `0 8px 24px rgba(0,0,0,0.4), 0 0 0 1px ${meta?.color || '#FF6B35'}22`,
+          boxShadow: `0 10px 28px rgba(72,49,10,0.2), 0 0 0 1px ${meta?.color || '#FF6B35'}22`,
           backdropFilter: 'blur(20px)',
         }}
         aria-label="Switch demo profile"
@@ -133,7 +133,7 @@ function DemoSwitcher({ activeKey }) {
           animate={{ rotate: open ? 180 : 0 }}
           transition={{ duration: 0.2 }}
           className="text-[10px]"
-          style={{ color: 'rgba(255,180,100,0.5)' }}
+          style={{ color: 'rgba(145,95,58,0.5)' }}
         >
           ▲
         </motion.span>
