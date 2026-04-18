@@ -21,7 +21,7 @@ function periodStart(id) {
   return new Date(0);
 }
 
-export default function JourneyTimeline({ tracks = [], searches = [] }) {
+export default function JourneyTimeline({ tracks = [], searches = [], sessions = [] }) {
   const [periodIdx, setPeriodIdx] = useState(1);
   const [scrubRatio, setScrubRatio] = useState(1);
   const period = PERIODS[periodIdx];
@@ -45,10 +45,18 @@ export default function JourneyTimeline({ tracks = [], searches = [] }) {
         domain: null,
         at: s.timestamp ? new Date(s.timestamp) : fallback,
       })),
+      ...sessions.map((session) => ({
+        id: `session-${session.id}`,
+        type: 'session',
+        label: session.topicLabel || 'Study session',
+        domain: session.topicDomain || null,
+        detail: session.note || session.type || 'study',
+        at: session.completedAt ? new Date(session.completedAt) : session.date ? new Date(`${session.date}T12:00:00`) : fallback,
+      })),
     ].filter((e) => e.at >= start)
       .sort((a, b) => b.at - a.at);
     return mapped;
-  }, [tracks, searches, period.id]);
+  }, [tracks, searches, sessions, period.id]);
 
   useEffect(() => {
     setScrubRatio(1);
@@ -78,6 +86,7 @@ export default function JourneyTimeline({ tracks = [], searches = [] }) {
     return {
       sparks: visibleEvents.length,
       saves: visibleEvents.filter((e) => e.type === 'track').length,
+      sessions: visibleEvents.filter((e) => e.type === 'session').length,
       worlds: domainCount.size,
     };
   }, [visibleEvents]);
@@ -167,10 +176,11 @@ export default function JourneyTimeline({ tracks = [], searches = [] }) {
         <p className="mt-2 text-xs font-body text-text-secondary leading-relaxed">{narrative}</p>
       </div>
 
-      <div className="mt-4 grid grid-cols-3 gap-2 text-center">
+      <div className="mt-4 grid grid-cols-4 gap-2 text-center">
         {[
           { value: stats.sparks, label: 'sparks' },
           { value: stats.saves, label: 'saved' },
+          { value: stats.sessions, label: 'sessions' },
           { value: stats.worlds, label: 'worlds' },
         ].map(({ value, label }, i) => (
           <motion.div
@@ -244,7 +254,7 @@ export default function JourneyTimeline({ tracks = [], searches = [] }) {
                     />
                     <p className="font-body text-sm text-text-primary">{e.label}</p>
                     <p className="text-[10px] font-mono uppercase tracking-[0.12em] text-text-muted">
-                      {e.type === 'track' ? 'saved' : 'searched'} · {e.at.toLocaleDateString(undefined, {
+                      {e.type === 'track' ? 'saved' : e.type === 'session' ? `session · ${e.detail}` : 'searched'} · {e.at.toLocaleDateString(undefined, {
                         month: 'short',
                         day: 'numeric',
                       })}

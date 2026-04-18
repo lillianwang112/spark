@@ -189,6 +189,8 @@ export default function Ember({
           d="M52 8C64 20 76 30 80 49c4 20-4 39-17 49-4 4-7 9-11 12-4-3-7-8-11-12C28 88 20 69 24 49 28 30 40 20 52 8Z"
           fill="url(#ember-shell-gradient)"
           filter="url(#ember-shadow)"
+          animate={{ scaleX: [1, 1.015, 1], scaleY: [1, 1.02, 1] }}
+          transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut' }}
         />
 
         <motion.path
@@ -204,14 +206,15 @@ export default function Ember({
         />
 
         <motion.g
-          animate={{ scaleY: config.eyeScale }}
+          animate={{ scaleY: [config.eyeScale, config.eyeScale, 0.14, config.eyeScale] }}
+          transition={{ duration: 4.4, times: [0, 0.77, 0.81, 1], repeat: Infinity, ease: 'easeInOut' }}
           style={{ transformOrigin: '52px 61px' }}
         >
           <ellipse
             cx="44"
             cy="58.5"
-            rx="6"
-            ry="7.2"
+            rx="6.6"
+            ry="8"
             fill="url(#ember-eye-white-gradient)"
             stroke="rgba(127,55,40,0.16)"
             strokeWidth="0.7"
@@ -219,22 +222,25 @@ export default function Ember({
           <ellipse
             cx="60"
             cy="58.5"
-            rx="6"
-            ry="7.2"
+            rx="6.6"
+            ry="8"
             fill="url(#ember-eye-white-gradient)"
             stroke="rgba(127,55,40,0.16)"
             strokeWidth="0.7"
           />
-          <ellipse cx="44" cy="60" rx="2.45" ry="3.1" fill="url(#ember-eye-gradient)" />
-          <ellipse cx="60" cy="60" rx="2.45" ry="3.1" fill="url(#ember-eye-gradient)" />
+          <motion.ellipse cx="44" cy="60" rx="2.65" ry="3.5" fill="url(#ember-eye-gradient)" animate={{ cx: [44, 43.6, 44.3, 44] }} transition={{ duration: 2.6, repeat: Infinity, ease: 'easeInOut' }} />
+          <motion.ellipse cx="60" cy="60" rx="2.65" ry="3.5" fill="url(#ember-eye-gradient)" animate={{ cx: [60, 59.6, 60.3, 60] }} transition={{ duration: 2.6, repeat: Infinity, ease: 'easeInOut' }} />
           <circle cx="42.5" cy="58.6" r="1.15" fill="rgba(255,255,255,0.95)" />
           <circle cx="58.5" cy="58.6" r="1.15" fill="rgba(255,255,255,0.95)" />
           <circle cx="45.1" cy="61.4" r="0.5" fill="rgba(255,255,255,0.72)" />
           <circle cx="61.1" cy="61.4" r="0.5" fill="rgba(255,255,255,0.72)" />
         </motion.g>
 
-        <ellipse cx="35.5" cy="69.5" rx="3.9" ry="2.2" fill="rgba(255,182,157,0.24)" />
-        <ellipse cx="68.5" cy="69.5" rx="3.9" ry="2.2" fill="rgba(255,182,157,0.24)" />
+        <ellipse cx="35.5" cy="69.5" rx="4.6" ry="2.6" fill="rgba(255,182,157,0.28)" />
+        <ellipse cx="68.5" cy="69.5" rx="4.6" ry="2.6" fill="rgba(255,182,157,0.28)" />
+
+        <path d="M37 40 L31 34 L39 34 Z" fill="rgba(255,255,255,0.38)" />
+        <path d="M67 40 L73 34 L65 34 Z" fill="rgba(255,255,255,0.3)" />
 
         <motion.path
           d={config.mouth}
@@ -243,6 +249,9 @@ export default function Ember({
           fill="none"
           strokeLinecap="round"
           strokeLinejoin="round"
+          animate={{ scaleX: [1, 1.05, 1], y: [0, 0.5, 0] }}
+          transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+          style={{ transformOrigin: '52px 77px' }}
         />
 
         <motion.path
