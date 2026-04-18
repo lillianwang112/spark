@@ -3,6 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 void motion;
 import Ember from '../components/ember/Ember.jsx';
 import Modal from '../components/common/Modal.jsx';
+import JourneyTimeline from '../components/profile/JourneyTimeline.jsx';
+import StreakFlame from '../components/common/StreakFlame.jsx';
+import ProgressRing from '../components/common/ProgressRing.jsx';
 import { useUserContext } from '../hooks/useUserContext.jsx';
 import { DOMAIN_COLORS, DOMAIN_EMOJIS, BADGES } from '../utils/constants.js';
 import { getRankedDomains, normalizeScores } from '../models/elo.js';
@@ -192,21 +195,46 @@ function DomainBar({ domain, score, maxScore }) {
 // ── Badge card ──
 function BadgeCard({ badge, earned }) {
   return (
-    <div className={`
-      flex flex-col items-center gap-1.5 p-3 rounded-card text-center transition-all
-      ${earned
-        ? 'bg-[rgba(255,107,53,0.08)] border border-[rgba(255,107,53,0.2)]'
-        : 'bg-bg-secondary opacity-40 border border-transparent'}
-    `}>
-      <span className="text-2xl">{badge.emoji}</span>
-      <p className="font-body font-semibold text-text-primary text-xs leading-tight">{badge.title}</p>
-      <p className="font-body text-text-muted text-[10px] leading-tight">{badge.description}</p>
-    </div>
+    <motion.div
+      whileHover={earned ? { y: -2, scale: 1.02 } : {}}
+      transition={{ duration: 0.2, ease: [0.34, 1.56, 0.64, 1] }}
+      className={`relative flex flex-col items-center gap-1.5 overflow-hidden rounded-[18px] p-3 text-center transition-all ${
+        earned
+          ? 'border border-[rgba(255,107,53,0.28)] shadow-[0_10px_24px_rgba(255,107,53,0.15)]'
+          : 'border border-transparent opacity-45'
+      }`}
+      style={
+        earned
+          ? { background: 'linear-gradient(135deg, rgba(255,209,102,0.22) 0%, rgba(255,138,90,0.18) 60%, rgba(255,255,255,0.8) 100%)' }
+          : { background: 'rgba(255,255,255,0.5)' }
+      }
+    >
+      {earned && (
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 opacity-70"
+          style={{
+            background:
+              'radial-gradient(circle at 30% 20%, rgba(255,255,255,0.75), rgba(255,255,255,0) 55%)',
+          }}
+        />
+      )}
+      <span className="relative text-2xl" style={earned ? { filter: 'drop-shadow(0 4px 10px rgba(255,107,53,0.25))' } : {}}>
+        {badge.emoji}
+      </span>
+      <p className="relative font-body font-semibold text-text-primary text-xs leading-tight">{badge.title}</p>
+      <p className="relative font-body text-text-muted text-[10px] leading-tight">{badge.description}</p>
+    </motion.div>
   );
 }
 
-export default function Profile() {
+export default function Profile({ streakState }) {
   const user = useUserContext();
+  const streak = streakState?.streak ?? 0;
+  const longest = streakState?.longest ?? streak;
+  const lifetime = streakState?.lifetime ?? 0;
+  const sparksToday = streakState?.sparksToday ?? 0;
+  const dailyGoal = streakState?.dailyGoal ?? 3;
   const [personalitySummary, setPersonalitySummary] = useState(null);
   const [loadingSummary, setLoadingSummary] = useState(false);
   const [view, setView] = useState('constellation'); // 'constellation' | 'bars'
@@ -353,6 +381,41 @@ export default function Profile() {
             </div>
           </motion.div>
 
+          {/* Streak + goal */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.04 }}
+            className="relative overflow-hidden rounded-[24px] border border-[rgba(255,181,94,0.24)] p-5 shadow-warm"
+            style={{
+              background:
+                'linear-gradient(135deg, rgba(255,233,196,0.88) 0%, rgba(255,212,158,0.82) 50%, rgba(255,249,238,0.94) 100%)',
+            }}
+          >
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-4">
+                <StreakFlame size="lg" streak={streak} />
+                <div>
+                  <p className="text-[11px] font-mono uppercase tracking-[0.18em] text-spark-ember">
+                    Commitment
+                  </p>
+                  <p className="font-display text-[1.8rem] font-semibold leading-none text-text-primary">
+                    {streak} <span className="text-sm font-body text-text-muted">day{streak === 1 ? '' : 's'}</span>
+                  </p>
+                  <p className="mt-1 font-body text-xs text-text-secondary">
+                    Longest run: <span className="font-semibold text-text-primary">{longest}</span> · Lifetime sparks: <span className="font-semibold text-text-primary">{lifetime}</span>
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-col items-center rounded-[18px] bg-[rgba(255,255,255,0.78)] px-3 py-2 border border-[rgba(255,181,94,0.22)]">
+                <ProgressRing value={Math.min(sparksToday, dailyGoal)} max={dailyGoal} size={54} stroke={5} gradientId="profile-goal">
+                  <span className="font-display text-base font-semibold text-text-primary">{sparksToday}</span>
+                </ProgressRing>
+                <p className="mt-1 text-[10px] font-mono uppercase tracking-[0.14em] text-text-muted">of {dailyGoal} today</p>
+              </div>
+            </div>
+          </motion.div>
+
           {currentTrack && (
             <motion.div
               initial={{ opacity: 0, y: 12 }}
@@ -393,6 +456,14 @@ export default function Profile() {
               )}
             </motion.div>
           )}
+
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.07 }}
+          >
+            <JourneyTimeline tracks={tracks} searches={recentSearches} />
+          </motion.div>
 
           {pinnedThreads.length > 0 && (
             <motion.div

@@ -7,6 +7,10 @@ import ExplainerCard from '../components/explainer/ExplainerCard.jsx';
 import ReviewSession from '../components/mastering/ReviewSession.jsx';
 import Modal from '../components/common/Modal.jsx';
 import Ember from '../components/ember/Ember.jsx';
+import Toast from '../components/common/Toast.jsx';
+import TendingSession from '../components/tracks/TendingSession.jsx';
+import PruningCeremony from '../components/tracks/PruningCeremony.jsx';
+import BranchStateBadge from '../components/tracks/BranchStateBadge.jsx';
 import { DOMAIN_COLORS } from '../utils/domainColors.js';
 import { KNOWLEDGE_STATE_LABELS, BRANCH_STATES } from '../utils/constants.js';
 import { getDueCards, seedSRSFromKnowledgeState, daysUntilReview } from '../models/srs.js';
@@ -35,23 +39,7 @@ function ModeToggle({ mode, onChange }) {
   );
 }
 
-// ── Branch state badge ──
-function BranchBadge({ state }) {
-  const badges = {
-    [BRANCH_STATES.FLOWERING]: { emoji: '🌸', label: 'Flowering', bg: 'bg-[rgba(255,215,0,0.15)]', text: 'text-[#8B6914]' },
-    [BRANCH_STATES.HEALTHY]:   { emoji: '🌿', label: 'Healthy',   bg: 'bg-[rgba(45,147,108,0.1)]',  text: 'text-[#2D936C]' },
-    [BRANCH_STATES.THIRSTY]:   { emoji: '🍂', label: 'Thirsty',   bg: 'bg-[rgba(255,166,43,0.12)]', text: 'text-[#8B6914]' },
-    [BRANCH_STATES.WILTING]:   { emoji: '🥀', label: 'Wilting',   bg: 'bg-[rgba(230,57,70,0.08)]',  text: 'text-[#E63946]' },
-    [BRANCH_STATES.DORMANT]:   { emoji: '🪵', label: 'Dormant',   bg: 'bg-[rgba(139,139,122,0.12)]',text: 'text-text-muted' },
-  };
-  const b = badges[state];
-  if (!b || state === BRANCH_STATES.HEALTHY) return null;
-  return (
-    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-body font-medium ${b.bg} ${b.text}`}>
-      {b.emoji} {b.label}
-    </span>
-  );
-}
+// Branch state badge replaced by imported BranchStateBadge component.
 
 // ── Single track card ──
 function TrackCard({ track, ageGroup, onExplain, onReview, onRemove, onToggleMode, onConnect, onShare, onTend, connectMode, isConnectSource }) {
@@ -123,7 +111,7 @@ function TrackCard({ track, ageGroup, onExplain, onReview, onRemove, onToggleMod
 
         {/* Branch state + SRS info */}
         <div className="flex items-center gap-2 mb-3 flex-wrap">
-          <BranchBadge state={branchState} />
+          <BranchStateBadge state={branchState} hideHealthy size="sm" />
           {isMastering && daysLeft !== null && (
             <span className="text-[10px] font-body text-text-muted">
               {daysLeft === 0 ? '⏰ Due now' : `Review in ${daysLeft}d`}
@@ -226,14 +214,20 @@ function TrackCard({ track, ageGroup, onExplain, onReview, onRemove, onToggleMod
   );
 }
 
-export default function Tracks() {
+export default function Tracks({ onSpark }) {
   const user = useUserContext();
   const [explainerTrack, setExplainerTrack] = useState(null);
   const [reviewMode, setReviewMode] = useState(false);
   const [reviewCards, setReviewCards] = useState([]);
   const [connectSource, setConnectSource] = useState(null); // track being connected
   const [shareFeedback, setShareFeedback] = useState('');
+  const [tendingOpen, setTendingOpen] = useState(false);
+  const [tendingList, setTendingList] = useState([]);
+  const [pruningTarget, setPruningTarget] = useState(null);
+  const [toast, setToast] = useState(null);
   const userContextObj = buildUserContext(user);
+
+  const ping = () => { onSpark?.(); };
 
   const tracks = useMemo(() => user.tracks || [], [user.tracks]);
 
@@ -280,7 +274,15 @@ export default function Tracks() {
   };
 
   const handleRemove = (trackId) => {
-    user.removeTrack(trackId);
+    const track = tracks.find((t) => t.id === trackId);
+    if (!track) return;
+    setPruningTarget(track);
+  };
+
+  const handlePruneConfirm = () => {
+    if (!pruningTarget) return;
+    user.removeTrack(pruningTarget.id);
+    setPruningTarget(null);
   };
 
   const handleShare = async (track) => {
@@ -309,31 +311,27 @@ export default function Tracks() {
 
   const handleTendAll = () => {
     if (careTracks.length === 0) return;
+    setTendingList(careTracks.slice(0, 8));
+    setTendingOpen(true);
+  };
 
-    const masteringCare = careTracks.filter((track) => track.mode === 'mastering');
-    const exploringCare = careTracks.filter((track) => track.mode !== 'mastering');
-
-    exploringCare.forEach((track) => {
-      user.updateTrack({
-        id: track.id,
-        lastTended: new Date().toISOString(),
-        branchState: BRANCH_STATES.HEALTHY,
-      });
-    });
-
-    if (masteringCare.length > 0) {
-      const seeded = masteringCare.map((track) => (
-        track.srsData
-          ? track
-          : { ...track, srsData: seedSRSFromKnowledgeState(track.knowledgeState || 'new') }
-      ));
-      setReviewCards(seeded);
-      setReviewMode(true);
-      return;
+  const handleTendAction = (track, action) => {
+    const updates = {
+      id: track.id,
+      lastTended: new Date().toISOString(),
+      branchState: BRANCH_STATES.HEALTHY,
+    };
+    if (action === 'sunlight' && track.mode === 'mastering' && track.srsData) {
+      updates.srsData = { ...track.srsData, nextReview: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() };
     }
+    user.updateTrack(updates);
+    ping();
+  };
 
-    setShareFeedback(`Tended ${exploringCare.length} branch${exploringCare.length === 1 ? '' : 'es'}`);
-    setTimeout(() => setShareFeedback(''), 1800);
+  const handleTendFinish = () => {
+    setTendingOpen(false);
+    setTendingList([]);
+    setToast({ title: 'Canopy tended', subtitle: 'Your tree feels the difference.', variant: 'celebrate', icon: '🌿' });
   };
 
   const handleConnect = (track, isSource = false) => {
@@ -353,6 +351,33 @@ export default function Tracks() {
     user.updateTrack({ id: track.id, connections: bConns, lastTended: new Date().toISOString() });
     setConnectSource(null);
   };
+
+  // ── Tending session view ──
+  if (tendingOpen) {
+    return (
+      <div className="flex flex-col h-full">
+        <div className="px-4 pt-6 pb-2 border-b border-[rgba(42,42,42,0.06)]">
+          <div className="max-w-[600px] mx-auto">
+            <h1 className="font-display text-xl font-semibold text-text-primary">
+              Tending session
+            </h1>
+            <p className="font-body text-xs text-text-muted mt-0.5">
+              Small gestures. The tree remembers you.
+            </p>
+          </div>
+        </div>
+        <div className="flex-1 overflow-y-auto px-4 pb-24">
+          <div className="max-w-[600px] mx-auto">
+            <TendingSession
+              tracks={tendingList}
+              onTend={handleTendAction}
+              onFinish={handleTendFinish}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // ── Review session view ──
   if (reviewMode) {
@@ -619,6 +644,22 @@ export default function Tracks() {
           />
         )}
       </Modal>
+
+      <PruningCeremony
+        track={pruningTarget}
+        open={!!pruningTarget}
+        onConfirm={handlePruneConfirm}
+        onCancel={() => setPruningTarget(null)}
+      />
+
+      <Toast
+        open={!!toast}
+        title={toast?.title || ''}
+        subtitle={toast?.subtitle || ''}
+        icon={toast?.icon}
+        variant={toast?.variant || 'default'}
+        onClose={() => setToast(null)}
+      />
     </div>
   );
 }

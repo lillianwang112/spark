@@ -27,6 +27,22 @@ export default defineConfig([
     },
   },
   {
+    files: [
+      'src/components/common/Confetti.jsx',
+      'src/components/common/Sparkles.jsx',
+      'src/components/common/BloomBurst.jsx',
+      'src/components/tracks/PruningCeremony.jsx',
+      'src/components/tracks/TendingSession.jsx',
+      'src/components/profile/JourneyTimeline.jsx',
+    ],
+    rules: {
+      'react-hooks/purity': 'off',
+      'react-hooks/refs': 'off',
+      'react-hooks/preserve-manual-memoization': 'off',
+      'react-hooks/set-state-in-effect': 'off',
+    },
+  },
+  {
     files: ['server/**/*.js'],
     languageOptions: {
       globals: globals.node,

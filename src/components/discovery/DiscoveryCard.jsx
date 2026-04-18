@@ -80,19 +80,30 @@ export default function DiscoveryCard({ card, index, onPick, disabled, isKids = 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.06, duration: 0.35, ease: [0.34, 1.56, 0.64, 1] }}
-      whileHover={{ y: -4, boxShadow: '0 8px 32px rgba(42,42,42,0.14)' }}
+      whileHover={{ y: -5, boxShadow: '0 18px 44px rgba(42,42,42,0.16)' }}
       whileTap={{ scale: 0.97 }}
       onClick={() => !disabled && onPick(card)}
       disabled={disabled}
       className={`
-        relative w-full text-left rounded-card overflow-hidden
+        group relative w-full text-left overflow-hidden
+        rounded-[22px] border border-[rgba(255,255,255,0.82)]
         transition-all duration-200
         focus-visible:outline-2 focus-visible:outline-spark-ember
         ${disabled ? 'opacity-50 pointer-events-none' : 'cursor-pointer'}
-        bg-bg-secondary shadow-card
+        bg-[rgba(255,255,255,0.88)] shadow-[0_12px_28px_rgba(72,49,10,0.08)]
       `}
       aria-label={card.text}
     >
+      {/* Hover sheen overlay */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-[2] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        style={{
+          background:
+            'linear-gradient(115deg, rgba(255,255,255,0) 40%, rgba(255,255,255,0.55) 50%, rgba(255,255,255,0) 60%)',
+          mixBlendMode: 'overlay',
+        }}
+      />
       {/* Image section */}
       <div
         className="relative overflow-hidden"

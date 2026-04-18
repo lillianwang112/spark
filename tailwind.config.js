@@ -8,16 +8,27 @@ export default {
     extend: {
       colors: {
         'spark-ember': '#FF6B35',
+        'spark-ember-bright': '#FF8A5A',
         'spark-warmth': '#FFA62B',
+        'spark-warmth-bright': '#FFC671',
         'spark-flame': '#E63946',
+        'spark-gold': '#FFD166',
+        'spark-honey': '#F4A261',
         'bg-primary': '#FFFDF7',
         'bg-secondary': '#FFF8ED',
+        'bg-tertiary': '#FFF3DC',
         'bg-dark': '#1A1A2E',
         'bg-dark-card': '#16213E',
         'text-primary': '#2C2C2C',
         'text-secondary': '#6B6B5E',
         'text-muted': '#A3A393',
+        'text-faint': '#C7C7BA',
         'tree-bg': '#F5F0E6',
+        'branch-flowering': '#FFD166',
+        'branch-healthy': '#2D936C',
+        'branch-thirsty': '#D4A373',
+        'branch-wilting': '#C1666B',
+        'branch-dormant': '#8B8B7A',
         domain: {
           math: '#2B59C3',
           science: '#2D936C',
@@ -45,14 +56,27 @@ export default {
       },
       borderRadius: {
         card: '16px',
+        pill: '999px',
       },
       boxShadow: {
         card: '0 2px 12px rgba(42, 42, 42, 0.08)',
         'card-hover': '0 4px 24px rgba(42, 42, 42, 0.14)',
         ember: '0 0 20px rgba(255, 107, 53, 0.4)',
+        soft: '0 4px 18px rgba(72, 49, 10, 0.08)',
+        warm: '0 10px 30px rgba(255, 107, 53, 0.12), 0 2px 6px rgba(72, 49, 10, 0.06)',
+        lift: '0 18px 44px rgba(72, 49, 10, 0.14), 0 4px 10px rgba(72, 49, 10, 0.06)',
+        glow: '0 0 0 1px rgba(255, 107, 53, 0.12), 0 10px 28px rgba(255, 107, 53, 0.22)',
+      },
+      keyframes: {
+        'fade-up': {
+          '0%': { opacity: 0, transform: 'translateY(10px)' },
+          '100%': { opacity: 1, transform: 'translateY(0)' },
+        },
+      },
+      animation: {
+        'fade-up': 'fade-up 0.5s cubic-bezier(0.25, 0.8, 0.25, 1) forwards',
       },
     },
   },
   plugins: [],
 }
-
