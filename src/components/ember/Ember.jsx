@@ -149,6 +149,10 @@ export default function Ember({
             <stop offset="0%" stopColor="#1F1632" />
             <stop offset="100%" stopColor="#3A2E58" />
           </linearGradient>
+          <linearGradient id="ember-eye-white-gradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#FFFDF7" />
+            <stop offset="100%" stopColor="#FFECD7" />
+          </linearGradient>
           <filter id="ember-shadow" x="-40%" y="-40%" width="180%" height="200%">
             <feDropShadow dx="0" dy="8" stdDeviation="7" floodColor="rgba(92,45,18,0.28)" />
           </filter>
@@ -203,22 +207,39 @@ export default function Ember({
           animate={{ scaleY: config.eyeScale }}
           style={{ transformOrigin: '52px 61px' }}
         >
-          <motion.path
-            d="M38 58c3-4 8-4 11 0-2 5-9 5-11 0Z"
-            fill="url(#ember-eye-gradient)"
+          <ellipse
+            cx="44"
+            cy="58.5"
+            rx="6"
+            ry="7.2"
+            fill="url(#ember-eye-white-gradient)"
+            stroke="rgba(127,55,40,0.16)"
+            strokeWidth="0.7"
           />
-          <motion.path
-            d="M55 58c3-4 8-4 11 0-2 5-9 5-11 0Z"
-            fill="url(#ember-eye-gradient)"
+          <ellipse
+            cx="60"
+            cy="58.5"
+            rx="6"
+            ry="7.2"
+            fill="url(#ember-eye-white-gradient)"
+            stroke="rgba(127,55,40,0.16)"
+            strokeWidth="0.7"
           />
-          <circle cx="43.8" cy="58.3" r="1.05" fill="rgba(255,255,255,0.8)" />
-          <circle cx="60.8" cy="58.3" r="1.05" fill="rgba(255,255,255,0.8)" />
+          <ellipse cx="44" cy="60" rx="2.45" ry="3.1" fill="url(#ember-eye-gradient)" />
+          <ellipse cx="60" cy="60" rx="2.45" ry="3.1" fill="url(#ember-eye-gradient)" />
+          <circle cx="42.5" cy="58.6" r="1.15" fill="rgba(255,255,255,0.95)" />
+          <circle cx="58.5" cy="58.6" r="1.15" fill="rgba(255,255,255,0.95)" />
+          <circle cx="45.1" cy="61.4" r="0.5" fill="rgba(255,255,255,0.72)" />
+          <circle cx="61.1" cy="61.4" r="0.5" fill="rgba(255,255,255,0.72)" />
         </motion.g>
+
+        <ellipse cx="35.5" cy="69.5" rx="3.9" ry="2.2" fill="rgba(255,182,157,0.24)" />
+        <ellipse cx="68.5" cy="69.5" rx="3.9" ry="2.2" fill="rgba(255,182,157,0.24)" />
 
         <motion.path
           d={config.mouth}
-          stroke="rgba(70,24,32,0.72)"
-          strokeWidth="2.5"
+          stroke="rgba(104,34,38,0.62)"
+          strokeWidth="2.2"
           fill="none"
           strokeLinecap="round"
           strokeLinejoin="round"

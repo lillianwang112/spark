@@ -27,4 +27,13 @@
   <circle cx="94" cy="28" r="4" fill="#FFD98E"/>
   <circle cx="103" cy="54" r="3.2" fill="#FFD98E"/>
   <circle cx="36" cy="33" r="3.1" fill="#FFD98E"/>
+  <ellipse cx="50" cy="59" rx="7" ry="8.3" fill="#FFF9F1" stroke="rgba(127,55,40,.16)" stroke-width=".8"/>
+  <ellipse cx="78" cy="59" rx="7" ry="8.3" fill="#FFF9F1" stroke="rgba(127,55,40,.16)" stroke-width=".8"/>
+  <ellipse cx="50" cy="61" rx="2.9" ry="3.6" fill="#2F2747"/>
+  <ellipse cx="78" cy="61" rx="2.9" ry="3.6" fill="#2F2747"/>
+  <circle cx="48.2" cy="59.2" r="1.25" fill="rgba(255,255,255,.96)"/>
+  <circle cx="76.2" cy="59.2" r="1.25" fill="rgba(255,255,255,.96)"/>
+  <ellipse cx="37.5" cy="75" rx="4.6" ry="2.5" fill="rgba(255,182,157,.24)"/>
+  <ellipse cx="90.5" cy="75" rx="4.6" ry="2.5" fill="rgba(255,182,157,.24)"/>
+  <path d="M51 79c4 4 9 6 13 6s9-2 13-6" fill="none" stroke="rgba(104,34,38,.62)" stroke-width="3" stroke-linecap="round"/>
 </svg>
