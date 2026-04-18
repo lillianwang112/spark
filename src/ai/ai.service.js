@@ -83,10 +83,10 @@ function withTimeout(promise, ms) {
 // ── Fallbacks for every prompt type ──
 const FALLBACKS = {
   discoveryCards: () => [
-    { text: "Why do bees build perfect hexagons?", domain: "math", emoji: "🐝", imageQuery: "honeycomb hexagon geometry" },
-    { text: "How does Spotify know what you'll play next?", domain: "cs", emoji: "🎵", imageQuery: "music recommendation algorithm" },
-    { text: "Why do some languages have no word for 'no'?", domain: "languages", emoji: "🗣️", imageQuery: "linguistics language diversity" },
-    { text: "What makes a joke actually funny — scientifically?", domain: "philosophy", emoji: "😂", imageQuery: "humor psychology brain" },
+    { text: "Why do bees build perfect hexagons?", domain: "math", emoji: "🐝", imageQuery: "honeycomb hexagon geometry", kind: "mechanism", description: "Nature keeps choosing efficiency in places that look magical." },
+    { text: "How does Spotify know what you'll play next?", domain: "cs", emoji: "🎵", imageQuery: "music recommendation algorithm", kind: "systems", description: "Prediction gets eerie when taste turns into data." },
+    { text: "Why do some languages have no word for 'no'?", domain: "languages", emoji: "🗣️", imageQuery: "linguistics language diversity", kind: "question", description: "A tiny word can reveal a whole worldview." },
+    { text: "What makes a joke actually funny — scientifically?", domain: "philosophy", emoji: "😂", imageQuery: "humor psychology brain", kind: "paradox", description: "Humor lives right where logic and surprise collide." },
   ],
   nodeChildren: () => [
     { id: 'fallback_1', label: 'Go deeper', description: 'Explore further into this topic', difficulty: 'intermediate', surpriseFactor: false },

@@ -35,9 +35,27 @@ async function fetchWikiImage(imageQuery, text, domain) {
   }
 }
 
+function getBranchCta(kind) {
+  switch (kind) {
+    case 'paradox': return 'Enter the contradiction';
+    case 'mechanism': return 'See the hidden machinery';
+    case 'experiment': return 'Run the thought experiment';
+    case 'connection': return 'Take the sideways leap';
+    case 'counterfactual': return 'Try the alternate world';
+    case 'failure': return 'Inspect the weak seam';
+    case 'craft': return 'Study the made choice';
+    case 'taste': return 'Feel what makes it sing';
+    case 'argument': return 'Hear the strongest case';
+    case 'objection': return 'Push against the idea';
+    case 'question': return 'Follow the central puzzle';
+    default: return 'Pull this thread';
+  }
+}
+
 export default function DiscoveryCard({ card, index, onPick, disabled, isKids = false }) {
   const color = DOMAIN_COLORS[card.domain] || '#FF6B35';
   const branchStyle = BRANCH_TYPE_STYLES[card._kind] || null;
+  const cta = getBranchCta(card._kind);
   const [loadedUrl, setLoadedUrl] = useState(null);
   const [imgError, setImgError] = useState(false);
   const [wikiSrc, setWikiSrc] = useState(null);
@@ -159,6 +177,18 @@ export default function DiscoveryCard({ card, index, onPick, disabled, isKids = 
             {card._description}
           </p>
         )}
+
+        <div className="mt-3 flex items-center justify-between gap-2 border-t border-[rgba(42,42,42,0.06)] pt-2.5">
+          <span className="text-[11px] font-body font-semibold text-text-secondary">
+            {cta}
+          </span>
+          <span
+            className="text-[11px] font-mono uppercase tracking-[0.12em]"
+            style={{ color }}
+          >
+            open →
+          </span>
+        </div>
       </div>
 
       {/* Subtle domain color corner glow */}

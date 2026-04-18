@@ -17,36 +17,46 @@ const ROUND_DOMAINS = [
 
 const DEFAULT_ROUND_CARDS = [
   [
-    { text: 'Why do bees build perfect hexagons?', domain: 'math', emoji: '🐝', imageQuery: 'honeycomb geometry' },
-    { text: 'How does a computer know what you mean?', domain: 'cs', emoji: '💡', imageQuery: 'natural language processing ai' },
-    { text: 'Why do old paintings smell like time?', domain: 'art', emoji: '🖼️', imageQuery: 'oil painting museum canvas' },
-    { text: 'What if gravity just... stopped?', domain: 'science', emoji: '🌍', imageQuery: 'gravity physics space' },
+    { text: 'Why do bees build perfect hexagons?', domain: 'math', emoji: '🐝', imageQuery: 'honeycomb geometry', kind: 'mechanism', description: 'Efficiency hides inside patterns that look decorative.' },
+    { text: 'How does a computer know what you mean?', domain: 'cs', emoji: '💡', imageQuery: 'natural language processing ai', kind: 'mental_model', description: 'Language becomes code only after brutal simplification.' },
+    { text: 'Why do old paintings smell like time?', domain: 'art', emoji: '🖼️', imageQuery: 'oil painting museum canvas', kind: 'craft', description: 'Materials age like memories, not like files.' },
+    { text: 'What if gravity just... stopped?', domain: 'science', emoji: '🌍', imageQuery: 'gravity physics space', kind: 'counterfactual', description: 'One missing force would rewrite every ordinary movement.' },
   ],
   [
-    { text: 'How does a song get stuck in your head?', domain: 'music', emoji: '🎵', imageQuery: 'earworm music brain' },
-    { text: 'Why did everyone suddenly stop believing in kings?', domain: 'history', emoji: '👑', imageQuery: 'french revolution history painting' },
-    { text: 'Can something be true AND false at the same time?', domain: 'philosophy', emoji: '🤔', imageQuery: 'paradox logic philosophy' },
-    { text: 'How do bridges know how much weight they can hold?', domain: 'engineering', emoji: '🌉', imageQuery: 'bridge engineering architecture' },
+    { text: 'How does a song get stuck in your head?', domain: 'music', emoji: '🎵', imageQuery: 'earworm music brain', kind: 'mechanism', description: 'Catchiness has structure, not just luck.' },
+    { text: 'Why did everyone suddenly stop believing in kings?', domain: 'history', emoji: '👑', imageQuery: 'french revolution history painting', kind: 'forces', description: 'Ideas shift fast when institutions start cracking.' },
+    { text: 'Can something be true AND false at the same time?', domain: 'philosophy', emoji: '🤔', imageQuery: 'paradox logic philosophy', kind: 'paradox', description: 'Contradiction is where weak thinking and deep thinking part ways.' },
+    { text: 'How do bridges know how much weight they can hold?', domain: 'engineering', emoji: '🌉', imageQuery: 'bridge engineering architecture', kind: 'systems', description: 'Every elegant structure is secretly negotiating failure.' },
   ],
   [
-    { text: 'Why can a single sentence change your whole perspective?', domain: 'literature', emoji: '📚', imageQuery: 'book open reading light' },
-    { text: "Why does 'no' translate differently in every language?", domain: 'languages', emoji: '🌍', imageQuery: 'world languages linguistics diversity' },
-    { text: 'Why does bread get bigger when you bake it?', domain: 'cooking', emoji: '🍞', imageQuery: 'bread baking yeast fermentation' },
-    { text: "How do athletes' brains work differently?", domain: 'sports', emoji: '⚡', imageQuery: 'sports psychology athlete focus' },
+    { text: 'Why can a single sentence change your whole perspective?', domain: 'literature', emoji: '📚', imageQuery: 'book open reading light', kind: 'taste', description: 'Style changes meaning before argument even starts.' },
+    { text: "Why does 'no' translate differently in every language?", domain: 'languages', emoji: '🌍', imageQuery: 'world languages linguistics diversity', kind: 'connection', description: 'A tiny refusal can reveal a whole culture.' },
+    { text: 'Why does bread get bigger when you bake it?', domain: 'cooking', emoji: '🍞', imageQuery: 'bread baking yeast fermentation', kind: 'experiment', description: 'Heat, gas, and gluten stage a miniature explosion.' },
+    { text: "How do athletes' brains work differently?", domain: 'sports', emoji: '⚡', imageQuery: 'sports psychology athlete focus', kind: 'question', description: 'Elite movement depends on perception as much as muscle.' },
   ],
   [
-    { text: 'Why does your body sync to music without thinking?', domain: 'dance', emoji: '💃', imageQuery: 'dance movement rhythm body' },
-    { text: 'How does a 2-hour movie feel like a whole life?', domain: 'film', emoji: '🎬', imageQuery: 'cinema film storytelling' },
-    { text: 'Why do ancient buildings still stand after earthquakes?', domain: 'architecture', emoji: '🏛️', imageQuery: 'ancient architecture pillars stone' },
-    { text: 'Why does infinity come in different sizes?', domain: 'math', emoji: '∞', imageQuery: 'infinity mathematics abstract' },
+    { text: 'Why does your body sync to music without thinking?', domain: 'dance', emoji: '💃', imageQuery: 'dance movement rhythm body', kind: 'mechanism', description: 'Rhythm reaches the body before the mind catches up.' },
+    { text: 'How does a 2-hour movie feel like a whole life?', domain: 'film', emoji: '🎬', imageQuery: 'cinema film storytelling', kind: 'craft', description: 'Editing bends time more than scripts do.' },
+    { text: 'Why do ancient buildings still stand after earthquakes?', domain: 'architecture', emoji: '🏛️', imageQuery: 'ancient architecture pillars stone', kind: 'systems', description: 'Old builders often understood force better than they explained it.' },
+    { text: 'Why does infinity come in different sizes?', domain: 'math', emoji: '∞', imageQuery: 'infinity mathematics abstract', kind: 'paradox', description: 'The impossible gets stranger when you count it carefully.' },
   ],
   [
-    { text: 'How does your gut actually talk to your brain?', domain: 'science', emoji: '🔬', imageQuery: 'gut brain connection biology' },
-    { text: 'How does a recommendation algorithm know you better than you do?', domain: 'cs', emoji: '🤖', imageQuery: 'algorithm recommendation social media' },
-    { text: 'Why do some colors make you hungry?', domain: 'art', emoji: '🎨', imageQuery: 'color psychology marketing food' },
-    { text: 'What does a melody from 400 years ago feel like today?', domain: 'music', emoji: '🎼', imageQuery: 'baroque classical music concert' },
+    { text: 'How does your gut actually talk to your brain?', domain: 'science', emoji: '🔬', imageQuery: 'gut brain connection biology', kind: 'connection', description: 'Your body runs more negotiations than your thoughts admit.' },
+    { text: 'How does a recommendation algorithm know you better than you do?', domain: 'cs', emoji: '🤖', imageQuery: 'algorithm recommendation social media', kind: 'failure', description: 'Prediction gets uncanny right before it gets manipulative.' },
+    { text: 'Why do some colors make you hungry?', domain: 'art', emoji: '🎨', imageQuery: 'color psychology marketing food', kind: 'question', description: 'Taste begins in the eye earlier than you think.' },
+    { text: 'What does a melody from 400 years ago feel like today?', domain: 'music', emoji: '🎼', imageQuery: 'baroque classical music concert', kind: 'connection', description: 'Old sound can still hit with present-tense force.' },
   ],
 ];
+
+const GENERATED_KIND_FALLBACKS = ['question', 'mechanism', 'paradox', 'connection'];
+
+function normalizeCard(card, index) {
+  return {
+    ...card,
+    _kind: card._kind || card.kind || GENERATED_KIND_FALLBACKS[index % GENERATED_KIND_FALLBACKS.length],
+    _description: card._description || card.description || '',
+  };
+}
 
 export default function CardGrid({
   userContext,
@@ -80,7 +90,7 @@ export default function CardGrid({
         mode,
       });
       if (generated && generated.length >= 4) {
-        setCards(generated);
+        setCards(generated.map(normalizeCard));
       } else {
         setCards(DEFAULT_ROUND_CARDS[roundIndex % DEFAULT_ROUND_CARDS.length]);
       }
@@ -226,8 +236,8 @@ export default function CardGrid({
         <div key={round} className="grid w-full gap-3 sm:grid-cols-2">
           {cards.map((card, i) => (
             <div key={`${round}-${card.domain}-${i}`} className="relative">
-              <DiscoveryCard
-                card={card}
+                <DiscoveryCard
+                card={normalizeCard(card, i)}
                 index={i}
                 onPick={handlePick}
                 disabled={!!pickedCard}

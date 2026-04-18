@@ -27,6 +27,8 @@ Rules:
 - Each must be under 12 words
 - Each must secretly represent one of these domains: ${domainsStr}
 - Do NOT name the domain explicitly in the card text
+- Give each card a branch kind from this set: question, mechanism, paradox, connection, experiment, objection, counterfactual, craft
+- Include a secondary description under 16 words that sharpens why the card is interesting
 - Tailor language difficulty to age group "${ageGroup}"
 - Make each card feel surprising, specific, and intriguing
 - For little_explorer: use simple words, concrete examples, wonder-inducing
@@ -34,7 +36,7 @@ Rules:
 - For college/adult: intellectually provocative, counterintuitive
 
 Return ONLY valid JSON array, no markdown fences:
-[{"text": "...", "domain": "...", "emoji": "...", "imageQuery": "..."}]`;
+[{"text": "...", "domain": "...", "emoji": "...", "imageQuery": "...", "kind": "...", "description": "..."}]`;
 
   return { prompt, systemPrompt };
 }
