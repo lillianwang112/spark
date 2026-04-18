@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/hero.jpg" width="500" alt="Spark" />
+  <img src="public/hero.jpg" width="600" alt="Spark" />
 </p>
 
 <h1 align="center">Spark</h1>
