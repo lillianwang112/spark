@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DOMAIN_COLORS } from '../../utils/domainColors.js';
 import Ember from '../ember/Ember.jsx';
@@ -23,6 +23,7 @@ function periodStart(id) {
 
 export default function JourneyTimeline({ tracks = [], searches = [] }) {
   const [periodIdx, setPeriodIdx] = useState(1);
+  const [scrubRatio, setScrubRatio] = useState(1);
   const period = PERIODS[periodIdx];
   const nowRef = useRef(new Date());
 
@@ -49,21 +50,58 @@ export default function JourneyTimeline({ tracks = [], searches = [] }) {
     return mapped;
   }, [tracks, searches, period.id]);
 
+  useEffect(() => {
+    setScrubRatio(1);
+  }, [period.id]);
+
+  const timelineBounds = useMemo(() => {
+    if (events.length === 0) {
+      const now = Date.now();
+      return { start: now, end: now };
+    }
+    const times = events.map((e) => e.at.getTime());
+    return { start: Math.min(...times), end: Math.max(...times) };
+  }, [events]);
+
+  const cutoff = useMemo(() => {
+    const span = Math.max(0, timelineBounds.end - timelineBounds.start);
+    return timelineBounds.start + span * scrubRatio;
+  }, [timelineBounds.end, timelineBounds.start, scrubRatio]);
+
+  const visibleEvents = useMemo(
+    () => events.filter((event) => event.at.getTime() <= cutoff),
+    [cutoff, events]
+  );
+
   const stats = useMemo(() => {
-    const domainCount = new Set(events.filter((e) => e.domain).map((e) => e.domain));
+    const domainCount = new Set(visibleEvents.filter((e) => e.domain).map((e) => e.domain));
     return {
-      sparks: events.length,
-      saves: events.filter((e) => e.type === 'track').length,
+      sparks: visibleEvents.length,
+      saves: visibleEvents.filter((e) => e.type === 'track').length,
       worlds: domainCount.size,
     };
-  }, [events]);
+  }, [visibleEvents]);
 
   const dominantDomain = useMemo(() => {
     const counts = {};
-    events.forEach((e) => { if (e.domain) counts[e.domain] = (counts[e.domain] || 0) + 1; });
+    visibleEvents.forEach((e) => { if (e.domain) counts[e.domain] = (counts[e.domain] || 0) + 1; });
     const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
     return sorted[0]?.[0];
-  }, [events]);
+  }, [visibleEvents]);
+
+  const narrative = useMemo(() => {
+    if (visibleEvents.length === 0) return 'Quiet stretch. One spark restarts it all.';
+    const first = visibleEvents[visibleEvents.length - 1];
+    const latest = visibleEvents[0];
+    const pivot = visibleEvents[Math.floor(visibleEvents.length / 2)];
+    const mode = visibleEvents.length > 12 ? 'fast' : visibleEvents.length > 5 ? 'steady' : 'focused';
+    const paceLine = mode === 'fast'
+      ? 'You were on a rapid curiosity sprint.'
+      : mode === 'steady'
+        ? 'You kept a steady rhythm of exploration.'
+        : 'You made a small but focused set of moves.';
+    return `You started this ${period.label.toLowerCase()} thread with "${first.label}", pivoted through "${pivot.label}", and most recently touched "${latest.label}". ${paceLine}`;
+  }, [period.label, visibleEvents]);
 
   return (
     <div className="rounded-[24px] border border-[rgba(255,255,255,0.78)] bg-[linear-gradient(135deg,rgba(255,253,247,0.92),rgba(255,244,226,0.85))] p-5 shadow-[0_16px_44px_rgba(72,49,10,0.1)]">
@@ -112,6 +150,23 @@ export default function JourneyTimeline({ tracks = [], searches = [] }) {
         </div>
       </div>
 
+      <div className="mt-4 rounded-[14px] border border-[rgba(42,42,42,0.08)] bg-[rgba(255,255,255,0.66)] p-3">
+        <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-[0.14em] text-text-muted">
+          <span>Tree rewind</span>
+          <span>{Math.round(scrubRatio * 100)}%</span>
+        </div>
+        <input
+          type="range"
+          min={0}
+          max={100}
+          value={Math.round(scrubRatio * 100)}
+          onChange={(event) => setScrubRatio(Number(event.target.value) / 100)}
+          className="mt-2 w-full accent-[#FF6B35]"
+          aria-label="Journey timeline scrubber"
+        />
+        <p className="mt-2 text-xs font-body text-text-secondary leading-relaxed">{narrative}</p>
+      </div>
+
       <div className="mt-4 grid grid-cols-3 gap-2 text-center">
         <div className="rounded-[14px] bg-[rgba(255,255,255,0.7)] px-2 py-2">
           <p className="font-display text-xl font-semibold text-text-primary">{stats.sparks}</p>
@@ -151,13 +206,13 @@ export default function JourneyTimeline({ tracks = [], searches = [] }) {
           transition={{ duration: 0.3 }}
           className="mt-5"
         >
-          {events.length === 0 ? (
+          {visibleEvents.length === 0 ? (
             <div className="py-6 text-center text-sm font-body text-text-muted">
               Quiet stretch. One spark restarts it all.
             </div>
           ) : (
             <ol className="relative border-l-2 border-[rgba(255,107,53,0.22)] pl-4 space-y-3">
-              {events.slice(0, 8).map((e, i) => {
+              {visibleEvents.slice(0, 8).map((e, i) => {
                 const color = e.domain ? DOMAIN_COLORS[e.domain] : '#FF6B35';
                 return (
                   <motion.li
@@ -181,8 +236,8 @@ export default function JourneyTimeline({ tracks = [], searches = [] }) {
                   </motion.li>
                 );
               })}
-              {events.length > 8 && (
-                <li className="font-body text-xs text-text-muted">+ {events.length - 8} more sparks</li>
+              {visibleEvents.length > 8 && (
+                <li className="font-body text-xs text-text-muted">+ {visibleEvents.length - 8} more sparks</li>
               )}
             </ol>
           )}

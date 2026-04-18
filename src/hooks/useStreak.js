@@ -44,6 +44,7 @@ export default function useStreak() {
     sparksToday: 0,
     lifetime: 0,
     dailyGoal: 3,
+    dailyActivity: {},
   });
 
   useEffect(() => {
@@ -59,6 +60,10 @@ export default function useStreak() {
           ...prev,
           sparksToday: nextSparks,
           lifetime: (prev.lifetime || 0) + 1,
+          dailyActivity: {
+            ...(prev.dailyActivity || {}),
+            [today]: nextSparks,
+          },
         };
       }
 
@@ -73,6 +78,10 @@ export default function useStreak() {
         lastActive: today,
         sparksToday: 1,
         lifetime: (prev.lifetime || 0) + 1,
+        dailyActivity: {
+          ...(prev.dailyActivity || {}),
+          [today]: 1,
+        },
       };
     });
   }, []);
@@ -89,6 +98,7 @@ export default function useStreak() {
       sparksToday: 0,
       lifetime: 0,
       dailyGoal: state.dailyGoal || 3,
+      dailyActivity: {},
     });
   }, [state.dailyGoal]);
 
@@ -111,6 +121,7 @@ export default function useStreak() {
     sparksToday: state.sparksToday,
     lifetime: state.lifetime,
     dailyGoal: state.dailyGoal,
+    dailyActivity: state.dailyActivity || {},
     pingStreak,
     setDailyGoal,
     resetStreak,

@@ -22,6 +22,58 @@ function buildWikiUrl(title) {
   return `https://en.wikipedia.org/wiki/${encodeURIComponent(title.replace(/\s+/g, '_'))}`;
 }
 
+let khanTopictreePromise = null;
+
+function walkKhanTree(node, visit) {
+  if (!node) return;
+  visit(node);
+  const children = node.children || node.child_data || [];
+  if (Array.isArray(children)) {
+    children.forEach((child) => walkKhanTree(child, visit));
+  }
+}
+
+async function getKhanTopictree() {
+  if (!khanTopictreePromise) {
+    khanTopictreePromise = fetchJson('https://www.khanacademy.org/api/v1/topictree').catch((error) => {
+      khanTopictreePromise = null;
+      throw error;
+    });
+  }
+  return khanTopictreePromise;
+}
+
+export async function fetchKhanLessons(query, count = 5) {
+  const q = String(query || '').trim().toLowerCase();
+  if (!q) return [];
+  const tree = await getKhanTopictree();
+  const matches = [];
+
+  walkKhanTree(tree, (node) => {
+    if (matches.length >= count * 3) return;
+    const title = node?.title || node?.translated_title || node?.display_name || '';
+    const kind = String(node?.kind || '').toLowerCase();
+    if (!title || !kind) return;
+    if (!['video', 'article', 'topic', 'exercise'].includes(kind)) return;
+    const haystack = `${title} ${node?.description || ''}`.toLowerCase();
+    if (!haystack.includes(q)) return;
+    const relativeUrl = node?.url || node?.ka_url || null;
+    const absoluteUrl = relativeUrl
+      ? (String(relativeUrl).startsWith('http') ? relativeUrl : `https://www.khanacademy.org${relativeUrl}`)
+      : null;
+    if (!absoluteUrl) return;
+    matches.push({
+      id: `${kind}-${node?.id || absoluteUrl}`,
+      title,
+      kind,
+      url: absoluteUrl,
+      description: trimSentence(node?.description || '', 180),
+    });
+  });
+
+  return dedupeBy(matches, (item) => item.url).slice(0, count);
+}
+
 export async function fetchWikipediaTopic(query) {
   const searchUrl = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(query)}&srlimit=4&format=json&origin=*`;
   const searchData = await fetchJson(searchUrl);
@@ -176,11 +228,13 @@ export async function fetchTopicImages(query, count = 3) {
 export async function fetchTopicContent(query, options = {}) {
   const imageCount = options.imageCount || 4;
   const paperCount = options.paperCount || 4;
+  const lessonCount = options.lessonCount || 4;
 
-  const [wiki, images, papers] = await Promise.allSettled([
+  const [wiki, images, papers, khanLessons] = await Promise.allSettled([
     fetchWikipediaTopic(query),
     fetchTopicImages(query, imageCount),
     fetchOpenAlexPapers(query, paperCount),
+    fetchKhanLessons(query, lessonCount),
   ]);
 
   return {
@@ -188,6 +242,7 @@ export async function fetchTopicContent(query, options = {}) {
     related: wiki.status === 'fulfilled' ? wiki.value.related : [],
     images: images.status === 'fulfilled' ? images.value : [],
     papers: papers.status === 'fulfilled' ? papers.value : [],
+    lessons: khanLessons.status === 'fulfilled' ? khanLessons.value : [],
   };
 }
 

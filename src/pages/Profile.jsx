@@ -192,6 +192,237 @@ function DomainBar({ domain, score, maxScore }) {
   );
 }
 
+function buildRecentDays(count = 84) {
+  const days = [];
+  for (let i = count - 1; i >= 0; i -= 1) {
+    const day = new Date();
+    day.setHours(0, 0, 0, 0);
+    day.setDate(day.getDate() - i);
+    days.push(day);
+  }
+  return days;
+}
+
+function activityIntensity(value = 0) {
+  if (value >= 5) return 'bg-[#2D936C]';
+  if (value >= 3) return 'bg-[#79C99E]';
+  if (value >= 1) return 'bg-[#CBEBD9]';
+  return 'bg-[rgba(42,42,42,0.08)]';
+}
+
+function LearningCalendar({ dailyActivity = {} }) {
+  const days = useMemo(() => buildRecentDays(84), []);
+  const totalActiveDays = days.filter((day) => dailyActivity[day.toISOString().slice(0, 10)] > 0).length;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.06 }}
+      className="bg-bg-secondary rounded-card shadow-card p-5"
+    >
+      <div className="flex items-center justify-between mb-3">
+        <div>
+          <h2 className="font-display font-semibold text-text-primary">Learning Calendar</h2>
+          <p className="font-body text-xs text-text-muted mt-0.5">Last 12 weeks of curiosity activity.</p>
+        </div>
+        <span className="font-body text-xs text-text-muted">{totalActiveDays} active days</span>
+      </div>
+      <div className="grid grid-cols-12 gap-1.5">
+        {days.map((day) => {
+          const key = day.toISOString().slice(0, 10);
+          const value = dailyActivity[key] || 0;
+          return (
+            <div
+              key={key}
+              className={`h-3.5 rounded-[4px] ${activityIntensity(value)}`}
+              title={`${key}: ${value} spark${value === 1 ? '' : 's'}`}
+            />
+          );
+        })}
+      </div>
+      <div className="mt-3 flex items-center gap-3 text-[10px] font-body text-text-muted">
+        <span className="inline-flex items-center gap-1"><i className="h-2.5 w-2.5 rounded bg-[rgba(42,42,42,0.08)]" />0</span>
+        <span className="inline-flex items-center gap-1"><i className="h-2.5 w-2.5 rounded bg-[#CBEBD9]" />1-2</span>
+        <span className="inline-flex items-center gap-1"><i className="h-2.5 w-2.5 rounded bg-[#79C99E]" />3-4</span>
+        <span className="inline-flex items-center gap-1"><i className="h-2.5 w-2.5 rounded bg-[#2D936C]" />5+</span>
+      </div>
+    </motion.div>
+  );
+}
+
+function buildMonthGrid(viewDate) {
+  const year = viewDate.getFullYear();
+  const month = viewDate.getMonth();
+  const first = new Date(year, month, 1);
+  const startDay = first.getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const cells = [];
+  for (let i = 0; i < startDay; i += 1) cells.push(null);
+  for (let day = 1; day <= daysInMonth; day += 1) {
+    cells.push(new Date(year, month, day));
+  }
+  while (cells.length % 7 !== 0) cells.push(null);
+  return cells;
+}
+
+function dayKey(date) {
+  return date.toISOString().slice(0, 10);
+}
+
+function RobustMonthlyCalendar({ dailyActivity = {}, tracks = [], searches = [] }) {
+  const [viewDate, setViewDate] = useState(() => {
+    const d = new Date();
+    return new Date(d.getFullYear(), d.getMonth(), 1);
+  });
+  const [selectedDate, setSelectedDate] = useState(() => new Date());
+
+  const cells = useMemo(() => buildMonthGrid(viewDate), [viewDate]);
+  const monthLabel = viewDate.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+  const selectedKey = dayKey(selectedDate);
+
+  const monthActivity = useMemo(() => (
+    cells
+      .filter(Boolean)
+      .map((date) => ({ key: dayKey(date), value: dailyActivity[dayKey(date)] || 0 }))
+  ), [cells, dailyActivity]);
+
+  const monthSparkTotal = monthActivity.reduce((sum, item) => sum + item.value, 0);
+  const monthActiveDays = monthActivity.filter((item) => item.value > 0).length;
+
+  const monthBestRun = useMemo(() => {
+    let best = 0;
+    let current = 0;
+    monthActivity.forEach((item) => {
+      if (item.value > 0) {
+        current += 1;
+        best = Math.max(best, current);
+      } else {
+        current = 0;
+      }
+    });
+    return best;
+  }, [monthActivity]);
+
+  const dayTrackEvents = useMemo(() => (
+    tracks
+      .filter((track) => {
+        const when = track.lastTended || track.savedAt || track.timestamp;
+        if (!when) return false;
+        return dayKey(new Date(when)) === selectedKey;
+      })
+      .slice(0, 5)
+  ), [selectedKey, tracks]);
+
+  const daySearchEvents = useMemo(() => (
+    searches
+      .filter((entry) => entry?.timestamp && dayKey(new Date(entry.timestamp)) === selectedKey)
+      .slice(0, 5)
+  ), [searches, selectedKey]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.065 }}
+      className="bg-bg-secondary rounded-card shadow-card p-5"
+    >
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="font-display font-semibold text-text-primary">Tiger-style Monthly Calendar</h2>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setViewDate((prev) => new Date(prev.getFullYear(), prev.getMonth() - 1, 1))}
+            className="h-8 w-8 rounded-full bg-[rgba(42,42,42,0.08)] text-text-primary hover:bg-[rgba(42,42,42,0.14)] transition-colors"
+            aria-label="Previous month"
+          >
+            ‹
+          </button>
+          <span className="font-body text-sm text-text-primary min-w-[140px] text-center">{monthLabel}</span>
+          <button
+            onClick={() => setViewDate((prev) => new Date(prev.getFullYear(), prev.getMonth() + 1, 1))}
+            className="h-8 w-8 rounded-full bg-[rgba(42,42,42,0.08)] text-text-primary hover:bg-[rgba(42,42,42,0.14)] transition-colors"
+            aria-label="Next month"
+          >
+            ›
+          </button>
+        </div>
+      </div>
+      <div className="mb-3 grid grid-cols-3 gap-2">
+        <div className="rounded-[12px] bg-[rgba(42,42,42,0.04)] px-3 py-2">
+          <p className="text-[10px] font-mono uppercase tracking-wider text-text-muted">Sparks</p>
+          <p className="font-display text-lg text-text-primary">{monthSparkTotal}</p>
+        </div>
+        <div className="rounded-[12px] bg-[rgba(42,42,42,0.04)] px-3 py-2">
+          <p className="text-[10px] font-mono uppercase tracking-wider text-text-muted">Active days</p>
+          <p className="font-display text-lg text-text-primary">{monthActiveDays}</p>
+        </div>
+        <div className="rounded-[12px] bg-[rgba(42,42,42,0.04)] px-3 py-2">
+          <p className="text-[10px] font-mono uppercase tracking-wider text-text-muted">Best run</p>
+          <p className="font-display text-lg text-text-primary">{monthBestRun}</p>
+        </div>
+      </div>
+      <div className="grid grid-cols-7 gap-1.5 text-center text-[10px] font-mono uppercase tracking-wider text-text-muted mb-1.5">
+        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
+          <div key={day}>{day}</div>
+        ))}
+      </div>
+      <div className="grid grid-cols-7 gap-1.5">
+        {cells.map((cell, idx) => {
+          if (!cell) return <div key={`empty-${idx}`} className="h-10 rounded-[8px] bg-transparent" />;
+          const key = cell.toISOString().slice(0, 10);
+          const value = dailyActivity[key] || 0;
+          const intensityClass = activityIntensity(value);
+          return (
+            <button
+              key={key}
+              onClick={() => setSelectedDate(cell)}
+              className={`h-10 rounded-[8px] border transition-all ${
+                key === selectedKey ? 'border-spark-ember ring-1 ring-spark-ember/45' : 'border-[rgba(42,42,42,0.06)]'
+              } ${intensityClass} flex items-center justify-center`}
+              title={`${key}: ${value} spark${value === 1 ? '' : 's'}`}
+            >
+              <span className="font-body text-xs text-text-primary">{cell.getDate()}</span>
+            </button>
+          );
+        })}
+      </div>
+      <div className="mt-4 rounded-[14px] border border-[rgba(42,42,42,0.08)] bg-[rgba(255,255,255,0.65)] p-3">
+        <div className="flex items-center justify-between gap-2">
+          <p className="font-body text-sm font-semibold text-text-primary">
+            {selectedDate.toLocaleDateString(undefined, { weekday: 'long', month: 'short', day: 'numeric' })}
+          </p>
+          <button
+            onClick={() => setSelectedDate(new Date())}
+            className="text-xs rounded-full bg-[rgba(91,94,166,0.1)] text-[#5B5EA6] px-2.5 py-1 hover:bg-[rgba(91,94,166,0.18)] transition-colors"
+          >
+            Today
+          </button>
+        </div>
+        <p className="mt-1 text-xs text-text-muted">
+          {dailyActivity[selectedKey] || 0} spark{(dailyActivity[selectedKey] || 0) === 1 ? '' : 's'} recorded
+        </p>
+
+        {(dayTrackEvents.length > 0 || daySearchEvents.length > 0) ? (
+          <div className="mt-2 space-y-1.5">
+            {dayTrackEvents.map((track) => (
+              <p key={`track-${track.id}`} className="text-xs text-text-secondary">
+                🌱 {track.label}
+              </p>
+            ))}
+            {daySearchEvents.map((entry) => (
+              <p key={`search-${entry.id || entry.timestamp}`} className="text-xs text-text-secondary">
+                🔎 {entry.query || entry.term || 'Explored topic'}
+              </p>
+            ))}
+          </div>
+        ) : (
+          <p className="mt-2 text-xs text-text-muted">No logged events for this day yet.</p>
+        )}
+      </div>
+    </motion.div>
+  );
+}
+
 // ── Badge card ──
 function BadgeCard({ badge, earned }) {
   return (
@@ -388,6 +619,7 @@ export default function Profile({ streakState }) {
   const lifetime = streakState?.lifetime ?? 0;
   const sparksToday = streakState?.sparksToday ?? 0;
   const dailyGoal = streakState?.dailyGoal ?? 3;
+  const dailyActivity = streakState?.dailyActivity || {};
   const [personalitySummary, setPersonalitySummary] = useState(null);
   const [loadingSummary, setLoadingSummary] = useState(false);
   const [view, setView] = useState('constellation'); // 'constellation' | 'bars'
@@ -570,6 +802,13 @@ export default function Profile({ streakState }) {
               </div>
             </div>
           </motion.div>
+
+          <LearningCalendar dailyActivity={dailyActivity} />
+          <RobustMonthlyCalendar
+            dailyActivity={dailyActivity}
+            tracks={tracks}
+            searches={recentSearches}
+          />
 
           {currentTrack && (
             <motion.div
