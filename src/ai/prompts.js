@@ -86,7 +86,11 @@ Structure your response in EXACTLY this order:
 5. TEASER — One thing that goes deeper from here, phrased as a doorway not a summary
 
 Under ${wordLimit} words total. Never use jargon without explaining it. Never be condescending.
-Do not use headers or bullet points — write as flowing paragraphs.
+Write in 3 short paragraphs separated by blank lines:
+- Paragraph 1 = hook + core
+- Paragraph 2 = analogy + example
+- Paragraph 3 = teaser only
+Do not use headers, numbering, or bullet points.
 Do not start with "Sure" or "Of course" or any filler.`;
 
   return { prompt, systemPrompt };

@@ -49,6 +49,30 @@ function ImageStrip({ nodeLabel, domain }) {
   );
 }
 
+function formatExplainerText(text) {
+  if (!text) return { lead: '', body: [], teaser: '' };
+
+  const paragraphs = text
+    .split(/\n\s*\n/)
+    .map((part) => part.trim())
+    .filter(Boolean);
+
+  if (paragraphs.length >= 3) {
+    return {
+      lead: paragraphs[0],
+      body: paragraphs.slice(1, -1),
+      teaser: paragraphs[paragraphs.length - 1],
+    };
+  }
+
+  const sentences = text.match(/[^.!?]+[.!?]+|[^.!?]+$/g)?.map((part) => part.trim()).filter(Boolean) || [text];
+  return {
+    lead: sentences[0] || text,
+    body: sentences.slice(1, -1).length ? [sentences.slice(1, -1).join(' ')] : [],
+    teaser: sentences.length > 1 ? sentences[sentences.length - 1] : '',
+  };
+}
+
 function ExplainerCardInner({
   node,
   userContextObj,
@@ -72,6 +96,7 @@ function ExplainerCardInner({
   const explorationStyle = userContextObj?.explorationStyle || 'balanced';
   const personality = userContextObj?.personality || 'spark';
   const topInterests = useMemo(() => userContextObj?.topInterests || [], [userContextObj?.topInterests]);
+  const explainerBlocks = useMemo(() => formatExplainerText(text), [text]);
 
   useEffect(() => {
     if (!node) return undefined;
@@ -173,9 +198,31 @@ function ExplainerCardInner({
               </p>
             )}
             {text && (
-              <p className={`font-body leading-relaxed text-text-primary ${ageGroup === 'little_explorer' ? 'font-body-kids text-base' : 'text-[15px]'}`}>
-                {text}
-              </p>
+              <div className="space-y-3">
+                {explainerBlocks.lead && (
+                  <p className={`font-display leading-snug text-text-primary ${compact ? 'text-[1.05rem]' : 'text-[1.2rem]'}`}>
+                    {explainerBlocks.lead}
+                  </p>
+                )}
+                {explainerBlocks.body.map((paragraph) => (
+                  <p
+                    key={paragraph}
+                    className={`font-body leading-relaxed text-text-primary ${ageGroup === 'little_explorer' ? 'font-body-kids text-base' : 'text-[15px]'}`}
+                  >
+                    {paragraph}
+                  </p>
+                ))}
+                {explainerBlocks.teaser && (
+                  <div className="rounded-[18px] bg-[rgba(255,107,53,0.08)] px-4 py-3">
+                    <p className="mb-1 text-[10px] font-mono uppercase tracking-[0.14em] text-text-muted">
+                      Next doorway
+                    </p>
+                    <p className={`font-body leading-relaxed text-text-primary ${ageGroup === 'little_explorer' ? 'font-body-kids text-base' : 'text-[15px]'}`}>
+                      {explainerBlocks.teaser}
+                    </p>
+                  </div>
+                )}
+              </div>
             )}
           </div>
         )}

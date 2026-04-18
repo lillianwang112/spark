@@ -285,19 +285,22 @@ function generateExplainer(topic, userContext = {}) {
   const interestHint = (userContext.topInterests || []).slice(0, 1)[0];
   const frame = DOMAIN_EXPLAINER_FRAMES[topic.domain] || DOMAIN_EXPLAINER_FRAMES.general;
   const hook = topic.description
-    ? `${topic.label} becomes much more interesting once you realize it is really about ${topic.description.toLowerCase().replace(/\.$/, '')}.`
-    : `${topic.label} looks like a topic, but it is really ${frame.lens}.`;
+    ? `${topic.label} gets better the second you realize it is really about ${topic.description.toLowerCase().replace(/\.$/, '')}.`
+    : `${topic.label} looks separate from everything else, but it is really ${frame.lens}.`;
   const core = parentLabel
-    ? `Inside ${parentLabel}, this branch matters because it changes what questions you can ask next.`
-    : `${topic.label} matters because it gives you a more precise way to notice patterns, causes, and tradeoffs. In this domain, it works like ${frame.lens}.`;
+    ? `Inside ${parentLabel}, this branch matters because it changes what you can notice and what you can ask next.`
+    : `${topic.label} matters because it sharpens your grip on patterns, causes, and tradeoffs instead of leaving them fuzzy.`;
   const analogy = interestHint
-    ? `If ${interestHint} already pulls you in, think of ${topic.label} as the version of that instinct with clearer structure and sharper edges.`
-    : `A good way to hold it is to treat ${topic.label} like a lens: the world stays the same, but what stands out changes.`;
+    ? `If ${interestHint} already pulls you in, treat ${topic.label} like that same instinct after someone tuned it for clarity and force.`
+    : `A good way to hold it is like swapping in a better lens: the world does not change, but the hidden structure finally starts outlining itself.`;
+  const example = topic.description
+    ? `In practice, you feel it when ${topic.description.toLowerCase().replace(/\.$/, '')} stops sounding like trivia and starts behaving like a repeatable pattern.`
+    : `You feel it the moment an example stops looking random and starts looking inevitable.`;
   const teaser = ageGroup === 'little_explorer'
-    ? `The fun part is that one more step usually reveals a stranger question hiding underneath.`
-    : `The real rabbit hole starts when ${frame.doorway}.`;
+    ? `The best part is that one more step usually reveals an even stranger question hiding underneath.`
+    : `The real doorway opens when ${frame.doorway}.`;
 
-  return `${hook} ${core} ${analogy} ${teaser}`;
+  return `${hook} ${core}\n\n${analogy} ${example}\n\n${teaser}`;
 }
 
 function inferCrossDomain(topic) {
