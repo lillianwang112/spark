@@ -1,0 +1,668 @@
+{
+  "co:Calculus:college": {
+    "title": "Calculus: The Mathematics of Change",
+    "tagline": "Calculus is the language the universe uses to describe motion, growth, and everything that moves — learn to read it.",
+    "emoji": "∫",
+    "estimatedHours": 14,
+    "prerequisiteKnowledge": "basic",
+    "modules": [
+      {
+        "id": "module_1",
+        "title": "The Limit — Where Calculus Is Born",
+        "overview": "Understand why the concept of a limit makes all of calculus possible and how infinity becomes manageable.",
+        "lessons": [
+          { "id": "lesson_1_1", "title": "Why Limits Exist and Matter", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_1_2", "title": "Getting Infinitely Close Without Arriving", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_1_3", "title": "Computing Limits: Algebra and the Squeeze Theorem", "durationMins": 10, "type": "example" },
+          { "id": "lesson_1_4", "title": "When Limits Fail: Discontinuities and Their Types", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_1_5", "title": "Limit Laws in Practice", "durationMins": 9, "type": "practice" }
+        ]
+      },
+      {
+        "id": "module_2",
+        "title": "The Derivative — Instantaneous Rate of Change",
+        "overview": "Build the derivative from first principles and see why it is the single most useful tool in applied mathematics.",
+        "lessons": [
+          { "id": "lesson_2_1", "title": "The Derivative as a Limit of Slopes", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_2_2", "title": "Differentiation Rules That Save Hours of Work", "durationMins": 9, "type": "example" },
+          { "id": "lesson_2_3", "title": "The Chain Rule: Derivatives of Composed Functions", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_2_4", "title": "Implicit Differentiation and Related Rates", "durationMins": 11, "type": "example" },
+          { "id": "lesson_2_5", "title": "Higher-Order Derivatives and What They Reveal", "durationMins": 8, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_3",
+        "title": "Derivative Applications — Optimization and Behavior",
+        "overview": "Use derivatives to find maxima, minima, and understand how any function is shaped.",
+        "lessons": [
+          { "id": "lesson_3_1", "title": "Critical Points: Where the Action Happens", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_3_2", "title": "The First and Second Derivative Tests", "durationMins": 10, "type": "example" },
+          { "id": "lesson_3_3", "title": "Optimization: Finding the Best Possible Outcome", "durationMins": 12, "type": "practice" },
+          { "id": "lesson_3_4", "title": "L'Hôpital's Rule: Resolving Indeterminate Forms", "durationMins": 9, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_4",
+        "title": "The Integral — Accumulation and Area",
+        "overview": "Discover how integration reverses differentiation and measures total accumulation over any interval.",
+        "lessons": [
+          { "id": "lesson_4_1", "title": "Riemann Sums: Area as an Infinite Limit", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_4_2", "title": "The Definite Integral and What It Measures", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_4_3", "title": "The Fundamental Theorem of Calculus: The Great Bridge", "durationMins": 11, "type": "concept" },
+          { "id": "lesson_4_4", "title": "Antiderivatives and the Indefinite Integral", "durationMins": 9, "type": "example" },
+          { "id": "lesson_4_5", "title": "Integration by Substitution", "durationMins": 10, "type": "practice" }
+        ]
+      },
+      {
+        "id": "module_5",
+        "title": "Integration Techniques — Beyond the Basics",
+        "overview": "Master the toolkit of advanced integration strategies that unlock real-world problems.",
+        "lessons": [
+          { "id": "lesson_5_1", "title": "Integration by Parts: Reversing the Product Rule", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_5_2", "title": "Trigonometric Integrals and Substitutions", "durationMins": 11, "type": "example" },
+          { "id": "lesson_5_3", "title": "Partial Fractions: Breaking Down Rational Functions", "durationMins": 10, "type": "example" },
+          { "id": "lesson_5_4", "title": "Improper Integrals and Infinite Limits", "durationMins": 9, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_6",
+        "title": "Sequences and Series — Infinite Sums That Converge",
+        "overview": "Explore how infinitely many numbers can sum to a finite value and why this makes modern analysis possible.",
+        "lessons": [
+          { "id": "lesson_6_1", "title": "Sequences: Patterns Approaching a Limit", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_6_2", "title": "Geometric and Harmonic Series: One Converges, One Doesn't", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_6_3", "title": "Convergence Tests: The Ratio and Root Tests", "durationMins": 10, "type": "example" },
+          { "id": "lesson_6_4", "title": "Power Series and the Radius of Convergence", "durationMins": 9, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_7",
+        "title": "Taylor Series and the Frontier of Calculus",
+        "overview": "See how every smooth function is secretly an infinite polynomial, and how this insight powers modern science.",
+        "lessons": [
+          { "id": "lesson_7_1", "title": "Taylor Polynomials: Approximating Functions Locally", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_7_2", "title": "The Taylor and Maclaurin Series in Full", "durationMins": 11, "type": "example" },
+          { "id": "lesson_7_3", "title": "Error Bounds and Why They Matter", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_7_4", "title": "Calculus in Physics, Economics, and Machine Learning", "durationMins": 10, "type": "example" }
+        ]
+      }
+    ]
+  },
+
+  "lc:Calculus:Why_Limits_Exist_and_Matt:college": {
+    "title": "Why Limits Exist and Matter",
+    "hook": "Before calculus, Zeno of Elea proved — or so he thought — that a fast runner could never overtake a tortoise, because to close any gap you must first close half of it, forever; limits are the mathematical weapon that finally silenced him.",
+    "sections": [
+      {
+        "heading": "The Core Problem Calculus Had to Solve",
+        "body": "Ancient mathematicians could measure static quantities — the area of a triangle, the volume of a cone — but they had no rigorous way to describe quantities that change continuously. What is the speed of a falling stone at the exact instant it hits the ground? That 'instant' has zero duration, so the usual formula (distance ÷ time) gives 0/0, which is meaningless. The limit is the concept that makes 'approaching an instant' rigorous without ever dividing by zero.",
+        "type": "concept"
+      },
+      {
+        "heading": "What a Limit Actually Says",
+        "body": "We write lim(x→c) f(x) = L and mean: we can make f(x) as close to L as we like by choosing x sufficiently close to c, without x ever equaling c. Crucially, the function doesn't need to be defined at c — only near it. This is not a vague notion of 'getting close'; it has a precise epsilon-delta definition: for every ε > 0 there exists δ > 0 such that |x − c| < δ implies |f(x) − L| < ε.",
+        "type": "concept"
+      },
+      {
+        "heading": "An Analogy: Thermometer in an Oven",
+        "body": "Imagine measuring the temperature inside a pizza oven by placing a thermometer through a tiny hole. The thermometer is never touching the pizza — it is always nearby, not at the exact spot — yet it still gives you an accurate reading. A limit works the same way: you read the 'temperature' of a function at a point by approaching that point from nearby, not by standing on it. The function's value at c is irrelevant to the limit; what matters is the behavior in the neighborhood around c.",
+        "type": "analogy"
+      },
+      {
+        "heading": "A Worked Example: sin(x)/x at x = 0",
+        "body": "The function sin(x)/x is undefined at x = 0 because we'd divide by zero. But plug in x = 0.1 and get ≈ 0.9983; x = 0.01 gives ≈ 0.99998; x = 0.001 gives ≈ 0.9999998. The values are converging unmistakably to 1. The Squeeze Theorem confirms: cos(x) ≤ sin(x)/x ≤ 1, and since both bounds approach 1 as x → 0, so must sin(x)/x. Therefore lim(x→0) sin(x)/x = 1, a result that appears everywhere in physics and signal processing.",
+        "type": "example"
+      },
+      {
+        "heading": "Why This Is the Gateway to All of Calculus",
+        "body": "Every central concept in calculus is defined as a limit. The derivative is the limit of a difference quotient (slope of secant lines as they approach the tangent). The integral is the limit of Riemann sums (rectangles whose widths shrink to zero). Even the definition of continuity uses limits: f is continuous at c if lim(x→c) f(x) = f(c). Without limits, calculus would be a collection of clever tricks; with limits, it becomes a unified, logically airtight theory.",
+        "type": "deep_dive"
+      }
+    ],
+    "keyPoints": [
+      "A limit describes the value a function approaches as its input gets arbitrarily close to a point — without ever needing to reach it.",
+      "lim(x→0) sin(x)/x = 1 is the canonical example of a limit that is indeterminate at the point itself but perfectly well-defined in the limit.",
+      "The epsilon-delta definition makes 'closeness' quantitatively precise: for any target accuracy ε, you can find a neighborhood δ that guarantees it.",
+      "Derivatives, integrals, and continuity are all defined as limits — making the limit concept the logical foundation of the entire calculus edifice."
+    ],
+    "checkIn": {
+      "question": "Why does lim(x→2) f(x) not require f(2) to be defined?",
+      "answer": "A limit only concerns the function's behavior near x = 2, not at it. The definition explicitly requires x close to 2 but not equal to 2, so f(2) can be undefined, equal to the limit, or something else entirely — it is irrelevant."
+    }
+  },
+
+  "lf:Calculus:Why_Limits_Exist_and_Matt:college": [
+    {
+      "front": "What is a limit, in one sentence?",
+      "back": "The value a function approaches as its input gets arbitrarily close to a point, without reaching it."
+    },
+    {
+      "front": "Give the epsilon-delta definition of lim(x→c) f(x) = L.",
+      "back": "For every ε > 0, there exists δ > 0 such that 0 < |x−c| < δ implies |f(x)−L| < ε."
+    },
+    {
+      "front": "True or false: f must be defined at c for lim(x→c) f(x) to exist.",
+      "back": "False. The limit only depends on values near c, never at c itself."
+    },
+    {
+      "front": "What is lim(x→0) sin(x)/x?",
+      "back": "1. The function is undefined at 0, but the Squeeze Theorem shows the limit equals exactly 1."
+    },
+    {
+      "front": "Fill in the blank: The derivative is defined as the _____ of a difference quotient.",
+      "back": "limit (specifically, as the interval Δx approaches zero)."
+    },
+    {
+      "front": "What does it mean for a function to be continuous at c?",
+      "back": "f is continuous at c if lim(x→c) f(x) exists, f(c) is defined, and both values are equal."
+    },
+    {
+      "front": "What is the Squeeze Theorem used for?",
+      "back": "To evaluate a limit by trapping the function between two simpler functions that share the same limit."
+    },
+    {
+      "front": "Why was the limit concept necessary for calculus?",
+      "back": "Division by zero — needed to find instantaneous rates — is undefined; limits let us approach zero without reaching it, making derivatives rigorous."
+    }
+  ],
+
+  "co:Linear_Algebra:college": {
+    "title": "Linear Algebra: The Geometry of Data and Transformation",
+    "tagline": "The mathematics that runs Google's PageRank, Netflix's recommendations, and your phone's face ID — and it starts with a dot product.",
+    "emoji": "⊗",
+    "estimatedHours": 13,
+    "prerequisiteKnowledge": "basic",
+    "modules": [
+      {
+        "id": "module_1",
+        "title": "Vectors — The Language of Direction and Magnitude",
+        "overview": "Build an intuition for vectors as geometric objects before they become abstract arrows in n-dimensional space.",
+        "lessons": [
+          { "id": "lesson_1_1", "title": "Vectors as Geometric Objects", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_1_2", "title": "Vector Addition and Scalar Multiplication Geometrically", "durationMins": 8, "type": "example" },
+          { "id": "lesson_1_3", "title": "The Dot Product: When Geometry Meets Algebra", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_1_4", "title": "The Cross Product and Oriented Area in 3D", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_1_5", "title": "Vector Spaces: Abstraction Beyond the Plane", "durationMins": 8, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_2",
+        "title": "Systems of Linear Equations — Solving the Unsolvable",
+        "overview": "Discover how every system of linear equations is really a geometric intersection problem in disguise.",
+        "lessons": [
+          { "id": "lesson_2_1", "title": "Linear Equations as Hyperplane Intersections", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_2_2", "title": "Gaussian Elimination: Systematic Row Reduction", "durationMins": 11, "type": "example" },
+          { "id": "lesson_2_3", "title": "Reduced Row Echelon Form and Free Variables", "durationMins": 10, "type": "practice" },
+          { "id": "lesson_2_4", "title": "When Systems Have No Solution or Infinitely Many", "durationMins": 9, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_3",
+        "title": "Matrices — Transformations of Space",
+        "overview": "See matrices not as grids of numbers but as machines that rotate, scale, and shear entire coordinate systems.",
+        "lessons": [
+          { "id": "lesson_3_1", "title": "Matrix Multiplication as Composed Transformations", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_3_2", "title": "The Identity, Transpose, and Inverse", "durationMins": 9, "type": "example" },
+          { "id": "lesson_3_3", "title": "The Determinant: Signed Volume and Orientation", "durationMins": 11, "type": "concept" },
+          { "id": "lesson_3_4", "title": "LU Decomposition: Factoring Matrices for Efficiency", "durationMins": 10, "type": "example" },
+          { "id": "lesson_3_5", "title": "Special Matrices: Symmetric, Orthogonal, Diagonal", "durationMins": 8, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_4",
+        "title": "The Four Fundamental Subspaces",
+        "overview": "Understand the column space, null space, row space, and left null space — the four spaces that fully characterize any linear map.",
+        "lessons": [
+          { "id": "lesson_4_1", "title": "Column Space and Span: What Can a Matrix Reach?", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_4_2", "title": "Null Space: Where Does a Matrix Send Zero?", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_4_3", "title": "The Rank-Nullity Theorem: A Conservation Law", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_4_4", "title": "Linear Independence, Basis, and Dimension", "durationMins": 10, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_5",
+        "title": "Eigenvalues and Eigenvectors — Invariant Directions",
+        "overview": "Find the special directions a transformation leaves unchanged, and why they reveal a matrix's deepest structure.",
+        "lessons": [
+          { "id": "lesson_5_1", "title": "Eigenvectors: Arrows That Only Scale, Never Rotate", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_5_2", "title": "The Characteristic Polynomial and Its Roots", "durationMins": 11, "type": "example" },
+          { "id": "lesson_5_3", "title": "Diagonalization: Simplifying Matrices via Eigenvectors", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_5_4", "title": "Symmetric Matrices Always Have Real Eigenvalues", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_5_5", "title": "Google's PageRank as an Eigenvector Problem", "durationMins": 8, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_6",
+        "title": "Orthogonality and Projections",
+        "overview": "Master the geometry of perpendicularity, projections, and why least-squares fitting is a projection onto a column space.",
+        "lessons": [
+          { "id": "lesson_6_1", "title": "Orthogonal Vectors and the Pythagorean Law in n Dimensions", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_6_2", "title": "Gram-Schmidt: Building Orthonormal Bases", "durationMins": 11, "type": "example" },
+          { "id": "lesson_6_3", "title": "Projection Matrices and Least-Squares Solutions", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_6_4", "title": "QR Decomposition in Numerical Linear Algebra", "durationMins": 9, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_7",
+        "title": "Singular Value Decomposition — The Crown Jewel",
+        "overview": "Understand SVD, the most powerful factorization in linear algebra, and how it drives data compression and machine learning.",
+        "lessons": [
+          { "id": "lesson_7_1", "title": "SVD: Every Matrix as a Sequence of Geometric Moves", "durationMins": 11, "type": "concept" },
+          { "id": "lesson_7_2", "title": "Singular Values and Low-Rank Approximation", "durationMins": 10, "type": "example" },
+          { "id": "lesson_7_3", "title": "Principal Component Analysis via SVD", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_7_4", "title": "Linear Algebra in Deep Learning and Transformers", "durationMins": 9, "type": "example" }
+        ]
+      }
+    ]
+  },
+
+  "lc:Linear_Algebra:Vectors_as_Geometric_Obje:college": {
+    "title": "Vectors as Geometric Objects",
+    "hook": "A vector has no fixed location in space — you can slide it anywhere without changing it, which is why the same mathematical object simultaneously describes a force on a bridge, a color in an image, and a word meaning in a language model.",
+    "sections": [
+      {
+        "heading": "What a Vector Really Is",
+        "body": "A vector is a quantity with both magnitude (size) and direction — distinguished from a scalar, which has only magnitude. In two dimensions a vector v = (3, 4) can be pictured as an arrow from the origin to the point (3, 4), with length √(3² + 4²) = 5. But crucially, that arrow is not tied to the origin: any arrow of the same length pointing the same direction is the same vector. This property, called translation invariance, is what lets vectors describe displacements, forces, and velocities with complete generality.",
+        "type": "concept"
+      },
+      {
+        "heading": "Vector Operations Have Geometric Meaning",
+        "body": "Adding vectors u + v corresponds geometrically to placing v's tail at u's tip and drawing the arrow to v's head — this is the parallelogram law and describes, for instance, combining two forces on an object. Multiplying a vector by a scalar c stretches (|c| > 1), shrinks (|c| < 1), or flips (c < 0) the arrow while keeping its line of action. Subtracting v from u gives the vector pointing from the tip of v to the tip of u — the displacement between two points. Every algebraic manipulation has an exact geometric counterpart.",
+        "type": "concept"
+      },
+      {
+        "heading": "An Analogy: Directions in a City",
+        "body": "Imagine giving someone directions: 'walk 3 blocks east, then 4 blocks north.' That instruction is a vector — it has a precise magnitude (5 blocks by Pythagoras) and direction, but it doesn't depend on where you start. Whether you're downtown or in the suburbs, '3 east, 4 north' gets you to the same relative destination. This is exactly what a vector captures: a pure displacement, independent of starting position. Most physics problems are really direction problems in disguise, and vectors are the language that makes them solvable.",
+        "type": "analogy"
+      },
+      {
+        "heading": "Worked Example: Length and Unit Vectors",
+        "body": "Take v = (−6, 8). Its magnitude is ||v|| = √(36 + 64) = √100 = 10. To find the unit vector v̂ (same direction, length 1), divide every component by the magnitude: v̂ = (−6/10, 8/10) = (−0.6, 0.8). Check: (−0.6)² + (0.8)² = 0.36 + 0.64 = 1. Unit vectors are essential because they encode pure direction without magnitude. Every non-zero vector in ℝⁿ has exactly one unit vector pointing in its direction.",
+        "type": "example"
+      },
+      {
+        "heading": "Why Vectors Extend to n Dimensions",
+        "body": "Nothing in the definition of a vector requires only 2 or 3 components. A vector in ℝⁿ is simply an ordered list of n real numbers, and all the geometric intuition — addition as displacement, scaling as stretching — extends directly. A Netflix user's viewing history might be a vector in ℝ¹⁰⁰⁰⁰ where each component represents how much they watched a given show. Measuring distance and angle between such vectors (via the dot product) is exactly how recommendation systems find 'similar' users — linear algebra is geometry in arbitrarily high dimensions.",
+        "type": "deep_dive"
+      }
+    ],
+    "keyPoints": [
+      "A vector encodes magnitude and direction; it has no fixed position — any two arrows of the same length and direction are identical vectors.",
+      "The magnitude of v = (a, b, c) is ||v|| = √(a² + b² + c²); the unit vector is v̂ = v/||v||.",
+      "Vector addition is geometric tip-to-tail concatenation; scalar multiplication stretches or reverses the arrow.",
+      "Vectors in ℝⁿ extend the same geometry to any number of dimensions, enabling applications from physics to machine learning."
+    ],
+    "checkIn": {
+      "question": "Two vectors u and v point in exactly opposite directions and have the same magnitude. What is u + v?",
+      "answer": "The zero vector (all components zero). The arrows cancel geometrically: tip-to-tail, v reverses exactly back to the start of u."
+    }
+  },
+
+  "lf:Linear_Algebra:Vectors_as_Geometric_Obje:college": [
+    {
+      "front": "What two properties define a vector?",
+      "back": "Magnitude (size) and direction. Unlike scalars, vectors encode how much and which way."
+    },
+    {
+      "front": "Compute the magnitude of v = (5, −12).",
+      "back": "||v|| = √(25 + 144) = √169 = 13."
+    },
+    {
+      "front": "True or false: Two arrows of the same length and direction but different starting points are different vectors.",
+      "back": "False. Vectors are translation-invariant — position does not affect identity; only magnitude and direction matter."
+    },
+    {
+      "front": "What does multiplying a vector by −1 do geometrically?",
+      "back": "It reverses the direction while keeping the same magnitude — the arrow flips 180 degrees."
+    },
+    {
+      "front": "How do you find the unit vector in the direction of v = (3, 4)?",
+      "back": "Divide by its magnitude: v̂ = (3/5, 4/5), since ||v|| = 5."
+    },
+    {
+      "front": "Geometrically, what does vector addition u + v represent?",
+      "back": "Place v's tail at u's tip; the sum is the arrow from u's tail to v's tip (tip-to-tail or parallelogram law)."
+    },
+    {
+      "front": "Fill in the blank: A vector in ℝⁿ is an ordered list of _____ real numbers.",
+      "back": "n. The same geometric rules of addition and scaling apply regardless of how large n is."
+    },
+    {
+      "front": "Why are unit vectors useful in applications?",
+      "back": "They encode pure direction without magnitude, making them ideal for describing orientations, normals, and basis directions."
+    }
+  ],
+
+  "co:Statistics:college": {
+    "title": "Statistics: Making Confident Decisions Under Uncertainty",
+    "tagline": "Every poll, clinical trial, and A/B test in the world runs on the same ideas — learn to think like the people who design them.",
+    "emoji": "📊",
+    "estimatedHours": 12,
+    "prerequisiteKnowledge": "basic",
+    "modules": [
+      {
+        "id": "module_1",
+        "title": "Describing Data — Before You Analyze, You Must See",
+        "overview": "Build the vocabulary and visual tools to characterize any dataset before performing a single calculation.",
+        "lessons": [
+          { "id": "lesson_1_1", "title": "Shape Center and Spread", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_1_2", "title": "Mean vs Median: When Each One Lies", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_1_3", "title": "Variance and Standard Deviation: Quantifying Scatter", "durationMins": 10, "type": "example" },
+          { "id": "lesson_1_4", "title": "Histograms, Box Plots, and What They Reveal", "durationMins": 9, "type": "example" },
+          { "id": "lesson_1_5", "title": "Outliers: When One Point Changes Everything", "durationMins": 8, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_2",
+        "title": "Probability Foundations — The Engine of Statistics",
+        "overview": "Master the probability rules that underpin every statistical inference and hypothesis test.",
+        "lessons": [
+          { "id": "lesson_2_1", "title": "Sample Space, Events, and the Probability Axioms", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_2_2", "title": "Conditional Probability and Why Context Changes Everything", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_2_3", "title": "Independence: The Most Useful Assumption in Statistics", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_2_4", "title": "Bayes' Theorem and Updating Beliefs with Evidence", "durationMins": 11, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_3",
+        "title": "Distributions — Modeling Randomness",
+        "overview": "Learn the core probability distributions that appear in virtually every real-world statistical problem.",
+        "lessons": [
+          { "id": "lesson_3_1", "title": "The Normal Distribution and the 68-95-99.7 Rule", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_3_2", "title": "The Binomial Distribution: Counting Successes", "durationMins": 9, "type": "example" },
+          { "id": "lesson_3_3", "title": "The Poisson Distribution: Rare Events in Time and Space", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_3_4", "title": "The t-Distribution: When You Don't Know the True Variance", "durationMins": 8, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_4",
+        "title": "Sampling and the Central Limit Theorem",
+        "overview": "Understand why random sampling works and why the normal distribution appears everywhere regardless of the underlying data shape.",
+        "lessons": [
+          { "id": "lesson_4_1", "title": "Populations vs Samples: Why We Can't Measure Everything", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_4_2", "title": "The Sampling Distribution of the Mean", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_4_3", "title": "The Central Limit Theorem: The Most Important Result in Statistics", "durationMins": 11, "type": "concept" },
+          { "id": "lesson_4_4", "title": "Standard Error: Measuring Your Estimator's Precision", "durationMins": 9, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_5",
+        "title": "Confidence Intervals — Honest Uncertainty Quantification",
+        "overview": "Learn to attach principled error bars to every estimate so readers know exactly how uncertain your conclusions are.",
+        "lessons": [
+          { "id": "lesson_5_1", "title": "What a Confidence Interval Actually Guarantees", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_5_2", "title": "Constructing a 95% CI for a Mean", "durationMins": 10, "type": "example" },
+          { "id": "lesson_5_3", "title": "CI for Proportions: Polling and Election Forecasting", "durationMins": 9, "type": "example" },
+          { "id": "lesson_5_4", "title": "Sample Size: How Many Data Points Do You Need?", "durationMins": 9, "type": "practice" }
+        ]
+      },
+      {
+        "id": "module_6",
+        "title": "Hypothesis Testing — Ruling Out Luck",
+        "overview": "Build the framework for deciding whether an observed effect is real or just chance variation.",
+        "lessons": [
+          { "id": "lesson_6_1", "title": "The Null Hypothesis and the Burden of Proof", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_6_2", "title": "p-Values: What They Say and What They Don't", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_6_3", "title": "Type I and Type II Errors: The Two Ways to Be Wrong", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_6_4", "title": "The t-Test and z-Test in Practice", "durationMins": 10, "type": "example" },
+          { "id": "lesson_6_5", "title": "Multiple Testing and the Replication Crisis", "durationMins": 8, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_7",
+        "title": "Regression and Statistical Frontiers",
+        "overview": "Model relationships between variables, extend to multiple predictors, and preview how modern statistics meets machine learning.",
+        "lessons": [
+          { "id": "lesson_7_1", "title": "Linear Regression: The Line of Best Fit and Why", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_7_2", "title": "Correlation vs Causation: Why This Distinction Matters", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_7_3", "title": "Multiple Regression and Confounders", "durationMins": 10, "type": "example" },
+          { "id": "lesson_7_4", "title": "Bayesian vs Frequentist: Two Philosophies of Inference", "durationMins": 9, "type": "concept" }
+        ]
+      }
+    ]
+  },
+
+  "lc:Statistics:Shape_Center_and_Spread:college": {
+    "title": "Shape, Center, and Spread",
+    "hook": "The average US household income is about $80,000 — but the median is $56,000, and that gap alone tells you something billionaires won't put in a press release.",
+    "sections": [
+      {
+        "heading": "Why Every Dataset Has Three Stories to Tell",
+        "body": "Before fitting models or running tests, a statistician asks three questions about any dataset: What does its shape look like? Where is its center? How spread out is it? These three dimensions — shape, center, and spread — form a complete first description of a distribution. Skipping any one of them can lead to badly wrong conclusions, as when a bimodal distribution (two humps) is characterized by a single mean that falls in the trough between them, representing no actual data point at all.",
+        "type": "concept"
+      },
+      {
+        "heading": "Measuring Center: Mean, Median, and Mode",
+        "body": "The mean (arithmetic average) adds all values and divides by n. The median is the middle value when data is sorted — or the average of the two middle values when n is even. The mode is the most frequent value. For symmetric distributions these three nearly coincide, but for skewed data they diverge sharply. Income distributions skew right (a few very high earners pull the mean up), so the median better represents a 'typical' person. Choosing the wrong measure of center is one of the most common forms of statistical misleading, even when done unintentionally.",
+        "type": "concept"
+      },
+      {
+        "heading": "An Analogy: Bowling Scores",
+        "body": "Imagine two bowlers who each average 140 points per game. Bowler A scores 138, 141, 140, 142, 139 every game — tightly clustered. Bowler B scores 80, 200, 95, 185, 140 — wildly variable. Their centers are identical; their spread is completely different. If you're betting on the next game, Bowler A is far more predictable. This is why spread — quantified as variance or standard deviation — is just as important as center: two datasets with identical means can behave utterly differently in practice.",
+        "type": "analogy"
+      },
+      {
+        "heading": "Worked Example: Computing Variance and Standard Deviation",
+        "body": "Consider the dataset {2, 4, 4, 4, 5, 5, 7, 9}. The mean is (2+4+4+4+5+5+7+9)/8 = 40/8 = 5. The deviations from the mean are {−3, −1, −1, −1, 0, 0, 2, 4}. Squaring gives {9, 1, 1, 1, 0, 0, 4, 16}; their average is 32/8 = 4. So the variance is 4, and the standard deviation σ = √4 = 2. About 68% of values in a roughly bell-shaped distribution fall within one σ of the mean — here, within [3, 7] — which includes six of the eight data points, consistent with that rule.",
+        "type": "example"
+      },
+      {
+        "heading": "Shape: Skewness and the Direction of Tails",
+        "body": "A distribution's shape is characterized by symmetry, skewness (lean), and kurtosis (tail heaviness). Right-skewed distributions have a long tail to the right and their mean exceeds their median — income, wealth, and city population all look like this. Left-skewed distributions have a long tail to the left — age at death in a developed country skews left because few people die young. Bimodal distributions have two peaks, often revealing a mixture of two populations (e.g., heights of adult men and women pooled together). Recognizing shape guides every subsequent analytical choice.",
+        "type": "deep_dive"
+      }
+    ],
+    "keyPoints": [
+      "Every dataset should be described along three axes: shape (symmetry/skewness), center (mean/median/mode), and spread (variance/standard deviation/IQR).",
+      "The mean is sensitive to outliers; the median is robust — for skewed data the median is usually a better measure of 'typical'.",
+      "Variance is the average squared deviation from the mean; standard deviation is its square root, restoring the original units.",
+      "Skewness reveals which way the long tail points: right-skewed pulls the mean above the median; left-skewed pulls it below."
+    ],
+    "checkIn": {
+      "question": "A dataset has mean 75 and median 60. What does this tell you about the distribution's shape?",
+      "answer": "The distribution is right-skewed: the mean exceeds the median because high-value outliers in the upper tail are pulling the mean upward."
+    }
+  },
+
+  "lf:Statistics:Shape_Center_and_Spread:college": [
+    {
+      "front": "What are the three fundamental properties of any distribution?",
+      "back": "Shape (symmetry or skew), center (mean/median/mode), and spread (variance/standard deviation/IQR)."
+    },
+    {
+      "front": "Why is the median preferred over the mean for income data?",
+      "back": "Income is right-skewed; a few very high earners inflate the mean, making the median a more representative 'typical' value."
+    },
+    {
+      "front": "Compute the standard deviation of {2, 4, 6}.",
+      "back": "Mean = 4; deviations = {−2, 0, 2}; squared = {4, 0, 4}; variance = 8/3 ≈ 2.67; σ ≈ 1.63."
+    },
+    {
+      "front": "True or false: A right-skewed distribution has mean < median.",
+      "back": "False. In a right-skewed distribution the long tail is to the right, pulling the mean above the median."
+    },
+    {
+      "front": "What does it mean if a distribution is bimodal?",
+      "back": "It has two distinct peaks, often indicating a mixture of two different populations within the dataset."
+    },
+    {
+      "front": "Fill in the blank: Standard deviation is the _____ of variance.",
+      "back": "Square root. This restores the measure to the original units of the data."
+    },
+    {
+      "front": "What is the interquartile range (IQR)?",
+      "back": "The range of the middle 50% of sorted data: IQR = Q3 − Q1. It is robust to outliers unlike the full range."
+    },
+    {
+      "front": "Why can two datasets with the same mean behave very differently?",
+      "back": "They can have very different spreads (variances). Identical means with different standard deviations produce completely different distributions."
+    }
+  ],
+
+  "co:Probability_Theory:college": {
+    "title": "Probability Theory: The Mathematics of Uncertainty",
+    "tagline": "Every AI prediction, insurance premium, and quantum physics calculation is a probability — and it all starts with three deceptively simple axioms.",
+    "emoji": "🎲",
+    "estimatedHours": 13,
+    "prerequisiteKnowledge": "basic",
+    "modules": [
+      {
+        "id": "module_1",
+        "title": "Foundations — Axioms, Events, and Sample Spaces",
+        "overview": "Build probability theory from the ground up, starting from Kolmogorov's three axioms that everything else follows from.",
+        "lessons": [
+          { "id": "lesson_1_1", "title": "The Axioms That Rule Chance", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_1_2", "title": "Events as Sets: Unions, Intersections, and Complements", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_1_3", "title": "Counting Techniques: Permutations and Combinations", "durationMins": 10, "type": "example" },
+          { "id": "lesson_1_4", "title": "The Inclusion-Exclusion Principle", "durationMins": 8, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_2",
+        "title": "Conditional Probability and Independence",
+        "overview": "Understand how new information changes probabilities and when two events are truly unrelated.",
+        "lessons": [
+          { "id": "lesson_2_1", "title": "Conditional Probability: Restricting the Sample Space", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_2_2", "title": "The Multiplication Rule and Tree Diagrams", "durationMins": 9, "type": "example" },
+          { "id": "lesson_2_3", "title": "Independence vs Mutual Exclusivity: A Common Confusion", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_2_4", "title": "Bayes' Theorem: Inverting Conditional Probability", "durationMins": 11, "type": "concept" },
+          { "id": "lesson_2_5", "title": "The Law of Total Probability", "durationMins": 9, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_3",
+        "title": "Random Variables — Quantifying Outcomes",
+        "overview": "Move from raw events to numerical random variables that can be analyzed with algebra and calculus.",
+        "lessons": [
+          { "id": "lesson_3_1", "title": "Discrete Random Variables and Probability Mass Functions", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_3_2", "title": "Expected Value: The Long-Run Average", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_3_3", "title": "Variance of a Random Variable and Its Properties", "durationMins": 9, "type": "example" },
+          { "id": "lesson_3_4", "title": "Continuous Random Variables and Probability Density Functions", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_3_5", "title": "The Cumulative Distribution Function", "durationMins": 8, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_4",
+        "title": "Key Probability Distributions",
+        "overview": "Study the canonical discrete and continuous distributions that model real-world randomness.",
+        "lessons": [
+          { "id": "lesson_4_1", "title": "Bernoulli and Binomial: Counting Successes in Trials", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_4_2", "title": "Geometric and Negative Binomial: How Long Until Success?", "durationMins": 9, "type": "example" },
+          { "id": "lesson_4_3", "title": "The Poisson Distribution: Rare Events and Radioactive Decay", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_4_4", "title": "The Exponential Distribution and Memorylessness", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_4_5", "title": "The Normal Distribution: Ubiquitous and Non-Obvious", "durationMins": 10, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_5",
+        "title": "Joint Distributions and Covariance",
+        "overview": "Analyze how two or more random variables relate to each other through joint distributions and correlation.",
+        "lessons": [
+          { "id": "lesson_5_1", "title": "Joint and Marginal Distributions", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_5_2", "title": "Covariance: Measuring Linear Dependence", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_5_3", "title": "Correlation: Normalizing Covariance to [−1, 1]", "durationMins": 9, "type": "example" },
+          { "id": "lesson_5_4", "title": "Independent Random Variables and Convolution", "durationMins": 10, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_6",
+        "title": "Limit Theorems — The Great Convergence Laws",
+        "overview": "Prove why large samples behave predictably and why the normal distribution is not just common but inevitable.",
+        "lessons": [
+          { "id": "lesson_6_1", "title": "The Law of Large Numbers: Averages Converge to Expectations", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_6_2", "title": "The Central Limit Theorem: Why Normality Emerges", "durationMins": 11, "type": "concept" },
+          { "id": "lesson_6_3", "title": "Moment Generating Functions and Their Uses", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_6_4", "title": "Concentration Inequalities: Markov and Chebyshev", "durationMins": 9, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_7",
+        "title": "Stochastic Processes and the Frontier",
+        "overview": "Enter the world of probability evolving over time: Markov chains, Brownian motion, and the mathematics behind modern AI.",
+        "lessons": [
+          { "id": "lesson_7_1", "title": "Markov Chains: The Memoryless Random Walk", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_7_2", "title": "Stationary Distributions and Long-Run Behavior", "durationMins": 10, "type": "example" },
+          { "id": "lesson_7_3", "title": "Brownian Motion and the Mathematics of Diffusion", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_7_4", "title": "Probability in Machine Learning: From Naive Bayes to Diffusion Models", "durationMins": 10, "type": "example" }
+        ]
+      }
+    ]
+  },
+
+  "lc:Probability_Theory:The_Axioms_That_Rule_Chan:college": {
+    "title": "The Axioms That Rule Chance",
+    "hook": "In 1933, Andrei Kolmogorov reduced all of probability — every casino, weather model, and quantum particle — to three axioms that fit on a single line; every theorem in probability theory is a consequence of just those three statements.",
+    "sections": [
+      {
+        "heading": "What Probability Theory Is Actually About",
+        "body": "Probability theory is the mathematical study of uncertainty. Before Kolmogorov's 1933 formalization, probability had been applied with impressive success for centuries — Pascal, Fermat, Bernoulli, Laplace — but it lacked rigorous foundations. Kolmogorov anchored probability in measure theory, defining it over a triple (Ω, F, P): Ω is the sample space (all possible outcomes), F is a σ-algebra (the family of events we can assign probabilities to), and P is the probability measure mapping events to numbers in [0, 1]. This framework handles everything from flipping coins to quantum field theory without contradiction.",
+        "type": "concept"
+      },
+      {
+        "heading": "The Three Axioms Themselves",
+        "body": "Kolmogorov's axioms are: (1) Non-negativity: P(A) ≥ 0 for every event A. (2) Normalization: P(Ω) = 1 — the probability that something happens is 1. (3) Countable additivity: if A₁, A₂, A₃, … are mutually exclusive events (no two can occur together), then P(A₁ ∪ A₂ ∪ …) = P(A₁) + P(A₂) + …. These three statements are the entire axiomatic foundation. Every other rule — the complement rule P(Aᶜ) = 1 − P(A), the addition rule P(A ∪ B) = P(A) + P(B) − P(A ∩ B), conditional probability — is a theorem that follows from them.",
+        "type": "concept"
+      },
+      {
+        "heading": "An Analogy: Budget Allocation",
+        "body": "Think of probability as distributing a budget of exactly $1 across all possible outcomes. Non-negativity says you can't give any outcome a negative allocation (no event can 'owe' probability). Normalization says you must spend the entire dollar — certainty is baked in. Countable additivity says if two projects never overlap, their combined cost is just the sum of their individual costs, with no double-counting. This budget intuition explains why P(A) + P(Aᶜ) = 1 — your dollar is split exhaustively between 'A happens' and 'A doesn't happen' with no remainder.",
+        "type": "analogy"
+      },
+      {
+        "heading": "Worked Example: Deriving the Complement Rule",
+        "body": "Let A be any event. Since A and Aᶜ (A's complement) are mutually exclusive and their union is Ω, Axiom 3 gives P(A ∪ Aᶜ) = P(A) + P(Aᶜ). But A ∪ Aᶜ = Ω, and by Axiom 2, P(Ω) = 1. Therefore 1 = P(A) + P(Aᶜ), which rearranges to P(Aᶜ) = 1 − P(A). This is the complement rule — something every probability student uses constantly — and it is nothing more than a two-step deduction from the axioms. This is how all of probability theory is built: one theorem at a time, each a logical consequence of those three statements.",
+        "type": "example"
+      },
+      {
+        "heading": "Why Axiomatic Foundations Matter for Modern Applications",
+        "body": "The power of Kolmogorov's framework is that it works for any sample space — finite, countably infinite, or continuous — without changing the axioms. Rolling a die uses a 6-element Ω; modeling tomorrow's temperature uses Ω = ℝ with probability given by a density function; quantum mechanics uses Ω as a Hilbert space of wave functions. Machine learning's probabilistic graphical models, Bayesian neural networks, and diffusion models all live inside this framework. When engineers build a GPS that gives uncertainty intervals, or epidemiologists model disease spread, they are applying consequences of those same three axioms Kolmogorov wrote down in 1933.",
+        "type": "deep_dive"
+      }
+    ],
+    "keyPoints": [
+      "Kolmogorov's three axioms — non-negativity, normalization (P(Ω) = 1), and countable additivity — are the entire logical foundation of probability theory.",
+      "Every probability rule (complement, addition, conditional probability) is a theorem deduced from these three axioms, not an independent assumption.",
+      "The framework (Ω, F, P) handles finite, countably infinite, and continuous sample spaces identically, making it universally applicable.",
+      "Modern applications from Bayesian ML to quantum mechanics are all formal consequences of this 1933 axiomatic system."
+    ],
+    "checkIn": {
+      "question": "Using only Kolmogorov's axioms, prove that P(∅) = 0.",
+      "answer": "∅ and Ω are mutually exclusive with ∅ ∪ Ω = Ω. By Axiom 3: P(Ω) = P(∅) + P(Ω). By Axiom 2, P(Ω) = 1. Subtracting P(Ω) from both sides gives P(∅) = 0."
+    }
+  },
+
+  "lf:Probability_Theory:The_Axioms_That_Rule_Chan:college": [
+    {
+      "front": "State Kolmogorov's three axioms of probability.",
+      "back": "(1) P(A) ≥ 0; (2) P(Ω) = 1; (3) For mutually exclusive events, P(A₁ ∪ A₂ ∪ …) = ΣP(Aᵢ)."
+    },
+    {
+      "front": "What is the sample space Ω?",
+      "back": "The set of all possible outcomes of a random experiment. Every event is a subset of Ω."
+    },
+    {
+      "front": "Derive P(Aᶜ) = 1 − P(A) from the axioms.",
+      "back": "A and Aᶜ are mutually exclusive with union Ω, so P(A) + P(Aᶜ) = P(Ω) = 1, giving P(Aᶜ) = 1 − P(A)."
+    },
+    {
+      "front": "True or false: P(∅) = 0 is a Kolmogorov axiom.",
+      "back": "False. It is a theorem. It follows from axioms 2 and 3: since Ω = Ω ∪ ∅ and they are disjoint, 1 = 1 + P(∅), so P(∅) = 0."
+    },
+    {
+      "front": "What does countable additivity require?",
+      "back": "Events must be mutually exclusive (pairwise disjoint). Then probability of their union equals the sum of individual probabilities."
+    },
+    {
+      "front": "Fill in the blank: A probability measure maps events to numbers in the interval _____.",
+      "back": "[0, 1]. Probabilities are always between 0 (impossible) and 1 (certain)."
+    },
+    {
+      "front": "What is the triple (Ω, F, P) called in formal probability theory?",
+      "back": "A probability space: Ω is the sample space, F is the σ-algebra of events, and P is the probability measure."
+    },
+    {
+      "front": "Why is the axiomatic framework powerful across all applications?",
+      "back": "The three axioms apply identically to finite, infinite, and continuous sample spaces — the same foundation underlies dice rolls, weather, and quantum mechanics."
+    }
+  ]
+}

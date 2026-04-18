@@ -1,0 +1,723 @@
+{
+  "co:Quantum_Mechanics:college": {
+    "title": "Quantum Mechanics",
+    "tagline": "The universe is stranger than you can imagine — and the math proves it.",
+    "emoji": "⚛️",
+    "estimatedHours": 14,
+    "prerequisiteKnowledge": "basic",
+    "modules": [
+      {
+        "id": "module_1",
+        "title": "The Crisis of Classical Physics",
+        "overview": "Discover the experimental puzzles that shattered 19th-century certainty and forced physicists to invent an entirely new framework.",
+        "emoji": "💥",
+        "lessons": [
+          { "id": "lesson_1_1", "title": "Wave-Particle Duality", "durationMins": 12, "type": "concept" },
+          { "id": "lesson_1_2", "title": "The Photoelectric Effect", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_1_3", "title": "Blackbody Radiation and Planck's Quantum", "durationMins": 11, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_2",
+        "title": "The Wavefunction and Probability",
+        "overview": "Learn the central object of quantum mechanics — the wavefunction — and what Born's probabilistic interpretation really means.",
+        "emoji": "🌊",
+        "lessons": [
+          { "id": "lesson_2_1", "title": "The Wavefunction ψ and Born's Rule", "durationMins": 13, "type": "concept" },
+          { "id": "lesson_2_2", "title": "Normalization and Probability Densities", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_2_3", "title": "Operators and Expectation Values", "durationMins": 12, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_3",
+        "title": "The Schrödinger Equation",
+        "overview": "Master the equation governing quantum evolution — from free particles to bound states in a box.",
+        "emoji": "📐",
+        "lessons": [
+          { "id": "lesson_3_1", "title": "The Time-Dependent Schrödinger Equation", "durationMins": 14, "type": "concept" },
+          { "id": "lesson_3_2", "title": "Stationary States and Separation of Variables", "durationMins": 12, "type": "concept" },
+          { "id": "lesson_3_3", "title": "Particle in a Box", "durationMins": 13, "type": "example" },
+          { "id": "lesson_3_4", "title": "The Quantum Harmonic Oscillator", "durationMins": 15, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_4",
+        "title": "The Uncertainty Principle",
+        "overview": "Understand Heisenberg's fundamental limit — not as experimental error, but as a deep fact about nature.",
+        "emoji": "🔭",
+        "lessons": [
+          { "id": "lesson_4_1", "title": "Position and Momentum Uncertainty", "durationMins": 12, "type": "concept" },
+          { "id": "lesson_4_2", "title": "Commutators and Compatible Observables", "durationMins": 11, "type": "concept" },
+          { "id": "lesson_4_3", "title": "The Energy-Time Uncertainty Relation", "durationMins": 10, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_5",
+        "title": "Quantum Systems in 3D",
+        "overview": "Extend quantum mechanics to three dimensions to tackle the hydrogen atom and angular momentum.",
+        "emoji": "🔬",
+        "lessons": [
+          { "id": "lesson_5_1", "title": "Schrödinger Equation in 3D", "durationMins": 12, "type": "concept" },
+          { "id": "lesson_5_2", "title": "Angular Momentum and Spherical Harmonics", "durationMins": 14, "type": "concept" },
+          { "id": "lesson_5_3", "title": "The Hydrogen Atom", "durationMins": 15, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_6",
+        "title": "Spin and Identical Particles",
+        "overview": "Explore intrinsic angular momentum and how quantum statistics governs the behavior of many-particle systems.",
+        "emoji": "🧲",
+        "lessons": [
+          { "id": "lesson_6_1", "title": "Spin-1/2 and the Stern-Gerlach Experiment", "durationMins": 11, "type": "concept" },
+          { "id": "lesson_6_2", "title": "Bosons, Fermions, and the Pauli Exclusion Principle", "durationMins": 12, "type": "concept" },
+          { "id": "lesson_6_3", "title": "Entanglement and Measurement", "durationMins": 13, "type": "deep_dive" }
+        ]
+      }
+    ]
+  },
+
+  "lc:Quantum_Mechanics:Wave-Particle_Duality:college": {
+    "title": "Wave-Particle Duality",
+    "hook": "A single electron fired at a double slit will interfere with itself — even when only one electron is in flight at a time.",
+    "sections": [
+      {
+        "heading": "Two Irreconcilable Faces of Light",
+        "body": "By the early 20th century, physics had overwhelming evidence for two contradictory models of light. Maxwell's electromagnetism treated light as a continuous electromagnetic wave — this explained diffraction, interference, and polarization beautifully. But the photoelectric effect (Einstein, 1905) showed that light also behaved as discrete packets of energy, photons, each carrying E = hf, where h is Planck's constant and f is frequency. No classical wave model could explain why a dim ultraviolet lamp ejects electrons while a bright red lamp ejects none.",
+        "type": "concept"
+      },
+      {
+        "heading": "de Broglie's Audacious Hypothesis",
+        "body": "In 1924, Louis de Broglie proposed that if waves can behave as particles, perhaps particles can behave as waves. He assigned every particle with momentum p a wavelength λ = h/p. This was not metaphor — it was a testable prediction. Three years later, Davisson and Germer fired electrons at a nickel crystal and observed diffraction rings identical to X-ray diffraction patterns, confirming that electrons have a wavelength exactly as de Broglie predicted.",
+        "type": "concept"
+      },
+      {
+        "heading": "The Double-Slit Experiment with Single Particles",
+        "body": "When electrons are fired one at a time at a barrier with two slits, each electron lands as a localized dot — particle-like. But as thousands of dots accumulate, they form an interference pattern — wave-like. The interference is not between different electrons; each electron somehow passes through both slits simultaneously and interferes with itself. If a detector is placed at the slits to determine which one the electron went through, the interference pattern vanishes and the electrons behave as classical particles.",
+        "type": "example"
+      },
+      {
+        "heading": "What This Tells Us About Measurement",
+        "body": "Wave-particle duality is not a limitation of our instruments; it is fundamental to nature. The act of measuring which slit an electron passes through collapses its quantum state, erasing the wave-like interference. This is the core puzzle quantum mechanics was built to address: systems exist in superpositions of states until measurement forces a definite outcome. Niels Bohr's complementarity principle states that wave behavior and particle behavior are mutually exclusive — which one you observe depends on what kind of measurement you make.",
+        "type": "deep_dive"
+      }
+    ],
+    "keyPoints": [
+      "Light exhibits both wave properties (interference, diffraction) and particle properties (photoelectric effect); E = hf for each photon.",
+      "de Broglie extended this duality to matter: every particle with momentum p has wavelength λ = h/p.",
+      "Single electrons build up an interference pattern over time, showing each electron is wave-like while in flight.",
+      "Observing which slit an electron passes through destroys the interference — measurement changes the quantum state."
+    ],
+    "checkIn": {
+      "question": "An electron and a proton are both accelerated through the same potential difference. Which has the longer de Broglie wavelength, and why?",
+      "answer": "The electron has the longer wavelength. Both gain the same kinetic energy, but because the electron is much less massive it moves much faster and thus has larger momentum — wait, actually the opposite: same energy means p = √(2mE), so greater mass gives greater momentum and shorter wavelength. The electron (smaller mass) has smaller momentum and therefore longer wavelength λ = h/p."
+    }
+  },
+
+  "lf:Quantum_Mechanics:Wave-Particle_Duality:college": [
+    {
+      "front": "What is the de Broglie wavelength of a particle?",
+      "back": "λ = h/p, where h is Planck's constant and p is the particle's momentum."
+    },
+    {
+      "front": "What did the Davisson-Germer experiment demonstrate?",
+      "back": "Electrons diffract off a crystal lattice, confirming they have a wavelength predicted by de Broglie's hypothesis."
+    },
+    {
+      "front": "What happens when you detect which slit each electron passes through?",
+      "back": "The interference pattern vanishes; electrons behave as classical particles landing at one of two bands."
+    },
+    {
+      "front": "What is the energy of a single photon in terms of frequency?",
+      "back": "E = hf, where h = 6.626 × 10⁻³⁴ J·s and f is the frequency of the light."
+    },
+    {
+      "front": "What does Bohr's complementarity principle state?",
+      "back": "Wave and particle behaviors are mutually exclusive; which one you observe depends on the type of measurement performed."
+    },
+    {
+      "front": "Why can't bright red light eject electrons while dim UV can?",
+      "back": "A bright red lamp ejects no electrons regardless of intensity, while dim UV does — only a photon energy threshold (E = hf) explains this."
+    },
+    {
+      "front": "What happens to de Broglie wavelength as a particle's speed increases?",
+      "back": "It decreases — higher speed means larger momentum p, so λ = h/p gets smaller."
+    }
+  ],
+
+  "co:Classical_Mechanics:college": {
+    "title": "Classical Mechanics",
+    "tagline": "The mathematics that sent us to the Moon — and still governs almost everything you can see and touch.",
+    "emoji": "🍎",
+    "estimatedHours": 13,
+    "prerequisiteKnowledge": "basic",
+    "modules": [
+      {
+        "id": "module_1",
+        "title": "Kinematics: Describing Motion",
+        "overview": "Build the precise language for describing how objects move, without yet asking why.",
+        "emoji": "📏",
+        "lessons": [
+          { "id": "lesson_1_1", "title": "Newton's Laws of Motion", "durationMins": 12, "type": "concept" },
+          { "id": "lesson_1_2", "title": "Velocity, Acceleration, and Frames of Reference", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_1_3", "title": "Projectile Motion", "durationMins": 11, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_2",
+        "title": "Newton's Laws and Forces",
+        "overview": "Understand the three laws that define how forces cause changes in motion, and apply them to real systems.",
+        "emoji": "⚖️",
+        "lessons": [
+          { "id": "lesson_2_1", "title": "Free Body Diagrams and Net Force", "durationMins": 11, "type": "concept" },
+          { "id": "lesson_2_2", "title": "Friction and Normal Force", "durationMins": 10, "type": "example" },
+          { "id": "lesson_2_3", "title": "Circular Motion and Centripetal Acceleration", "durationMins": 12, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_3",
+        "title": "Work, Energy, and Conservation",
+        "overview": "Discover the most powerful shortcut in mechanics: energy methods that skip force details entirely.",
+        "emoji": "⚡",
+        "lessons": [
+          { "id": "lesson_3_1", "title": "Work and the Work-Energy Theorem", "durationMins": 12, "type": "concept" },
+          { "id": "lesson_3_2", "title": "Conservative Forces and Potential Energy", "durationMins": 13, "type": "concept" },
+          { "id": "lesson_3_3", "title": "Conservation of Energy", "durationMins": 11, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_4",
+        "title": "Momentum and Collisions",
+        "overview": "Explore the vector quantity that is conserved in all collisions, elastic or not.",
+        "emoji": "💥",
+        "lessons": [
+          { "id": "lesson_4_1", "title": "Linear Momentum and Impulse", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_4_2", "title": "Elastic and Inelastic Collisions", "durationMins": 12, "type": "example" },
+          { "id": "lesson_4_3", "title": "Center of Mass", "durationMins": 10, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_5",
+        "title": "Rotation and Angular Momentum",
+        "overview": "Extend Newtonian mechanics to rotating bodies — from spinning tops to planetary orbits.",
+        "emoji": "🌀",
+        "lessons": [
+          { "id": "lesson_5_1", "title": "Torque and Rotational Inertia", "durationMins": 13, "type": "concept" },
+          { "id": "lesson_5_2", "title": "Angular Momentum Conservation", "durationMins": 12, "type": "concept" },
+          { "id": "lesson_5_3", "title": "Rolling Without Slipping", "durationMins": 11, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_6",
+        "title": "Lagrangian Mechanics",
+        "overview": "Discover a more powerful and elegant reformulation of mechanics based on energy rather than forces.",
+        "emoji": "🧮",
+        "lessons": [
+          { "id": "lesson_6_1", "title": "Generalized Coordinates and Constraints", "durationMins": 12, "type": "concept" },
+          { "id": "lesson_6_2", "title": "The Euler-Lagrange Equation", "durationMins": 14, "type": "concept" },
+          { "id": "lesson_6_3", "title": "Conservation Laws from Symmetry (Noether's Theorem)", "durationMins": 13, "type": "deep_dive" }
+        ]
+      }
+    ]
+  },
+
+  "lc:Classical_Mechanics:Newton's_Laws_of_Motion:college": {
+    "title": "Newton's Laws of Motion",
+    "hook": "Newton's three laws, published in 1687, remained the unchallenged foundation of all physics for over 200 years — and still predict satellite trajectories to millimeter precision today.",
+    "sections": [
+      {
+        "heading": "The First Law: Inertia",
+        "body": "Newton's First Law states that an object at rest stays at rest, and an object in uniform motion stays in uniform motion in a straight line, unless acted on by a net external force. This is a definition of inertial reference frames — frames in which the law holds. It also defines the concept of inertia: the resistance of an object to changes in its state of motion. Crucially, the First Law tells us that rest and constant-velocity motion are physically equivalent states; they both require zero net force.",
+        "type": "concept"
+      },
+      {
+        "heading": "The Second Law: F = ma",
+        "body": "Newton's Second Law is the engine of classical mechanics: the net force on an object equals its mass times its acceleration, F = ma. This is a vector equation — both force and acceleration have direction. Mass here is inertial mass: a measure of how much a body resists acceleration. Doubling the net force on a fixed mass doubles its acceleration; doubling the mass for a fixed force halves the acceleration. This law lets us predict the trajectory of any object given its initial conditions and the forces acting on it.",
+        "type": "concept"
+      },
+      {
+        "heading": "The Third Law: Action and Reaction",
+        "body": "Newton's Third Law states that for every force that object A exerts on object B, object B exerts an equal and opposite force on object A. These are called an action-reaction pair. A common misconception is that these forces cancel — they cannot, because they act on different objects. When you push on a wall, the wall pushes back on you with exactly equal force. Rockets work because exhaust gases push backward on propellant; by Newton's Third Law, the propellant pushes the rocket forward.",
+        "type": "concept"
+      },
+      {
+        "heading": "Inertial vs. Non-Inertial Frames",
+        "body": "Newton's laws hold exactly only in inertial (non-accelerating) reference frames. In a rotating or accelerating frame — like a car turning a corner — you experience apparent forces such as the centrifugal force. These are sometimes called pseudo-forces or fictitious forces: they arise mathematically from the frame's own acceleration, not from any physical agent. The surface of Earth is a slightly non-inertial frame due to its rotation, which produces the Coriolis effect that drives the circulation of hurricanes.",
+        "type": "deep_dive"
+      }
+    ],
+    "keyPoints": [
+      "First Law: objects maintain their state of motion (velocity) unless a net force acts — this defines inertia and inertial frames.",
+      "Second Law: F_net = ma; net force, mass, and acceleration are related by this vector equation.",
+      "Third Law: forces come in equal-and-opposite pairs acting on different objects — they cannot cancel each other.",
+      "Newton's laws hold precisely only in inertial (non-accelerating) reference frames."
+    ],
+    "checkIn": {
+      "question": "A 5 kg box rests on a frictionless surface. You apply a horizontal force of 20 N. What is the acceleration, and what force does the box exert back on your hand?",
+      "answer": "Acceleration: a = F/m = 20/5 = 4 m/s² in the direction of the push. By Newton's Third Law, the box pushes back on your hand with exactly 20 N in the opposite direction."
+    }
+  },
+
+  "lf:Classical_Mechanics:Newton's_Laws_of_Motion:college": [
+    {
+      "front": "State Newton's Second Law as an equation.",
+      "back": "F_net = ma. Net force equals mass times acceleration; both force and acceleration are vectors."
+    },
+    {
+      "front": "What is inertia?",
+      "back": "The tendency of an object to resist changes in its state of motion; measured by mass in Newtonian mechanics."
+    },
+    {
+      "front": "Why don't Newton's Third Law pairs cancel?",
+      "back": "They act on different objects: A pushes B, and B pushes A. Forces on different bodies cannot cancel each other."
+    },
+    {
+      "front": "What is an inertial reference frame?",
+      "back": "A frame of reference in which Newton's First Law holds — one that is not accelerating or rotating."
+    },
+    {
+      "front": "What is a pseudo-force (fictitious force)?",
+      "back": "An apparent force felt in a non-inertial frame (e.g., centrifugal force in a rotating frame); it has no physical agent."
+    },
+    {
+      "front": "A 10 kg object has a 30 N net force applied. What is its acceleration?",
+      "back": "a = F/m = 30/10 = 3 m/s² in the direction of the net force."
+    },
+    {
+      "front": "What does Newton's First Law say about an object moving at constant velocity?",
+      "back": "The net force on it is zero. Constant velocity — including rest — requires no net force."
+    },
+    {
+      "front": "How does a rocket accelerate in empty space with nothing to push against?",
+      "back": "By Newton's Third Law: burning exhaust pushed backward exerts an equal forward force on the rocket."
+    }
+  ],
+
+  "co:Special_Relativity:college": {
+    "title": "Special Relativity",
+    "tagline": "Time slows, lengths shrink, and mass is energy — all because the speed of light is the same for everyone.",
+    "emoji": "⚡",
+    "estimatedHours": 11,
+    "prerequisiteKnowledge": "basic",
+    "modules": [
+      {
+        "id": "module_1",
+        "title": "The Two Postulates",
+        "overview": "Einstein's 1905 paper rested on just two assumptions that overturned absolute space and time.",
+        "emoji": "📜",
+        "lessons": [
+          { "id": "lesson_1_1", "title": "The Postulates of Relativity", "durationMins": 11, "type": "concept" },
+          { "id": "lesson_1_2", "title": "The Failure of Galilean Relativity for Light", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_1_3", "title": "Simultaneity Is Relative", "durationMins": 12, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_2",
+        "title": "Time Dilation and Length Contraction",
+        "overview": "Derive and apply the two most surprising consequences of Einstein's postulates.",
+        "emoji": "⏱️",
+        "lessons": [
+          { "id": "lesson_2_1", "title": "Time Dilation: Moving Clocks Run Slow", "durationMins": 13, "type": "concept" },
+          { "id": "lesson_2_2", "title": "Length Contraction Along the Direction of Motion", "durationMins": 12, "type": "concept" },
+          { "id": "lesson_2_3", "title": "The Twin Paradox", "durationMins": 13, "type": "deep_dive" }
+        ]
+      },
+      {
+        "id": "module_3",
+        "title": "The Lorentz Transformation",
+        "overview": "Learn the exact coordinate transformation that replaces Galileo's — and unifies space and time into spacetime.",
+        "emoji": "🔄",
+        "lessons": [
+          { "id": "lesson_3_1", "title": "Deriving the Lorentz Transformation", "durationMins": 14, "type": "concept" },
+          { "id": "lesson_3_2", "title": "Velocity Addition in Special Relativity", "durationMins": 11, "type": "example" },
+          { "id": "lesson_3_3", "title": "Spacetime Intervals and Invariance", "durationMins": 13, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_4",
+        "title": "Relativistic Dynamics",
+        "overview": "Rewrite momentum and energy to be consistent with the Lorentz transformation.",
+        "emoji": "💥",
+        "lessons": [
+          { "id": "lesson_4_1", "title": "Relativistic Momentum and the Lorentz Factor", "durationMins": 12, "type": "concept" },
+          { "id": "lesson_4_2", "title": "E = mc² and Mass-Energy Equivalence", "durationMins": 13, "type": "concept" },
+          { "id": "lesson_4_3", "title": "Four-Vectors and the Energy-Momentum Relation", "durationMins": 14, "type": "deep_dive" }
+        ]
+      },
+      {
+        "id": "module_5",
+        "title": "Spacetime Geometry",
+        "overview": "Adopt the geometric view of Minkowski spacetime — the arena in which all relativistic physics plays out.",
+        "emoji": "📐",
+        "lessons": [
+          { "id": "lesson_5_1", "title": "Minkowski Diagrams and Worldlines", "durationMins": 13, "type": "concept" },
+          { "id": "lesson_5_2", "title": "Proper Time and Proper Length", "durationMins": 11, "type": "concept" },
+          { "id": "lesson_5_3", "title": "Causality and the Light Cone", "durationMins": 12, "type": "concept" }
+        ]
+      }
+    ]
+  },
+
+  "lc:Special_Relativity:The_Postulates_of_Relativ:college": {
+    "title": "The Postulates of Relativity",
+    "hook": "In 1905, a 26-year-old patent clerk showed that the way we had been measuring time and space for 200 years was simply wrong.",
+    "sections": [
+      {
+        "heading": "The Principle of Relativity",
+        "body": "Einstein's first postulate: the laws of physics are the same in all inertial (non-accelerating) reference frames. This is not new — Galileo and Newton had established that mechanical laws look the same to observers moving at constant velocity relative to each other. What Einstein did was extend this principle to all of physics, including electromagnetism. There is no experiment you can perform inside a sealed, smoothly moving laboratory that will tell you whether you are at rest or in uniform motion.",
+        "type": "concept"
+      },
+      {
+        "heading": "The Constancy of the Speed of Light",
+        "body": "Einstein's second postulate — the revolutionary one — states that the speed of light in a vacuum, c ≈ 3 × 10⁸ m/s, is the same for all inertial observers, regardless of the motion of the source or observer. This flatly contradicts Newtonian intuition. If you ride a train at 100 km/h and throw a ball at 50 km/h, a trackside observer sees the ball at 150 km/h. But if you shine a flashlight, both you and the observer measure the light moving at exactly c — not c plus your train speed.",
+        "type": "concept"
+      },
+      {
+        "heading": "Why These Two Postulates Are in Tension",
+        "body": "Maxwell's equations of electromagnetism predict that electromagnetic waves travel at c. Combined with the first postulate (all inertial frames are equivalent), this forces the conclusion that all observers measure light at c. But this is incompatible with Galilean velocity addition, which predicted that the speed of light should vary depending on your motion relative to the ether — the hypothetical medium for light waves. The Michelson-Morley experiment of 1887 had already found no such variation, which baffled physicists. Einstein simply accepted the result and built a new kinematics consistent with it.",
+        "type": "deep_dive"
+      },
+      {
+        "heading": "The Immediate Consequence: No Absolute Simultaneity",
+        "body": "If c is the same for all observers, two events that appear simultaneous to one observer will not in general appear simultaneous to an observer moving relative to the first. This is not an illusion or measurement error; it is a fundamental feature of spacetime. Consider two lightning strikes hitting the front and back of a moving train simultaneously in the track frame. An observer on the train — moving toward the front — will receive the light from the front strike first and conclude the front was struck earlier. Neither observer is wrong; simultaneity is simply frame-dependent.",
+        "type": "example"
+      }
+    ],
+    "keyPoints": [
+      "First postulate: the laws of physics are identical in all inertial reference frames — no experiment can detect absolute rest.",
+      "Second postulate: the speed of light c ≈ 3 × 10⁸ m/s is the same for all inertial observers regardless of relative motion.",
+      "These two postulates together make Galilean velocity addition inconsistent and force a complete revision of kinematics.",
+      "Simultaneity is relative: two events simultaneous in one frame are not simultaneous in a frame moving relative to it."
+    ],
+    "checkIn": {
+      "question": "A spaceship moves at 0.8c relative to Earth and fires a laser forward. According to Einstein's second postulate, at what speed does an Earthbound observer measure the laser light traveling?",
+      "answer": "Exactly c — the speed of light is the same for all inertial observers. The ship's velocity does not add to the light's velocity. This is precisely what the second postulate asserts."
+    }
+  },
+
+  "lf:Special_Relativity:The_Postulates_of_Relativ:college": [
+    {
+      "front": "State Einstein's second postulate of special relativity.",
+      "back": "The speed of light in vacuum, c, is the same for all inertial observers regardless of the motion of the source or observer."
+    },
+    {
+      "front": "What is the principle of relativity (first postulate)?",
+      "back": "The laws of physics are identical in all inertial reference frames — no experiment can distinguish uniform motion from rest."
+    },
+    {
+      "front": "What was the Michelson-Morley experiment, and what did it find?",
+      "back": "It searched for variation in light's speed due to Earth's motion through the ether; it found none — consistent with c being constant."
+    },
+    {
+      "front": "Why does the constancy of c contradict Galilean velocity addition?",
+      "back": "Galilean addition says a light beam from a moving source should be measured at c ± v; the second postulate says it is always c."
+    },
+    {
+      "front": "What does it mean that simultaneity is relative?",
+      "back": "Two events simultaneous in one inertial frame are not necessarily simultaneous in a frame moving relative to it."
+    },
+    {
+      "front": "Approximately what is the speed of light in vacuum?",
+      "back": "c ≈ 3 × 10⁸ m/s (exactly 299,792,458 m/s by definition of the SI meter)."
+    },
+    {
+      "front": "Which 1887 experiment found no variation in light's speed due to Earth's motion?",
+      "back": "The Michelson-Morley experiment, which failed to detect any change in the speed of light due to Earth's orbital motion."
+    }
+  ],
+
+  "co:Electromagnetism:college": {
+    "title": "Electromagnetism",
+    "tagline": "Four equations by Maxwell unified electricity, magnetism, and light into a single breathtaking framework.",
+    "emoji": "🔌",
+    "estimatedHours": 15,
+    "prerequisiteKnowledge": "intermediate",
+    "modules": [
+      {
+        "id": "module_1",
+        "title": "Electric Forces and Fields",
+        "overview": "From Coulomb's law to the electric field concept — the foundation of all electrostatics.",
+        "emoji": "⚡",
+        "lessons": [
+          { "id": "lesson_1_1", "title": "Coulomb's Law and Electric Fields", "durationMins": 12, "type": "concept" },
+          { "id": "lesson_1_2", "title": "Electric Field Lines and Superposition", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_1_3", "title": "Gauss's Law", "durationMins": 14, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_2",
+        "title": "Electric Potential",
+        "overview": "Introduce the scalar potential — a powerful tool for computing fields and energy in electrostatics.",
+        "emoji": "🔋",
+        "lessons": [
+          { "id": "lesson_2_1", "title": "Electric Potential and Potential Difference", "durationMins": 12, "type": "concept" },
+          { "id": "lesson_2_2", "title": "Potential of Continuous Charge Distributions", "durationMins": 13, "type": "example" },
+          { "id": "lesson_2_3", "title": "Conductors and Capacitance", "durationMins": 12, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_3",
+        "title": "Magnetostatics",
+        "overview": "Explore the magnetic force on moving charges and the fields produced by steady currents.",
+        "emoji": "🧲",
+        "lessons": [
+          { "id": "lesson_3_1", "title": "The Lorentz Force and Magnetic Fields", "durationMins": 11, "type": "concept" },
+          { "id": "lesson_3_2", "title": "Biot-Savart Law", "durationMins": 13, "type": "concept" },
+          { "id": "lesson_3_3", "title": "Ampere's Law", "durationMins": 12, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_4",
+        "title": "Electromagnetic Induction",
+        "overview": "Discover how changing magnetic fields produce electric fields — the principle behind every generator and transformer.",
+        "emoji": "🌀",
+        "lessons": [
+          { "id": "lesson_4_1", "title": "Faraday's Law of Induction", "durationMins": 13, "type": "concept" },
+          { "id": "lesson_4_2", "title": "Lenz's Law and Induced EMF", "durationMins": 11, "type": "example" },
+          { "id": "lesson_4_3", "title": "Inductance and Magnetic Energy", "durationMins": 12, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_5",
+        "title": "Maxwell's Equations",
+        "overview": "See how four compact equations unify all of electricity and magnetism — and predict electromagnetic waves.",
+        "emoji": "📐",
+        "lessons": [
+          { "id": "lesson_5_1", "title": "Displacement Current and the Full Ampere's Law", "durationMins": 13, "type": "concept" },
+          { "id": "lesson_5_2", "title": "Maxwell's Equations in Integral and Differential Form", "durationMins": 14, "type": "concept" },
+          { "id": "lesson_5_3", "title": "Electromagnetic Waves and the Speed of Light", "durationMins": 13, "type": "deep_dive" }
+        ]
+      },
+      {
+        "id": "module_6",
+        "title": "Electromagnetic Waves and Optics",
+        "overview": "Apply Maxwell's wave solutions to understand the full electromagnetic spectrum and basic optics.",
+        "emoji": "🌈",
+        "lessons": [
+          { "id": "lesson_6_1", "title": "Plane Waves, Polarization, and the Poynting Vector", "durationMins": 13, "type": "concept" },
+          { "id": "lesson_6_2", "title": "Reflection, Refraction, and Snell's Law", "durationMins": 11, "type": "example" },
+          { "id": "lesson_6_3", "title": "The Electromagnetic Spectrum", "durationMins": 10, "type": "concept" }
+        ]
+      }
+    ]
+  },
+
+  "lc:Electromagnetism:Coulomb's_Law_and_Electri:college": {
+    "title": "Coulomb's Law and Electric Fields",
+    "hook": "The electric force between two protons separated by 1 femtometer is roughly 230 newtons — about the weight of 23 kg — between particles a billion times smaller than a grain of sand.",
+    "sections": [
+      {
+        "heading": "Coulomb's Law: Force Between Point Charges",
+        "body": "In 1785, Charles-Augustin de Coulomb measured the force between charged spheres with a torsion balance and established that the electrostatic force between two point charges q₁ and q₂ separated by distance r is F = kq₁q₂/r², where k = 1/(4πε₀) ≈ 8.99 × 10⁹ N·m²/C². This is structurally identical to Newton's law of gravity, with charge replacing mass. Unlike gravity, however, the electric force can be attractive (opposite signs) or repulsive (same signs), and it is roughly 10³⁶ times stronger than gravity between two protons.",
+        "type": "concept"
+      },
+      {
+        "heading": "The Electric Field",
+        "body": "Rather than thinking of forces acting instantaneously at a distance, Faraday introduced the concept of the electric field. The electric field E at any point in space is defined as the force per unit positive test charge placed there: E = F/q₀. The field exists independently of whether a test charge is present — it is a property of the space surrounding a charge distribution. For a single point charge Q, the field at distance r is E = kQ/r² directed radially outward (positive Q) or inward (negative Q).",
+        "type": "concept"
+      },
+      {
+        "heading": "Superposition Principle",
+        "body": "Both the force and the electric field obey superposition: the total field at any point due to multiple source charges is the vector sum of the fields from each individual charge. This principle is immensely powerful — it allows us to compute fields for any charge distribution by integrating over infinitesimal charge elements dq: E = k∫(dq/r²)r̂. This integral approach is how we find the field on the axis of a charged ring, inside a uniformly charged sphere, or from an infinite line charge.",
+        "type": "concept"
+      },
+      {
+        "heading": "Electric Field Lines as a Visualization",
+        "body": "Faraday's field lines are a geometric tool for visualizing electric fields. They follow the direction of the field at every point, emanating from positive charges and terminating on negative charges. The density of field lines (lines per unit area perpendicular to the field) represents the field's magnitude — lines crowd together where the field is strong. Field lines never cross, because the field direction at any point is unique. This visualization directly motivates Gauss's law, which relates the number of field lines through a closed surface to the enclosed charge.",
+        "type": "analogy"
+      }
+    ],
+    "keyPoints": [
+      "Coulomb's Law: F = kq₁q₂/r²; the electric force is proportional to each charge and falls off as the square of distance.",
+      "The electric field E = F/q₀ describes force per unit positive charge; for a point charge Q, E = kQ/r².",
+      "Superposition: the total electric field from multiple charges is the vector sum of individual fields.",
+      "Field lines point in the direction of E, originate on positive charges, terminate on negative charges, and never cross."
+    ],
+    "checkIn": {
+      "question": "Two charges of +2 μC and −2 μC are placed 4 cm apart. At the midpoint between them, do the electric fields from each charge point in the same direction or opposite directions?",
+      "answer": "The same direction. The field from +2 μC points away from the positive charge (toward the midpoint and beyond toward the negative charge). The field from −2 μC points toward the negative charge (also from the midpoint toward the negative charge). Both contributions point in the same direction at the midpoint, so they add rather than cancel."
+    }
+  },
+
+  "lf:Electromagnetism:Coulomb's_Law_and_Electri:college": [
+    {
+      "front": "Write Coulomb's Law for the force between two point charges.",
+      "back": "F = kq₁q₂/r², where k = 8.99 × 10⁹ N·m²/C² and r is the separation distance."
+    },
+    {
+      "front": "What is the electric field, in terms of force?",
+      "back": "E = F/q₀ — force per unit positive test charge placed at that point in space."
+    },
+    {
+      "front": "What is the electric field at distance r from a point charge Q?",
+      "back": "E = kQ/r², directed radially outward for positive Q and inward for negative Q."
+    },
+    {
+      "front": "What does the superposition principle say about electric fields?",
+      "back": "The total field from multiple charges is the vector sum of individual fields from each charge."
+    },
+    {
+      "front": "What do electric field lines represent?",
+      "back": "The direction of E at every point; their density represents field magnitude. They flow from + to − and never cross."
+    },
+    {
+      "front": "How does the electric force compare in magnitude to gravity between two protons?",
+      "back": "Electric force is about 10³⁶ times stronger than gravitational force between two protons."
+    },
+    {
+      "front": "What is the SI unit of charge and the proton's charge?",
+      "back": "Coulomb (C). One proton carries +e = +1.602 × 10⁻¹⁹ C."
+    },
+    {
+      "front": "When is the electric force between two charges attractive vs. repulsive?",
+      "back": "Attractive when charges have opposite signs; repulsive when they have the same sign."
+    }
+  ],
+
+  "co:Thermodynamics:college": {
+    "title": "Thermodynamics",
+    "tagline": "Heat, work, and entropy: the laws that say you can't win, you can't break even, and you can't quit the game.",
+    "emoji": "🔥",
+    "estimatedHours": 12,
+    "prerequisiteKnowledge": "basic",
+    "modules": [
+      {
+        "id": "module_1",
+        "title": "Temperature and the Zeroth Law",
+        "overview": "Establish what temperature means, why thermal equilibrium is transitive, and how thermometers work.",
+        "emoji": "🌡️",
+        "lessons": [
+          { "id": "lesson_1_1", "title": "Temperature, Heat, and the Zeroth Law", "durationMins": 11, "type": "concept" },
+          { "id": "lesson_1_2", "title": "Thermal Expansion and Thermometers", "durationMins": 9, "type": "example" },
+          { "id": "lesson_1_3", "title": "Ideal Gas Law and Kinetic Theory", "durationMins": 13, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_2",
+        "title": "The First Law: Energy Conservation",
+        "overview": "Learn how heat and work are both forms of energy transfer, and how internal energy changes.",
+        "emoji": "⚡",
+        "lessons": [
+          { "id": "lesson_2_1", "title": "Internal Energy, Heat, and Work", "durationMins": 12, "type": "concept" },
+          { "id": "lesson_2_2", "title": "Thermodynamic Processes: Isothermal, Adiabatic, Isobaric", "durationMins": 13, "type": "concept" },
+          { "id": "lesson_2_3", "title": "Heat Capacities and the Equipartition Theorem", "durationMins": 12, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_3",
+        "title": "The Second Law and Entropy",
+        "overview": "Discover why heat flows only one way and why the universe tends toward disorder.",
+        "emoji": "⬆️",
+        "lessons": [
+          { "id": "lesson_3_1", "title": "The Second Law: Kelvin and Clausius Statements", "durationMins": 12, "type": "concept" },
+          { "id": "lesson_3_2", "title": "Entropy as a State Function", "durationMins": 13, "type": "concept" },
+          { "id": "lesson_3_3", "title": "Entropy and Disorder: Statistical Interpretation", "durationMins": 12, "type": "deep_dive" }
+        ]
+      },
+      {
+        "id": "module_4",
+        "title": "Heat Engines and Refrigerators",
+        "overview": "Apply the laws of thermodynamics to cyclic processes and discover the fundamental limits on efficiency.",
+        "emoji": "⚙️",
+        "lessons": [
+          { "id": "lesson_4_1", "title": "The Carnot Cycle and Maximum Efficiency", "durationMins": 14, "type": "concept" },
+          { "id": "lesson_4_2", "title": "Real Engines and the Second Law", "durationMins": 11, "type": "example" },
+          { "id": "lesson_4_3", "title": "Refrigerators, Heat Pumps, and COP", "durationMins": 11, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_5",
+        "title": "Thermodynamic Potentials",
+        "overview": "Introduce Helmholtz and Gibbs free energies — the right tools for predicting spontaneous processes.",
+        "emoji": "🧮",
+        "lessons": [
+          { "id": "lesson_5_1", "title": "Helmholtz Free Energy and Work at Constant Temperature", "durationMins": 12, "type": "concept" },
+          { "id": "lesson_5_2", "title": "Gibbs Free Energy and Chemical Potential", "durationMins": 13, "type": "concept" },
+          { "id": "lesson_5_3", "title": "Maxwell Relations", "durationMins": 12, "type": "deep_dive" }
+        ]
+      },
+      {
+        "id": "module_6",
+        "title": "Phase Transitions and Real Systems",
+        "overview": "Move beyond ideal gases to study phase transitions, van der Waals gases, and the Third Law.",
+        "emoji": "💧",
+        "lessons": [
+          { "id": "lesson_6_1", "title": "Phase Diagrams and Phase Transitions", "durationMins": 12, "type": "concept" },
+          { "id": "lesson_6_2", "title": "The van der Waals Equation of State", "durationMins": 11, "type": "concept" },
+          { "id": "lesson_6_3", "title": "The Third Law of Thermodynamics", "durationMins": 10, "type": "concept" }
+        ]
+      }
+    ]
+  },
+
+  "lc:Thermodynamics:Temperature,_Heat,_and_th:college": {
+    "title": "Temperature, Heat, and the Zeroth Law",
+    "hook": "The Zeroth Law of Thermodynamics was only given its name and number after the other three were already established — because it turned out to be more fundamental than all of them.",
+    "sections": [
+      {
+        "heading": "What Temperature Actually Is",
+        "body": "Temperature is not the same as heat. Temperature is an intensive property — a measure of the average kinetic energy per degree of freedom of the microscopic constituents of a system. Heat, by contrast, is energy in transit due to a temperature difference. A bathtub of warm water at 35°C contains far more total thermal energy than a lit match at 600°C, but the match is at a higher temperature. This distinction — temperature as intensity, heat as quantity — is critical throughout thermodynamics.",
+        "type": "concept"
+      },
+      {
+        "heading": "Thermal Equilibrium and the Zeroth Law",
+        "body": "Two systems are in thermal equilibrium when they are at the same temperature and no net heat flows between them when they are brought into contact. The Zeroth Law of Thermodynamics states: if system A is in thermal equilibrium with system C, and system B is also in thermal equilibrium with system C, then A and B are in thermal equilibrium with each other. This law establishes that thermal equilibrium is transitive — a non-obvious logical fact that makes the concept of temperature meaningful and makes thermometers possible.",
+        "type": "concept"
+      },
+      {
+        "heading": "Temperature Scales",
+        "body": "The Celsius scale fixes 0°C at water's freezing point and 100°C at its boiling point (at 1 atm). The Kelvin scale is the thermodynamic absolute scale: T(K) = T(°C) + 273.15. Absolute zero (0 K) is the temperature at which classical thermal motion ceases — it is the ground state of thermodynamic temperature. The Kelvin scale is essential for all thermodynamic calculations, including the ideal gas law PV = nRT, where T must be in Kelvin. Negative Kelvin temperatures are not colder than absolute zero; they are actually a sophisticated quantum statistical concept describing population-inverted systems.",
+        "type": "concept"
+      },
+      {
+        "heading": "How Heat Is Measured: Calorimetry",
+        "body": "The quantity of heat Q transferred to or from a substance is measured by calorimetry. For a substance of mass m and specific heat capacity c undergoing a temperature change ΔT (with no phase change): Q = mcΔT. Water's specific heat is approximately 4186 J/(kg·K) — higher than almost any other common substance, which is why oceans moderate Earth's climate so effectively. When a phase change occurs (e.g., ice melting), heat is absorbed or released at constant temperature as Q = mL, where L is the latent heat.",
+        "type": "example"
+      }
+    ],
+    "keyPoints": [
+      "Temperature measures average kinetic energy per degree of freedom; heat is energy transferred due to a temperature difference.",
+      "The Zeroth Law: if A is in equilibrium with C and B is in equilibrium with C, then A and B are in equilibrium — making thermometers possible.",
+      "Kelvin is the absolute temperature scale; T(K) = T(°C) + 273.15 and must be used in thermodynamic equations like PV = nRT.",
+      "Heat transferred without phase change: Q = mcΔT; during a phase change at constant T: Q = mL (latent heat)."
+    ],
+    "checkIn": {
+      "question": "A 0.5 kg block of aluminum (c = 900 J/kg·K) is heated from 20°C to 80°C. How much heat was transferred to it?",
+      "answer": "Q = mcΔT = 0.5 kg × 900 J/(kg·K) × (80 − 20) K = 0.5 × 900 × 60 = 27,000 J = 27 kJ."
+    }
+  },
+
+  "lf:Thermodynamics:Temperature,_Heat,_and_th:college": [
+    {
+      "front": "What is the Zeroth Law of Thermodynamics?",
+      "back": "If A equilibrates with C, and B equilibrates with C, then A and B are in thermal equilibrium — making temperature transitive."
+    },
+    {
+      "front": "What is the difference between temperature and heat?",
+      "back": "Temperature is an intensive measure of average kinetic energy per degree of freedom; heat is energy transferred due to a temperature difference."
+    },
+    {
+      "front": "Convert 25°C to Kelvin.",
+      "back": "25 + 273.15 = 298.15 K ≈ 298 K."
+    },
+    {
+      "front": "What is absolute zero in Celsius?",
+      "back": "−273.15°C — the temperature at which classical thermal motion reaches its minimum."
+    },
+    {
+      "front": "Write the formula for heat transferred without a phase change.",
+      "back": "Q = mcΔT, where m is mass, c is specific heat capacity, and ΔT is the temperature change."
+    },
+    {
+      "front": "Why must temperature be in Kelvin when using the ideal gas law PV = nRT?",
+      "back": "Kelvin is the absolute scale; at 0 K thermal energy is truly zero. Celsius values would give wrong results at low temperatures."
+    },
+    {
+      "front": "What is latent heat and when does it apply?",
+      "back": "Energy absorbed or released during a phase change at constant temperature: Q = mL, where L is the latent heat of the transition."
+    },
+    {
+      "front": "Why does the Zeroth Law make thermometers possible?",
+      "back": "Transitivity of thermal equilibrium means a thermometer in equilibrium with object A reads the same temperature as A — regardless of what A is."
+    }
+  ]
+}

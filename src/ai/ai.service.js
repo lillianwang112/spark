@@ -27,14 +27,26 @@ import { getSharedAICache, setSharedAICache } from '../services/firebase.js';
 const SHARED_CACHEABLE = new Set(['explainer', 'keyTakeaways', 'quickQuiz', 'nodeChildren', 'researchFrontier', 'courseOutline', 'lessonContent', 'lessonFlashcards']);
 
 // Static pre-warmed cache — zero latency, bundled at build time
+// Multiple cache files are merged; add new files to the array below.
 let _staticCache = null;
 async function getStaticCache() {
   if (_staticCache !== null) return _staticCache;
-  try {
-    const mod = await import('../data/prewarmed.json', { with: { type: 'json' } });
-    _staticCache = mod.default || {};
-  } catch {
-    _staticCache = {};
+  const files = [
+    () => import('../data/prewarmed.json', { with: { type: 'json' } }),
+    () => import('../data/courses_math.json', { with: { type: 'json' } }),
+    () => import('../data/courses_cs.json', { with: { type: 'json' } }),
+    () => import('../data/courses_physics.json', { with: { type: 'json' } }),
+    () => import('../data/courses_bio_econ.json', { with: { type: 'json' } }),
+    () => import('../data/courses_cs2_humanities.json', { with: { type: 'json' } }),
+  ];
+  _staticCache = {};
+  for (const load of files) {
+    try {
+      const mod = await load();
+      Object.assign(_staticCache, mod.default || {});
+    } catch {
+      // file missing or parse error — skip gracefully
+    }
   }
   return _staticCache;
 }

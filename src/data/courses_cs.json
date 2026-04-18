@@ -1,0 +1,672 @@
+{
+  "co:Algorithms_and_Data_Structures:college": {
+    "title": "Algorithms and Data Structures",
+    "tagline": "The hidden logic that makes software fast, reliable, and elegant — master it once and you'll see every system differently.",
+    "emoji": "⚙️",
+    "estimatedHours": 16,
+    "prerequisiteKnowledge": "basic",
+    "modules": [
+      {
+        "id": "module_1",
+        "title": "The Cost of Computation",
+        "overview": "Build the mental model for analyzing why one solution is faster than another — before you write a single line of code.",
+        "lessons": [
+          { "id": "lesson_1_1", "title": "Why Algorithms Matter", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_1_2", "title": "Big-O: Measuring What Actually Counts", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_1_3", "title": "Best, Worst, and Average Cases", "durationMins": 8, "type": "example" },
+          { "id": "lesson_1_4", "title": "Counting Operations by Hand", "durationMins": 9, "type": "practice" }
+        ]
+      },
+      {
+        "id": "module_2",
+        "title": "Arrays, Linked Lists, and the Memory Model",
+        "overview": "Understand how data lives in memory and why choosing the right container changes everything downstream.",
+        "lessons": [
+          { "id": "lesson_2_1", "title": "How Arrays Sit in RAM", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_2_2", "title": "Linked Lists: Pointers and Trade-offs", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_2_3", "title": "Stacks and Queues in the Wild", "durationMins": 8, "type": "example" },
+          { "id": "lesson_2_4", "title": "When to Use Which Structure", "durationMins": 7, "type": "practice" }
+        ]
+      },
+      {
+        "id": "module_3",
+        "title": "Sorting: A Surprisingly Deep Problem",
+        "overview": "Dissect the canonical sorting algorithms and understand why Merge Sort beats Bubble Sort by more than you'd guess.",
+        "lessons": [
+          { "id": "lesson_3_1", "title": "Bubble Sort and Why It's Slow", "durationMins": 7, "type": "example" },
+          { "id": "lesson_3_2", "title": "Merge Sort: Divide, Conquer, Combine", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_3_3", "title": "Quicksort's Pivot Gamble", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_3_4", "title": "Why O(n log n) Is the Floor", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_3_5", "title": "Sorting in Practice: Tim Sort and Introspective Sort", "durationMins": 8, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_4",
+        "title": "Trees and the Power of Hierarchy",
+        "overview": "From binary search trees to heaps, see how hierarchical structures let you find, insert, and delete in logarithmic time.",
+        "lessons": [
+          { "id": "lesson_4_1", "title": "Binary Search Trees: The Core Invariant", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_4_2", "title": "Balanced Trees: AVL and Red-Black", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_4_3", "title": "Heaps and Priority Queues", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_4_4", "title": "Tries: Autocomplete Under the Hood", "durationMins": 8, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_5",
+        "title": "Hash Tables: O(1) and Its Caveats",
+        "overview": "Understand how hash tables achieve near-instant lookup and where they silently break down.",
+        "lessons": [
+          { "id": "lesson_5_1", "title": "Hashing: Turning Keys into Indices", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_5_2", "title": "Collision Resolution: Chaining vs Open Addressing", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_5_3", "title": "Load Factor and Rehashing", "durationMins": 8, "type": "example" },
+          { "id": "lesson_5_4", "title": "Hash Maps in Python, Java, and C++", "durationMins": 7, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_6",
+        "title": "Graph Algorithms: The World Is a Network",
+        "overview": "Model relationships with graphs and learn BFS, DFS, Dijkstra, and the algorithms powering GPS and social networks.",
+        "lessons": [
+          { "id": "lesson_6_1", "title": "Representing Graphs: Adjacency Lists vs Matrices", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_6_2", "title": "BFS: Level-by-Level Exploration", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_6_3", "title": "DFS and the Discovery of Cycles", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_6_4", "title": "Dijkstra's Algorithm: Shortest Path Explained", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_6_5", "title": "Minimum Spanning Trees: Kruskal and Prim", "durationMins": 9, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_7",
+        "title": "Dynamic Programming: Optimal Substructure Unlocked",
+        "overview": "Learn the paradigm that collapses exponential problems into polynomial time — the crown jewel of algorithmic thinking.",
+        "lessons": [
+          { "id": "lesson_7_1", "title": "Memoization vs Tabulation", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_7_2", "title": "The Knapsack Problem Unpacked", "durationMins": 10, "type": "example" },
+          { "id": "lesson_7_3", "title": "Longest Common Subsequence", "durationMins": 9, "type": "example" },
+          { "id": "lesson_7_4", "title": "When DP Fails: NP-Hardness at the Frontier", "durationMins": 10, "type": "concept" }
+        ]
+      }
+    ]
+  },
+
+  "lc:Algorithms_and_Data_:Why_Algorithms_Matter:college": {
+    "title": "Why Algorithms Matter",
+    "hook": "A naive search that works fine on 1,000 records will still be running when your great-grandchildren retire if you scale it to a billion.",
+    "sections": [
+      {
+        "heading": "What an Algorithm Actually Is",
+        "body": "An algorithm is a precise, finite sequence of steps that transforms an input into an output. This sounds trivially simple, but the word 'precise' is doing enormous work — ambiguity is the enemy of computation. Every program you have ever run is, at its core, one or more algorithms executing on data structures that organize that data for efficient access.",
+        "type": "concept"
+      },
+      {
+        "heading": "The Difference Between Correct and Fast",
+        "body": "Two algorithms can produce the same correct output but differ in cost by factors of millions. Consider finding a name in an unsorted phone book: scanning every entry (linear search) is correct. Binary search — repeatedly halving the remaining pages — is also correct, but finds the name in at most 30 steps even in a book with a billion entries. Correctness is the minimum bar; efficiency is what separates a working demo from a product.",
+        "type": "concept"
+      },
+      {
+        "heading": "The Filing Cabinet Analogy",
+        "body": "Imagine organizing a million paper files. Throwing them in a pile works — eventually you'll find what you need — but it's agony at scale. Sorting them alphabetically makes retrieval fast but insertion slow. A cross-indexed system with tabs gives you multiple fast access paths. Data structures are exactly this: deliberate organizational choices that trade one kind of cost for another. Algorithms are the procedures that exploit those organizational choices.",
+        "type": "analogy"
+      },
+      {
+        "heading": "A Real Example: Genome Sequencing",
+        "body": "The Human Genome Project ran from 1990 to 2003, cost $2.7 billion, and required hundreds of research centers. Today a genome can be sequenced for under $1,000 in hours. Most of this collapse in cost comes from algorithmic improvements — faster string-matching algorithms, more efficient assembly heuristics, smarter data compression — not just faster hardware. This is the leverage that algorithms provide: they can make the impossible routine.",
+        "type": "example"
+      },
+      {
+        "heading": "Why Princeton's COS 226 Starts Here",
+        "body": "Princeton's algorithms course opens with the union-find problem — connecting components in a network — precisely because it demonstrates how a naive solution (O(n²)) and an elegant one (nearly O(n)) can look almost identical to a casual observer yet differ catastrophically in practice. The takeaway from this course is not a bag of tricks; it is a way of thinking about cost, structure, and trade-offs that transfers to every engineering decision you will ever make.",
+        "type": "deep_dive"
+      }
+    ],
+    "keyPoints": [
+      "An algorithm is a precise finite procedure; a data structure is the organized container it operates on.",
+      "Two correct algorithms can differ in runtime by factors of millions — correctness is not enough.",
+      "Binary search finds a target in 1 billion items in at most 30 steps; linear search may take 1 billion.",
+      "Most dramatic performance gains in real-world systems come from better algorithms, not faster hardware."
+    ],
+    "checkIn": {
+      "question": "Why isn't it enough for an algorithm to simply produce the correct output?",
+      "answer": "Correctness is necessary but not sufficient — an algorithm that takes exponential time will be unusable in practice even if it always gives the right answer."
+    }
+  },
+
+  "lf:Algorithms_and_Data_:Why_Algorithms_Matter:college": [
+    { "front": "What is an algorithm?", "back": "A precise, finite sequence of steps that transforms an input into a correct output." },
+    { "front": "What is the key distinction between an algorithm and a data structure?", "back": "An algorithm is a procedure; a data structure is the organizational container that algorithm operates on." },
+    { "front": "Binary search on 1 billion items requires at most how many steps?", "back": "About 30 steps, since log₂(1,000,000,000) ≈ 30." },
+    { "front": "True or false: a correct algorithm is always good enough for production use.", "back": "False — a correct algorithm with exponential runtime is unusable at scale regardless of correctness." },
+    { "front": "Linear search on n items runs in ___ time.", "back": "O(n) — it may inspect every element before finding the target." },
+    { "front": "Why did genome sequencing costs fall from $2.7B to under $1,000?", "back": "Primarily algorithmic improvements — faster string-matching and assembly heuristics — not just hardware." },
+    { "front": "When choosing between two correct algorithms, what is the decisive factor?", "back": "Efficiency — which one scales better as input size grows, measured by time and space complexity." },
+    { "front": "What trade-off does sorting a filing cabinet illustrate in data structures?", "back": "Fast retrieval comes at the cost of slower insertion — every organizational choice trades one cost for another." }
+  ],
+
+  "co:Machine_Learning:college": {
+    "title": "Machine Learning",
+    "tagline": "Stop telling computers what to do and teach them to figure it out — here's exactly how that works.",
+    "emoji": "🧠",
+    "estimatedHours": 18,
+    "prerequisiteKnowledge": "intermediate",
+    "modules": [
+      {
+        "id": "module_1",
+        "title": "What Machines Actually Learn",
+        "overview": "Dismantle the mystery around ML and build an honest mental model of what learning means mathematically.",
+        "lessons": [
+          { "id": "lesson_1_1", "title": "What Is Machine Learning?", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_1_2", "title": "Supervised vs Unsupervised vs Reinforcement", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_1_3", "title": "The Training-Test Split and Why It Matters", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_1_4", "title": "Fitting a Line: Linear Regression from Scratch", "durationMins": 10, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_2",
+        "title": "Loss Functions and Gradient Descent",
+        "overview": "Understand the optimization engine at the heart of all modern ML — how models learn by repeatedly reducing their own error.",
+        "lessons": [
+          { "id": "lesson_2_1", "title": "What Is a Loss Function?", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_2_2", "title": "Gradient Descent: Descending a Mountain Blindfolded", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_2_3", "title": "Learning Rate: Too Fast, Too Slow, Just Right", "durationMins": 8, "type": "example" },
+          { "id": "lesson_2_4", "title": "Stochastic and Mini-Batch Gradient Descent", "durationMins": 9, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_3",
+        "title": "Classification: Drawing Decision Boundaries",
+        "overview": "Learn how machines separate classes, from logistic regression to support vector machines, and why the geometry matters.",
+        "lessons": [
+          { "id": "lesson_3_1", "title": "Logistic Regression and the Sigmoid Function", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_3_2", "title": "Decision Trees: Splitting on Information Gain", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_3_3", "title": "Support Vector Machines and the Maximum Margin", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_3_4", "title": "Evaluating Classifiers: Precision, Recall, F1", "durationMins": 8, "type": "practice" }
+        ]
+      },
+      {
+        "id": "module_4",
+        "title": "Overfitting, Bias, and the Bias-Variance Trade-off",
+        "overview": "Identify the most common failure mode in ML and learn the regularization techniques that prevent models from memorizing noise.",
+        "lessons": [
+          { "id": "lesson_4_1", "title": "Overfitting: When Your Model Is Too Good", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_4_2", "title": "Bias-Variance Trade-off Explained Visually", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_4_3", "title": "L1 and L2 Regularization", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_4_4", "title": "Cross-Validation: Honest Model Evaluation", "durationMins": 8, "type": "practice" }
+        ]
+      },
+      {
+        "id": "module_5",
+        "title": "Neural Networks: From Perceptron to Deep Learning",
+        "overview": "Build up from a single artificial neuron to deep networks, understanding exactly what each layer learns.",
+        "lessons": [
+          { "id": "lesson_5_1", "title": "The Perceptron: One Neuron's Decision", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_5_2", "title": "Activation Functions: ReLU, Sigmoid, Tanh", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_5_3", "title": "Backpropagation: Credit Assignment Across Layers", "durationMins": 11, "type": "concept" },
+          { "id": "lesson_5_4", "title": "What Deep Networks Actually Detect", "durationMins": 9, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_6",
+        "title": "Unsupervised Learning and Representation",
+        "overview": "Learn how models find structure in unlabeled data — clustering, dimensionality reduction, and what embeddings really encode.",
+        "lessons": [
+          { "id": "lesson_6_1", "title": "K-Means Clustering and Its Assumptions", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_6_2", "title": "PCA: Compressing Dimensions Without Losing Signal", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_6_3", "title": "Word Embeddings: Why 'King − Man + Woman = Queen'", "durationMins": 9, "type": "example" },
+          { "id": "lesson_6_4", "title": "Autoencoders and Latent Space", "durationMins": 9, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_7",
+        "title": "ML in the Real World: Ethics, Limits, and Frontiers",
+        "overview": "Confront the actual failure modes of deployed ML systems — from dataset bias to interpretability — and where the field is genuinely unsolved.",
+        "lessons": [
+          { "id": "lesson_7_1", "title": "Dataset Bias and What It Means for Fairness", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_7_2", "title": "Model Interpretability: Why Black Boxes Are a Problem", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_7_3", "title": "Transformers and the Attention Mechanism", "durationMins": 11, "type": "concept" },
+          { "id": "lesson_7_4", "title": "What ML Still Cannot Do", "durationMins": 9, "type": "concept" }
+        ]
+      }
+    ]
+  },
+
+  "lc:Machine_Learning:What_Is_Machine_Learning?:college": {
+    "title": "What Is Machine Learning?",
+    "hook": "No one programmed Netflix to know you'd want to watch something melancholy on a Sunday evening — it figured that out from patterns in millions of other people's choices.",
+    "sections": [
+      {
+        "heading": "Learning by Example, Not by Rules",
+        "body": "Traditional programming is explicit: a human writes rules, the computer follows them. Machine learning inverts this. You provide thousands of examples of inputs paired with correct outputs, and an algorithm infers the rules itself. Arthur Samuel, who coined the term in 1959, defined it as the field that gives computers the ability to learn without being explicitly programmed. That 'without' is the operative word — the rules emerge from data, not from human expertise.",
+        "type": "concept"
+      },
+      {
+        "heading": "The Three Paradigms",
+        "body": "Supervised learning trains on labeled data — pairs of (input, correct output) — and learns to predict labels for new inputs. Unsupervised learning finds hidden structure in unlabeled data, grouping or compressing it. Reinforcement learning trains an agent through reward signals: it tries actions, receives feedback, and gradually learns policies that maximize cumulative reward. Most commercial ML is supervised; reinforcement learning powers game-playing AIs and robotics; unsupervised methods underpin recommendation and anomaly detection systems.",
+        "type": "concept"
+      },
+      {
+        "heading": "The Exam Analogy",
+        "body": "Think of supervised ML like studying for an exam with an answer key. Training is studying the practice problems (your labeled dataset). The model is your brain building up intuition about the subject. Testing is taking the real exam — questions you have never seen before. The goal is not to memorize the practice problems (that would be overfitting) but to internalize the underlying patterns so you can generalize. A student who memorizes answers will fail a novel question; a model that memorizes training data will fail on real-world data.",
+        "type": "analogy"
+      },
+      {
+        "heading": "A Concrete Example: Spam Detection",
+        "body": "An early ML success was email spam filtering. Rather than handcrafting rules like 'flag emails with the word Viagra,' engineers trained a classifier on thousands of emails labeled 'spam' or 'not spam.' The model learned word frequencies, sender patterns, and structural features that no human rule-set had captured — and it adapted as spammers changed tactics, because it could be retrained on new examples. This loop of data → model → prediction → feedback is the core cycle of deployed ML.",
+        "type": "example"
+      },
+      {
+        "heading": "What 'Learning' Actually Means Mathematically",
+        "body": "Formally, ML is optimization. A model has parameters (numbers it can adjust). A loss function measures how wrong its predictions are. Learning is the process of adjusting those parameters to minimize the loss over the training data. Viewed this way, a neural network with billions of parameters is still doing the same thing as linear regression: searching for parameter values that reduce error. Stanford's CS229 frames this precisely: ML is function approximation under uncertainty, and every algorithm is a specific choice of model family, loss function, and optimization procedure.",
+        "type": "deep_dive"
+      }
+    ],
+    "keyPoints": [
+      "ML inverts programming: instead of writing rules, you provide examples and the algorithm infers the rules.",
+      "The three paradigms are supervised (labeled data), unsupervised (unlabeled structure), and reinforcement (reward signals).",
+      "Generalization — performing well on unseen data — is the actual goal; fitting training data is only the means.",
+      "Formally, ML is optimization: minimize a loss function by adjusting model parameters over a dataset."
+    ],
+    "checkIn": {
+      "question": "What is the key distinction between traditional programming and machine learning?",
+      "answer": "In traditional programming, humans write the rules; in ML, the algorithm infers rules from examples, so the rules emerge from data rather than human expertise."
+    }
+  },
+
+  "lf:Machine_Learning:What_Is_Machine_Learning?:college": [
+    { "front": "Who coined the term 'machine learning' and when?", "back": "Arthur Samuel coined it in 1959, defining it as learning without being explicitly programmed." },
+    { "front": "What is supervised learning?", "back": "Training on labeled (input, output) pairs so the model learns to predict correct outputs for new inputs." },
+    { "front": "What distinguishes reinforcement learning from supervised learning?", "back": "RL trains an agent via reward signals for actions, not labeled input-output pairs." },
+    { "front": "True or false: a model that perfectly fits training data is ideal.", "back": "False — perfect training fit often means overfitting, which causes poor generalization to new data." },
+    { "front": "What does a loss function measure in ML?", "back": "How wrong the model's predictions are — the quantity that optimization tries to minimize." },
+    { "front": "ML is formally a problem of ___ — adjusting parameters to minimize error.", "back": "Optimization — specifically minimizing a loss function over the training dataset." },
+    { "front": "Why was ML better than hand-written rules for email spam filtering?", "back": "ML adapted to new tactics by retraining on fresh data; hand-written rules couldn't keep up." },
+    { "front": "What are the three main ML paradigms?", "back": "Supervised (labeled data), unsupervised (unlabeled structure discovery), and reinforcement (reward-driven)." }
+  ],
+
+  "co:Operating_Systems:college": {
+    "title": "Operating Systems",
+    "tagline": "Every program you run is a guest — the OS is the invisible landlord managing memory, time, and hardware on everyone's behalf.",
+    "emoji": "🖥️",
+    "estimatedHours": 15,
+    "prerequisiteKnowledge": "basic",
+    "modules": [
+      {
+        "id": "module_1",
+        "title": "The OS as Referee and Resource Manager",
+        "overview": "Establish what an operating system actually does and why its abstractions make modern software possible.",
+        "lessons": [
+          { "id": "lesson_1_1", "title": "What Is an Operating System?", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_1_2", "title": "Kernel vs User Space: The Trust Boundary", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_1_3", "title": "System Calls: How Programs Ask for Help", "durationMins": 8, "type": "example" },
+          { "id": "lesson_1_4", "title": "From UNIX to Linux: A Brief History", "durationMins": 7, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_2",
+        "title": "Processes and Threads",
+        "overview": "Understand how the OS creates the illusion of simultaneous execution on a machine that can only do one thing at a time.",
+        "lessons": [
+          { "id": "lesson_2_1", "title": "What Is a Process?", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_2_2", "title": "Context Switching: The Great Pretender", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_2_3", "title": "Threads: Lightweight Parallelism Within a Process", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_2_4", "title": "Fork and Exec: Creating New Processes", "durationMins": 8, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_3",
+        "title": "CPU Scheduling: Who Gets to Run?",
+        "overview": "Explore the algorithms that decide which process runs next and what properties make a scheduler fair and efficient.",
+        "lessons": [
+          { "id": "lesson_3_1", "title": "FIFO and the Convoy Effect", "durationMins": 7, "type": "example" },
+          { "id": "lesson_3_2", "title": "Round Robin and Time Slices", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_3_3", "title": "Priority Scheduling and Starvation", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_3_4", "title": "Multi-Level Feedback Queues", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_3_5", "title": "Real-Time Scheduling: Deadlines That Matter", "durationMins": 8, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_4",
+        "title": "Synchronization: Taming Shared State",
+        "overview": "Confront the race conditions, deadlocks, and atomicity violations that make concurrent programming treacherous.",
+        "lessons": [
+          { "id": "lesson_4_1", "title": "Race Conditions and Why They're Invisible", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_4_2", "title": "Locks, Mutexes, and Critical Sections", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_4_3", "title": "Semaphores and Condition Variables", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_4_4", "title": "Deadlock: The Four Conditions and How to Break Them", "durationMins": 10, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_5",
+        "title": "Virtual Memory: More Space Than You Have",
+        "overview": "Learn how the OS conjures the illusion of unlimited, isolated memory for every process using hardware-backed address translation.",
+        "lessons": [
+          { "id": "lesson_5_1", "title": "Physical vs Virtual Addresses", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_5_2", "title": "Page Tables and the MMU", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_5_3", "title": "Demand Paging and Page Faults", "durationMins": 9, "type": "example" },
+          { "id": "lesson_5_4", "title": "Page Replacement: LRU and the Clock Algorithm", "durationMins": 9, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_6",
+        "title": "File Systems: Persistence and Structure",
+        "overview": "Understand how the OS maps the chaos of spinning disks and flash into a clean hierarchy of files and directories.",
+        "lessons": [
+          { "id": "lesson_6_1", "title": "Inodes and How Files Are Actually Stored", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_6_2", "title": "Directories as Name-to-Inode Mappings", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_6_3", "title": "Journaling: Crash Consistency Without Data Loss", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_6_4", "title": "ext4, APFS, and NTFS: Design Choices", "durationMins": 8, "type": "example" }
+        ]
+      }
+    ]
+  },
+
+  "lc:Operating_Systems:What_Is_an_Operating_Syst:college": {
+    "title": "What Is an Operating System?",
+    "hook": "Without an operating system, every program would have to rewrite the drivers for your keyboard, screen, and disk from scratch — and they'd fight each other for the hardware constantly.",
+    "sections": [
+      {
+        "heading": "The OS as Intermediary",
+        "body": "An operating system is the software layer between application programs and raw hardware. It plays two roles simultaneously: as a resource manager, it allocates CPU time, memory, and I/O devices among competing programs; as a virtual machine, it presents programs with a clean, idealized abstraction of the hardware — so a program never needs to know whether it's running on a laptop or a server cluster. The OS hides complexity and enforces isolation, so one buggy program can't corrupt another.",
+        "type": "concept"
+      },
+      {
+        "heading": "Kernel Space and the Privilege Boundary",
+        "body": "Modern CPUs operate in at least two privilege modes. Kernel mode (also called ring 0 on x86) allows unrestricted access to hardware. User mode restricts what instructions a program can execute — it cannot directly read another process's memory or reprogram the disk controller. When an application needs a privileged operation, it crosses this boundary via a system call, briefly handing control to the kernel, which performs the operation and returns. This boundary is the OS's most important security mechanism.",
+        "type": "concept"
+      },
+      {
+        "heading": "The Hotel Manager Analogy",
+        "body": "Think of the OS as the manager of a hotel where the rooms are chunks of RAM and the guests are running programs. The manager decides who gets which room (memory allocation), ensures guests can't walk into each other's rooms (process isolation), handles the front desk when guests need room service (system calls), and kicks out unruly guests who monopolize the lobby (CPU scheduling). Each guest experiences a private, comfortable room — that's the abstraction — but the manager is quietly orchestrating everything in the background.",
+        "type": "analogy"
+      },
+      {
+        "heading": "A Concrete Example: Opening a File",
+        "body": "When your text editor calls open('notes.txt'), almost nothing happens inside the application itself. The C runtime issues a system call trap instruction (syscall on x86-64). The CPU switches to kernel mode. The kernel looks up 'notes.txt' in the filesystem, checks your permissions, finds the disk blocks containing the file, and returns a file descriptor integer back to your program. The entire interaction — spanning CPU privilege rings, the virtual file system layer, and physical disk I/O — takes microseconds and is completely hidden from the application developer.",
+        "type": "example"
+      }
+    ],
+    "keyPoints": [
+      "The OS manages hardware resources (CPU, memory, I/O) and presents programs with clean abstractions of those resources.",
+      "Kernel mode allows full hardware access; user mode restricts programs and enforces isolation between processes.",
+      "System calls are the controlled crossing point from user space into kernel space for privileged operations.",
+      "Process isolation — ensuring one program cannot corrupt another's memory — is the OS's most critical safety guarantee."
+    ],
+    "checkIn": {
+      "question": "Why do modern operating systems run application code in 'user mode' rather than giving programs full hardware access?",
+      "answer": "To enforce isolation and security — user mode prevents programs from directly accessing each other's memory or hardware, so a buggy or malicious program cannot crash or compromise the whole system."
+    }
+  },
+
+  "lf:Operating_Systems:What_Is_an_Operating_Syst:college": [
+    { "front": "What two roles does an OS play simultaneously?", "back": "Resource manager (allocating CPU, memory, I/O) and virtual machine (presenting clean hardware abstractions)." },
+    { "front": "What is a system call?", "back": "A controlled mechanism for user-mode programs to request privileged kernel operations." },
+    { "front": "What is the difference between kernel mode and user mode?", "back": "Kernel mode allows unrestricted hardware access; user mode restricts instructions and enforces process isolation." },
+    { "front": "True or false: an application program directly controls the CPU and disk hardware.", "back": "False — the OS mediates all hardware access; programs request it via system calls." },
+    { "front": "Process isolation means that ___ program cannot read or corrupt ___ program's memory.", "back": "One; another — the OS enforces strict memory boundaries between processes." },
+    { "front": "What happens at the CPU level when a system call is made?", "back": "The CPU switches from user mode to kernel mode, executes privileged code, then returns to user mode." },
+    { "front": "Why would every program need to rewrite keyboard drivers without an OS?", "back": "Without an OS, there's no shared abstraction layer — each program would need its own hardware drivers and would conflict over resources." },
+    { "front": "What does a file descriptor represent after a successful open() system call?", "back": "An integer handle the kernel returns to the program representing the open file, abstracting away disk locations and permissions." }
+  ],
+
+  "co:Cryptography:college": {
+    "title": "Cryptography",
+    "tagline": "Every secure message, password, and online purchase rests on mathematical problems that even the most powerful computers cannot crack — here's why.",
+    "emoji": "🔐",
+    "estimatedHours": 14,
+    "prerequisiteKnowledge": "basic",
+    "modules": [
+      {
+        "id": "module_1",
+        "title": "Secrets and the Language of Security",
+        "overview": "Build the foundational vocabulary and historical context that makes modern cryptography legible.",
+        "lessons": [
+          { "id": "lesson_1_1", "title": "The Art of Secret Keeping", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_1_2", "title": "Symmetric vs Asymmetric Encryption", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_1_3", "title": "Kerckhoffs's Principle: Security Through Obscurity Fails", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_1_4", "title": "Caesar Cipher to Enigma: A Timeline of Failures", "durationMins": 9, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_2",
+        "title": "The Mathematics of One-Way Functions",
+        "overview": "Discover the modular arithmetic and number theory that makes modern encryption hard to break and easy to use.",
+        "lessons": [
+          { "id": "lesson_2_1", "title": "Modular Arithmetic: Clocks and Remainders", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_2_2", "title": "Prime Numbers and Why Factoring Is Hard", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_2_3", "title": "One-Way Functions and Trapdoors", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_2_4", "title": "The Discrete Logarithm Problem", "durationMins": 9, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_3",
+        "title": "RSA: Public-Key Cryptography",
+        "overview": "Understand the algorithm that made secure internet commerce possible and exactly how its security relies on factoring.",
+        "lessons": [
+          { "id": "lesson_3_1", "title": "Public and Private Keys: Mailbox vs Key", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_3_2", "title": "RSA Key Generation Step by Step", "durationMins": 11, "type": "example" },
+          { "id": "lesson_3_3", "title": "RSA Encryption and Decryption", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_3_4", "title": "Why RSA Is Actually Slow and What Replaces It", "durationMins": 8, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_4",
+        "title": "Symmetric Ciphers and AES",
+        "overview": "Learn how AES — used in every HTTPS connection — achieves speed and security through substitution-permutation networks.",
+        "lessons": [
+          { "id": "lesson_4_1", "title": "Block Ciphers vs Stream Ciphers", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_4_2", "title": "AES Internals: Rounds, S-Boxes, and MixColumns", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_4_3", "title": "Modes of Operation: ECB, CBC, GCM", "durationMins": 9, "type": "example" },
+          { "id": "lesson_4_4", "title": "Why ECB Mode Breaks Penguin Images", "durationMins": 7, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_5",
+        "title": "Cryptographic Hash Functions",
+        "overview": "Explore the one-way functions that underpin digital signatures, password storage, and blockchain integrity.",
+        "lessons": [
+          { "id": "lesson_5_1", "title": "What Makes a Good Hash Function?", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_5_2", "title": "SHA-256 and the Avalanche Effect", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_5_3", "title": "Password Hashing: bcrypt, scrypt, Argon2", "durationMins": 9, "type": "example" },
+          { "id": "lesson_5_4", "title": "Merkle Trees and Blockchain Integrity", "durationMins": 9, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_6",
+        "title": "Authentication, Signatures, and Trust",
+        "overview": "Understand how digital signatures prove identity and how certificate authorities chain trust across the entire internet.",
+        "lessons": [
+          { "id": "lesson_6_1", "title": "Digital Signatures: Signing with Your Private Key", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_6_2", "title": "Certificate Authorities and the Chain of Trust", "durationMins": 9, "type": "example" },
+          { "id": "lesson_6_3", "title": "TLS 1.3: How Your Browser Negotiates a Secret", "durationMins": 10, "type": "example" },
+          { "id": "lesson_6_4", "title": "Post-Quantum Cryptography: What Comes After RSA?", "durationMins": 10, "type": "concept" }
+        ]
+      }
+    ]
+  },
+
+  "lc:Cryptography:The_Art_of_Secret_Keeping:college": {
+    "title": "The Art of Secret Keeping",
+    "hook": "Julius Caesar encrypted military orders with a shift cipher that any modern ten-year-old could break in minutes — yet for centuries it was considered uncrackable.",
+    "sections": [
+      {
+        "heading": "What Cryptography Actually Solves",
+        "body": "Cryptography solves a deceptively simple problem: how do two parties communicate privately over a channel that an adversary can read? This is not just a software problem — it is a mathematical one. The history of cryptography is a continuous arms race between cipher designers and codebreakers, and every cipher considered 'secure' in its time has eventually fallen to advances in mathematics and computation. Understanding this history is essential because the same failure modes recur across centuries.",
+        "type": "concept"
+      },
+      {
+        "heading": "The Vocabulary of Cryptography",
+        "body": "Plaintext is the original readable message. Ciphertext is the scrambled output after encryption. A cipher is the algorithm that transforms one into the other, parameterized by a key. Encryption turns plaintext into ciphertext; decryption reverses it. An adversary who intercepts ciphertext and tries to recover the plaintext without the key is called a cryptanalyst. The goal of a secure cipher is to make the cryptanalyst's task computationally infeasible — not necessarily impossible, just slow enough to be irrelevant.",
+        "type": "concept"
+      },
+      {
+        "heading": "The Lock Box Analogy",
+        "body": "Imagine you want to send a private letter to a friend across the world. You lock it in a box and mail it. Your friend needs a copy of your key to open it — but how do you get the key to them without the adversary intercepting it? This is the key distribution problem that stumped cryptographers for centuries. The revolutionary insight of public-key cryptography in the 1970s was like inventing a box with two keyholes: anyone can lock it (encrypt) using a public key, but only you can unlock it (decrypt) with your private key.",
+        "type": "analogy"
+      },
+      {
+        "heading": "The Caesar Cipher: Why Simple Substitutions Fail",
+        "body": "The Caesar cipher shifts each letter of the alphabet by a fixed amount — 'CAT' with a shift of 3 becomes 'FDW'. It has only 25 possible keys, so brute-force requires at most 25 attempts. Even a more sophisticated single-alphabet substitution cipher (mapping each letter to a different letter) has 26! ≈ 4 × 10²⁶ possible keys — seemingly astronomical — yet it falls to frequency analysis: in English, 'E' appears ~13% of the time, so the most frequent symbol in the ciphertext maps to 'E'. Natural language carries redundancy that shortcuts any naive substitution.",
+        "type": "example"
+      },
+      {
+        "heading": "Kerckhoffs's Principle and What Security Really Means",
+        "body": "In 1883, Auguste Kerckhoffs articulated a principle that defines modern cryptography: a cipher should be secure even if everything about the system except the key is public knowledge. Security through obscurity — hiding the algorithm itself — always fails because algorithms leak, get reverse-engineered, or are discovered independently. This principle is why AES, RSA, and SHA-256 are fully public standards: their security rests entirely on the mathematical hardness of specific problems, not on secrecy of design. MIT's 6.875 course opens with this principle precisely because violating it is the single most common mistake in real-world cryptographic systems.",
+        "type": "deep_dive"
+      }
+    ],
+    "keyPoints": [
+      "Cryptography's core problem is enabling private communication over a channel an adversary can observe.",
+      "Kerckhoffs's Principle: a cipher must be secure even if everything except the key is public — security through obscurity fails.",
+      "The Caesar cipher has only 25 keys; even 26! substitution ciphers fall to frequency analysis of natural language patterns.",
+      "Public-key cryptography solved the key distribution problem by letting anyone encrypt but only the owner decrypt."
+    ],
+    "checkIn": {
+      "question": "Why does hiding a cipher's algorithm not provide real security, according to Kerckhoffs's Principle?",
+      "answer": "Algorithms are discovered, leaked, or reverse-engineered — so security must rest on the mathematical hardness of the key problem, not on keeping the design secret."
+    }
+  },
+
+  "lf:Cryptography:The_Art_of_Secret_Keeping:college": [
+    { "front": "What is Kerckhoffs's Principle?", "back": "A cipher must be secure even if everything about the system except the key is publicly known." },
+    { "front": "What is plaintext vs ciphertext?", "back": "Plaintext is the original readable message; ciphertext is the encrypted, scrambled output." },
+    { "front": "Why does a 26! substitution cipher still fail against a skilled cryptanalyst?", "back": "Frequency analysis exploits natural language patterns — the most common ciphertext symbol maps to 'E'." },
+    { "front": "The Caesar cipher with shift 3 encrypts 'CAT' as ___.", "back": "'FDW' — each letter is shifted three positions forward in the alphabet." },
+    { "front": "True or false: keeping a cipher algorithm secret is a reliable security strategy.", "back": "False — algorithms get leaked or reverse-engineered; security must rely on the mathematical hardness of the key." },
+    { "front": "What problem did public-key cryptography solve that stumped cryptographers for centuries?", "back": "Key distribution — how to share a secret key over a channel the adversary can read." },
+    { "front": "What is a cryptanalyst?", "back": "An adversary who attempts to recover plaintext from ciphertext without knowing the key." },
+    { "front": "What makes a cipher computationally secure rather than theoretically unbreakable?", "back": "Breaking it would take so long — millions of years of compute — that it is practically irrelevant even if not impossible." }
+  ],
+
+  "co:Database_Systems:college": {
+    "title": "Database Systems",
+    "tagline": "Billions of transactions happen daily without data corruption or loss — the engineering behind that reliability is more elegant than you'd expect.",
+    "emoji": "🗄️",
+    "estimatedHours": 14,
+    "prerequisiteKnowledge": "basic",
+    "modules": [
+      {
+        "id": "module_1",
+        "title": "Why Databases Exist",
+        "overview": "Understand what problems databases solve that flat files cannot and why relational models dominate half a century after their invention.",
+        "lessons": [
+          { "id": "lesson_1_1", "title": "Why Databases Exist", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_1_2", "title": "The Relational Model: Tables, Rows, and Keys", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_1_3", "title": "ACID Properties: What 'Reliable' Actually Means", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_1_4", "title": "When You Don't Need a Database", "durationMins": 7, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_2",
+        "title": "SQL: A Declarative Language for Data",
+        "overview": "Learn to express complex data questions in SQL and understand why its declarative nature makes it so powerful.",
+        "lessons": [
+          { "id": "lesson_2_1", "title": "SELECT, FROM, WHERE: The Core Triad", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_2_2", "title": "JOINs: Combining Tables Without Losing Integrity", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_2_3", "title": "Aggregation: GROUP BY, HAVING, Window Functions", "durationMins": 9, "type": "example" },
+          { "id": "lesson_2_4", "title": "Subqueries and Common Table Expressions", "durationMins": 9, "type": "practice" }
+        ]
+      },
+      {
+        "id": "module_3",
+        "title": "Database Design and Normalization",
+        "overview": "Learn to design schemas that eliminate redundancy and anomalies, and know when to intentionally denormalize.",
+        "lessons": [
+          { "id": "lesson_3_1", "title": "Entity-Relationship Diagrams", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_3_2", "title": "First, Second, and Third Normal Form", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_3_3", "title": "Functional Dependencies and Keys", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_3_4", "title": "When to Denormalize for Performance", "durationMins": 8, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_4",
+        "title": "Indexing and Query Performance",
+        "overview": "Understand how B-tree and hash indexes work under the hood and how to reason about query plans.",
+        "lessons": [
+          { "id": "lesson_4_1", "title": "Why Full Table Scans Are Expensive", "durationMins": 7, "type": "concept" },
+          { "id": "lesson_4_2", "title": "B-Tree Indexes: Balanced Search at Scale", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_4_3", "title": "Reading EXPLAIN Plans", "durationMins": 9, "type": "example" },
+          { "id": "lesson_4_4", "title": "Index Trade-offs: Write Cost vs Read Speed", "durationMins": 8, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_5",
+        "title": "Transactions and Concurrency Control",
+        "overview": "Explore how databases allow thousands of simultaneous users without data corruption — the engineering triumph of MVCC.",
+        "lessons": [
+          { "id": "lesson_5_1", "title": "What Is a Transaction?", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_5_2", "title": "Isolation Levels: From Dirty Reads to Serializable", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_5_3", "title": "Locking vs Multi-Version Concurrency Control", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_5_4", "title": "Two-Phase Locking and Deadlock Detection", "durationMins": 9, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_6",
+        "title": "Storage, Recovery, and Durability",
+        "overview": "Learn how databases survive crashes — write-ahead logging, checkpoints, and the ARIES recovery algorithm.",
+        "lessons": [
+          { "id": "lesson_6_1", "title": "Pages, Buffer Pools, and Disk I/O", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_6_2", "title": "Write-Ahead Logging: Commits That Survive Crashes", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_6_3", "title": "The ARIES Recovery Algorithm", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_6_4", "title": "Checkpointing and Log Truncation", "durationMins": 8, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_7",
+        "title": "Beyond Relational: NoSQL, NewSQL, and Distributed Systems",
+        "overview": "Understand why CAP theorem forced a rethink of relational databases and when to choose Cassandra, MongoDB, or CockroachDB.",
+        "lessons": [
+          { "id": "lesson_7_1", "title": "The CAP Theorem: Pick Two", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_7_2", "title": "Document Stores: MongoDB and Schema Flexibility", "durationMins": 8, "type": "example" },
+          { "id": "lesson_7_3", "title": "Wide-Column Stores: Cassandra's Write Path", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_7_4", "title": "NewSQL: Getting ACID and Scalability Together", "durationMins": 9, "type": "concept" }
+        ]
+      }
+    ]
+  },
+
+  "lc:Database_Systems:Why_Databases_Exist:college": {
+    "title": "Why Databases Exist",
+    "hook": "In 1970, Edgar Codd published a nine-page paper that obsoleted decades of custom data-access code — and the relational model he invented still runs most of the world's critical software today.",
+    "sections": [
+      {
+        "heading": "The Problem With Files",
+        "body": "Before databases, applications stored data in flat files — CSV files, custom binary formats, or serialized records. This works for a single program, but falls apart quickly. When two programs share the same file, they can overwrite each other's writes. There's no standard query language, so every team writes bespoke parsing code. Changing the file format breaks every application that depends on it. And there is no built-in mechanism to guarantee that a partial write (say, deducting from one bank account but crashing before crediting another) leaves the data in a consistent state.",
+        "type": "concept"
+      },
+      {
+        "heading": "What a Database Management System Provides",
+        "body": "A DBMS is software that sits between applications and raw storage and guarantees four properties known as ACID: Atomicity (a transaction either fully completes or has no effect), Consistency (data always satisfies defined integrity constraints), Isolation (concurrent transactions see each other as if they ran sequentially), and Durability (committed data survives crashes). These guarantees are extraordinarily difficult to implement correctly — they are the engineering achievement that makes modern banking, healthcare, and e-commerce possible.",
+        "type": "concept"
+      },
+      {
+        "heading": "The Library Catalogue Analogy",
+        "body": "A library without a catalogue is a warehouse — you can store books, but finding them requires scanning every shelf. The catalogue is a structured index with a query language: 'find all books by Toni Morrison published after 1987.' A relational database is a universal catalogue for arbitrary structured data. Codd's insight was that any relationship between entities — customers and orders, students and courses, patients and diagnoses — could be expressed as tables with shared keys, and that a declarative query language (SQL) could retrieve arbitrary combinations without the programmer specifying how.",
+        "type": "analogy"
+      },
+      {
+        "heading": "A Real Example: The Bank Transfer",
+        "body": "Consider transferring $500 from Alice to Bob. This requires two writes: debit Alice's account, credit Bob's. If the system crashes between the two, money vanishes. A DBMS solves this by wrapping both writes in a transaction. If anything fails before COMMIT, the entire transaction is rolled back — Alice keeps her $500, Bob receives nothing, and the database is left in a consistent state. This atomicity guarantee, trivial to invoke with a BEGIN/COMMIT block in SQL, required decades of systems research to implement correctly across concurrent users and hardware failures.",
+        "type": "example"
+      }
+    ],
+    "keyPoints": [
+      "Flat files fail at concurrency, consistency, and data independence — these are the exact problems databases solve.",
+      "ACID: Atomicity, Consistency, Isolation, Durability — the four guarantees a DBMS must provide for reliable transactions.",
+      "Edgar Codd's 1970 relational model expressed all data as tables with shared keys and queries as set operations.",
+      "SQL is declarative: you describe what data you want, not how to retrieve it — the query planner figures out the how."
+    ],
+    "checkIn": {
+      "question": "What does 'Atomicity' mean in the context of a database transaction?",
+      "answer": "A transaction either fully completes — all its writes take effect — or has no effect at all; there is no partial execution visible to the database."
+    }
+  },
+
+  "lf:Database_Systems:Why_Databases_Exist:college": [
+    { "front": "What does ACID stand for in database systems?", "back": "Atomicity, Consistency, Isolation, Durability — the four guarantees a reliable DBMS must provide." },
+    { "front": "What is Atomicity in a database transaction?", "back": "A transaction either fully completes or has no effect — no partial writes are visible." },
+    { "front": "Who published the relational model and when?", "back": "Edgar Codd in 1970, in a nine-page paper that defined tables, keys, and relational algebra." },
+    { "front": "True or false: flat files provide sufficient concurrency control for multiple simultaneous writers.", "back": "False — flat files have no locking or isolation, so concurrent writes corrupt each other." },
+    { "front": "SQL is ___ — you describe what data you want, not how to retrieve it.", "back": "Declarative — the query planner chooses the execution strategy." },
+    { "front": "What problem does the Isolation property in ACID solve?", "back": "It ensures concurrent transactions see each other as if they ran sequentially, preventing dirty reads and race conditions." },
+    { "front": "Why does a bank transfer require a database transaction rather than two sequential file writes?", "back": "A crash between writes would leave one account debited without the other credited; a transaction rolls back on failure." },
+    { "front": "What is Durability in ACID?", "back": "Once a transaction is committed, its data survives crashes — typically guaranteed via write-ahead logging." }
+  ]
+}

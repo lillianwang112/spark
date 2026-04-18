@@ -1,0 +1,900 @@
+{
+  "co:Molecular_Biology:college": {
+    "title": "Molecular Biology",
+    "tagline": "The molecules running every cell in your body are stranger and more elegant than anything engineers have built.",
+    "emoji": "🧬",
+    "estimatedHours": 14,
+    "prerequisiteKnowledge": "basic",
+    "modules": [
+      {
+        "id": "module_1",
+        "title": "The Cell as a Molecular Machine",
+        "overview": "Understand why the cell is best thought of as a self-replicating nanoscale factory.",
+        "lessons": [
+          { "id": "lesson_1_1", "title": "What Makes a Molecule 'Biological'?", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_1_2", "title": "Prokaryotes vs. Eukaryotes: Two Body Plans for Life", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_1_3", "title": "The Lipid Bilayer: A Membrane That Thinks", "durationMins": 8, "type": "example" },
+          { "id": "lesson_1_4", "title": "ATP: The Universal Energy Currency", "durationMins": 7, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_2",
+        "title": "DNA: Information Storage at the Nanoscale",
+        "overview": "Decode how four chemical letters store, copy, and transmit the instructions for all life.",
+        "lessons": [
+          { "id": "lesson_2_1", "title": "The Double Helix: Structure Determines Function", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_2_2", "title": "Semiconservative Replication: How DNA Copies Itself", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_2_3", "title": "DNA Repair: Proofreading a Three-Billion-Letter Book", "durationMins": 8, "type": "deep_dive" },
+          { "id": "lesson_2_4", "title": "Chromatin Packaging: A Two-Meter Thread in a Nucleus", "durationMins": 8, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_3",
+        "title": "From Gene to Protein: The Central Dogma",
+        "overview": "Follow the molecular relay race that turns a DNA sequence into a working protein.",
+        "lessons": [
+          { "id": "lesson_3_1", "title": "Transcription: Reading DNA into RNA", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_3_2", "title": "RNA Processing: Splicing Out the Nonsense", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_3_3", "title": "Translation: Ribosomes as Molecular Assembly Lines", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_3_4", "title": "Protein Folding: How Shape Creates Function", "durationMins": 9, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_4",
+        "title": "Gene Regulation: Cells That Listen and Respond",
+        "overview": "Discover how every cell in your body has the same genome yet behaves completely differently.",
+        "lessons": [
+          { "id": "lesson_4_1", "title": "Operons: Bacteria's Elegant On/Off Switch", "durationMins": 8, "type": "example" },
+          { "id": "lesson_4_2", "title": "Transcription Factors and Enhancers", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_4_3", "title": "Epigenetics: Memory Without Changing the Sequence", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_4_4", "title": "Non-Coding RNA: The Genome's Hidden Layer", "durationMins": 9, "type": "deep_dive" }
+        ]
+      },
+      {
+        "id": "module_5",
+        "title": "Cell Division and the Cell Cycle",
+        "overview": "Understand how one cell faithfully becomes two — and what happens when the controls fail.",
+        "lessons": [
+          { "id": "lesson_5_1", "title": "Mitosis: Dividing Without Losing the Instructions", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_5_2", "title": "Meiosis: Shuffling the Deck for Sexual Reproduction", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_5_3", "title": "Cell Cycle Checkpoints: The Quality Control System", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_5_4", "title": "Cancer as Cell Cycle Failure", "durationMins": 10, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_6",
+        "title": "Molecular Tools and Biotechnology",
+        "overview": "See how the same molecular machinery that runs cells is now wielded by scientists.",
+        "lessons": [
+          { "id": "lesson_6_1", "title": "Restriction Enzymes: Nature's Molecular Scissors", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_6_2", "title": "PCR: Copying DNA a Billion Times in an Afternoon", "durationMins": 8, "type": "example" },
+          { "id": "lesson_6_3", "title": "CRISPR-Cas9: Precision Editing at the Letter Level", "durationMins": 10, "type": "deep_dive" },
+          { "id": "lesson_6_4", "title": "Sequencing the Genome: Reading Three Billion Letters", "durationMins": 9, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_7",
+        "title": "Frontiers: Synthetic Biology and Beyond",
+        "overview": "Explore where molecular biology is going — from designer organisms to RNA medicines.",
+        "lessons": [
+          { "id": "lesson_7_1", "title": "mRNA Vaccines: Hijacking the Central Dogma for Medicine", "durationMins": 9, "type": "example" },
+          { "id": "lesson_7_2", "title": "Synthetic Genomes: Writing Life from Scratch", "durationMins": 10, "type": "deep_dive" },
+          { "id": "lesson_7_3", "title": "Single-Cell Sequencing: Every Cell Tells a Different Story", "durationMins": 9, "type": "deep_dive" }
+        ]
+      }
+    ]
+  },
+
+  "lc:Molecular_Biology:What_Makes_a_Molecule_'Bi:college": {
+    "title": "What Makes a Molecule 'Biological'?",
+    "hook": "Every atom in your body was forged in a dying star — yet somehow those atoms assembled into something that reads, thinks, and wonders about its own origin.",
+    "sections": [
+      {
+        "heading": "The Chemistry of Life",
+        "body": "Biological molecules are not made of special atoms — they are carbon-based compounds that obey the same quantum mechanics as everything else in the universe. What distinguishes them is their complexity, their capacity for information storage, and their ability to self-replicate. Life exploits four chemical families: carbohydrates (energy and structural scaffolding), lipids (membranes and signaling), proteins (the molecular workforce), and nucleic acids (information storage and transfer). As Alberts et al. emphasize in Molecular Biology of the Cell, understanding these four classes unlocks almost every question in cellular biology.",
+        "type": "concept"
+      },
+      {
+        "heading": "Carbon: The Element That Makes Complexity Possible",
+        "body": "Carbon's four bonding electrons let it form chains, rings, and branching structures of virtually unlimited variety — no other abundant element comes close. A single protein can contain thousands of carbon atoms arranged in a precise three-dimensional shape that determines its function entirely. Swap two atoms and the protein may fold wrong, lose its function, or become toxic. This sensitivity to structure is the molecular basis of both drug design and genetic disease.",
+        "type": "concept"
+      },
+      {
+        "heading": "Water as the Stage",
+        "body": "Think of water not as a neutral solvent but as an active molecular partner. The hydrophobic effect — the tendency of nonpolar molecules to cluster away from water — drives protein folding, membrane assembly, and the structure of DNA. Without this effect, the lipid bilayer of every cell membrane would dissolve and life as we know it would be impossible. Water's high heat capacity also buffers the chemical reactions inside cells from dangerous temperature swings.",
+        "type": "analogy"
+      },
+      {
+        "heading": "Macromolecules Are Built from Monomers",
+        "body": "Each of the four biological molecule families is a polymer — a long chain of repeating monomer subunits. Proteins are chains of amino acids; DNA and RNA are chains of nucleotides; carbohydrates like glycogen are chains of glucose. This modular architecture is key: cells can build enormous functional diversity from a small alphabet. The 20 standard amino acids, combined in different sequences and lengths, produce enzymes, structural fibers, hormones, antibodies, and molecular motors.",
+        "type": "example"
+      }
+    ],
+    "keyPoints": [
+      "Life uses four molecular families: carbohydrates, lipids, proteins, and nucleic acids — each built from simpler monomer units.",
+      "Carbon's four bonds allow nearly unlimited structural complexity, making it the backbone of all biological molecules.",
+      "The hydrophobic effect, driven by water's polarity, is the invisible force that folds proteins and assembles membranes.",
+      "Biological molecules are governed by ordinary chemistry — what is extraordinary is their organization and information content."
+    ],
+    "checkIn": {
+      "question": "Why is carbon uniquely suited to be the backbone of biological molecules?",
+      "answer": "Carbon can form four stable covalent bonds, enabling chains, rings, and branching structures of enormous variety — no other abundant element offers comparable structural versatility."
+    }
+  },
+
+  "lf:Molecular_Biology:What_Makes_a_Molecule_'Bi:college": [
+    {
+      "front": "What are the four major classes of biological macromolecules?",
+      "back": "Carbohydrates, lipids, proteins, and nucleic acids — each built from repeating monomer subunits."
+    },
+    {
+      "front": "Why does carbon serve as the backbone of all biological molecules?",
+      "back": "Carbon forms four stable covalent bonds, allowing chains, rings, and branching structures of near-unlimited variety."
+    },
+    {
+      "front": "The hydrophobic effect causes nonpolar molecules to avoid water. True or false?",
+      "back": "True. This effect drives protein folding, lipid bilayer formation, and much of cellular architecture."
+    },
+    {
+      "front": "Proteins are polymers made from ___ monomers.",
+      "back": "Amino acids — 20 standard types, combined in different sequences to produce every protein function."
+    },
+    {
+      "front": "What role does water play beyond simply dissolving molecules?",
+      "back": "Water actively shapes biology through the hydrophobic effect and buffers cells against temperature changes."
+    },
+    {
+      "front": "Which macromolecule class stores and transmits genetic information?",
+      "back": "Nucleic acids — DNA stores information; RNA transfers it during protein synthesis."
+    },
+    {
+      "front": "Application: A mutation swaps one amino acid in an enzyme. Why might this destroy enzyme function?",
+      "back": "The altered amino acid changes the protein's three-dimensional fold, potentially disrupting the active site where chemistry happens."
+    }
+  ],
+
+  "co:Genetics:college": {
+    "title": "Genetics",
+    "tagline": "You are not just your genes — but understanding genes reveals why you are the way you are.",
+    "emoji": "🔬",
+    "estimatedHours": 13,
+    "prerequisiteKnowledge": "basic",
+    "modules": [
+      {
+        "id": "module_1",
+        "title": "Mendel's Laws: Inheritance Before Anyone Knew DNA Existed",
+        "overview": "Discover how a monk in the 1860s cracked inheritance using pea plants — a century before the molecular mechanism was known.",
+        "lessons": [
+          { "id": "lesson_1_1", "title": "Gregor Mendel and the Birth of Genetics", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_1_2", "title": "Segregation: Why Parents Donate One Allele, Not Both", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_1_3", "title": "Independent Assortment and the Dihybrid Cross", "durationMins": 9, "type": "practice" },
+          { "id": "lesson_1_4", "title": "Dominant, Recessive, and Why the Terms Are Misleading", "durationMins": 8, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_2",
+        "title": "Chromosomes and the Physical Basis of Heredity",
+        "overview": "Link abstract inheritance rules to the physical chromosomes inside every nucleus.",
+        "lessons": [
+          { "id": "lesson_2_1", "title": "Morgan's Flies: Sex Linkage and the Chromosome Theory", "durationMins": 9, "type": "example" },
+          { "id": "lesson_2_2", "title": "Linkage, Crossing Over, and Genetic Maps", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_2_3", "title": "Karyotypes: Counting and Reading Chromosomes", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_2_4", "title": "Nondisjunction and Aneuploidy: When Sorting Goes Wrong", "durationMins": 8, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_3",
+        "title": "Molecular Genetics: Genes as DNA Sequences",
+        "overview": "Discover what a gene actually is at the molecular level — a question that took decades to answer.",
+        "lessons": [
+          { "id": "lesson_3_1", "title": "The One Gene–One Enzyme Hypothesis", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_3_2", "title": "How Alleles Differ at the DNA Level", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_3_3", "title": "Mutations: The Raw Material of Evolution", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_3_4", "title": "From Gene to Trait: The Long Road of Gene Expression", "durationMins": 9, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_4",
+        "title": "Complex Inheritance: Beyond Simple Mendelism",
+        "overview": "Discover why most traits don't follow Mendel's clean ratios — and why that's actually more interesting.",
+        "lessons": [
+          { "id": "lesson_4_1", "title": "Incomplete Dominance and Codominance", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_4_2", "title": "Polygenic Inheritance: Why Height Follows a Bell Curve", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_4_3", "title": "Epistasis: When Genes Override Each Other", "durationMins": 9, "type": "deep_dive" },
+          { "id": "lesson_4_4", "title": "Nature vs. Nurture: Gene–Environment Interactions", "durationMins": 10, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_5",
+        "title": "Population Genetics and Hardy-Weinberg",
+        "overview": "Scale up from individuals to populations and see how allele frequencies evolve over generations.",
+        "lessons": [
+          { "id": "lesson_5_1", "title": "Allele Frequencies and the Gene Pool", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_5_2", "title": "Hardy-Weinberg Equilibrium: When Evolution Isn't Happening", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_5_3", "title": "Genetic Drift, Bottlenecks, and Founder Effects", "durationMins": 9, "type": "example" },
+          { "id": "lesson_5_4", "title": "Selection Coefficients: Measuring Evolutionary Pressure", "durationMins": 8, "type": "practice" }
+        ]
+      },
+      {
+        "id": "module_6",
+        "title": "Genomics and Human Genetics",
+        "overview": "See how sequencing the human genome transformed medicine and our understanding of human variation.",
+        "lessons": [
+          { "id": "lesson_6_1", "title": "GWAS: Finding Disease Genes Across the Population", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_6_2", "title": "SNPs, Haplotypes, and Human Diversity", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_6_3", "title": "Genetic Testing: What Your 23andMe Actually Tells You", "durationMins": 9, "type": "example" },
+          { "id": "lesson_6_4", "title": "Ethics of Genetic Information: Privacy, Consent, and Risk", "durationMins": 10, "type": "deep_dive" }
+        ]
+      }
+    ]
+  },
+
+  "lc:Genetics:Gregor_Mendel_and_the_Bir:college": {
+    "title": "Gregor Mendel and the Birth of Genetics",
+    "hook": "The man who discovered the rules of heredity died in obscurity, his work ignored for 35 years — and when it was finally rediscovered, it launched an entire science.",
+    "sections": [
+      {
+        "heading": "Mendel's Experimental Design",
+        "body": "Gregor Mendel was an Augustinian friar working in Brno (now the Czech Republic) who, between 1856 and 1863, crossed approximately 29,000 pea plants and recorded the outcomes with extraordinary care. His genius lay in choosing the right organism and the right traits. Pisum sativum peas were easy to grow, had a short generation time, and — crucially — showed traits that came in sharply distinct forms: wrinkled or smooth seeds, purple or white flowers, tall or short plants. As Griffiths et al. note in Introduction to Genetic Analysis, Mendel's decision to count discrete categories rather than measure continuous variation was what made the patterns visible.",
+        "type": "concept"
+      },
+      {
+        "heading": "The Law of Segregation",
+        "body": "Mendel's central insight was that heritable factors (we now call them alleles) come in pairs, one from each parent, and these pairs segregate — separate — during gamete formation so that each egg or sperm carries only one copy. When a tall plant (TT) crossed with a short plant (tt) produced all tall offspring (Tt), and those F1 plants crossed with each other produced a 3:1 ratio of tall to short, Mendel correctly inferred that the short factor had not disappeared — it had been masked by the dominant tall factor and re-emerged when two recessive alleles met.",
+        "type": "concept"
+      },
+      {
+        "heading": "Why Peas Are Not People",
+        "body": "Imagine pea genetics like a deck of cards where you always hold exactly two cards of each suit. When you have children, you shuffle your pair and pass one card at random. Your partner does the same. The child gets one card from each parent — never zero, never three. This works cleanly for peas because their traits are controlled by single genes with strong dominant-recessive relationships. Most human traits, from height to intelligence to disease risk, are controlled by hundreds of genes interacting with the environment, which is why Mendelian ratios rarely appear in a human family tree.",
+        "type": "analogy"
+      },
+      {
+        "heading": "The Rediscovery and Its Impact",
+        "body": "Mendel published his results in 1866 but received almost no attention from the scientific community. In 1900, three botanists — de Vries, Correns, and von Tschermak — independently rediscovered the same patterns and found Mendel's buried paper while searching the literature. This rediscovery ignited the field of genetics almost overnight and set the stage for the chromosome theory, the discovery of DNA's structure, and ultimately the Human Genome Project.",
+        "type": "example"
+      }
+    ],
+    "keyPoints": [
+      "Mendel's Law of Segregation: allele pairs separate during gamete formation so each gamete carries one allele per gene.",
+      "Mendel chose pea plants for their discrete, countable traits — a methodological decision as important as any discovery.",
+      "The 3:1 ratio in F2 crosses is explained by two heterozygous parents each passing one of two alleles at random.",
+      "Mendel's work was ignored for 35 years and rediscovered simultaneously by three researchers in 1900."
+    ],
+    "checkIn": {
+      "question": "Why did crossing two tall F1 pea plants (Tt × Tt) produce short plants in the next generation, even though the F1 parents appeared tall?",
+      "answer": "The F1 plants were heterozygous (Tt). Each parent could pass the recessive t allele; when both did, the offspring (tt) had no dominant T allele to mask the short phenotype."
+    }
+  },
+
+  "lf:Genetics:Gregor_Mendel_and_the_Bir:college": [
+    {
+      "front": "State Mendel's Law of Segregation.",
+      "back": "Allele pairs separate during gamete formation; each gamete carries exactly one allele per gene locus."
+    },
+    {
+      "front": "A Tt × Tt cross produces offspring in what phenotypic ratio?",
+      "back": "3 dominant : 1 recessive (TT, Tt, Tt, tt genotypes → 3 tall : 1 short for pea height)."
+    },
+    {
+      "front": "Why did Mendel choose pea plants instead of another organism?",
+      "back": "Peas have discrete, countable traits, a short generation time, and controlled self- or cross-fertilization."
+    },
+    {
+      "front": "In genetics, a 'dominant' allele completely masks a recessive one. True or false?",
+      "back": "True in classical Mendelian terms — but many real genes show incomplete dominance or codominance instead."
+    },
+    {
+      "front": "An organism with two identical alleles at a locus is called ___.",
+      "back": "Homozygous (e.g., TT or tt); an organism with two different alleles is heterozygous (Tt)."
+    },
+    {
+      "front": "What does the F2 3:1 phenotypic ratio reveal about allele behavior?",
+      "back": "That one allele is dominant (masks the other) and alleles segregate independently into gametes."
+    },
+    {
+      "front": "Application: Two carriers of cystic fibrosis (Cc × Cc) have a child. What is the probability the child has CF?",
+      "back": "25% — only the cc genotype produces the disease phenotype; that outcome has probability 1/4."
+    },
+    {
+      "front": "When was Mendel's work rediscovered, and why does timing matter?",
+      "back": "1900 — the 35-year gap delayed genetics by decades; its rediscovery launched the chromosome theory era."
+    }
+  ],
+
+  "co:Neuroscience:college": {
+    "title": "Neuroscience",
+    "tagline": "Your brain is the only object in the known universe that wonders what it is — here's what we know so far.",
+    "emoji": "🧠",
+    "estimatedHours": 15,
+    "prerequisiteKnowledge": "basic",
+    "modules": [
+      {
+        "id": "module_1",
+        "title": "The Neuron: Unit of the Nervous System",
+        "overview": "Master the single cell that makes thought, movement, and sensation possible.",
+        "lessons": [
+          { "id": "lesson_1_1", "title": "Anatomy of a Neuron: Why Shape Is Everything", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_1_2", "title": "The Resting Membrane Potential: A Battery Built from Salt", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_1_3", "title": "The Action Potential: An Electrical Signal That Doesn't Fade", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_1_4", "title": "Myelin and Saltatory Conduction: Speed Without Bulk", "durationMins": 8, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_2",
+        "title": "Synaptic Transmission: How Neurons Talk",
+        "overview": "Trace the chemical conversation between neurons — and why almost every psychiatric drug targets it.",
+        "lessons": [
+          { "id": "lesson_2_1", "title": "The Synapse: Bridging an Electrical-Chemical Gap", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_2_2", "title": "Neurotransmitters: The Brain's Chemical Vocabulary", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_2_3", "title": "Excitation and Inhibition: The Push and Pull of Brain Activity", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_2_4", "title": "Synaptic Plasticity and Long-Term Potentiation", "durationMins": 10, "type": "deep_dive" }
+        ]
+      },
+      {
+        "id": "module_3",
+        "title": "Brain Architecture: Regions and Their Roles",
+        "overview": "Map the brain's major regions and understand what happens when each is damaged.",
+        "lessons": [
+          { "id": "lesson_3_1", "title": "Brainstem and Cerebellum: Ancient Controllers", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_3_2", "title": "The Limbic System: Emotion, Memory, and Survival", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_3_3", "title": "Cortical Lobes: Mapping Thought and Perception", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_3_4", "title": "Lesion Studies: What Brain Damage Teaches Us", "durationMins": 9, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_4",
+        "title": "Sensory Systems: How the Brain Builds Reality",
+        "overview": "Discover that perception is not a recording of the world but an active construction by the brain.",
+        "lessons": [
+          { "id": "lesson_4_1", "title": "Visual Processing: From Photons to Perception", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_4_2", "title": "Auditory Processing and the Tonotopic Map", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_4_3", "title": "Somatosensory Cortex and the Homunculus", "durationMins": 8, "type": "example" },
+          { "id": "lesson_4_4", "title": "Pain: A Signal That the Brain Can Amplify or Silence", "durationMins": 9, "type": "deep_dive" }
+        ]
+      },
+      {
+        "id": "module_5",
+        "title": "Learning, Memory, and Plasticity",
+        "overview": "Understand how experience physically rewires the brain — the cellular basis of who you become.",
+        "lessons": [
+          { "id": "lesson_5_1", "title": "Types of Memory: Explicit, Implicit, and Working", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_5_2", "title": "The Hippocampus and Memory Consolidation", "durationMins": 9, "type": "example" },
+          { "id": "lesson_5_3", "title": "Hebbian Learning: Neurons That Fire Together Wire Together", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_5_4", "title": "Critical Periods and Developmental Plasticity", "durationMins": 9, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_6",
+        "title": "Consciousness, Sleep, and the Limits of Neuroscience",
+        "overview": "Confront the hardest problem in science: why physical processes in the brain produce subjective experience.",
+        "lessons": [
+          { "id": "lesson_6_1", "title": "Sleep Architecture: What Your Brain Does When You're Off", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_6_2", "title": "The Hard Problem of Consciousness", "durationMins": 10, "type": "deep_dive" },
+          { "id": "lesson_6_3", "title": "Neural Correlates of Consciousness: Searching for the NCC", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_6_4", "title": "Disorders of Consciousness: Coma, Vegetative State, and Locked-In Syndrome", "durationMins": 9, "type": "example" }
+        ]
+      }
+    ]
+  },
+
+  "lc:Neuroscience:Anatomy_of_a_Neuron:_Why_:college": {
+    "title": "Anatomy of a Neuron: Why Shape Is Everything",
+    "hook": "A single neuron in your cerebral cortex can receive up to 200,000 simultaneous signals from neighboring cells — and it has about one millisecond to decide whether to fire.",
+    "sections": [
+      {
+        "heading": "The Three Functional Zones",
+        "body": "As Kandel et al. describe in Principles of Neural Science, a neuron can be divided into three zones based on function. The dendrites are the input zone — highly branched extensions that receive signals from other neurons and funnel them toward the cell body. The cell body (soma) contains the nucleus and integrates incoming signals, essentially summing excitatory and inhibitory inputs. The axon is the output zone — a single long fiber that conducts signals away from the soma to the next neuron or target tissue. This one-way information flow is not accidental; it is enforced by the molecular machinery concentrated at each zone.",
+        "type": "concept"
+      },
+      {
+        "heading": "Dendritic Trees and Axonal Arbors",
+        "body": "The shape of a neuron's dendritic tree predicts its computational role. Cerebellar Purkinje cells have extraordinarily elaborate, flat dendritic arbors that integrate input from roughly 200,000 parallel fibers — they function as high-dimensional coincidence detectors. By contrast, a simple sensory neuron may have very few dendrites, receiving input from just one or two sources. The axon also branches at its terminal end into a 'terminal arbor' that contacts many downstream targets, allowing a single neuron to broadcast the same signal to hundreds of recipients simultaneously.",
+        "type": "concept"
+      },
+      {
+        "heading": "A City's Communication Network",
+        "body": "Think of a neuron like an old-fashioned telegraph relay station. Incoming messages (electrical signals) arrive from many lines (dendrites), are processed at the relay office (soma), and a single outgoing message is sent down the main wire (axon) to the next station. The relay station doesn't just pass information — it decides, based on the volume and urgency of incoming messages, whether to send at all. This decision point, the axon hillock where the soma meets the axon, is one of the most consequential structures in neuroscience.",
+        "type": "analogy"
+      },
+      {
+        "heading": "Glial Cells: The Overlooked Majority",
+        "body": "Neurons make up only about 10% of the cells in the brain; the other 90% are glia. Astrocytes regulate the chemical environment around synapses and help maintain the blood-brain barrier. Oligodendrocytes wrap axons in myelin to speed electrical conduction. Microglia are the brain's immune cells, pruning unused synaptic connections during development and responding to injury. Far from passive scaffolding, glia actively participate in computation — a major shift in how neuroscience views the brain.",
+        "type": "example"
+      }
+    ],
+    "keyPoints": [
+      "Neurons have three functional zones: dendrites (input), soma (integration), and axon (output) — with one-way signal flow enforced by molecular machinery.",
+      "Dendritic tree shape predicts computational role: Purkinje cells receive ~200,000 inputs; simple sensory neurons receive far fewer.",
+      "The axon hillock is the decision point where the neuron determines whether to fire an action potential.",
+      "Glia make up ~90% of brain cells and actively regulate synapses, myelin, and the brain's immune response."
+    ],
+    "checkIn": {
+      "question": "Why does the shape of a neuron's dendritic tree matter for its function?",
+      "answer": "More elaborate dendritic trees allow a neuron to integrate signals from more inputs simultaneously, making it a more powerful computational element — structure directly determines information processing capacity."
+    }
+  },
+
+  "lf:Neuroscience:Anatomy_of_a_Neuron:_Why_:college": [
+    {
+      "front": "What are the three functional zones of a neuron?",
+      "back": "Dendrites (input), soma/cell body (integration), and axon (output) — signal flows in one direction only."
+    },
+    {
+      "front": "Where does a neuron 'decide' whether to fire an action potential?",
+      "back": "At the axon hillock — the junction of soma and axon where inputs are summed and the threshold is tested."
+    },
+    {
+      "front": "A Purkinje cell's elaborate dendritic tree allows it to receive ~200,000 inputs. True or false?",
+      "back": "True. The dendritic complexity reflects its role as a high-dimensional coincidence detector in the cerebellum."
+    },
+    {
+      "front": "Neurons make up the majority of cells in the brain. True or false?",
+      "back": "False. Glia outnumber neurons roughly 9:1 and actively regulate synapses, myelin, and immune responses."
+    },
+    {
+      "front": "Which glial cells wrap axons in myelin to speed conduction?",
+      "back": "Oligodendrocytes (in the CNS); Schwann cells perform the same role in the peripheral nervous system."
+    },
+    {
+      "front": "The axon terminal arbor allows one neuron to ___ its signal.",
+      "back": "Broadcast — the branching terminals contact many downstream neurons simultaneously."
+    },
+    {
+      "front": "Application: Why might damaging a neuron's dendrites impair function even if the axon is intact?",
+      "back": "Without dendrites the neuron cannot receive input and therefore cannot integrate or pass on signals."
+    }
+  ],
+
+  "co:Evolution:college": {
+    "title": "Evolution",
+    "tagline": "Every organism alive today — including you — is a winner of a four-billion-year survival tournament, and this course explains the rules.",
+    "emoji": "🦕",
+    "estimatedHours": 12,
+    "prerequisiteKnowledge": "none",
+    "modules": [
+      {
+        "id": "module_1",
+        "title": "Darwin's Dangerous Idea: Natural Selection",
+        "overview": "Understand the single mechanism powerful enough to explain the diversity of all life on Earth.",
+        "lessons": [
+          { "id": "lesson_1_1", "title": "Before Darwin: The World of Fixed Species", "durationMins": 7, "type": "concept" },
+          { "id": "lesson_1_2", "title": "Variation, Heritability, and Differential Reproduction", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_1_3", "title": "Natural Selection in Action: The Peppered Moth", "durationMins": 8, "type": "example" },
+          { "id": "lesson_1_4", "title": "Sexual Selection: When Beauty Is Survival", "durationMins": 8, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_2",
+        "title": "Evidence for Evolution",
+        "overview": "Survey the independent lines of evidence — fossil, molecular, anatomical — that converge on evolution.",
+        "lessons": [
+          { "id": "lesson_2_1", "title": "The Fossil Record: Reading Time in Stone", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_2_2", "title": "Comparative Anatomy: Homology and Analogy", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_2_3", "title": "Molecular Phylogenetics: Using DNA to Build Family Trees", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_2_4", "title": "Biogeography: Why Species Are Where They Are", "durationMins": 8, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_3",
+        "title": "The Modern Synthesis: Genetics Meets Darwin",
+        "overview": "See how the fusion of Mendelian genetics and Darwinian selection created the unified theory of evolution.",
+        "lessons": [
+          { "id": "lesson_3_1", "title": "Population Genetics: Alleles in a Gene Pool", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_3_2", "title": "Mutation as the Ultimate Source of Variation", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_3_3", "title": "Genetic Drift: When Chance Beats Selection", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_3_4", "title": "Gene Flow and the Connectedness of Populations", "durationMins": 8, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_4",
+        "title": "Speciation: How One Species Becomes Two",
+        "overview": "Understand the mechanisms by which evolutionary lineages split and diverge.",
+        "lessons": [
+          { "id": "lesson_4_1", "title": "Biological Species Concept and Its Limits", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_4_2", "title": "Allopatric Speciation: Geography as a Divider", "durationMins": 9, "type": "example" },
+          { "id": "lesson_4_3", "title": "Sympatric Speciation: Diverging Without a Barrier", "durationMins": 9, "type": "deep_dive" },
+          { "id": "lesson_4_4", "title": "Reproductive Isolation: Locking the Door Between Lineages", "durationMins": 8, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_5",
+        "title": "Macroevolution: Big Patterns Across Deep Time",
+        "overview": "Zoom out to see mass extinctions, adaptive radiations, and the shape of the tree of life.",
+        "lessons": [
+          { "id": "lesson_5_1", "title": "Adaptive Radiation: Exploiting Empty Niches", "durationMins": 8, "type": "example" },
+          { "id": "lesson_5_2", "title": "Mass Extinctions: Evolution's Great Resets", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_5_3", "title": "Convergent Evolution: Arriving at the Same Solution Twice", "durationMins": 8, "type": "example" },
+          { "id": "lesson_5_4", "title": "Evo-Devo: How Changes in Gene Regulation Build New Body Plans", "durationMins": 10, "type": "deep_dive" }
+        ]
+      },
+      {
+        "id": "module_6",
+        "title": "Human Evolution and the Extended Synthesis",
+        "overview": "Trace the human lineage and explore the frontiers of evolutionary theory beyond the classic Modern Synthesis.",
+        "lessons": [
+          { "id": "lesson_6_1", "title": "Hominin Phylogeny: Our Family Tree", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_6_2", "title": "Cultural Evolution: When Evolution Escapes the Genome", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_6_3", "title": "Epigenetic Inheritance: Beyond the Sequence", "durationMins": 9, "type": "deep_dive" },
+          { "id": "lesson_6_4", "title": "Evolution in Real Time: Antibiotic Resistance as a Case Study", "durationMins": 8, "type": "example" }
+        ]
+      }
+    ]
+  },
+
+  "lc:Evolution:Before_Darwin:_The_World_:college": {
+    "title": "Before Darwin: The World of Fixed Species",
+    "hook": "For most of human history, the diversity of life was explained by a single event — and the idea that species could change was considered not just wrong but absurd.",
+    "sections": [
+      {
+        "heading": "The Pre-Darwinian Worldview",
+        "body": "Before the mid-nineteenth century, the dominant framework in Western science was the fixity of species — the idea that each species was independently created and immutable. Aristotle had classified organisms by their fixed 'essences'; Carl Linnaeus's eighteenth-century taxonomy, while enormously useful, assumed that the categories he described were permanent features of nature. Natural theology, championed by William Paley in Natural Theology (1802), argued that the exquisite adaptation of organisms to their environments — the vertebrate eye, the structure of a bird's wing — was positive evidence for a divine designer. This was not religious dogma masquerading as science; it was the best explanation available given what was known.",
+        "type": "concept"
+      },
+      {
+        "heading": "Early Hints of Change",
+        "body": "The cracks in the fixity worldview began with geology and paleontology. James Hutton and Charles Lyell established that Earth was ancient — not thousands but millions of years old — and that landscapes changed gradually through observable processes. Meanwhile, naturalists collecting fossils noticed that extinct species bore resemblance to living ones, suggesting a relationship across time. Jean-Baptiste Lamarck proposed in 1809 that species did change, though his proposed mechanism (the inheritance of acquired characteristics) was wrong. The pieces were assembling; what was missing was a mechanism powerful enough to explain the observed pattern.",
+        "type": "concept"
+      },
+      {
+        "heading": "Paley's Watch and Its Legacy",
+        "body": "William Paley made the famous argument that finding a watch implies a watchmaker; finding a complex adapted organism implies a Designer. Darwin read Paley carefully as a student at Cambridge and found the argument compelling. What Darwin eventually provided was a mechanism — natural selection — that could produce watch-like complexity without a watchmaker. The modern philosopher Daniel Dennett calls this 'Darwin's dangerous idea' precisely because it explains apparent design through a mindless, purposeless process. Understanding what Darwin was arguing against makes his achievement legible.",
+        "type": "analogy"
+      },
+      {
+        "heading": "The Setting: Voyage of the Beagle",
+        "body": "Darwin's five-year voyage (1831–1836) on HMS Beagle was the empirical foundation of his theory. Visiting the Galapagos Islands, he observed that finches on different islands had different beak shapes suited to different food sources — yet all resembled a mainland South American finch. He observed similar patterns with tortoises. He did not immediately conclude evolution was occurring; the interpretation came slowly, years after the voyage, as he sifted through his specimens. The Galapagos did not give Darwin the idea of natural selection — his notebooks show that came from reading Malthus on population — but they provided the clearest natural experiment he had seen.",
+        "type": "example"
+      }
+    ],
+    "keyPoints": [
+      "Before Darwin, fixity of species — the idea that each species was independently created and unchanging — was the scientific consensus, not merely religious doctrine.",
+      "Geology established Earth's great age, and paleontology revealed extinct species resembling living ones — both anomalies that fixity could not easily explain.",
+      "Paley's 'watchmaker' argument for divine design was the dominant explanation for biological adaptation; Darwin's natural selection was a direct answer to it.",
+      "Darwin's Beagle voyage provided empirical puzzles (Galapagos finches, island biogeography) that his later theory resolved."
+    ],
+    "checkIn": {
+      "question": "Why was the fixity of species considered scientifically reasonable before Darwin — not merely as a matter of religious belief?",
+      "answer": "Organisms appeared exquisitely adapted to their environments with no observed mechanism for change; the geological timescale was underestimated; and taxonomy revealed stable categories. Without a known mechanism and with evidence of apparent design, fixity was the most parsimonious explanation available."
+    }
+  },
+
+  "lf:Evolution:Before_Darwin:_The_World_:college": [
+    {
+      "front": "What was the 'fixity of species' and who championed it?",
+      "back": "The idea that species were independently created and unchanging; Aristotle, Linnaeus, and natural theologians like Paley all held this view."
+    },
+    {
+      "front": "William Paley argued that complex organisms imply a divine designer. What was Darwin's counter?",
+      "back": "Natural selection — an undirected mechanism that produces complex, adapted organisms without any designer."
+    },
+    {
+      "front": "Lamarck proposed the first evolutionary mechanism. Was it correct?",
+      "back": "No. He proposed inheritance of acquired characteristics (e.g., giraffes stretch necks, offspring are born with longer necks) — now known to be incorrect."
+    },
+    {
+      "front": "Which two scientific fields first undermined the fixity worldview before Darwin?",
+      "back": "Geology (ancient Earth) and paleontology (extinct species resembling living ones) revealed change over deep time."
+    },
+    {
+      "front": "Darwin observed different beak shapes on Galapagos finches. What did this eventually suggest?",
+      "back": "That island populations had diverged from a mainland ancestor — evidence of change over time driven by local ecological conditions."
+    },
+    {
+      "front": "Darwin got the idea for natural selection from reading about ___, not from the Galapagos.",
+      "back": "Thomas Malthus — whose essay on population growth highlighted competition for limited resources as a driver of differential survival."
+    },
+    {
+      "front": "True or false: the fixity of species was purely a religious claim with no scientific basis.",
+      "back": "False. Given the knowledge of the era — stable categories, apparent design, unknown mechanisms — fixity was scientifically defensible."
+    }
+  ],
+
+  "co:Microeconomics:college": {
+    "title": "Microeconomics",
+    "tagline": "Every decision you make has a hidden price — microeconomics gives you the tools to see it.",
+    "emoji": "📊",
+    "estimatedHours": 14,
+    "prerequisiteKnowledge": "none",
+    "modules": [
+      {
+        "id": "module_1",
+        "title": "Scarcity, Choice, and Opportunity Cost",
+        "overview": "Understand the core economic problem — unlimited wants, limited resources — and why every choice has a hidden price.",
+        "lessons": [
+          { "id": "lesson_1_1", "title": "The Economic Problem: Scarcity Is Not Poverty", "durationMins": 7, "type": "concept" },
+          { "id": "lesson_1_2", "title": "Opportunity Cost: The Price of Every Decision", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_1_3", "title": "Production Possibility Frontiers: Trade-offs Made Visible", "durationMins": 9, "type": "example" },
+          { "id": "lesson_1_4", "title": "Comparative Advantage and the Gains from Specialization", "durationMins": 9, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_2",
+        "title": "Demand: What Consumers Want and Why",
+        "overview": "Model how prices and preferences shape consumer decisions — the foundation of every market.",
+        "lessons": [
+          { "id": "lesson_2_1", "title": "The Law of Demand: Price Up, Quantity Down", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_2_2", "title": "Shifts in Demand: Income, Substitutes, and Complements", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_2_3", "title": "Elasticity: How Sensitive Are Buyers to Price Changes?", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_2_4", "title": "Consumer Surplus: The Gains from Trade for Buyers", "durationMins": 8, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_3",
+        "title": "Supply: What Firms Produce and Why",
+        "overview": "Model the firm's production decisions and understand the cost structures that drive pricing.",
+        "lessons": [
+          { "id": "lesson_3_1", "title": "The Law of Supply and Producer Incentives", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_3_2", "title": "Production Costs: Fixed, Variable, Marginal, and Average", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_3_3", "title": "Profit Maximization: Why Firms Set MR = MC", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_3_4", "title": "Producer Surplus and Economic Profit vs. Accounting Profit", "durationMins": 8, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_4",
+        "title": "Market Equilibrium and Efficiency",
+        "overview": "See how supply and demand interact to produce prices — and why markets can be efficient and fail simultaneously.",
+        "lessons": [
+          { "id": "lesson_4_1", "title": "Equilibrium: Where Markets Clear", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_4_2", "title": "Price Controls: Ceilings, Floors, and Unintended Consequences", "durationMins": 9, "type": "example" },
+          { "id": "lesson_4_3", "title": "Taxes and Deadweight Loss: The Cost of Intervention", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_4_4", "title": "Pareto Efficiency and the First Welfare Theorem", "durationMins": 9, "type": "deep_dive" }
+        ]
+      },
+      {
+        "id": "module_5",
+        "title": "Market Structures: Competition to Monopoly",
+        "overview": "Compare how market structure — from perfect competition to monopoly — shapes prices, output, and social welfare.",
+        "lessons": [
+          { "id": "lesson_5_1", "title": "Perfect Competition: The Benchmark Model", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_5_2", "title": "Monopoly: Price-Setting Power and Its Costs", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_5_3", "title": "Oligopoly and Game Theory: Strategic Interdependence", "durationMins": 10, "type": "deep_dive" },
+          { "id": "lesson_5_4", "title": "Monopolistic Competition: Differentiation and Zero Profits", "durationMins": 8, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_6",
+        "title": "Market Failures and Externalities",
+        "overview": "Identify when markets produce the wrong amount of something — and why government intervention may (or may not) help.",
+        "lessons": [
+          { "id": "lesson_6_1", "title": "Externalities: When Your Decisions Affect Others", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_6_2", "title": "Public Goods and the Free-Rider Problem", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_6_3", "title": "Information Asymmetry: Lemons, Signals, and Adverse Selection", "durationMins": 10, "type": "deep_dive" },
+          { "id": "lesson_6_4", "title": "Coase Theorem: Can Bargaining Fix Externalities?", "durationMins": 9, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_7",
+        "title": "Consumer Theory and General Equilibrium",
+        "overview": "Formalize how consumers optimize under constraints — the mathematical foundation beneath all of microeconomics.",
+        "lessons": [
+          { "id": "lesson_7_1", "title": "Utility Functions and Indifference Curves", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_7_2", "title": "Budget Constraints and Optimal Choice", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_7_3", "title": "Income and Substitution Effects of a Price Change", "durationMins": 9, "type": "practice" }
+        ]
+      }
+    ]
+  },
+
+  "lc:Microeconomics:The_Economic_Problem:_Sca:college": {
+    "title": "The Economic Problem: Scarcity Is Not Poverty",
+    "hook": "A billionaire who must choose between two investments faces exactly the same fundamental economic problem as someone choosing between two meals — scarcity is about trade-offs, not wealth.",
+    "sections": [
+      {
+        "heading": "Scarcity: The Universal Condition",
+        "body": "Scarcity in economics does not mean 'not enough for survival' — it means that resources are finite relative to the uses people want to make of them. Time is scarce for a CEO and for a student alike. Land is scarce in central Tokyo and in rural Montana. As Hal Varian explains in Intermediate Microeconomics, the economic problem is the fundamental mismatch between unlimited human wants and limited means to satisfy them. Every society — rich or poor, market or planned — must answer the same three questions: What gets produced? How is it produced? Who gets it?",
+        "type": "concept"
+      },
+      {
+        "heading": "Resources: The Four Factors of Production",
+        "body": "Economists classify resources into four categories. Land encompasses all natural resources — arable soil, mineral deposits, freshwater, spectrum bandwidth. Labor is human time and effort. Capital is human-made productive equipment — machines, buildings, software. Entrepreneurship is the human capacity to organize the other three factors and bear risk. None of these is unlimited. The combination available to a society at a given time sets the outer boundary of what that society can produce — called its production possibilities frontier.",
+        "type": "concept"
+      },
+      {
+        "heading": "Economics as Constrained Choice",
+        "body": "Think of scarcity like a phone with 10% battery. You can spend it on one long call, several short calls, or some calls and some texts — but you cannot do all of them. The constraint forces prioritization, and every choice about how to use the remaining charge means forgoing something else. The discipline of economics is fundamentally the study of how individuals, firms, and governments make choices under precisely such constraints, and what outcomes those constrained choices produce in aggregate.",
+        "type": "analogy"
+      },
+      {
+        "heading": "Scarcity vs. Shortage: A Critical Distinction",
+        "body": "Students often confuse scarcity with shortage. A shortage is a temporary condition where quantity demanded exceeds quantity supplied at a given price — it can be relieved by raising the price or increasing production. Scarcity is permanent and universal: even after a shortage is resolved, resources are still finite relative to the full range of human wants. Fresh water in the Sahara faces both scarcity (finite water everywhere) and shortage (local quantity demanded vastly exceeds local supply at the going price). Conflating the two leads to policy errors: treating scarcity as a shortage suggests that producing more will solve it, which misses the fundamental trade-off at the heart of economics.",
+        "type": "example"
+      }
+    ],
+    "keyPoints": [
+      "Scarcity is universal — it applies to wealthy individuals and nations as much as to poor ones, because wants are unlimited relative to any finite resource base.",
+      "The four factors of production — land, labor, capital, and entrepreneurship — are the resources that define what any economy can produce.",
+      "Economics studies constrained choice: how agents allocate scarce resources among competing uses to maximize some objective.",
+      "Scarcity (universal finite resources) is distinct from shortage (temporary excess demand at a given price) — a critical policy-relevant distinction."
+    ],
+    "checkIn": {
+      "question": "Why is scarcity considered universal even in very wealthy economies?",
+      "answer": "Because scarcity is defined relative to wants, not survival needs — wealthy economies have abundant production capacity but face unlimited demands on that capacity, so trade-offs and prioritization remain unavoidable."
+    }
+  },
+
+  "lf:Microeconomics:The_Economic_Problem:_Sca:college": [
+    {
+      "front": "Define economic scarcity.",
+      "back": "Resources are finite relative to the unlimited wants people have for them — applies to all economies regardless of wealth."
+    },
+    {
+      "front": "What are the four factors of production?",
+      "back": "Land (natural resources), labor (human effort), capital (human-made equipment), and entrepreneurship (risk-bearing organization)."
+    },
+    {
+      "front": "Scarcity and shortage mean the same thing in economics. True or false?",
+      "back": "False. Scarcity is permanent and universal; shortage is a temporary condition where quantity demanded exceeds supply at a given price."
+    },
+    {
+      "front": "Every society must answer three core economic questions. Name them.",
+      "back": "What gets produced? How is it produced? Who receives it? These are forced by scarcity."
+    },
+    {
+      "front": "Why must every choice involve a trade-off under scarcity?",
+      "back": "Using a resource for one purpose means it cannot simultaneously be used for another — the constraint forces prioritization."
+    },
+    {
+      "front": "A production possibilities frontier shows ___.",
+      "back": "The maximum combinations of two goods an economy can produce given its current resources and technology."
+    },
+    {
+      "front": "Application: A city has a 'water shortage' after a drought. Is this a scarcity or shortage problem?",
+      "back": "Both — water is always scarce (finite supply vs. unlimited uses), and the drought created an acute shortage (demand exceeds supply at the current price)."
+    }
+  ],
+
+  "co:Behavioral_Economics:college": {
+    "title": "Behavioral Economics",
+    "tagline": "Classical economics assumes you're rational — behavioral economics reveals who you actually are.",
+    "emoji": "🧩",
+    "estimatedHours": 12,
+    "prerequisiteKnowledge": "none",
+    "modules": [
+      {
+        "id": "module_1",
+        "title": "The Rational Agent Model and Its Cracks",
+        "overview": "Understand what classical economics assumes about human decision-making — and the systematic ways those assumptions fail.",
+        "lessons": [
+          { "id": "lesson_1_1", "title": "Homo Economicus: The Model Human Who Never Existed", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_1_2", "title": "Bounded Rationality: Simon's Challenge to Optimization", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_1_3", "title": "System 1 and System 2 Thinking: Kahneman's Framework", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_1_4", "title": "Why Predictable Errors Are Not Random Noise", "durationMins": 8, "type": "deep_dive" }
+        ]
+      },
+      {
+        "id": "module_2",
+        "title": "Heuristics and Biases: The Shortcuts That Mislead",
+        "overview": "Catalog the cognitive shortcuts humans use — and the systematic biases they produce.",
+        "lessons": [
+          { "id": "lesson_2_1", "title": "Availability Heuristic: What's Easy to Recall Feels Common", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_2_2", "title": "Anchoring: The First Number Sticks", "durationMins": 8, "type": "example" },
+          { "id": "lesson_2_3", "title": "Representativeness: Judging Probability by Resemblance", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_2_4", "title": "Overconfidence: The Most Pervasive Bias in Decision-Making", "durationMins": 8, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_3",
+        "title": "Prospect Theory: How We Value Gains and Losses",
+        "overview": "Discover Kahneman and Tversky's revolutionary theory of how people actually evaluate risky choices.",
+        "lessons": [
+          { "id": "lesson_3_1", "title": "Expected Utility Theory and Why It Fails", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_3_2", "title": "Loss Aversion: Losses Hurt More Than Gains Feel Good", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_3_3", "title": "The Value Function: S-Curves and Reference Points", "durationMins": 9, "type": "deep_dive" },
+          { "id": "lesson_3_4", "title": "Probability Weighting: Overweighting the Unlikely", "durationMins": 8, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_4",
+        "title": "Framing, Mental Accounting, and the Construction of Choice",
+        "overview": "See how the presentation of options — not just their content — drives decisions.",
+        "lessons": [
+          { "id": "lesson_4_1", "title": "Framing Effects: Same Outcome, Different Words, Different Choice", "durationMins": 8, "type": "example" },
+          { "id": "lesson_4_2", "title": "Mental Accounting: Why a Dollar Is Not Always a Dollar", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_4_3", "title": "The Sunk Cost Fallacy: Paying to Stay Wrong", "durationMins": 8, "type": "example" },
+          { "id": "lesson_4_4", "title": "Choice Architecture: How Options Are Presented Shapes Outcomes", "durationMins": 9, "type": "deep_dive" }
+        ]
+      },
+      {
+        "id": "module_5",
+        "title": "Intertemporal Choice: Time, Discounting, and Self-Control",
+        "overview": "Explore why people systematically under-save, over-borrow, and procrastinate — and how policy can counteract it.",
+        "lessons": [
+          { "id": "lesson_5_1", "title": "Exponential vs. Hyperbolic Discounting", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_5_2", "title": "Present Bias: Why Tomorrow Always Seems Better", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_5_3", "title": "Commitment Devices: Pre-Committing Against Your Future Self", "durationMins": 9, "type": "example" },
+          { "id": "lesson_5_4", "title": "Save More Tomorrow: Behavioral Retirement Savings", "durationMins": 8, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_6",
+        "title": "Social Preferences and Fairness",
+        "overview": "Discover that humans are not selfish maximizers — they care deeply about fairness, reciprocity, and social norms.",
+        "lessons": [
+          { "id": "lesson_6_1", "title": "Ultimatum Game: When People Reject Free Money", "durationMins": 8, "type": "example" },
+          { "id": "lesson_6_2", "title": "Inequality Aversion and Distributional Preferences", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_6_3", "title": "Reciprocity: The Norm of Returning Favors", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_6_4", "title": "Identity Economics: How Social Identity Shapes Economic Behavior", "durationMins": 9, "type": "deep_dive" }
+        ]
+      },
+      {
+        "id": "module_7",
+        "title": "Nudge Theory and Behavioral Policy",
+        "overview": "See how behavioral insights are applied in public policy — from pension enrollment to organ donation.",
+        "lessons": [
+          { "id": "lesson_7_1", "title": "Nudges: Changing Behavior Without Banning or Taxing", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_7_2", "title": "Default Effects: The Power of Doing Nothing", "durationMins": 9, "type": "example" },
+          { "id": "lesson_7_3", "title": "Libertarian Paternalism: The Ethics of Nudging", "durationMins": 9, "type": "deep_dive" },
+          { "id": "lesson_7_4", "title": "Behavioral Policy in Practice: Pensions, Health, and Energy", "durationMins": 9, "type": "example" }
+        ]
+      }
+    ]
+  },
+
+  "lc:Behavioral_Economics:Homo_Economicus:_The_Mode:college": {
+    "title": "Homo Economicus: The Model Human Who Never Existed",
+    "hook": "Classical economics built its entire architecture on a creature that is rational, self-interested, and infinitely calculating — a creature that no experiment has ever found in the wild.",
+    "sections": [
+      {
+        "heading": "The Rational Agent Assumption",
+        "body": "Standard microeconomic theory models the agent as someone who has stable, complete preferences; processes information accurately; maximizes utility without cognitive error; and discounts the future at a constant rate. This is Homo economicus — 'economic man.' The model is enormously productive: it generates sharp, testable predictions about market behavior and underlies classical results from supply-and-demand theory to game theory. As economists are quick to note, the model is not meant as a literal description of any individual; it is a simplifying assumption that may work well for aggregate market behavior even if it fails for any given person.",
+        "type": "concept"
+      },
+      {
+        "heading": "Where the Model Cracks",
+        "body": "The empirical problem is that the deviations from rational behavior are not random — they are systematic, predictable, and large enough to alter market outcomes. Kahneman and Tversky's 1979 paper on Prospect Theory (Econometrica) demonstrated that people weigh losses roughly twice as heavily as equivalent gains, violating expected utility theory directly. Thaler's work on mental accounting showed that people treat economically fungible dollars differently depending on where they came from. These are not individual quirks but regularities that replicate across cultures, populations, and experimental contexts — making them relevant for policy and market design.",
+        "type": "concept"
+      },
+      {
+        "heading": "The Map vs. the Territory",
+        "body": "Think of Homo economicus like a map of a city. A map simplifies, omits details, and is wrong in many particulars — but it helps you navigate. The rational agent model is useful precisely because of its simplifications. The behavioral economist's project is not to throw out the map but to add the corrections needed to navigate the terrain that the original map got wrong. Just as GPS layers real-time corrections over a base map, behavioral economics layers empirically validated anomalies over the classical framework — adjusting predictions where the original model systematically fails.",
+        "type": "analogy"
+      },
+      {
+        "heading": "Herbert Simon and Bounded Rationality",
+        "body": "The first formal challenge to perfect rationality came from Herbert Simon in the 1950s. Simon argued that real decision-makers face cognitive limitations — limited time, limited memory, limited computational capacity — that make 'optimization' impossible in complex real-world settings. Instead of maximizing, they 'satisfice': they search for an option that is good enough given their constraints and stop there. Simon coined the term bounded rationality to describe this condition, earning him the Nobel Prize in Economics in 1978 — a decade before Kahneman and Tversky's insights would transform the field further.",
+        "type": "example"
+      }
+    ],
+    "keyPoints": [
+      "Homo economicus is the classical economic model of a rational, self-interested, utility-maximizing agent — a productive simplification, not a literal description.",
+      "Kahneman and Tversky's Prospect Theory (1979) showed that deviations from rationality are systematic and large — not random noise.",
+      "Herbert Simon's 'bounded rationality' (1950s) was the first formal challenge: real agents satisfice (find good-enough solutions) rather than optimize.",
+      "Behavioral economics does not discard the classical framework; it adds empirically validated corrections to where the model predictably fails."
+    ],
+    "checkIn": {
+      "question": "Why is the Homo economicus model still used even though it is known to be inaccurate at the individual level?",
+      "answer": "Because it generates tractable, falsifiable predictions that often hold at the aggregate market level, where individual errors may cancel out — it is a useful simplification even when it fails as a description of any real person."
+    }
+  },
+
+  "lf:Behavioral_Economics:Homo_Economicus:_The_Mode:college": [
+    {
+      "front": "What are the core assumptions of the Homo economicus model?",
+      "back": "Stable preferences, accurate information processing, utility maximization, and consistent time discounting."
+    },
+    {
+      "front": "Behavioral economics replaces the rational agent model entirely. True or false?",
+      "back": "False. It identifies systematic deviations from the model and adds empirical corrections rather than discarding the framework."
+    },
+    {
+      "front": "Herbert Simon introduced 'bounded rationality' to mean what?",
+      "back": "That real agents face cognitive limits — limited time, memory, computation — and satisfice (find good-enough solutions) instead of optimizing."
+    },
+    {
+      "front": "Kahneman and Tversky's Prospect Theory (1979) showed that losses are weighted ___ gains.",
+      "back": "Roughly twice as heavily as equivalent gains — a direct violation of expected utility theory."
+    },
+    {
+      "front": "What makes behavioral anomalies economically relevant rather than just individual quirks?",
+      "back": "They are systematic and replicate across contexts — predictable enough to alter market outcomes and inform policy design."
+    },
+    {
+      "front": "Application: A firm prices its service at $9.99 instead of $10.00. Which bias does this exploit?",
+      "back": "Left-digit anchoring — buyers anchor on the first digit and perceive $9.99 as meaningfully cheaper than $10.00."
+    },
+    {
+      "front": "Richard Thaler's 'mental accounting' shows that people treat identical dollars differently. Why does this violate classical theory?",
+      "back": "Classical theory assumes money is fungible — a dollar is a dollar regardless of source. Mental accounting violates this by assigning dollars to separate 'accounts.'"
+    }
+  ]
+}

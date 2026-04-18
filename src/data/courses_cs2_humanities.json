@@ -1,0 +1,1027 @@
+{
+  "co:Computer_Networks:college": {
+    "title": "Computer Networks",
+    "tagline": "Every web request you've ever made touched a dozen machines — find out exactly how.",
+    "emoji": "🌐",
+    "estimatedHours": 14,
+    "prerequisiteKnowledge": "basic",
+    "modules": [
+      {
+        "id": "module_1",
+        "title": "How Networks Actually Work",
+        "overview": "Demystify what happens between pressing Enter and seeing a webpage.",
+        "lessons": [
+          { "id": "lesson_1_1", "title": "What Is a Network?", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_1_2", "title": "Packets, Not Streams", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_1_3", "title": "The OSI Model Decoded", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_1_4", "title": "LAN vs WAN vs the Internet", "durationMins": 8, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_2",
+        "title": "The Link Layer: Moving Bits Physically",
+        "overview": "Understand how raw bits travel over wires, radio waves, and fiber.",
+        "lessons": [
+          { "id": "lesson_2_1", "title": "MAC Addresses and Ethernet Frames", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_2_2", "title": "Switches vs Hubs: Why It Matters", "durationMins": 8, "type": "example" },
+          { "id": "lesson_2_3", "title": "Wi-Fi and CSMA/CA", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_2_4", "title": "Error Detection with CRC", "durationMins": 9, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_3",
+        "title": "The Network Layer: Routing the Globe",
+        "overview": "Master IP addressing, routing algorithms, and how the internet self-organizes.",
+        "lessons": [
+          { "id": "lesson_3_1", "title": "IP Addresses and Subnets", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_3_2", "title": "How Routers Make Decisions", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_3_3", "title": "BGP and the Autonomous System", "durationMins": 11, "type": "concept" },
+          { "id": "lesson_3_4", "title": "NAT: One Address, Many Devices", "durationMins": 8, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_4",
+        "title": "The Transport Layer: Reliability and Speed",
+        "overview": "See how TCP guarantees delivery and why UDP is sometimes the smarter choice.",
+        "lessons": [
+          { "id": "lesson_4_1", "title": "TCP: The Three-Way Handshake", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_4_2", "title": "Flow Control and Congestion Control", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_4_3", "title": "UDP and When to Sacrifice Reliability", "durationMins": 8, "type": "example" },
+          { "id": "lesson_4_4", "title": "Ports and Multiplexing", "durationMins": 7, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_5",
+        "title": "Application Layer Protocols",
+        "overview": "Pull back the curtain on HTTP, DNS, TLS, and the protocols powering daily life.",
+        "lessons": [
+          { "id": "lesson_5_1", "title": "HTTP/1.1, HTTP/2, and HTTP/3", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_5_2", "title": "DNS: The Internet's Phone Book", "durationMins": 9, "type": "example" },
+          { "id": "lesson_5_3", "title": "TLS and the Handshake That Secures the Web", "durationMins": 11, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_6",
+        "title": "Network Security and the Adversarial Internet",
+        "overview": "Understand the attacks that threaten networks and the defenses that counter them.",
+        "lessons": [
+          { "id": "lesson_6_1", "title": "Firewalls, Packet Filters, and Stateful Inspection", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_6_2", "title": "DDoS Attacks and Amplification", "durationMins": 9, "type": "example" },
+          { "id": "lesson_6_3", "title": "VPNs and Tunneling", "durationMins": 8, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_7",
+        "title": "The Evolving Internet",
+        "overview": "Explore software-defined networking, 5G, and what comes after TCP/IP.",
+        "lessons": [
+          { "id": "lesson_7_1", "title": "Software-Defined Networking", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_7_2", "title": "Content Delivery Networks", "durationMins": 8, "type": "example" },
+          { "id": "lesson_7_3", "title": "The Future: QUIC, 5G, and Beyond", "durationMins": 9, "type": "concept" }
+        ]
+      }
+    ]
+  },
+
+  "lc:Computer_Networks:What_Is_a_Network?:college": {
+    "title": "What Is a Network?",
+    "hook": "When you hit Enter on a Google search, your query crosses roughly a dozen independent machines before Google's servers ever see it — and the whole round trip takes under 50 milliseconds.",
+    "sections": [
+      {
+        "heading": "The Core Idea: Shared Communication Infrastructure",
+        "body": "A computer network is two or more devices connected in a way that lets them exchange data. The connection medium can be copper wire, fiber-optic cable, radio waves, or even infrared light. What matters is not the medium but the shared agreement on how to represent and route that data — the protocols. Without protocols, two machines talking would be like two people shouting in different languages at a wall.",
+        "type": "concept"
+      },
+      {
+        "heading": "Nodes, Links, and Topology",
+        "body": "Networks are described as graphs: nodes (devices like computers, routers, and phones) connected by links (the physical or wireless channels between them). Topology — the shape of this graph — profoundly affects performance and fault tolerance. A bus topology has every node sharing one cable; a ring has them in a loop; a star routes everything through a central hub; a mesh gives every node multiple paths. The internet itself is a mesh at a planetary scale, which is precisely why it can survive the failure of many individual nodes.",
+        "type": "concept"
+      },
+      {
+        "heading": "Analogy: Postal System vs. Phone Call",
+        "body": "Early telephone networks established a dedicated circuit between two callers for the duration of the call — like reserving a lane on a highway just for you. Modern computer networks instead use packet switching, breaking data into chunks that share infrastructure opportunistically. Think of it as the postal system: each letter (packet) finds its own route and the truck (link) carries mail from many senders at once. Packet switching is less predictable but vastly more efficient for bursty, variable-length data.",
+        "type": "analogy"
+      },
+      {
+        "heading": "A Real Example: Loading a Webpage",
+        "body": "When your browser requests a webpage, your device sends packets from your home network through your ISP's routers, across backbone links (often undersea fiber cables), through the target site's edge network, and finally to a server. Each router along the way makes an independent forwarding decision based on the destination IP address. The page's HTML, CSS, images, and scripts may arrive via dozens of separate TCP connections, potentially from different servers on different continents.",
+        "type": "example"
+      }
+    ],
+    "keyPoints": [
+      "A network is any set of devices connected by shared communication links governed by common protocols.",
+      "Topology — bus, ring, star, mesh — determines resilience and performance characteristics.",
+      "Packet switching replaces dedicated circuits with shared, opportunistic data delivery.",
+      "The internet is a network of networks: autonomous systems interconnected by routing agreements."
+    ],
+    "checkIn": {
+      "question": "Why is packet switching more efficient than circuit switching for web traffic?",
+      "answer": "Web traffic is bursty — you download in bursts, then pause. Circuit switching would hold a dedicated channel idle during pauses, wasting bandwidth. Packet switching shares links dynamically so idle capacity is used by others."
+    }
+  },
+
+  "lf:Computer_Networks:What_Is_a_Network?:college": [
+    {
+      "front": "What is the fundamental definition of a computer network?",
+      "back": "Two or more devices connected by shared communication links that allow data exchange via common protocols."
+    },
+    {
+      "front": "What does network topology describe?",
+      "back": "The shape of the graph connecting nodes and links — e.g., bus, star, ring, or mesh — affecting resilience and performance."
+    },
+    {
+      "front": "Packet switching vs. circuit switching — key difference?",
+      "back": "Circuit switching reserves a dedicated path for a connection; packet switching breaks data into packets that share links opportunistically."
+    },
+    {
+      "front": "Why does the internet's mesh topology matter?",
+      "back": "Multiple redundant paths mean the network can route around failed nodes or links without full outage."
+    },
+    {
+      "front": "What is a protocol in networking?",
+      "back": "A shared agreement on message format, timing, and error handling that lets heterogeneous devices communicate reliably."
+    },
+    {
+      "front": "What happens at each router when a packet traverses the internet?",
+      "back": "The router reads the destination IP address and makes an independent forwarding decision, sending the packet toward its next hop."
+    },
+    {
+      "front": "Name the four main network topologies.",
+      "back": "Bus (shared cable), ring (loop), star (central hub), and mesh (multiple redundant paths between nodes)."
+    }
+  ],
+
+  "co:Programming_Languages:college": {
+    "title": "Programming Languages",
+    "tagline": "The languages you write code in are themselves programs — understanding them will make you a dramatically better programmer.",
+    "emoji": "🔤",
+    "estimatedHours": 13,
+    "prerequisiteKnowledge": "basic",
+    "modules": [
+      {
+        "id": "module_1",
+        "title": "Why Programming Languages Exist",
+        "overview": "Understand what problems languages solve and why there are hundreds of them.",
+        "lessons": [
+          { "id": "lesson_1_1", "title": "Why Programming Languages Exist", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_1_2", "title": "Syntax, Semantics, and Pragmatics", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_1_3", "title": "The Language Design Tradeoff Space", "durationMins": 9, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_2",
+        "title": "Types: What They Are and Why They Matter",
+        "overview": "Discover how type systems catch bugs before code runs — and how they shape language design.",
+        "lessons": [
+          { "id": "lesson_2_1", "title": "Static vs. Dynamic Typing", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_2_2", "title": "Strong vs. Weak Typing", "durationMins": 8, "type": "example" },
+          { "id": "lesson_2_3", "title": "Parametric Polymorphism and Generics", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_2_4", "title": "Type Inference: How the Compiler Reads Your Mind", "durationMins": 10, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_3",
+        "title": "Parsing: How Code Becomes Meaning",
+        "overview": "Trace the journey from raw text to an abstract syntax tree the compiler can reason about.",
+        "lessons": [
+          { "id": "lesson_3_1", "title": "Lexing and Tokenization", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_3_2", "title": "Context-Free Grammars and BNF", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_3_3", "title": "Abstract Syntax Trees", "durationMins": 9, "type": "example" },
+          { "id": "lesson_3_4", "title": "Ambiguity and Parsing Conflicts", "durationMins": 9, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_4",
+        "title": "Evaluation Strategies",
+        "overview": "Learn why the same expression can produce different results depending on when it is evaluated.",
+        "lessons": [
+          { "id": "lesson_4_1", "title": "Call-by-Value vs. Call-by-Reference", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_4_2", "title": "Lazy Evaluation and Infinite Structures", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_4_3", "title": "Closures and Lexical Scoping", "durationMins": 10, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_5",
+        "title": "Paradigms: Different Ways to Think in Code",
+        "overview": "Contrast imperative, functional, object-oriented, and logic programming models.",
+        "lessons": [
+          { "id": "lesson_5_1", "title": "Imperative vs. Declarative: What You Say vs. How", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_5_2", "title": "Functional Programming Core Ideas", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_5_3", "title": "Object-Oriented Design: Encapsulation and Dispatch", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_5_4", "title": "Logic Programming with Prolog", "durationMins": 9, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_6",
+        "title": "Memory Management",
+        "overview": "See how languages decide who owns memory and what happens when nobody does.",
+        "lessons": [
+          { "id": "lesson_6_1", "title": "Stack vs. Heap Allocation", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_6_2", "title": "Garbage Collection Algorithms", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_6_3", "title": "Ownership and Borrowing: Rust's Model", "durationMins": 11, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_7",
+        "title": "Compilers, Interpreters, and the Future",
+        "overview": "Understand how languages become executable and where language design is heading.",
+        "lessons": [
+          { "id": "lesson_7_1", "title": "Compilation Pipeline: Parsing to Machine Code", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_7_2", "title": "Interpreters and JIT Compilation", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_7_3", "title": "Domain-Specific Languages and Language Workbenches", "durationMins": 9, "type": "example" }
+        ]
+      }
+    ]
+  },
+
+  "lc:Programming_Language:Why_Programming_Languages:college": {
+    "title": "Why Programming Languages Exist",
+    "hook": "Every programming language ever invented is an attempt to answer one question: what is the best vocabulary for expressing computation to both humans and machines simultaneously?",
+    "sections": [
+      {
+        "heading": "The Gap Between Humans and Hardware",
+        "body": "At the lowest level, a CPU understands a tiny set of operations: move this byte, add these numbers, jump to that address. Writing software directly in those terms is possible but brutally slow and error-prone. Programming languages exist to bridge this gap — they let programmers express ideas at a higher level of abstraction and then automatically translate those ideas into machine instructions. The translation is done by compilers or interpreters.",
+        "type": "concept"
+      },
+      {
+        "heading": "Abstraction as the Core Value",
+        "body": "A language's power comes from the abstractions it offers. C gives you direct memory manipulation. Python gives you dynamic lists and dictionaries that resize automatically. Haskell gives you mathematical functions and a type system that catches entire classes of bugs at compile time. Each abstraction trades some control or performance for some expressiveness or safety. Language designers make deliberate choices about which tradeoffs to accept — and those choices shape entire programming cultures.",
+        "type": "concept"
+      },
+      {
+        "heading": "Analogy: Natural Languages and Domain Vocabulary",
+        "body": "Legal documents use Latin phrases and precise statutory language because precision matters more than accessibility. Poetry uses meter and ambiguity because resonance matters more than exactness. Programming languages work similarly: SQL is purpose-built for querying relational data, making it far more concise than equivalent Python for that task. No programming language is universally best — each is a vocabulary optimized for certain problems.",
+        "type": "analogy"
+      },
+      {
+        "heading": "Why So Many Languages?",
+        "body": "New languages emerge when existing ones fail to express something important efficiently. C++ added object-oriented features to C when software grew too large for procedural code. JavaScript was created in 10 days specifically to run in browsers. Rust was designed to eliminate memory safety bugs without garbage collection. Each language is a response to a real pain point — understanding those pain points reveals the deep constraints of software development.",
+        "type": "example"
+      }
+    ],
+    "keyPoints": [
+      "Programming languages bridge the gap between human-readable intent and machine-executable instructions.",
+      "Every language embodies tradeoffs: expressiveness vs. performance, safety vs. flexibility, abstraction vs. control.",
+      "Languages are purpose-built — SQL, Python, Rust, and JavaScript each solve different classes of problems.",
+      "Pierce's Types and Programming Languages formalizes these tradeoffs using type theory and formal semantics."
+    ],
+    "checkIn": {
+      "question": "Why doesn't one perfect programming language replace all others?",
+      "answer": "Different problems require different tradeoffs. A language optimized for safe systems programming (Rust) imposes constraints that are counterproductive for rapid data analysis (Python). The diversity of languages reflects the diversity of computational problems."
+    }
+  },
+
+  "lf:Programming_Language:Why_Programming_Languages:college": [
+    {
+      "front": "What fundamental problem do programming languages solve?",
+      "back": "They bridge the gap between human-readable abstractions and machine-executable binary instructions."
+    },
+    {
+      "front": "What is the core tradeoff in language design?",
+      "back": "Expressiveness and abstraction vs. performance and control — no language is optimal on all dimensions."
+    },
+    {
+      "front": "What is a compiler?",
+      "back": "A program that translates source code in one language (typically high-level) into another language (typically machine code)."
+    },
+    {
+      "front": "Why was Rust created?",
+      "back": "To achieve memory safety without garbage collection, eliminating entire classes of bugs (use-after-free, data races) at compile time."
+    },
+    {
+      "front": "What distinguishes a compiled language from an interpreted one?",
+      "back": "Compiled languages translate the entire program before execution; interpreters execute source code line-by-line at runtime."
+    },
+    {
+      "front": "What is a domain-specific language (DSL)?",
+      "back": "A language purpose-built for a narrow problem domain — SQL for databases, regex for pattern matching, CSS for styling."
+    },
+    {
+      "front": "Pierce's Types and Programming Languages — what does it formalize?",
+      "back": "The theory of type systems: how types prevent errors, enable reasoning about programs, and relate to logic via Curry-Howard."
+    }
+  ],
+
+  "co:Natural_Language_Processing:college": {
+    "title": "Natural Language Processing",
+    "tagline": "Language is the hardest thing computers have ever tried to understand — and they're finally getting good at it.",
+    "emoji": "💬",
+    "estimatedHours": 13,
+    "prerequisiteKnowledge": "intermediate",
+    "modules": [
+      {
+        "id": "module_1",
+        "title": "Language as Data",
+        "overview": "Learn how NLP represents language mathematically so computers can reason about it.",
+        "lessons": [
+          { "id": "lesson_1_1", "title": "Language as Data", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_1_2", "title": "Tokenization and Text Normalization", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_1_3", "title": "Regular Expressions in NLP", "durationMins": 8, "type": "practice" }
+        ]
+      },
+      {
+        "id": "module_2",
+        "title": "Words as Vectors: Distributional Semantics",
+        "overview": "Discover how word meaning can be captured by numerical vectors from co-occurrence statistics.",
+        "lessons": [
+          { "id": "lesson_2_1", "title": "The Distributional Hypothesis", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_2_2", "title": "Word2Vec and Skip-Gram Training", "durationMins": 11, "type": "concept" },
+          { "id": "lesson_2_3", "title": "Cosine Similarity and Word Arithmetic", "durationMins": 9, "type": "example" },
+          { "id": "lesson_2_4", "title": "Contextual Embeddings: ELMo to BERT", "durationMins": 10, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_3",
+        "title": "Language Models",
+        "overview": "Understand how statistical and neural models learn to predict the next word — and why that's powerful.",
+        "lessons": [
+          { "id": "lesson_3_1", "title": "N-Gram Language Models", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_3_2", "title": "Perplexity: Measuring Model Quality", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_3_3", "title": "Neural Language Models and RNNs", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_3_4", "title": "The Transformer Architecture", "durationMins": 12, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_4",
+        "title": "Syntax: Structure in Sentences",
+        "overview": "Parse sentences into grammatical structure and learn what syntax reveals about meaning.",
+        "lessons": [
+          { "id": "lesson_4_1", "title": "Part-of-Speech Tagging", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_4_2", "title": "Constituency Parsing", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_4_3", "title": "Dependency Parsing", "durationMins": 9, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_5",
+        "title": "Semantics and Pragmatics",
+        "overview": "Go beyond words to capture what sentences mean and what speakers intend.",
+        "lessons": [
+          { "id": "lesson_5_1", "title": "Semantic Role Labeling", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_5_2", "title": "Named Entity Recognition", "durationMins": 8, "type": "example" },
+          { "id": "lesson_5_3", "title": "Coreference Resolution", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_5_4", "title": "Discourse and Pragmatic Inference", "durationMins": 9, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_6",
+        "title": "Core NLP Applications",
+        "overview": "Apply everything to real tasks: sentiment analysis, machine translation, and question answering.",
+        "lessons": [
+          { "id": "lesson_6_1", "title": "Sentiment Analysis and Opinion Mining", "durationMins": 9, "type": "example" },
+          { "id": "lesson_6_2", "title": "Machine Translation: From Rules to Neural Seq2Seq", "durationMins": 11, "type": "concept" },
+          { "id": "lesson_6_3", "title": "Question Answering and Reading Comprehension", "durationMins": 10, "type": "concept" }
+        ]
+      }
+    ]
+  },
+
+  "lc:Natural_Language_Pro:Language_as_Data:college": {
+    "title": "Language as Data",
+    "hook": "The entire text of English Wikipedia — 4 billion words — contains less information than a single well-trained language model, because the model has compressed patterns that the raw text buries in noise.",
+    "sections": [
+      {
+        "heading": "The NLP Pipeline: From Text to Representation",
+        "body": "Natural Language Processing begins by converting raw text into structured representations a computer can manipulate mathematically. This pipeline typically involves: collecting a corpus (a large body of text), normalizing it (standardizing casing, punctuation, and encoding), tokenizing it (splitting into words or subword units), and then building a numerical representation. Every downstream task — translation, sentiment analysis, question answering — depends on the quality of these early steps.",
+        "type": "concept"
+      },
+      {
+        "heading": "Corpora: The Raw Material",
+        "body": "A corpus is the dataset NLP models learn from. Corpora range from single-domain collections (PubMed abstracts, legal contracts) to massive multilingual dumps of the web. The choice of corpus profoundly shapes what a model learns: a model trained only on news articles will struggle with slang, and vice versa. Jurafsky and Martin's foundational textbook defines corpus linguistics as the empirical study of language through large text collections, positioning NLP as an inherently data-driven field.",
+        "type": "concept"
+      },
+      {
+        "heading": "Analogy: Text as a Sequence of Signals",
+        "body": "Think of text the way audio engineers think of a waveform: an apparently continuous stream that can be sampled, measured, and transformed. Just as an audio engineer converts sound waves into discrete frequency bins, an NLP system converts a character stream into discrete tokens and then into numerical feature vectors. The challenge — in both cases — is choosing the right representation to make the signal's structure visible to the algorithm.",
+        "type": "analogy"
+      },
+      {
+        "heading": "The Bag-of-Words Baseline",
+        "body": "The simplest text representation ignores word order entirely and simply counts how often each vocabulary word appears in a document. This 'bag of words' model discards grammar and sequence but is surprisingly effective for classification tasks like spam filtering. A document about cooking will have high counts for 'recipe', 'ingredient', and 'bake'; one about finance will skew toward 'return', 'portfolio', and 'yield'. The bag-of-words model is the baseline every modern NLP system is measured against.",
+        "type": "example"
+      }
+    ],
+    "keyPoints": [
+      "The NLP pipeline: collect corpus → normalize → tokenize → represent numerically.",
+      "Corpus choice shapes everything: models inherit the biases and gaps of their training data.",
+      "Bag-of-words ignores word order but is a surprisingly strong baseline for classification.",
+      "Modern NLP is empirically driven — performance on benchmark datasets is the primary measure of progress."
+    ],
+    "checkIn": {
+      "question": "Why does corpus choice matter so much in NLP?",
+      "answer": "Models learn statistical patterns from their training data. A corpus with biased, narrow, or domain-specific text will produce a model that reflects those limitations — it will perform poorly on text that differs from its training distribution."
+    }
+  },
+
+  "lf:Natural_Language_Pro:Language_as_Data:college": [
+    {
+      "front": "What is a corpus in NLP?",
+      "back": "A large, structured collection of text used to train, evaluate, or study language models and NLP systems."
+    },
+    {
+      "front": "What does tokenization do?",
+      "back": "Splits raw text into discrete units (tokens) — typically words or subword pieces — that the model processes as input."
+    },
+    {
+      "front": "What is the bag-of-words model?",
+      "back": "A text representation that counts word frequencies while ignoring word order; effective for classification despite its simplicity."
+    },
+    {
+      "front": "Why is text normalization necessary?",
+      "back": "Raw text has inconsistent casing, punctuation, and encodings; normalization ensures consistent input so the model learns generalizable patterns."
+    },
+    {
+      "front": "What does 'data-driven NLP' mean?",
+      "back": "Models learn linguistic patterns from statistical regularities in large corpora rather than from hand-coded linguistic rules."
+    },
+    {
+      "front": "What is the NLP pipeline's first step?",
+      "back": "Corpus collection — gathering a large, representative body of text appropriate for the target task."
+    },
+    {
+      "front": "Why does bag-of-words fail for some NLP tasks?",
+      "back": "It discards word order, so 'dog bites man' and 'man bites dog' are identical representations — word order carries meaning bag-of-words cannot capture."
+    }
+  ],
+
+  "co:Philosophy_of_Mind:college": {
+    "title": "Philosophy of Mind",
+    "tagline": "The hardest question in science isn't about the universe — it's about why anything is experienced at all.",
+    "emoji": "🧠",
+    "estimatedHours": 12,
+    "prerequisiteKnowledge": "none",
+    "modules": [
+      {
+        "id": "module_1",
+        "title": "The Mind-Body Problem",
+        "overview": "Confront the oldest and most stubborn puzzle in philosophy: how does matter produce experience?",
+        "lessons": [
+          { "id": "lesson_1_1", "title": "The Mind-Body Problem", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_1_2", "title": "Descartes and Substance Dualism", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_1_3", "title": "Why Dualism Fails: The Interaction Problem", "durationMins": 8, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_2",
+        "title": "Materialist Theories of Mind",
+        "overview": "Explore the major attempts to explain the mind entirely in physical terms.",
+        "lessons": [
+          { "id": "lesson_2_1", "title": "Behaviorism: Minds Without Inner States", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_2_2", "title": "Identity Theory: Mind = Brain States", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_2_3", "title": "Functionalism and Multiple Realizability", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_2_4", "title": "Eliminative Materialism", "durationMins": 8, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_3",
+        "title": "Consciousness and the Hard Problem",
+        "overview": "Understand why explaining subjective experience is philosophically distinct from all other scientific problems.",
+        "lessons": [
+          { "id": "lesson_3_1", "title": "Qualia: The Redness of Red", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_3_2", "title": "Chalmers's Hard Problem of Consciousness", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_3_3", "title": "Zombie Arguments and Logical Possibility", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_3_4", "title": "Mary's Room: The Knowledge Argument", "durationMins": 9, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_4",
+        "title": "Intentionality and Mental Content",
+        "overview": "Investigate what it means for mental states to be 'about' things in the world.",
+        "lessons": [
+          { "id": "lesson_4_1", "title": "What Is Intentionality?", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_4_2", "title": "Searle's Chinese Room Argument", "durationMins": 10, "type": "example" },
+          { "id": "lesson_4_3", "title": "Naturalistic Theories of Content", "durationMins": 9, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_5",
+        "title": "Perception, Self, and Personal Identity",
+        "overview": "Examine how the mind constructs a self and what makes you the same person over time.",
+        "lessons": [
+          { "id": "lesson_5_1", "title": "The Construction of Perception", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_5_2", "title": "Personal Identity: Psychological vs. Physical Continuity", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_5_3", "title": "The Extended Mind Thesis", "durationMins": 9, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_6",
+        "title": "Machine Minds and AI Consciousness",
+        "overview": "Apply philosophy of mind to artificial intelligence: can machines genuinely think or feel?",
+        "lessons": [
+          { "id": "lesson_6_1", "title": "The Turing Test and Its Limits", "durationMins": 8, "type": "example" },
+          { "id": "lesson_6_2", "title": "Strong vs. Weak AI", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_6_3", "title": "Does Consciousness Require Biology?", "durationMins": 10, "type": "concept" }
+        ]
+      }
+    ]
+  },
+
+  "lc:Philosophy_of_Mind:The_Mind-Body_Problem:college": {
+    "title": "The Mind-Body Problem",
+    "hook": "You can describe every neuron firing in a brain during a moment of grief, and still have said nothing about what grief feels like — this gap is the mind-body problem, and no one has solved it.",
+    "sections": [
+      {
+        "heading": "The Problem Stated Precisely",
+        "body": "The mind-body problem asks how mental states — thoughts, experiences, desires, emotions — relate to physical states — neurons, synapses, electrochemical gradients. There are two apparently obvious facts that are hard to reconcile. First, mental states seem to causally affect the physical world (your decision to raise your arm actually raises your arm). Second, our best science describes the physical world as causally closed — every physical event has a sufficient physical cause. How can mental states do causal work if physics is already complete?",
+        "type": "concept"
+      },
+      {
+        "heading": "Descartes and the Dualist Intuition",
+        "body": "René Descartes famously argued that mind and body are two fundamentally distinct substances: res cogitans (thinking substance, non-spatial, private) and res extensa (extended substance, spatial, public). This substance dualism matches strong everyday intuitions — your thoughts feel utterly different from rocks and neurons. But it immediately generates the interaction problem: if mind and body are ontologically distinct, how does your will move your body? Descartes's own answer (the pineal gland as meeting point) was never convincing.",
+        "type": "concept"
+      },
+      {
+        "heading": "Analogy: Software and Hardware",
+        "body": "A popular modern analogy frames minds as software running on neural hardware. Just as the same program can run on different computers (multiple realizability), the same mental state might be realized by different physical substrates — perhaps biological neurons, perhaps silicon. This functionalist analogy is attractive but faces a serious objection: software has no inner experience. Running Microsoft Word doesn't feel like anything. The analogy may illuminate the functional organization of mind while leaving the experiential dimension entirely unexplained.",
+        "type": "analogy"
+      },
+      {
+        "heading": "The Landscape of Solutions",
+        "body": "Philosophers have proposed four main families of answers: (1) Substance dualism — mind and body are distinct substances (Descartes). (2) Property dualism — there is only one substance but it has both physical and irreducibly mental properties (Chalmers). (3) Physicalism or materialism — mental states are identical to, or realized by, physical states; nothing non-physical exists (most contemporary philosophers). (4) Idealism — only mind exists; the physical world is a mental construction (Berkeley). Each position buys something and pays a cost.",
+        "type": "example"
+      }
+    ],
+    "keyPoints": [
+      "The mind-body problem: how do subjective mental states relate to objective physical states?",
+      "Descartes's substance dualism is intuitive but generates the unsolved interaction problem.",
+      "Physicalism (mental states = physical states) is the dominant view in contemporary philosophy of mind.",
+      "Chalmers distinguishes the 'easy problems' (functional explanation) from the 'hard problem' (explaining subjective experience)."
+    ],
+    "checkIn": {
+      "question": "What is the interaction problem for substance dualism?",
+      "answer": "If mind and body are ontologically distinct substances, it is unclear how they can causally interact — how a purely non-physical thought could move a purely physical body, or how physical events could produce non-physical experiences."
+    }
+  },
+
+  "lf:Philosophy_of_Mind:The_Mind-Body_Problem:college": [
+    {
+      "front": "What is the mind-body problem?",
+      "back": "The question of how mental states (experiences, thoughts) relate to physical states (neurons, brain processes)."
+    },
+    {
+      "front": "What did Descartes mean by substance dualism?",
+      "back": "Mind (res cogitans) and body (res extensa) are two fundamentally distinct, non-reducible substances."
+    },
+    {
+      "front": "What is the interaction problem?",
+      "back": "If mind and body are distinct substances, it is unclear how they causally interact — how thought moves matter."
+    },
+    {
+      "front": "What is physicalism about the mind?",
+      "back": "The view that mental states are identical to or fully realized by physical states; nothing non-physical exists."
+    },
+    {
+      "front": "What is property dualism?",
+      "back": "One substance exists but has both physical properties and irreducibly mental properties (e.g., qualia)."
+    },
+    {
+      "front": "Chalmers's 'hard problem' vs. 'easy problems'?",
+      "back": "Easy problems explain cognitive functions (memory, attention). The hard problem explains why functions are accompanied by subjective experience."
+    },
+    {
+      "front": "What is multiple realizability and why does it matter?",
+      "back": "The same mental state can be implemented in different physical substrates, supporting functionalism over strict identity theory."
+    }
+  ],
+
+  "co:Ethics:college": {
+    "title": "Ethics",
+    "tagline": "Every decision you make has a moral structure — this course gives you the tools to see it clearly.",
+    "emoji": "⚖️",
+    "estimatedHours": 11,
+    "prerequisiteKnowledge": "none",
+    "modules": [
+      {
+        "id": "module_1",
+        "title": "What Ethics Is and Why It Matters",
+        "overview": "Distinguish ethics from mere custom, law, and self-interest — and understand why it demands its own discipline.",
+        "lessons": [
+          { "id": "lesson_1_1", "title": "What Is Ethics and Why It Matters", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_1_2", "title": "Moral Relativism vs. Moral Realism", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_1_3", "title": "Metaethics: What Kind of Thing Is a Moral Claim?", "durationMins": 9, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_2",
+        "title": "Consequentialism",
+        "overview": "Evaluate actions by their outcomes — and discover the theory's surprising reach and surprising problems.",
+        "lessons": [
+          { "id": "lesson_2_1", "title": "Utilitarianism: Greatest Good for the Greatest Number", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_2_2", "title": "Peter Singer and Effective Altruism", "durationMins": 9, "type": "example" },
+          { "id": "lesson_2_3", "title": "The Demandingness Objection", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_2_4", "title": "Rule Consequentialism", "durationMins": 8, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_3",
+        "title": "Deontology",
+        "overview": "Discover a tradition where certain acts are wrong regardless of consequences.",
+        "lessons": [
+          { "id": "lesson_3_1", "title": "Kant's Categorical Imperative", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_3_2", "title": "Duties, Rights, and Constraints", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_3_3", "title": "The Trolley Problem and Its Variants", "durationMins": 9, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_4",
+        "title": "Virtue Ethics",
+        "overview": "Shift focus from rules and outcomes to character: what kind of person should you be?",
+        "lessons": [
+          { "id": "lesson_4_1", "title": "Aristotle's Eudaimonia and the Virtues", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_4_2", "title": "Moral Education and Habituation", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_4_3", "title": "Contemporary Virtue Ethics", "durationMins": 9, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_5",
+        "title": "Justice and Political Ethics",
+        "overview": "Apply ethical theory to questions of fair social arrangements, distribution, and rights.",
+        "lessons": [
+          { "id": "lesson_5_1", "title": "Rawls's Veil of Ignorance", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_5_2", "title": "Libertarianism and the Minimal State", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_5_3", "title": "Global Justice and Our Obligations to the Poor", "durationMins": 9, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_6",
+        "title": "Applied Ethics: Hard Cases",
+        "overview": "Test your ethical frameworks against real controversies in medicine, technology, and environment.",
+        "lessons": [
+          { "id": "lesson_6_1", "title": "AI Ethics: Accountability, Bias, and Autonomy", "durationMins": 10, "type": "example" },
+          { "id": "lesson_6_2", "title": "Bioethics: Consent, Enhancement, and Life's End", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_6_3", "title": "Environmental Ethics and Future Generations", "durationMins": 9, "type": "concept" }
+        ]
+      }
+    ]
+  },
+
+  "lc:Ethics:What_Is_Ethics_and_Why_It:college": {
+    "title": "What Is Ethics and Why It Matters",
+    "hook": "Every society has laws and customs, but history is full of legal, customary actions that were morally monstrous — which means ethics cannot simply be whatever society accepts.",
+    "sections": [
+      {
+        "heading": "Ethics Defined: Systematic Moral Reasoning",
+        "body": "Ethics is the branch of philosophy concerned with what is right, wrong, good, and bad — and how we can reason about these questions systematically. It is distinguished from mere custom (what people happen to do) and from law (what the state enforces). Moral philosophers since Socrates have argued that neither custom nor law is sufficient: history is full of legal injustices and widespread immoral practices. Ethics asks what we should do, not merely what we do or what we're permitted to do.",
+        "type": "concept"
+      },
+      {
+        "heading": "Normative vs. Metaethics",
+        "body": "Normative ethics asks which actions are right: Should you lie to protect someone? Are all lives equally valuable? It produces practical guidance. Metaethics asks a prior question: what kind of thing is a moral claim? Are moral statements true or false in the way factual statements are? Are they expressions of emotion? Are they prescriptions? This distinction matters because if moral claims aren't objectively true, the project of systematic ethics looks very different. Metaethics is the philosophical foundation on which normative theories rest.",
+        "type": "concept"
+      },
+      {
+        "heading": "Analogy: Ethics as a Map, Not a GPS",
+        "body": "A GPS tells you exactly what to do at every turn. Ethics is more like a map — it gives you the terrain, the landmarks, and the principles of navigation, but you still have to make judgment calls in specific situations. The great ethical frameworks (consequentialism, deontology, virtue ethics) are not algorithms for generating right answers; they are systematic frameworks that illuminate morally relevant features of situations. Expert ethical judgment combines framework knowledge with practical wisdom.",
+        "type": "analogy"
+      },
+      {
+        "heading": "Why Ethics Is Inescapable",
+        "body": "Even people who claim to 'reject ethics' are making ethical claims — that philosophical ethics is a waste of time, that their own intuitions are trustworthy, or that self-interest justifies their actions. Peter Singer argues in Practical Ethics that once we engage in moral reasoning at all, we are committed to principles that apply beyond ourselves. The question is not whether to have ethical commitments but whether those commitments are examined and consistent. Unexamined moral assumptions are not thereby absent — they are just invisible.",
+        "type": "example"
+      }
+    ],
+    "keyPoints": [
+      "Ethics is distinct from custom and law — it asks what we should do, not what we do or are permitted to do.",
+      "Normative ethics produces practical guidance; metaethics examines the nature of moral claims themselves.",
+      "Major normative frameworks: consequentialism (outcomes), deontology (duties), virtue ethics (character).",
+      "Refusing to do ethics is itself an ethical stance — unexamined moral assumptions are still assumptions."
+    ],
+    "checkIn": {
+      "question": "Why can't ethics simply be defined as 'whatever society accepts'?",
+      "answer": "Because history contains examples of widely accepted, legal practices that are now recognized as deeply wrong (slavery, denial of women's rights). If ethics were merely social consensus, we would have no principled basis to criticize past or present injustices."
+    }
+  },
+
+  "lf:Ethics:What_Is_Ethics_and_Why_It:college": [
+    {
+      "front": "How is ethics distinct from law and custom?",
+      "back": "Ethics asks what we should do; law prescribes what is permitted; custom describes what people happen to do. They frequently diverge."
+    },
+    {
+      "front": "What is the difference between normative ethics and metaethics?",
+      "back": "Normative ethics determines which actions are right; metaethics examines what kind of thing moral claims are (objective, subjective, etc.)."
+    },
+    {
+      "front": "Name the three major normative ethical frameworks.",
+      "back": "Consequentialism (judge by outcomes), deontology (judge by duties/rules), and virtue ethics (judge by character)."
+    },
+    {
+      "front": "What is moral relativism?",
+      "back": "The view that moral claims are true only relative to a culture or individual — there are no universal moral facts."
+    },
+    {
+      "front": "What does Peter Singer argue about moral reasoning?",
+      "back": "Engaging in moral reasoning at all commits us to principles extending beyond self-interest, making consistent, impartial reasoning obligatory."
+    },
+    {
+      "front": "What is metaethical realism?",
+      "back": "The view that moral claims are objectively true or false, independent of what any individual or society believes."
+    },
+    {
+      "front": "Why can't we avoid ethics by ignoring it?",
+      "back": "Refusing to reason ethically is itself an ethical position — all action is governed by some moral assumptions, examined or not."
+    }
+  ],
+
+  "co:Discrete_Mathematics:college": {
+    "title": "Discrete Mathematics",
+    "tagline": "Every algorithm, cryptographic protocol, and data structure you'll ever use is built on the foundations you'll learn here.",
+    "emoji": "🔢",
+    "estimatedHours": 14,
+    "prerequisiteKnowledge": "basic",
+    "modules": [
+      {
+        "id": "module_1",
+        "title": "Logic and Proof",
+        "overview": "Build the bedrock of mathematical reasoning: formal logic, valid argument forms, and proof techniques.",
+        "lessons": [
+          { "id": "lesson_1_1", "title": "Logic and Propositions", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_1_2", "title": "Predicate Logic and Quantifiers", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_1_3", "title": "Direct and Contrapositive Proofs", "durationMins": 9, "type": "practice" },
+          { "id": "lesson_1_4", "title": "Proof by Contradiction", "durationMins": 9, "type": "practice" }
+        ]
+      },
+      {
+        "id": "module_2",
+        "title": "Sets, Functions, and Relations",
+        "overview": "Understand the mathematical objects that underpin databases, type systems, and formal semantics.",
+        "lessons": [
+          { "id": "lesson_2_1", "title": "Set Operations and Venn Diagrams", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_2_2", "title": "Functions: Injections, Surjections, Bijections", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_2_3", "title": "Relations and Equivalence Classes", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_2_4", "title": "Cardinality and Countability", "durationMins": 10, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_3",
+        "title": "Induction and Recursion",
+        "overview": "Master the technique that proves infinite families of facts in a finite number of steps.",
+        "lessons": [
+          { "id": "lesson_3_1", "title": "Mathematical Induction", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_3_2", "title": "Strong Induction and Well-Ordering", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_3_3", "title": "Structural Induction on Trees", "durationMins": 9, "type": "practice" },
+          { "id": "lesson_3_4", "title": "Recursive Definitions and Recurrences", "durationMins": 10, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_4",
+        "title": "Combinatorics and Counting",
+        "overview": "Count complex arrangements rigorously — the basis of probability and algorithm analysis.",
+        "lessons": [
+          { "id": "lesson_4_1", "title": "The Multiplication and Addition Principles", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_4_2", "title": "Permutations and Combinations", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_4_3", "title": "The Pigeonhole Principle", "durationMins": 8, "type": "example" },
+          { "id": "lesson_4_4", "title": "Inclusion-Exclusion Principle", "durationMins": 9, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_5",
+        "title": "Graph Theory",
+        "overview": "Study the structures that model networks, dependencies, and social connections.",
+        "lessons": [
+          { "id": "lesson_5_1", "title": "Graphs: Vertices, Edges, and Degrees", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_5_2", "title": "Paths, Cycles, and Connectivity", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_5_3", "title": "Trees and Spanning Trees", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_5_4", "title": "Graph Coloring and Planarity", "durationMins": 9, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_6",
+        "title": "Number Theory and Cryptography",
+        "overview": "Connect ancient theorems about integers to the protocols that secure the modern internet.",
+        "lessons": [
+          { "id": "lesson_6_1", "title": "Divisibility and the GCD", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_6_2", "title": "Modular Arithmetic", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_6_3", "title": "Fermat's Little Theorem and Euler's Theorem", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_6_4", "title": "RSA Encryption: The Math Behind HTTPS", "durationMins": 11, "type": "example" }
+        ]
+      }
+    ]
+  },
+
+  "lc:Discrete_Mathematics:Logic_and_Propositions:college": {
+    "title": "Logic and Propositions",
+    "hook": "Every time a compiler evaluates an if-statement, a judge weighs evidence, or a search engine ranks a result, the same formal logic you're about to learn is running underneath.",
+    "sections": [
+      {
+        "heading": "Propositions and Truth Values",
+        "body": "A proposition is a declarative statement that is either true or false — never both, never neither. '7 is prime' is a proposition (true). 'Close the door' is not (it's a command). Propositional logic studies how propositions combine. The basic connectives are: negation (¬, 'not'), conjunction (∧, 'and'), disjunction (∨, 'or'), and conditional (→, 'if...then'). Truth tables define exactly what each connective means: a conjunction P ∧ Q is true only when both P and Q are true.",
+        "type": "concept"
+      },
+      {
+        "heading": "Logical Equivalence and Tautologies",
+        "body": "Two propositions are logically equivalent if they have identical truth tables. De Morgan's Laws are the most important equivalences: ¬(P ∧ Q) ≡ (¬P ∨ ¬Q), and ¬(P ∨ Q) ≡ (¬P ∧ ¬Q). These show that negating a conjunction flips it into a disjunction of negations. A tautology is a proposition that is true under every possible assignment of truth values — for example, P ∨ ¬P ('P or not-P') is always true. Tautologies are the axioms from which logical proofs are built.",
+        "type": "concept"
+      },
+      {
+        "heading": "Analogy: Logic Gates in Hardware",
+        "body": "Every logical connective has a direct hardware analogue in digital circuits. An AND gate outputs 1 (true) only when both inputs are 1, exactly mirroring ∧. An OR gate mirrors ∨. A NOT gate mirrors ¬. A NAND gate (not-and) computes ¬(P ∧ Q). Remarkably, NAND gates alone can implement any logical function — they are functionally complete. This isomorphism means that propositional logic is not merely abstract philosophy; it is the physical substrate of every computation ever performed.",
+        "type": "analogy"
+      },
+      {
+        "heading": "Conditional Statements and Their Contrapositives",
+        "body": "The conditional P → Q ('if P then Q') is perhaps the most important connective in mathematics. It is false only when P is true and Q is false — if the premise holds and the conclusion fails, the implication is broken. Crucially, P → Q is logically equivalent to its contrapositive ¬Q → ¬P. Many mathematical proofs are easier when reformulated as contrapositives: instead of proving 'if P then Q', you prove 'if not-Q then not-P'. Rosen's Discrete Mathematics textbook builds entire proof chapters on this equivalence.",
+        "type": "example"
+      }
+    ],
+    "keyPoints": [
+      "A proposition is a true-or-false declarative statement; propositional logic studies how they combine via connectives.",
+      "Truth tables define connective meaning precisely; De Morgan's Laws relate negation, conjunction, and disjunction.",
+      "A tautology is true under all truth assignments; a contradiction is false under all — tautologies ground logical proof.",
+      "P → Q is equivalent to its contrapositive ¬Q → ¬P, enabling proof by contrapositive."
+    ],
+    "checkIn": {
+      "question": "Under what condition is the conditional statement P → Q false?",
+      "answer": "P → Q is false only when P is true and Q is false. In all other cases (P false, or Q true) the conditional is true. This models the idea that a true premise obligates a true conclusion."
+    }
+  },
+
+  "lf:Discrete_Mathematics:Logic_and_Propositions:college": [
+    {
+      "front": "What is a proposition in logic?",
+      "back": "A declarative statement that is either true or false — commands, questions, and paradoxes are not propositions."
+    },
+    {
+      "front": "When is P ∧ Q (P and Q) true?",
+      "back": "Only when both P and Q are individually true; if either is false, the conjunction is false."
+    },
+    {
+      "front": "State De Morgan's first law.",
+      "back": "¬(P ∧ Q) ≡ (¬P ∨ ¬Q): negating a conjunction equals the disjunction of the negations."
+    },
+    {
+      "front": "When is P → Q (if P then Q) false?",
+      "back": "Only when P is true and Q is false — a true premise that leads to a false conclusion breaks the implication."
+    },
+    {
+      "front": "What is the contrapositive of P → Q?",
+      "back": "¬Q → ¬P; it is logically equivalent to the original, making it useful for alternative proof strategies."
+    },
+    {
+      "front": "What is a tautology?",
+      "back": "A proposition that is true under every possible truth assignment — for example, P ∨ ¬P."
+    },
+    {
+      "front": "How do logic gates relate to propositional connectives?",
+      "back": "AND/OR/NOT gates implement ∧/∨/¬ exactly; NAND gates alone are functionally complete — they can express any connective."
+    },
+    {
+      "front": "What does 'logically equivalent' mean?",
+      "back": "Two propositions are logically equivalent when they have identical truth values for every possible assignment of their variables."
+    }
+  ],
+
+  "co:Game_Theory:college": {
+    "title": "Game Theory",
+    "tagline": "From nuclear standoffs to Uber surge pricing, the mathematics of strategic interaction explains decisions that seem irrational until you see them clearly.",
+    "emoji": "♟️",
+    "estimatedHours": 12,
+    "prerequisiteKnowledge": "basic",
+    "modules": [
+      {
+        "id": "module_1",
+        "title": "The Language of Games",
+        "overview": "Learn the formal vocabulary that lets you model any strategic situation precisely.",
+        "lessons": [
+          { "id": "lesson_1_1", "title": "What Is a Game?", "durationMins": 8, "type": "concept" },
+          { "id": "lesson_1_2", "title": "Normal Form and Extensive Form", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_1_3", "title": "Dominant Strategies and Iterated Deletion", "durationMins": 10, "type": "practice" }
+        ]
+      },
+      {
+        "id": "module_2",
+        "title": "Nash Equilibrium",
+        "overview": "Understand the central solution concept of game theory and why rational players reach it.",
+        "lessons": [
+          { "id": "lesson_2_1", "title": "Nash Equilibrium Defined", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_2_2", "title": "Finding Nash Equilibria in 2×2 Games", "durationMins": 10, "type": "practice" },
+          { "id": "lesson_2_3", "title": "Mixed Strategy Equilibria", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_2_4", "title": "Nash's Existence Theorem", "durationMins": 9, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_3",
+        "title": "Classic Games and Their Lessons",
+        "overview": "Analyze the games that define game theory: Prisoner's Dilemma, Stag Hunt, Battle of the Sexes.",
+        "lessons": [
+          { "id": "lesson_3_1", "title": "The Prisoner's Dilemma", "durationMins": 9, "type": "example" },
+          { "id": "lesson_3_2", "title": "Coordination Games and Focal Points", "durationMins": 8, "type": "example" },
+          { "id": "lesson_3_3", "title": "Zero-Sum Games and Minimax", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_3_4", "title": "The Tragedy of the Commons", "durationMins": 9, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_4",
+        "title": "Dynamic Games and Backward Induction",
+        "overview": "Model sequential decisions and see how rational foresight shapes strategic behavior.",
+        "lessons": [
+          { "id": "lesson_4_1", "title": "Sequential Games and Game Trees", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_4_2", "title": "Backward Induction", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_4_3", "title": "Subgame Perfect Equilibrium", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_4_4", "title": "Credible Threats and Commitment", "durationMins": 9, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_5",
+        "title": "Repeated Games and Cooperation",
+        "overview": "Discover how repeated interaction enables cooperation that single-shot rationality destroys.",
+        "lessons": [
+          { "id": "lesson_5_1", "title": "Finitely vs. Infinitely Repeated Games", "durationMins": 9, "type": "concept" },
+          { "id": "lesson_5_2", "title": "Tit-for-Tat and the Folk Theorem", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_5_3", "title": "Evolutionary Game Theory", "durationMins": 10, "type": "concept" }
+        ]
+      },
+      {
+        "id": "module_6",
+        "title": "Incomplete Information Games",
+        "overview": "Extend game theory to settings where players don't know each other's payoffs or types.",
+        "lessons": [
+          { "id": "lesson_6_1", "title": "Bayesian Games and Types", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_6_2", "title": "Signaling Games and Costly Signals", "durationMins": 10, "type": "example" },
+          { "id": "lesson_6_3", "title": "Auctions as Bayesian Games", "durationMins": 10, "type": "example" }
+        ]
+      },
+      {
+        "id": "module_7",
+        "title": "Game Theory in the Real World",
+        "overview": "Apply game theory to economics, political science, biology, and algorithm design.",
+        "lessons": [
+          { "id": "lesson_7_1", "title": "Mechanism Design: Engineering Incentives", "durationMins": 10, "type": "concept" },
+          { "id": "lesson_7_2", "title": "Game Theory in Evolutionary Biology", "durationMins": 9, "type": "example" },
+          { "id": "lesson_7_3", "title": "Algorithmic Game Theory and Internet Economics", "durationMins": 10, "type": "concept" }
+        ]
+      }
+    ]
+  },
+
+  "lc:Game_Theory:What_Is_a_Game?:college": {
+    "title": "What Is a Game?",
+    "hook": "Two nuclear superpowers pointing missiles at each other, two baristas deciding whether to open competing shops, and two children dividing a cookie are all playing the same mathematical object — a game.",
+    "sections": [
+      {
+        "heading": "The Formal Definition of a Game",
+        "body": "In game theory, a game is a mathematical model of strategic interaction. It requires three elements: (1) Players — the decision-makers, assumed to be rational utility-maximizers. (2) Strategies — the complete plans of action available to each player, specifying what they'll do in every possible situation. (3) Payoffs — a utility function specifying the outcome each player receives for every combination of strategies chosen by all players. This triplet {players, strategies, payoffs} is sufficient to analyze an enormous range of human and animal interactions.",
+        "type": "concept"
+      },
+      {
+        "heading": "Rationality and Common Knowledge",
+        "body": "Game theory typically assumes players are rational: they choose strategies that maximize their expected payoffs given their beliefs about what others will do. Crucially, it often also assumes common knowledge of rationality — not only are all players rational, but all players know all players are rational, and all players know that all players know this, and so on infinitely. This seemingly extreme assumption generates sharp, testable predictions, even if it sometimes fails empirically. Departures from common knowledge rationality fuel behavioral game theory.",
+        "type": "concept"
+      },
+      {
+        "heading": "Analogy: Chess vs. Poker",
+        "body": "Chess is a perfect information game: both players see the full board at all times, and there is no randomness. Poker is an imperfect information game: players have private cards and must reason about hidden information. Game theory treats these as fundamentally different classes of problems. Most real-world strategic interactions resemble poker — you don't know your competitor's costs, your negotiating partner's reservation price, or your coworker's true preferences. The distinction between complete and incomplete information shapes which solution concepts apply.",
+        "type": "analogy"
+      },
+      {
+        "heading": "Why the Framework Is Powerful",
+        "body": "Osborne's Introduction to Game Theory shows that the same formal framework illuminates antitrust cases (firms deciding whether to collude), arms races (countries deciding military spending levels), and even biological evolution (animals deciding whether to fight or flee). The universality arises because these all share the same abstract structure: multiple agents making interdependent decisions where each cares about what the others choose. Once you see a strategic situation as a game, the mathematical toolkit of game theory immediately applies.",
+        "type": "example"
+      }
+    ],
+    "keyPoints": [
+      "A game is formally defined by three elements: players, strategies, and payoffs.",
+      "Rationality in game theory means choosing strategies that maximize expected payoff given beliefs about opponents.",
+      "Common knowledge of rationality is a strong assumption that underlies most classical solution concepts.",
+      "The game framework applies universally: economics, political science, biology, and computer science all use it."
+    ],
+    "checkIn": {
+      "question": "What is the difference between a strategy and an action in game theory?",
+      "answer": "An action is a single move at one decision point. A strategy is a complete contingent plan specifying what action to take at every possible decision point in the game — including situations that may not arise on the equilibrium path."
+    }
+  },
+
+  "lf:Game_Theory:What_Is_a_Game?:college": [
+    {
+      "front": "What three elements formally define a game?",
+      "back": "Players (decision-makers), strategies (complete action plans), and payoffs (utility outcomes for each strategy profile)."
+    },
+    {
+      "front": "What does 'rationality' mean in game theory?",
+      "back": "Each player chooses strategies that maximize their expected payoff given their beliefs about opponents' strategies."
+    },
+    {
+      "front": "What is common knowledge of rationality?",
+      "back": "Not just that all players are rational, but that all players know this, and know that all players know this, ad infinitum."
+    },
+    {
+      "front": "Strategy vs. action — what's the difference?",
+      "back": "An action is one move; a strategy is a complete contingent plan for every possible decision point in the game."
+    },
+    {
+      "front": "What distinguishes perfect information from imperfect information games?",
+      "back": "In perfect information games (chess), all players see the full history. In imperfect information games (poker), some information is hidden."
+    },
+    {
+      "front": "What is a payoff function?",
+      "back": "A function assigning a utility value to each player for every possible combination of strategies chosen by all players."
+    },
+    {
+      "front": "Name two real-world phenomena that game theory models.",
+      "back": "Arms races between nations, and firms deciding whether to collude on prices (antitrust economics)."
+    },
+    {
+      "front": "What is behavioral game theory?",
+      "back": "An empirical extension that relaxes rationality assumptions to model how real humans deviate from game-theoretic predictions."
+    }
+  ]
+}
