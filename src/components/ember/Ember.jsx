@@ -86,10 +86,10 @@ const MOOD_CONFIGS = {
 
 const SIZE_MAP = {
   xs: 32,
-  sm: 42,
-  md: 58,
-  lg: 84,
-  xl: 120,
+  sm: 44,
+  md: 62,
+  lg: 90,
+  xl: 128,
 };
 
 const ORBIT_SPARKS = [
@@ -186,7 +186,7 @@ export default function Ember({
         ))}
 
         <motion.path
-          d="M52 8C64 20 76 30 80 49c4 20-4 39-17 49-4 4-7 9-11 12-4-3-7-8-11-12C28 88 20 69 24 49 28 30 40 20 52 8Z"
+          d="M52 8C64 18 77 29 81 49c4 21-4 40-18 50-4 4-7 9-11 12-4-3-8-8-12-12C26 89 18 70 22 49 26 29 40 18 52 8Z"
           fill="url(#ember-shell-gradient)"
           filter="url(#ember-shadow)"
           animate={{ scaleX: [1, 1.015, 1], scaleY: [1, 1.02, 1] }}
@@ -210,6 +210,8 @@ export default function Ember({
           transition={{ duration: 4.4, times: [0, 0.77, 0.81, 1], repeat: Infinity, ease: 'easeInOut' }}
           style={{ transformOrigin: '52px 61px' }}
         >
+          <ellipse cx="44" cy="58.5" rx="8.5" ry="9.6" fill="rgba(255,255,255,0.26)" />
+          <ellipse cx="60" cy="58.5" rx="8.5" ry="9.6" fill="rgba(255,255,255,0.2)" />
           <ellipse
             cx="44"
             cy="58.5"

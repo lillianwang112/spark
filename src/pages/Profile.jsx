@@ -775,7 +775,7 @@ export default function Profile({ streakState }) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 0.06 }}
                 className="font-display text-[1.85rem] font-bold leading-tight mt-0.5"
-                style={{ color: '#FFF7EC' }}
+                style={{ color: '#2C2C2C' }}
               >
                 {user.name ? `${user.name}'s tree` : 'Your curiosity tree'}
               </motion.h1>
@@ -784,7 +784,7 @@ export default function Profile({ streakState }) {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.4, delay: 0.16 }}
                 className="font-body text-sm mt-1.5 leading-relaxed max-w-xs"
-                style={{ color: 'rgba(255,200,140,0.72)' }}
+                style={{ color: 'rgba(72,49,10,0.72)' }}
               >
                 {topDomains.length
                   ? `Pulling hardest toward ${topDomains.slice(0, 2).join(' and ')}`
