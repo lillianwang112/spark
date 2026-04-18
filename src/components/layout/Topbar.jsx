@@ -1,8 +1,8 @@
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import StreakFlame from '../common/StreakFlame.jsx';
 import ProgressRing from '../common/ProgressRing.jsx';
 import Ember from '../ember/Ember.jsx';
-void motion;
 
 export default function Topbar({
   userName,
@@ -16,6 +16,22 @@ export default function Topbar({
 }) {
   const isKids = ageGroup === 'little_explorer';
   const goalMet = sparksToday >= dailyGoal;
+
+  // Show "Goal met!" badge briefly when goal is first reached
+  const [showGoalBadge, setShowGoalBadge] = useState(false);
+  const prevGoalMetRef = useState(false);
+  useEffect(() => {
+    const wasGoalMet = prevGoalMetRef[0];
+    if (goalMet && !wasGoalMet) {
+      setShowGoalBadge(true);
+      const t = setTimeout(() => setShowGoalBadge(false), 2800);
+      prevGoalMetRef[0] = true;
+      return () => clearTimeout(t);
+    }
+    if (!goalMet) {
+      prevGoalMetRef[0] = false;
+    }
+  }, [goalMet, prevGoalMetRef]);
 
   return (
     <motion.header
@@ -60,9 +76,41 @@ export default function Topbar({
               {sparksToday}
             </span>
           </ProgressRing>
-          <span className="hidden sm:inline text-[10px] font-mono uppercase tracking-[0.14em] text-text-muted">
-            {goalMet ? 'Day won' : `${dailyGoal - sparksToday} to go`}
-          </span>
+
+          <div className="flex flex-col gap-0.5">
+            <span className="hidden sm:inline text-[10px] font-mono uppercase tracking-[0.14em] text-text-muted">
+              {goalMet ? 'Day won' : `${dailyGoal - sparksToday} to go`}
+            </span>
+            {/* Daily goal progress bar */}
+            {dailyGoal > 0 && (
+              <div className="relative h-1 w-16 sm:w-20 rounded-full bg-[rgba(42,42,42,0.08)] overflow-hidden">
+                <motion.div
+                  className="absolute inset-y-0 left-0 rounded-full"
+                  style={{ background: 'linear-gradient(90deg, #FFD166, #FF6B35)' }}
+                  initial={{ width: 0 }}
+                  animate={{ width: `${Math.min(100, (sparksToday / dailyGoal) * 100)}%` }}
+                  transition={{ duration: 0.8, ease: 'easeOut' }}
+                />
+              </div>
+            )}
+          </div>
+
+          {/* Goal-met celebration badge */}
+          <AnimatePresence>
+            {showGoalBadge && (
+              <motion.span
+                key="goal-badge"
+                initial={{ opacity: 0, scale: 0.7, y: 4 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.8, y: -4 }}
+                transition={{ type: 'spring', stiffness: 380, damping: 22 }}
+                className="absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full px-2.5 py-1 text-[10px] font-mono font-semibold shadow-md"
+                style={{ background: 'linear-gradient(135deg, #FFD166, #FF6B35)', color: '#fff' }}
+              >
+                ✓ Goal met!
+              </motion.span>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* Streak pill */}

@@ -8,6 +8,7 @@ import LivingTreeViz from '../components/profile/LivingTreeViz.jsx';
 import StreakFlame from '../components/common/StreakFlame.jsx';
 import ProgressRing from '../components/common/ProgressRing.jsx';
 import { useUserContext } from '../hooks/useUserContext.jsx';
+import { deriveBranchState } from '../hooks/useBranchState.js';
 import { DOMAIN_COLORS, DOMAIN_EMOJIS, BADGE_SYSTEM, TIER_STYLES } from '../utils/constants.js';
 import StudyCalendar from '../components/profile/StudyCalendar.jsx';
 import { loadDemoProfile, clearDemoProfile } from '../data/demoProfile.js';
@@ -824,6 +825,43 @@ export default function Profile({ streakState }) {
             {/* The tree SVG */}
             <LivingTreeViz tracks={tracks} className="mt-2" />
           </motion.div>
+
+          {/* Tend your tree prompt — shown when branches need attention */}
+          {(() => {
+            const thirsty = tracks.filter(t => {
+              const s = deriveBranchState(t);
+              return s === 'thirsty' || s === 'wilting';
+            });
+            if (thirsty.length === 0) return null;
+            return (
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="rounded-[22px] p-4 flex items-center gap-3"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(255,209,102,0.14), rgba(255,107,53,0.08))',
+                  border: '1px solid rgba(255,166,43,0.28)',
+                }}
+              >
+                <span className="text-2xl">💧</span>
+                <div className="flex-1 min-w-0">
+                  <p className="font-display text-sm font-semibold text-text-primary">
+                    {thirsty.length} branch{thirsty.length !== 1 ? 'es need' : ' needs'} water
+                  </p>
+                  <p className="font-body text-xs text-text-secondary">
+                    {thirsty[0].label}{thirsty.length > 1 ? ` and ${thirsty.length - 1} more` : ''} — a quick review keeps them alive
+                  </p>
+                </div>
+                <button
+                  onClick={() => {/* Switch to Tracks tab — informational */}}
+                  className="flex-shrink-0 text-xs font-mono uppercase tracking-[0.12em] font-semibold px-3 py-1.5 rounded-full"
+                  style={{ background: 'rgba(255,166,43,0.2)', color: '#E6950A' }}
+                >
+                  Tend →
+                </button>
+              </motion.div>
+            );
+          })()}
 
           {/* Streak + goal */}
           <motion.div

@@ -314,3 +314,37 @@ Rules:
 
   return { prompt, systemPrompt };
 }
+
+// ── TYPE 10: Major Decision Layer ──
+export function majorDecisionPrompt({ topDomains, majorField, ageGroup, personality }) {
+  const systemPrompt = getSystemPrompt(personality, ageGroup);
+
+  const fieldContext = majorField ? `They were specifically exploring "${majorField}".` : 'They were exploring college majors generally.';
+
+  const prompt = `A high school student just finished a round of major exploration discovery cards. ${fieldContext}
+Their top domains by engagement: ${(topDomains || []).join(', ')}.
+
+Based on these signals, generate a personalized college major recommendation.
+Return ONLY valid JSON (no markdown):
+{
+  "insight": "2-3 sentences about what their picks reveal about them as a learner — specific, honest, not generic",
+  "fields": [
+    {
+      "name": "field name",
+      "emoji": "single emoji",
+      "match": "strong|moderate",
+      "why": "1-2 sentences about why this fits based on their specific picks",
+      "tradeoff": "1 honest sentence about what's hard about this field"
+    }
+  ]
+}
+
+Rules:
+- Generate exactly 3 fields
+- First field should be the strongest match
+- Be honest about trade-offs — not everything is roses
+- Reference their actual domain picks, not just generic advice
+- Match language difficulty to age group: ${ageGroup}`;
+
+  return { prompt, systemPrompt };
+}

@@ -109,7 +109,7 @@ export default function PruningCeremony({ track, open, onConfirm, onCancel }) {
                 <Ember mood="encouraging" size="lg" glowIntensity={0.55} />
                 <p className="font-display text-xl text-text-primary">Good call.</p>
                 <p className="font-body text-sm text-text-secondary text-center max-w-xs">
-                  Let's put that energy somewhere that matters.
+                  Good call. Let's put that energy somewhere that really matters to you.
                 </p>
                 <div className="pointer-events-none relative h-40 w-full overflow-hidden">
                   {leaves.map((l) => (
@@ -130,12 +130,43 @@ export default function PruningCeremony({ track, open, onConfirm, onCancel }) {
               </div>
             )}
 
+            {/* Full-screen falling leaves overlay during pruning */}
+            <AnimatePresence>
+              {phase === 'falling' && (
+                <div className="fixed inset-0 pointer-events-none z-[200]">
+                  {Array.from({ length: 10 }).map((_, i) => (
+                    <motion.div
+                      key={i}
+                      className="fixed pointer-events-none text-lg select-none"
+                      style={{ left: `${10 + i * 9}%`, top: -30 }}
+                      initial={{ y: 0, rotate: 0, opacity: 1 }}
+                      animate={{
+                        y: '110vh',
+                        rotate: 360 * (i % 2 === 0 ? 1 : -1),
+                        opacity: 0,
+                      }}
+                      transition={{
+                        duration: 1.4 + (i * 0.07),
+                        delay: i * 0.08,
+                        ease: [0.2, 0, 0.8, 1],
+                      }}
+                    >
+                      {['🍂', '🍁', '🌿', '🍃'][i % 4]}
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+            </AnimatePresence>
+
             {phase === 'done' && (
               <div className="flex flex-col items-center gap-3 text-center">
                 <Ember mood="proud" size="lg" glowIntensity={0.6} />
                 <p className="font-display text-xl text-text-primary">Archived.</p>
-                <p className="font-body text-sm text-text-secondary max-w-xs">
-                  Grow somewhere else instead.
+                <p className="font-body text-sm text-text-secondary max-w-xs leading-relaxed">
+                  Good call. Let's put that energy somewhere that really matters to you.
+                </p>
+                <p className="font-body text-xs text-text-muted max-w-xs leading-relaxed mt-1 border-t border-[rgba(42,42,42,0.08)] pt-2">
+                  This branch is archived, not deleted. You can revive it anytime from your curiosity history.
                 </p>
               </div>
             )}

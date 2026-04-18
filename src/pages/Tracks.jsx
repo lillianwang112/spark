@@ -395,6 +395,77 @@ function TrackCard({ track, ageGroup, onExplain, onReview, onRemove, onToggleMod
   );
 }
 
+// ── Goal branch section ──
+function GoalBranchSection({ user }) {
+  void user;
+  const [goal, setGoal] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('spark_learning_goal') || 'null'); } catch { return null; }
+  });
+  const [showForm, setShowForm] = useState(false);
+  const [input, setInput] = useState('');
+
+  const saveGoal = () => {
+    if (!input.trim()) return;
+    const g = { text: input.trim(), createdAt: new Date().toISOString(), mode: 'exploring' };
+    localStorage.setItem('spark_learning_goal', JSON.stringify(g));
+    setGoal(g);
+    setInput('');
+    setShowForm(false);
+  };
+
+  const clearGoal = () => {
+    localStorage.removeItem('spark_learning_goal');
+    setGoal(null);
+  };
+
+  if (goal) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="rounded-[20px] px-4 py-3 flex items-center justify-between gap-3"
+        style={{ background: 'linear-gradient(135deg, rgba(255,209,102,0.15), rgba(255,107,53,0.08))', border: '1.5px dashed rgba(255,166,43,0.4)' }}
+      >
+        <div>
+          <p className="text-[10px] font-mono uppercase tracking-[0.14em] text-spark-ember">🎯 Current goal</p>
+          <p className="font-display text-sm font-semibold text-text-primary mt-0.5">{goal.text}</p>
+          <p className="text-[11px] font-body text-text-muted">Keep exploring to grow this branch</p>
+        </div>
+        <button onClick={clearGoal} className="text-xs text-text-muted hover:text-text-primary">✕</button>
+      </motion.div>
+    );
+  }
+
+  if (showForm) {
+    return (
+      <div className="rounded-[20px] bg-[rgba(255,255,255,0.7)] border border-[rgba(42,42,42,0.08)] px-4 py-3">
+        <p className="font-display text-sm font-semibold text-text-primary mb-2">What do you want to understand?</p>
+        <input
+          value={input}
+          onChange={e => setInput(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && saveGoal()}
+          placeholder="e.g. Understand quantum computing..."
+          autoFocus
+          className="w-full text-sm font-body bg-transparent outline-none border-b border-[rgba(42,42,42,0.12)] pb-1 mb-3 text-text-primary placeholder-text-muted"
+        />
+        <div className="flex gap-2">
+          <button onClick={saveGoal} disabled={!input.trim()} className="px-4 py-1.5 rounded-full bg-spark-ember text-white text-xs font-medium disabled:opacity-40">Set goal</button>
+          <button onClick={() => setShowForm(false)} className="px-4 py-1.5 rounded-full bg-[rgba(42,42,42,0.06)] text-text-muted text-xs">Cancel</button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <button
+      onClick={() => setShowForm(true)}
+      className="w-full flex items-center gap-2 px-4 py-3 rounded-[18px] bg-[rgba(42,42,42,0.04)] border border-dashed border-[rgba(42,42,42,0.12)] text-text-muted text-sm font-body hover:bg-[rgba(42,42,42,0.07)] transition-colors text-left"
+    >
+      <span>🎯</span> Set a learning goal...
+    </button>
+  );
+}
+
 export default function Tracks({ onSpark }) {
   const user = useUserContext();
   const [explainerTrack, setExplainerTrack] = useState(null);
@@ -429,6 +500,7 @@ export default function Tracks({ onSpark }) {
   const [isDrawing, setIsDrawing] = useState(false);
   const [writingStrokes, setWritingStrokes] = useState(0);
   const [writingMessage, setWritingMessage] = useState('');
+  const [trackFilter, setTrackFilter] = useState('all');
   const writingCanvasRef = useRef(null);
   const writingCtxRef = useRef(null);
   const userContextObj = buildUserContext(user);
@@ -448,6 +520,22 @@ export default function Tracks({ onSpark }) {
   const masteringTracks = tracksWithSRS.filter((t) => t.mode === 'mastering');
   const exploringTracks = tracksWithSRS.filter((t) => !t.mode || t.mode === 'exploring');
   const dueNow = getDueCards(masteringTracks);
+
+  // Sorted tracks for filtering (mastering first, then by date)
+  const sortedTracks = useMemo(() => {
+    const stateRank = { dormant: 0, wilting: 1, thirsty: 2, healthy: 3, flowering: 4 };
+    return [...tracksWithSRS].sort((a, b) => {
+      if (a.mode === 'mastering' && b.mode !== 'mastering') return -1;
+      if (b.mode === 'mastering' && a.mode !== 'mastering') return 1;
+      return stateRank[deriveBranchState(b)] - stateRank[deriveBranchState(a)];
+    });
+  }, [tracksWithSRS]);
+
+  const filteredTracks = useMemo(() => {
+    if (trackFilter === 'all') return sortedTracks;
+    if (trackFilter === 'mastering') return sortedTracks.filter(t => t.mode === 'mastering');
+    return sortedTracks.filter(t => deriveBranchState(t) === trackFilter);
+  }, [sortedTracks, trackFilter]);
   const careTracks = useMemo(
     () => tracksWithSRS.filter((track) =>
       [BRANCH_STATES.THIRSTY, BRANCH_STATES.WILTING, BRANCH_STATES.DORMANT].includes(deriveBranchState(track))
@@ -1255,52 +1343,48 @@ export default function Tracks({ onSpark }) {
                 )}
               </AnimatePresence>
 
-              {/* Mastering section */}
-              {masteringTracks.length > 0 && (
-                <section>
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="h-px flex-1 bg-[rgba(42,42,42,0.07)]" />
-                    <span className="text-[11px] font-mono uppercase tracking-[0.16em] text-text-muted px-2">
-                      🎯 Mastering · {masteringTracks.length}
-                    </span>
-                    <div className="h-px flex-1 bg-[rgba(42,42,42,0.07)]" />
-                  </div>
-                  <div className="space-y-3">
-                    <AnimatePresence>
-                      {masteringTracks.map((track) => (
-                        <TrackCard
-                          key={track.id}
-                          track={track}
-                          ageGroup={user.ageGroup}
-                          onExplain={setExplainerTrack}
-                          onReview={(t) => handleStartReview(t)}
-                          onRemove={handleRemove}
-                          onToggleMode={handleToggleMode}
-                          onConnect={handleConnect}
-                          onShare={handleShare}
-                          onTend={handleTendTrack}
-                          connectMode={!!connectSource}
-                          isConnectSource={connectSource?.id === track.id}
-                        />
-                      ))}
-                    </AnimatePresence>
-                  </div>
-                </section>
-              )}
+              {/* Goal + filter section */}
+              <GoalBranchSection user={user} />
 
-              {/* Exploring section */}
-              {exploringTracks.length > 0 && (
+              <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+                {[
+                  { id: 'all', label: 'All', emoji: '🌳' },
+                  { id: 'thirsty', label: 'Thirsty', emoji: '💧' },
+                  { id: 'wilting', label: 'Wilting', emoji: '🥀' },
+                  { id: 'mastering', label: 'Mastering', emoji: '🎯' },
+                  { id: 'flowering', label: 'Flowering', emoji: '🌸' },
+                  { id: 'dormant', label: 'Dormant', emoji: '🪵' },
+                ].map((f) => {
+                  const count = f.id === 'all' ? tracks.length
+                    : f.id === 'mastering' ? tracks.filter(t => t.mode === 'mastering').length
+                    : tracksWithSRS.filter(t => deriveBranchState(t) === f.id).length;
+                  if (count === 0 && f.id !== 'all') return null;
+                  return (
+                    <button
+                      key={f.id}
+                      onClick={() => setTrackFilter(f.id)}
+                      className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-body font-medium transition-all ${
+                        trackFilter === f.id
+                          ? 'bg-spark-ember text-white'
+                          : 'bg-[rgba(42,42,42,0.06)] text-text-secondary'
+                      }`}
+                    >
+                      {f.emoji} {f.label} {count > 0 && <span className="opacity-70">({count})</span>}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Filtered track list */}
+              {filteredTracks.length === 0 ? (
+                <p className="text-center font-body text-sm text-text-muted py-6">
+                  No tracks match this filter.
+                </p>
+              ) : (
                 <section>
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="h-px flex-1 bg-[rgba(42,42,42,0.07)]" />
-                    <span className="text-[11px] font-mono uppercase tracking-[0.16em] text-text-muted px-2">
-                      🏔 Exploring · {exploringTracks.length}
-                    </span>
-                    <div className="h-px flex-1 bg-[rgba(42,42,42,0.07)]" />
-                  </div>
                   <div className="space-y-3">
                     <AnimatePresence>
-                      {exploringTracks.map((track) => (
+                      {filteredTracks.map((track) => (
                         <TrackCard
                           key={track.id}
                           track={track}

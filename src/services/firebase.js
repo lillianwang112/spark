@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, doc, setDoc, getDoc, collection, getDocs } from 'firebase/firestore';
+import { getFirestore, doc, setDoc, getDoc, updateDoc, increment, collection, getDocs } from 'firebase/firestore';
 import {
   getAuth,
   signInAnonymously,
@@ -141,5 +141,31 @@ export async function setSharedAICache(docId, value) {
     });
   } catch {
     // non-critical
+  }
+}
+
+// ── Search curiosity counts — tracks how many users have searched a term ──
+export async function incrementSearchCount(term) {
+  if (!db) return;
+  const id = `search:${term.toLowerCase().trim().replace(/\s+/g, '_').slice(0, 80)}`;
+  try {
+    const ref = doc(db, 'searchCounts', id);
+    await updateDoc(ref, { count: increment(1) }).catch(async () => {
+      // Document doesn't exist yet — create it
+      await setDoc(ref, { term: term.toLowerCase().trim(), count: 1 });
+    });
+  } catch {
+    // non-critical
+  }
+}
+
+export async function getSearchCount(term) {
+  if (!db) return null;
+  const id = `search:${term.toLowerCase().trim().replace(/\s+/g, '_').slice(0, 80)}`;
+  try {
+    const snap = await getDoc(doc(db, 'searchCounts', id));
+    return snap.exists() ? snap.data().count : null;
+  } catch {
+    return null;
   }
 }

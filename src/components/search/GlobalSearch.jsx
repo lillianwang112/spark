@@ -1,7 +1,39 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AIService from '../../ai/ai.service.js';
+import { incrementSearchCount, getSearchCount } from '../../services/firebase.js';
 void motion;
+
+// Voice search via Web Speech API — no dependencies, works in-browser
+function useVoiceSearch(onResult) {
+  const [listening, setListening] = useState(false);
+  const recognitionRef = useRef(null);
+
+  const start = useCallback(() => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) return;
+    const rec = new SpeechRecognition();
+    rec.continuous = false;
+    rec.interimResults = false;
+    rec.lang = 'en-US';
+    rec.onresult = (e) => {
+      const transcript = e.results[0]?.[0]?.transcript?.trim();
+      if (transcript) onResult(transcript);
+    };
+    rec.onend = () => setListening(false);
+    rec.onerror = () => setListening(false);
+    recognitionRef.current = rec;
+    rec.start();
+    setListening(true);
+  }, [onResult]);
+
+  const stop = useCallback(() => {
+    recognitionRef.current?.stop();
+    setListening(false);
+  }, []);
+
+  return { listening, start, stop, supported: !!(window.SpeechRecognition || window.webkitSpeechRecognition) };
+}
 
 const CURIOSITY_LOG_KEY = 'spark_curiosity_log';
 
@@ -53,7 +85,14 @@ export default function GlobalSearch({ open, onClose, userContextObj, onGoDeeper
   const [loading, setLoading] = useState(false);
   const [selectedState, setSelectedState] = useState(null);
   const [recentLog, setRecentLog] = useState([]);
+  const [searchCount, setSearchCount] = useState(null);
   const inputRef = useRef(null);
+  const isKids = userContextObj?.ageGroup === 'little_explorer';
+
+  const { listening, start: startVoice, stop: stopVoice, supported: voiceSupported } = useVoiceSearch((transcript) => {
+    setQuery(transcript);
+    handleSubmit(transcript);
+  });
 
   // Refresh log whenever overlay opens
   useEffect(() => {
@@ -92,6 +131,10 @@ export default function GlobalSearch({ open, onClose, userContextObj, onGoDeeper
     } finally {
       setLoading(false);
     }
+    // Track + show social count (fire-and-forget)
+    setSearchCount(null);
+    incrementSearchCount(q).catch(() => {});
+    getSearchCount(q).then((count) => { if (count && count > 1) setSearchCount(count); }).catch(() => {});
   }, [query, userContextObj]);
 
   const handleKeyDown = useCallback((e) => {
@@ -177,13 +220,36 @@ export default function GlobalSearch({ open, onClose, userContextObj, onGoDeeper
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder="Search anything curious…"
+                  placeholder={isKids ? 'Say or type anything you wonder about…' : 'Search anything curious…'}
                   className="flex-1 bg-transparent outline-none border-none font-body text-[17px] text-text-primary placeholder-text-muted"
                   autoComplete="off"
                   autoCorrect="off"
                   spellCheck="false"
                   aria-label="Search topic"
                 />
+
+                {/* Voice search — prominent for kids, subtle for others */}
+                {voiceSupported && (
+                  <motion.button
+                    onClick={listening ? stopVoice : startVoice}
+                    whileTap={{ scale: 0.9 }}
+                    animate={listening ? { scale: [1, 1.15, 1] } : { scale: 1 }}
+                    transition={listening ? { duration: 0.8, repeat: Infinity } : {}}
+                    className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
+                      isKids ? 'w-10 h-10' : ''
+                    }`}
+                    style={{
+                      background: listening
+                        ? 'linear-gradient(135deg, #E63946, #FF6B35)'
+                        : 'rgba(42,42,42,0.07)',
+                      color: listening ? '#fff' : '#8B8B7A',
+                      boxShadow: listening ? '0 0 0 4px rgba(230,57,70,0.2)' : 'none',
+                    }}
+                    aria-label={listening ? 'Stop listening' : 'Voice search'}
+                  >
+                    {listening ? '⏹' : '🎤'}
+                  </motion.button>
+                )}
 
                 {query && (
                   <button
@@ -229,14 +295,28 @@ export default function GlobalSearch({ open, onClose, userContextObj, onGoDeeper
                       transition={{ duration: 0.22 }}
                       className="mb-5"
                     >
-                      {/* Topic chip */}
-                      <div className="mb-3 flex items-center gap-2">
+                      {/* Topic chip + social count */}
+                      <div className="mb-3 flex items-center gap-2 flex-wrap">
                         <span
                           className="inline-block rounded-full px-3 py-1 font-mono text-xs uppercase tracking-[0.12em]"
                           style={{ background: 'rgba(255,107,53,0.1)', color: '#FF6B35' }}
                         >
                           {submitted}
                         </span>
+                        <AnimatePresence>
+                          {searchCount && searchCount > 1 && (
+                            <motion.span
+                              initial={{ opacity: 0, scale: 0.85 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              exit={{ opacity: 0 }}
+                              className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 font-body text-[11px] text-text-muted"
+                              style={{ background: 'rgba(42,42,42,0.06)' }}
+                            >
+                              <span style={{ fontSize: 9 }}>🌍</span>
+                              {searchCount.toLocaleString()} others searched this
+                            </motion.span>
+                          )}
+                        </AnimatePresence>
                       </div>
 
                       {/* Explainer text */}

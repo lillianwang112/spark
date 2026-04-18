@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 void motion;
+import { useTopicImage } from '../../hooks/useTopicImage.js';
 import DiscoveryCard from './DiscoveryCard.jsx';
 import Ember from '../ember/Ember.jsx';
 import MathText from '../common/MathText.jsx';
@@ -226,6 +227,7 @@ function RabbitHoleExplainer({ node, userContextObj, onGoDeeper, onSave, onFullV
   const isDeep = pathLength >= 4;
   const isChatDepth = pathLength >= CHAT_DEPTH_THRESHOLD;
   const [showChat, setShowChat] = useState(false);
+  const { imageUrl, imageTitle } = useTopicImage(node?.label, !explLoading);
 
   useEffect(() => {
     if (!node) return;
@@ -317,6 +319,22 @@ function RabbitHoleExplainer({ node, userContextObj, onGoDeeper, onSave, onFullV
             </div>
           ) : (
             <div className="space-y-3 mt-1">
+              {imageUrl && !explLoading && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                  className="rounded-[14px] overflow-hidden mb-3"
+                  style={{ border: `1px solid ${color}18`, maxHeight: 160 }}
+                >
+                  <img
+                    src={imageUrl}
+                    alt={imageTitle || node.label}
+                    className="w-full object-cover"
+                    style={{ maxHeight: 160 }}
+                  />
+                </motion.div>
+              )}
               {blocks.lead && (
                 <motion.div
                   initial={{ opacity: 0, y: 6 }}

@@ -181,19 +181,22 @@ export default function LivingTreeViz({ tracks = [], className = '' }) {
         {/* Domain branches */}
         {branches.map(({
           domain, domTracks, startX, startY, tipX, tipY, cpX, cpY,
-          worstState, lineColor, opacity, isFlowering, rawColor,
+          worstState, lineColor, opacity, isFlowering, rawColor, rad,
         }, bi) => {
           const strokeW = BRANCH_STATE_CONFIG[worstState]?.lineWidth ?? 2;
+          // Wilting: droop the tip down slightly
+          const displayTipY = worstState === 'wilting' ? tipY + 8 : tipY;
 
           return (
             <g key={domain}>
               {/* Branch curve */}
               <motion.path
-                d={`M${startX},${startY} Q${cpX},${cpY} ${tipX},${tipY}`}
+                d={`M${startX},${startY} Q${cpX},${cpY} ${tipX},${displayTipY}`}
                 stroke={lineColor}
                 strokeWidth={strokeW + 1}
                 fill="none"
                 strokeLinecap="round"
+                strokeDasharray={worstState === 'dormant' ? '4 3' : undefined}
                 opacity={opacity}
                 initial={{ pathLength: 0 }}
                 animate={{ pathLength: 1 }}
@@ -203,7 +206,7 @@ export default function LivingTreeViz({ tracks = [], className = '' }) {
               {/* Track nodes along the branch */}
               {domTracks.slice(0, 6).map((track, ti) => {
                 const t = (ti + 1) / (Math.min(domTracks.length, 6) + 1);
-                const pt = qBez({ x: startX, y: startY }, { x: cpX, y: cpY }, { x: tipX, y: tipY }, t);
+                const pt = qBez({ x: startX, y: startY }, { x: cpX, y: cpY }, { x: tipX, y: displayTipY }, t);
                 const tState = deriveBranchState(track);
                 const nodeColor = getBranchDisplayColor(rawColor, tState);
                 const nr = track.mode === 'mastering' ? 4 : 3;
@@ -239,7 +242,7 @@ export default function LivingTreeViz({ tracks = [], className = '' }) {
 
               {/* Tip circle */}
               <motion.circle
-                cx={tipX} cy={tipY} r={isFlowering ? 5.5 : 4}
+                cx={tipX} cy={displayTipY} r={isFlowering ? 5.5 : 4}
                 fill={lineColor}
                 opacity={opacity}
                 initial={{ r: 0 }}
@@ -247,10 +250,32 @@ export default function LivingTreeViz({ tracks = [], className = '' }) {
                 transition={{ delay: 0.7 + bi * 0.11 + 0.55, duration: 0.4, ease: [0.34, 1.56, 0.64, 1] }}
               />
 
+              {/* Leaf clusters for healthy / flowering branches */}
+              {(worstState === 'healthy' || isFlowering) && [0, 1, 2].map((li) => {
+                const leafAngle = (li - 1) * 28;
+                const leafRad = (leafAngle * Math.PI) / 180;
+                const leafDist = 6 + li * 3;
+                const lx = tipX + Math.sin(rad + leafRad) * leafDist;
+                const ly = displayTipY - Math.cos(Math.abs(rad + leafRad)) * leafDist * 0.6;
+                return (
+                  <motion.ellipse
+                    key={li}
+                    cx={lx} cy={ly}
+                    rx={isFlowering ? 4 : 3} ry={isFlowering ? 2.5 : 2}
+                    fill={isFlowering ? '#FFB7C5' : lineColor}
+                    opacity={isFlowering ? 0.85 : 0.7}
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: isFlowering ? 0.85 : 0.7 }}
+                    transition={{ delay: 0.8 + bi * 0.11 + li * 0.08, duration: 0.4, ease: [0.34, 1.56, 0.64, 1] }}
+                    style={{ transformOrigin: `${lx}px ${ly}px` }}
+                  />
+                );
+              })}
+
               {/* Flowering sparkle */}
               {isFlowering && (
                 <motion.text
-                  x={tipX} y={tipY - 8}
+                  x={tipX} y={displayTipY - 8}
                   textAnchor="middle" fontSize={11}
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -260,10 +285,26 @@ export default function LivingTreeViz({ tracks = [], className = '' }) {
                 </motion.text>
               )}
 
+              {/* Thirsty indicator */}
+              {worstState === 'thirsty' && (
+                <motion.text x={tipX} y={displayTipY - 10} textAnchor="middle" fontSize="8"
+                  animate={{ y: [displayTipY - 10, displayTipY - 14, displayTipY - 10] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                >💧</motion.text>
+              )}
+
+              {/* Wilting indicator */}
+              {worstState === 'wilting' && (
+                <motion.text x={tipX} y={displayTipY - 10} textAnchor="middle" fontSize="8"
+                  animate={{ opacity: [0.5, 1, 0.5] }}
+                  transition={{ duration: 1.8, repeat: Infinity }}
+                >🥀</motion.text>
+              )}
+
               {/* Domain label */}
               <motion.text
                 x={tipX + (tipX - startX > 0 ? 7 : -7)}
-                y={tipY + 1.5}
+                y={displayTipY + 1.5}
                 textAnchor={tipX - startX > 0 ? 'start' : 'end'}
                 fontSize="7.2"
                 fill={lineColor}
@@ -302,6 +343,23 @@ export default function LivingTreeViz({ tracks = [], className = '' }) {
         >
           {totalNodes} saved
         </motion.p>
+      )}
+
+      {/* Branch state legend */}
+      {hasData && (
+        <div className="flex flex-wrap gap-2 mt-2 justify-center">
+          {[
+            { state: 'flowering', emoji: '🌸', label: 'Mastered' },
+            { state: 'healthy', emoji: '🌿', label: 'Healthy' },
+            { state: 'thirsty', emoji: '💧', label: 'Needs review' },
+            { state: 'wilting', emoji: '🥀', label: 'Wilting' },
+            { state: 'dormant', emoji: '🪵', label: 'Dormant' },
+          ].filter(({ state }) => branches.some((b) => b.worstState === state)).map(({ state, emoji, label }) => (
+            <span key={state} className="flex items-center gap-1 text-[10px] font-mono text-text-muted">
+              {emoji} {label}
+            </span>
+          ))}
+        </div>
       )}
     </div>
   );

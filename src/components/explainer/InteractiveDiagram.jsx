@@ -5,16 +5,17 @@ import { useState, useCallback, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 void motion;
 import AIService from '../../ai/ai.service.js';
+import { DOMAIN_COLORS } from '../../utils/domainColors.js';
 
-// Show diagrams for any domain where visualization genuinely helps understanding
-const DIAGRAM_DOMAINS = new Set([
-  'math', 'cs', 'science', 'engineering', 'philosophy',
-  'history', 'literature', 'music', 'architecture', 'film',
-]);
-
-export function shouldShowDiagram(domain, ageGroup) {
+export function shouldShowDiagram(node, ageGroup) {
+  if (!node) return false;
   if (ageGroup === 'little_explorer') return false;
-  return DIAGRAM_DOMAINS.has(domain);
+  const label = (node.label || node || '').toLowerCase();
+  // Skip diagrams for clearly biographical/historical topics
+  const skipPatterns = ['biography', 'history of', 'born in', 'died in', 'life of'];
+  if (skipPatterns.some(p => label.includes(p))) return false;
+  // Show for most topics
+  return true;
 }
 
 export default function InteractiveDiagram({ node, userContextObj, autoReveal = false }) {
@@ -66,7 +67,35 @@ export default function InteractiveDiagram({ node, userContextObj, autoReveal = 
   }, [autoReveal]);
 
   if (!node) return null;
-  if (failed && revealed) return null;
+  const domainColor = DOMAIN_COLORS[node.domain] || '#FF6B35';
+
+  if (failed && revealed) {
+    return (
+      <div className="px-5 pb-5 pt-1">
+        <motion.div
+          initial={{ opacity: 0, y: 4 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center justify-center gap-3 rounded-[18px] px-4 py-5"
+          style={{ background: `${domainColor}08`, border: `1px solid ${domainColor}20` }}
+        >
+          <span
+            className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-base font-bold"
+            style={{ background: `${domainColor}18`, color: domainColor }}
+          >
+            ✦
+          </span>
+          <div>
+            <p className="text-[11px] font-mono uppercase tracking-[0.14em]" style={{ color: domainColor }}>
+              {node.label}
+            </p>
+            <p className="text-[12px] font-body text-text-muted mt-0.5">
+              {node.domain || 'Topic'} · Interactive diagram unavailable
+            </p>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
 
   return (
     <div className="px-5 pb-5 pt-1">

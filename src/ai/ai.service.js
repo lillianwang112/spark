@@ -14,6 +14,7 @@ import {
   quickQuizPrompt,
   researchFrontierPrompt,
   researchContributionPrompt,
+  majorDecisionPrompt,
 } from './prompts.js';
 import { parseAIJson } from '../utils/helpers.js';
 import { hashPath } from '../utils/helpers.js';
@@ -151,6 +152,7 @@ const FALLBACKS = {
   quickQuiz: () => null,
   researchFrontier: () => null,
   researchContribution: () => null,
+  majorDecision: () => null,
 };
 
 // ── Cache key builders ──
@@ -177,6 +179,8 @@ function getCacheKey(type, params) {
       return `rf:${hashPath(params.currentPath)}:${params.currentNode}:${params.ageGroup || 'college'}`;
     case 'researchContribution':
       return `rc:${params.currentNode}:${(params.openQuestion?.title || '').replace(/\s+/g,'_').slice(0,30)}:${params.ageGroup || 'college'}`;
+    case 'majorDecision':
+      return `md:${(params.topDomains||[]).slice(0,3).join(',')}:${(params.majorField||'').replace(/\s+/g,'_').slice(0,15)}:${params.ageGroup||'student'}`;
     default:
       return `${type}:${JSON.stringify(params).slice(0, 100)}`;
   }
@@ -195,6 +199,7 @@ function buildPrompt(type, params) {
     case 'quickQuiz':            return quickQuizPrompt(params);
     case 'researchFrontier':      return researchFrontierPrompt(params);
     case 'researchContribution':  return researchContributionPrompt(params);
+    case 'majorDecision':         return majorDecisionPrompt(params);
     default: throw new Error(`Unknown prompt type: ${type}`);
   }
 }
@@ -272,7 +277,7 @@ const AIService = {
       }
 
       // 4. Parse JSON types
-      const jsonTypes = ['discoveryCards', 'nodeChildren', 'keyTakeaways', 'quickQuiz', 'researchFrontier', 'researchContribution'];
+      const jsonTypes = ['discoveryCards', 'nodeChildren', 'keyTakeaways', 'quickQuiz', 'researchFrontier', 'researchContribution', 'majorDecision'];
       if (jsonTypes.includes(type)) {
         const parsed = parseAIJson(result);
         if (!parsed) {

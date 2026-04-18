@@ -321,16 +321,22 @@ export default function Onboarding({ onComplete }) {
           </div>
 
         <div className="flex items-center gap-1.5 mb-6 justify-center">
-          {Array.from({ length: totalSteps }).map((_, i) => (
-            <div
-              key={i}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                i < step ? 'w-6 bg-spark-ember' :
-                i === step ? 'w-8 bg-spark-ember' :
-                'w-3 bg-[rgba(42,42,42,0.12)]'
-              }`}
-            />
-          ))}
+          {Array.from({ length: totalSteps }).map((_, i) => {
+            // Treat 'majorIntro' as between step 1 and step 2 (numeric index ~1.5)
+            const numericStep = step === 'majorIntro' ? 1.5 : step;
+            const active = i === Math.round(numericStep) || (step === 'majorIntro' && i === 1);
+            const done = i < numericStep;
+            return (
+              <div
+                key={i}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  done ? 'w-6 bg-spark-ember' :
+                  active ? 'w-8 bg-spark-ember' :
+                  'w-3 bg-[rgba(42,42,42,0.12)]'
+                }`}
+              />
+            );
+          })}
         </div>
 
         <AnimatePresence mode="wait">
@@ -490,13 +496,72 @@ export default function Onboarding({ onComplete }) {
               <div className="flex gap-3">
                 <Button variant="ghost" onClick={() => setStep(0)}>← Back</Button>
                 <Button
-                  onClick={() => setStep(2)}
+                  onClick={() => {
+                    if (intent === 'major') {
+                      setStep('majorIntro');
+                    } else {
+                      setStep(2);
+                    }
+                  }}
                   className="flex-1"
                   disabled={!intent || ((intent === 'idea' || intent === 'major') && !searchText.trim())}
                 >
                   Continue →
                 </Button>
               </div>
+            </motion.div>
+          )}
+
+          {step === 'majorIntro' && (
+            <motion.div
+              key="majorIntro"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="flex flex-col items-center gap-6 text-center max-w-sm mx-auto"
+            >
+              <Ember mood="celebrating" size="lg" glowIntensity={0.9} />
+
+              <div>
+                <h2 className="font-display text-2xl font-semibold text-text-primary mb-3">
+                  {searchText.trim()
+                    ? `Let's explore what ${searchText.trim()} actually feels like.`
+                    : "Let's figure out what makes you light up."}
+                </h2>
+                <p className="font-body text-text-secondary leading-relaxed">
+                  Instead of asking "what do you want to study," I'll show you what different fields <em>actually feel like</em> day-to-day.
+                </p>
+                <p className="font-body text-text-secondary leading-relaxed mt-3">
+                  No wrong answers. No pressure. Just: does this excite you or exhaust you?
+                </p>
+              </div>
+
+              {/* Disposition signals preview */}
+              <div className="w-full space-y-2">
+                {[
+                  "Do you like problems with definite right answers?",
+                  "Do you prefer making things vs. understanding things?",
+                  "Do you want to work alone or with a team?",
+                ].map((q, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: -12 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 + i * 0.12 }}
+                    className="flex items-center gap-2 text-left px-3 py-2 rounded-[12px] bg-[rgba(255,107,53,0.07)]"
+                  >
+                    <span className="text-spark-ember">✦</span>
+                    <p className="font-body text-sm text-text-secondary">{q}</p>
+                  </motion.div>
+                ))}
+              </div>
+
+              <button
+                onClick={() => setStep(2)}
+                className="w-full py-4 rounded-[18px] bg-spark-ember text-white font-display text-lg font-semibold"
+              >
+                Show me what's out there →
+              </button>
             </motion.div>
           )}
 
@@ -561,7 +626,7 @@ export default function Onboarding({ onComplete }) {
               </div>
 
               <div className="flex gap-3 mt-2">
-                <Button variant="ghost" onClick={() => setStep(1)}>← Back</Button>
+                <Button variant="ghost" onClick={() => intent === 'major' ? setStep('majorIntro') : setStep(1)}>← Back</Button>
                 <Button onClick={handleFinish} className="flex-1">
                   Let's explore ✨
                 </Button>

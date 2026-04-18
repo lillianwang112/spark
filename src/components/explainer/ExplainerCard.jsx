@@ -1,12 +1,14 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 void motion;
+import { useTopicImage } from '../../hooks/useTopicImage.js';
 import Loader from '../common/Loader.jsx';
 import MathText from '../common/MathText.jsx';
 import KnowledgeStateTag from '../common/KnowledgeStateTag.jsx';
 import Ember from '../ember/Ember.jsx';
 import { DOMAIN_COLORS } from '../../utils/domainColors.js';
 import InteractiveDiagram, { shouldShowDiagram } from './InteractiveDiagram.jsx';
+import DomainEmbed, { getDomainEmbed } from './DomainEmbed.jsx';
 import { copyThreadUrl } from '../../utils/threads.js';
 import TopicGraph from '../../services/topicGraph.js';
 import TeachingSession from './TeachingSession.jsx';
@@ -15,6 +17,39 @@ import KeyTakeaways from './KeyTakeaways.jsx';
 import QuickQuiz from './QuickQuiz.jsx';
 import AIService from '../../ai/ai.service.js';
 import { fetchTopicContent } from '../../services/liveContent.js';
+
+function TopicImageCard({ imageUrl, imageTitle, color }) {
+  const [loaded, setLoaded] = useState(false);
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 6 }}
+      animate={{ opacity: loaded ? 1 : 0, y: loaded ? 0 : 6 }}
+      className="relative rounded-[16px] overflow-hidden"
+      style={{
+        border: `1px solid ${color}22`,
+        background: `${color}08`,
+        maxHeight: 200,
+      }}
+    >
+      <img
+        src={imageUrl}
+        alt={imageTitle}
+        className="w-full object-cover"
+        style={{ maxHeight: 200 }}
+        onLoad={() => setLoaded(true)}
+        onError={() => setLoaded(false)}
+      />
+      {loaded && imageTitle && (
+        <div
+          className="absolute bottom-0 left-0 right-0 px-3 py-1.5 text-[10px] font-mono text-white"
+          style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.5), transparent)' }}
+        >
+          {imageTitle} · Wikipedia
+        </div>
+      )}
+    </motion.div>
+  );
+}
 
 function SectionHeader({ icon, label, color, right }) {
   return (
@@ -252,6 +287,7 @@ function ExplainerCardInner({
   const secondaryLoadedRef = useRef(false);
 
   const color = node?.domain ? DOMAIN_COLORS[node.domain] : '#FF6B35';
+  const { imageUrl, imageTitle } = useTopicImage(node?.label, true);
   const ageGroup = userContextObj?.ageGroup || 'college';
   const explorerName = userContextObj?.name || 'Explorer';
   const topInterests = useMemo(() => userContextObj?.topInterests || [], [userContextObj?.topInterests]);
@@ -318,7 +354,7 @@ function ExplainerCardInner({
   if (!node) return null;
 
   const hasVideos = content?.videos?.length > 0;
-  const showDiagram = !compact && status === 'ready' && text && shouldShowDiagram(node.domain, ageGroup);
+  const showDiagram = !compact && status === 'ready' && text && shouldShowDiagram(node, ageGroup);
 
   return (
     <div className="overflow-hidden rounded-card bg-bg-secondary shadow-card">
@@ -366,6 +402,9 @@ function ExplainerCardInner({
           <Loader message="Ember is thinking..." />
         ) : (
           <div className="space-y-3">
+            {imageUrl && (
+              <TopicImageCard imageUrl={imageUrl} imageTitle={imageTitle} color={color} />
+            )}
             {explainerBlocks.lead && (
               <motion.div
                 initial={{ opacity: 0, y: 8 }}
@@ -466,6 +505,22 @@ function ExplainerCardInner({
       {showDiagram && (
         <div style={{ borderTop: `1px solid ${color}10` }}>
           <InteractiveDiagram node={node} userContextObj={userContextObj} autoReveal />
+        </div>
+      )}
+
+      {/* DOMAIN EMBED (Desmos for math, PhET for science) */}
+      {!compact && status === 'ready' && getDomainEmbed(node) && (
+        <div className="px-5 pb-5" style={{ borderTop: `1px solid ${color}10` }}>
+          <div className="pt-4">
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+            >
+              <SectionHeader icon="⚡" label="Interactive" color={color} />
+              <DomainEmbed node={node} color={color} />
+            </motion.div>
+          </div>
         </div>
       )}
 

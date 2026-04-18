@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 void motion;
 import DiscoveryCard from './DiscoveryCard.jsx';
 import Loader from '../common/Loader.jsx';
@@ -8,6 +8,7 @@ import AIService from '../../ai/ai.service.js';
 import { useElo } from '../../hooks/useElo.js';
 import { BRANCH_TYPE_STYLES, DISCOVERY_CONFIG } from '../../utils/constants.js';
 import { DOMAIN_COLORS } from '../../utils/domainColors.js';
+import MajorDecisionLayer from './MajorDecisionLayer.jsx';
 
 const ROUND_DOMAINS = [
   ['math', 'science', 'cs', 'art'],
@@ -76,6 +77,7 @@ export default function CardGrid({
   const [pickedCard, setPickedCard] = useState(null);
   const [emberMood, setEmberMood] = useState('curious');
   const [roundComplete, setRoundComplete] = useState(false);
+  const [showDecision, setShowDecision] = useState(false);
 
   const { ranked, recordPick } = useElo();
 
@@ -152,7 +154,11 @@ export default function CardGrid({
         const nextRound = round + 1;
         if (nextRound >= totalRounds) {
           setEmberMood('celebrating');
-          setTimeout(() => onDiscoveryComplete?.(), 800);
+          if (majorMode) {
+            setTimeout(() => setShowDecision(true), 800);
+          } else {
+            setTimeout(() => onDiscoveryComplete?.(), 800);
+          }
         } else {
           setRound(nextRound);
           setPickedCard(null);
@@ -173,6 +179,20 @@ export default function CardGrid({
     () => ['question', 'mechanism', 'connection'].map((kind) => BRANCH_TYPE_STYLES[kind] || BRANCH_TYPE_STYLES.connection),
     []
   );
+
+  if (showDecision) {
+    return (
+      <AnimatePresence>
+        <MajorDecisionLayer
+          ranked={ranked}
+          majorField={majorField}
+          ageGroup={userContext?.ageGroup || 'college'}
+          personality={userContext?.personality || 'spark'}
+          onContinue={() => onDiscoveryComplete?.()}
+        />
+      </AnimatePresence>
+    );
+  }
 
   return (
     <div className="flex w-full max-w-2xl flex-col items-center gap-6 px-0 py-2">
