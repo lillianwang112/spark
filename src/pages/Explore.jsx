@@ -16,6 +16,7 @@ import { DOMAIN_COLORS } from '../utils/domainColors.js';
 import { buildUserContext } from '../models/userContext.js';
 import { getTopDomains } from '../models/elo.js';
 import { storage } from '../services/storage.js';
+import TopicGraph from '../services/topicGraph.js';
 
 export default function Explore({ initialSearch = null, pendingDeepDive = null, onConsumePendingDeepDive }) {
   const user = useUserContext();
@@ -108,6 +109,7 @@ export default function Explore({ initialSearch = null, pendingDeepDive = null, 
       const track = { ...node, saved: true, savedAt: new Date().toISOString() };
       user.addTrack(track);
       updateNode?.(node.id, { saved: true });
+      TopicGraph.rememberSignal(node, 'saves');
       if (lastSearchIdRef.current) {
         storage.updateSearch(lastSearchIdRef.current, { savedForLater: true });
       }
@@ -132,10 +134,12 @@ export default function Explore({ initialSearch = null, pendingDeepDive = null, 
     clearSearch();
     setDeepDiveNode(node);
     setPhase('tree');
+    TopicGraph.rememberSignal(node, 'deepens');
+    TopicGraph.warmTopic(node, userContextObj).catch(() => {});
     if (lastSearchIdRef.current) {
       storage.updateSearch(lastSearchIdRef.current, { wentDeeper: true });
     }
-  }, [clearSearch, lastSearchIdRef]);
+  }, [clearSearch, lastSearchIdRef, userContextObj]);
 
   const handleSearchSubmit = useCallback((term, targetNode) => {
     runSearch(term, targetNode);
@@ -178,15 +182,19 @@ export default function Explore({ initialSearch = null, pendingDeepDive = null, 
         : effectivePhase === 'discovery'
           ? 'Pick fast. Strong taste is more useful than overthinking.'
           : 'Tap the branch that feels oddly specific. Those are usually the best rabbit holes.';
-  const rabbitHolePrompts = deepDiveNode?.children?.length
-    ? deepDiveNode.children.slice(0, 3).map((child) => child.label)
-    : topDomains.length > 0
-      ? [
-        `strange ideas in ${topDomains[0]}`,
-        `beautiful concepts in ${topDomains[1] || topDomains[0]}`,
-        `why ${topDomains[0]} connects to ${topDomains[2] || topDomains[1] || 'art'}`,
-      ]
-      : ['black holes', 'ancient maps', 'why music feels emotional'];
+  const rabbitHolePrompts = searchExplainer?.node
+    ? TopicGraph.getPredictedPrompts(searchExplainer.node, userContextObj)
+    : deepDiveNode
+      ? TopicGraph.getPredictedPrompts(deepDiveNode, userContextObj)
+      : roots[0]
+        ? TopicGraph.getPredictedPrompts(roots[0], userContextObj)
+        : topDomains.length > 0
+          ? [
+            `strange ideas in ${topDomains[0]}`,
+            `beautiful concepts in ${topDomains[1] || topDomains[0]}`,
+            `why ${topDomains[0]} connects to ${topDomains[2] || topDomains[1] || 'art'}`,
+          ]
+          : ['black holes', 'ancient maps', 'why music feels emotional'];
   const explorationSignal = deepDiveNode
     ? 'Thread Locked'
     : searchExplainer

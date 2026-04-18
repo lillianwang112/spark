@@ -2,7 +2,7 @@
 import { createContext, useContext, useReducer, useCallback } from 'react';
 import { createNode } from '../models/node.js';
 import { getSeedChildren, getSeedNode } from '../utils/seedData.js';
-import AIService from '../ai/ai.service.js';
+import TopicGraph from '../services/topicGraph.js';
 
 // ── State ──
 
@@ -104,20 +104,7 @@ export function TreeProvider({ children }) {
     nodes.forEach((node) => {
       if (state.preGenerated.has(node.id)) return;
       dispatch({ type: 'MARK_PREGENERATED', payload: node.id });
-      AIService.preGenerate('nodeChildren', {
-        currentNode: node.label,
-        currentPath: node.path || [node.label],
-        ageGroup: userContextObj?.ageGroup || 'college',
-        topInterests: userContextObj?.topInterests || [],
-        personality: userContextObj?.personality || 'spark',
-      });
-      AIService.preGenerate('explainer', {
-        currentNode: node.label,
-        currentPath: node.path || [node.label],
-        ageGroup: userContextObj?.ageGroup || 'college',
-        personality: userContextObj?.personality || 'spark',
-        topInterests: userContextObj?.topInterests || [],
-      });
+      TopicGraph.warmTopic(node, userContextObj).catch(() => {});
     });
   }, [state.preGenerated]);
 
@@ -129,6 +116,7 @@ export function TreeProvider({ children }) {
     if (node.childrenLoaded && (node.children?.length > 0)) {
       dispatch({ type: 'TOGGLE_EXPAND', payload: { nodeId } });
       dispatch({ type: 'SET_ACTIVE', payload: state.expandedIds.has(nodeId) ? null : nodeId });
+      TopicGraph.rememberSignal(node, 'expands');
       return;
     }
 
@@ -140,6 +128,7 @@ export function TreeProvider({ children }) {
       dispatch({ type: 'SET_NODE_CHILDREN', payload: { parentId: nodeId, children: childNodes } });
       dispatch({ type: 'EXPAND', payload: nodeId });
       dispatch({ type: 'SET_ACTIVE', payload: nodeId });
+      TopicGraph.rememberSignal(node, 'expands');
       preGenerateChildren(childNodes.slice(0, 2), userContextObj);
       return;
     }
@@ -147,14 +136,7 @@ export function TreeProvider({ children }) {
     dispatch({ type: 'SET_LOADING', payload: { nodeId, loading: true } });
 
     try {
-      const params = {
-        currentNode: node.label,
-        currentPath: node.path || [node.label],
-        ageGroup: userContextObj?.ageGroup || 'college',
-        topInterests: userContextObj?.topInterests || [],
-        personality: userContextObj?.personality || 'spark',
-      };
-      const childData = await AIService.call('nodeChildren', params);
+      const childData = await TopicGraph.getChildren(node, userContextObj);
       if (childData && Array.isArray(childData)) {
         const childNodes = childData.map((c) =>
           createNode({
@@ -172,6 +154,7 @@ export function TreeProvider({ children }) {
         dispatch({ type: 'SET_NODE_CHILDREN', payload: { parentId: nodeId, children: childNodes } });
         dispatch({ type: 'EXPAND', payload: nodeId });
         dispatch({ type: 'SET_ACTIVE', payload: nodeId });
+        TopicGraph.rememberSignal(node, 'expands');
         preGenerateChildren(childNodes.slice(0, 2), userContextObj);
       }
     } catch (err) {

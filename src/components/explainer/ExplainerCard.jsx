@@ -2,11 +2,11 @@ import { useState, useEffect, useMemo } from 'react';
 import Loader from '../common/Loader.jsx';
 import KnowledgeStateTag from '../common/KnowledgeStateTag.jsx';
 import Ember from '../ember/Ember.jsx';
-import AIService from '../../ai/ai.service.js';
 import { getImageUrls } from '../../services/images.js';
 import { DOMAIN_COLORS } from '../../utils/domainColors.js';
 import InteractiveDiagram, { shouldShowDiagram } from './InteractiveDiagram.jsx';
 import { copyThreadUrl } from '../../utils/threads.js';
+import TopicGraph from '../../services/topicGraph.js';
 
 function ImageStrip({ nodeLabel, domain }) {
   const images = useMemo(() => getImageUrls(nodeLabel, domain, 2), [nodeLabel, domain]);
@@ -68,6 +68,10 @@ function ExplainerCardInner({
 
   const color = node?.domain ? DOMAIN_COLORS[node.domain] : '#FF6B35';
   const ageGroup = userContextObj?.ageGroup || 'college';
+  const explorerName = userContextObj?.name || 'Explorer';
+  const explorationStyle = userContextObj?.explorationStyle || 'balanced';
+  const personality = userContextObj?.personality || 'spark';
+  const topInterests = useMemo(() => userContextObj?.topInterests || [], [userContextObj?.topInterests]);
 
   useEffect(() => {
     if (!node) return undefined;
@@ -76,18 +80,18 @@ function ExplainerCardInner({
     let tagTimer = null;
     let moodTimer = null;
 
-    const params = {
-      currentNode: node.label,
-      currentPath: node.path || [node.label],
+    const topicContext = {
+      name: explorerName,
+      explorationStyle,
+      personality,
+      topInterests,
+      knowledgeStates: {
+        [node.id]: knowledgeState || null,
+      },
       ageGroup,
-      name: userContextObj?.name || 'Explorer',
-      knowledgeState: knowledgeState || null,
-      topInterests: userContextObj?.topInterests || [],
-      explorationStyle: userContextObj?.explorationStyle || 'balanced',
-      personality: userContextObj?.personality || 'spark',
     };
 
-    AIService.call('explainer', params)
+    TopicGraph.getExplainer(node, topicContext)
       .then((result) => {
         if (cancelled) return;
         setText(result);
@@ -108,6 +112,8 @@ function ExplainerCardInner({
         setEmberMood('sheepish');
       });
 
+    TopicGraph.warmTopic(node, topicContext).catch(() => {});
+
     return () => {
       cancelled = true;
       if (tagTimer) clearTimeout(tagTimer);
@@ -115,12 +121,12 @@ function ExplainerCardInner({
     };
   }, [
     ageGroup,
+    explorationStyle,
+    explorerName,
     knowledgeState,
     node,
-    userContextObj?.explorationStyle,
-    userContextObj?.name,
-    userContextObj?.personality,
-    userContextObj?.topInterests,
+    personality,
+    topInterests,
   ]);
 
   if (!node) return null;

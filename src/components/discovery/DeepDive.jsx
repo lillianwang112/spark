@@ -3,10 +3,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 void motion;
 import DiscoveryCard from './DiscoveryCard.jsx';
 import Ember from '../ember/Ember.jsx';
-import AIService from '../../ai/ai.service.js';
 import { useTree } from '../../hooks/useTree.jsx';
 import { getSeedChildren } from '../../utils/seedData.js';
 import { DOMAIN_COLORS } from '../../utils/domainColors.js';
+import TopicGraph from '../../services/topicGraph.js';
 
 // Map a node-children AI result to the DiscoveryCard card shape
 function toCard(child, domain) {
@@ -121,28 +121,17 @@ export default function DeepDive({ rootNode, userContextObj, onExplain, onSave, 
         setCards(seedCards);
         setLoading(false);
       }
+      TopicGraph.warmTopic(node, userContextObj).catch(() => {});
       return;
     }
 
-    // 3. Call AI as last resort
-    // currentPath must match useTree's format (node.path, NOT [...node.path, node.label])
-    const params = {
-      currentNode: node.label,
-      currentPath: node.path || [node.label],
-      ageGroup: userContextObj?.ageGroup || 'college',
-      topInterests: userContextObj?.topInterests || [],
-      personality: userContextObj?.personality || 'spark',
-    };
-
     try {
-      const children = await AIService.call('nodeChildren', params);
+      const children = await TopicGraph.getChildren(node, userContextObj);
       if (cancelRef.current) return;
 
-      // Detect and reject the useless generic fallback cards from AIService
-      const isFallback = children?.length > 0 && children[0]?.id === 'fallback_1';
-
-      if (!isFallback && children && Array.isArray(children) && children.length > 0) {
+      if (children && Array.isArray(children) && children.length > 0) {
         setCards(children.map((c) => toCard(c, node.domain)));
+        TopicGraph.warmTopic(node, userContextObj).catch(() => {});
       } else {
         setError(true);
       }
@@ -179,6 +168,7 @@ export default function DeepDive({ rootNode, userContextObj, onExplain, onSave, 
       if (cancelRef.current) return;
       setPickedCard(null);
       setEmberMood('curious');
+      TopicGraph.rememberSignal(nextNode, 'deepens');
       setPath((prev) => [...prev, nextNode]);
       fetchCards(nextNode);
     }, 650);

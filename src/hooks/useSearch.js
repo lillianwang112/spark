@@ -1,9 +1,9 @@
 import { useState, useCallback, useRef } from 'react';
-import AIService from '../ai/ai.service.js';
 import { storage } from '../services/storage.js';
 import { fuzzySearch } from '../utils/helpers.js';
 import { SEED_INDEX } from '../utils/seedData.js';
 import { uid } from '../utils/helpers.js';
+import TopicGraph from '../services/topicGraph.js';
 
 // All seed node labels for autocomplete
 const ALL_SEED_LABELS = Object.values(SEED_INDEX).map((n) => ({
@@ -13,27 +13,6 @@ const ALL_SEED_LABELS = Object.values(SEED_INDEX).map((n) => ({
   description: n.description || '',
   path: n.path || [n.label],
 }));
-
-function resolveSearchNode(term, targetNode) {
-  if (targetNode) return targetNode;
-
-  const normalized = term.trim().toLowerCase();
-  const exact = ALL_SEED_LABELS.find((item) => item.label.toLowerCase() === normalized);
-  if (exact) return exact;
-
-  const [bestMatch] = fuzzySearch(term, ALL_SEED_LABELS, (item) => item.label);
-  if (bestMatch?.label?.toLowerCase().includes(normalized) || normalized.includes(bestMatch?.label?.toLowerCase?.() || '')) {
-    return bestMatch;
-  }
-
-  return {
-    id: term,
-    label: term,
-    domain: 'general',
-    description: '',
-    path: [term],
-  };
-}
 
 export function useSearch(userContextObj) {
   const [query, setQuery] = useState('');
@@ -61,25 +40,14 @@ export function useSearch(userContextObj) {
   // Run a full search: get explainer, log to history
   const runSearch = useCallback(async (term, targetNode = null) => {
     if (!term?.trim()) return;
-    const resolvedNode = resolveSearchNode(term, targetNode);
-    const label = resolvedNode.label || term;
+    const resolvedNode = TopicGraph.resolveTopic(term, targetNode);
 
     setIsLoading(true);
     setExplainer(null);
 
     try {
-      const params = {
-        currentNode: label,
-        currentPath: resolvedNode.path || [label],
-        ageGroup:    userContextObj?.ageGroup || 'college',
-        name:        userContextObj?.name || 'Explorer',
-        knowledgeState: null,
-        topInterests: userContextObj?.topInterests || [],
-        explorationStyle: userContextObj?.explorationStyle || 'balanced',
-        personality: userContextObj?.personality || 'spark',
-      };
-
-      const result = await AIService.call('explainer', params);
+      TopicGraph.rememberSignal(resolvedNode, 'opens');
+      const result = await TopicGraph.getExplainer(resolvedNode, userContextObj);
       const searchId = uid();
       lastSearchIdRef.current = searchId;
       setExplainer({
@@ -87,12 +55,14 @@ export function useSearch(userContextObj) {
         text: result,
         node: resolvedNode,
       });
+      TopicGraph.warmTopic(resolvedNode, userContextObj).catch(() => {});
 
       // Log to search history
       storage.addSearch({
         id: searchId,
         term,
         nodeId: resolvedNode.id || term,
+        domain: resolvedNode.domain || 'general',
         timestamp: new Date().toISOString(),
         wentDeeper: false,
         savedForLater: false,

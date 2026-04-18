@@ -16,6 +16,7 @@ import { hashPath } from '../utils/helpers.js';
 
 const AI_BACKEND = import.meta.env.VITE_AI_BACKEND || 'puter';
 const TIMEOUT_MS = 12000;
+const inflight = new Map();
 
 // ── Wait for Puter.js to load (async script) ──
 // Short timeout so network failures fail fast rather than hanging
@@ -148,38 +149,52 @@ const AIService = {
       if (cached !== null) return cached;
     }
 
-    // 2. Build prompt
-    const { prompt, systemPrompt } = buildPrompt(type, params);
+    const requestKey = `${type}:${cacheKey}`;
+    if (inflight.has(requestKey)) {
+      return inflight.get(requestKey);
+    }
 
-    // 3. Try with timeout, retry once on failure
-    let result;
-    try {
-      result = await withTimeout(complete(prompt, systemPrompt), TIMEOUT_MS);
-    } catch (err) {
-      console.warn(`[AIService] First attempt failed for ${type}:`, err.message);
+    const request = (async () => {
+      // 2. Build prompt
+      const { prompt, systemPrompt } = buildPrompt(type, params);
+
+      // 3. Try with timeout, retry once on failure
+      let result;
       try {
         result = await withTimeout(complete(prompt, systemPrompt), TIMEOUT_MS);
-      } catch (err2) {
-        console.error(`[AIService] Both attempts failed for ${type}:`, err2.message);
-        return FALLBACKS[type]?.(params) ?? null;
+      } catch (err) {
+        console.warn(`[AIService] First attempt failed for ${type}:`, err.message);
+        try {
+          result = await withTimeout(complete(prompt, systemPrompt), TIMEOUT_MS);
+        } catch (err2) {
+          console.error(`[AIService] Both attempts failed for ${type}:`, err2.message);
+          return FALLBACKS[type]?.(params) ?? null;
+        }
       }
-    }
 
-    // 4. Parse JSON types
-    const jsonTypes = ['discoveryCards', 'nodeChildren'];
-    if (jsonTypes.includes(type)) {
-      const parsed = parseAIJson(result);
-      if (!parsed) {
-        console.warn(`[AIService] JSON parse failed for ${type}, using fallback`);
-        return FALLBACKS[type]?.(params) ?? null;
+      // 4. Parse JSON types
+      const jsonTypes = ['discoveryCards', 'nodeChildren'];
+      if (jsonTypes.includes(type)) {
+        const parsed = parseAIJson(result);
+        if (!parsed) {
+          console.warn(`[AIService] JSON parse failed for ${type}, using fallback`);
+          return FALLBACKS[type]?.(params) ?? null;
+        }
+        AICache.set(type, cacheKey, parsed);
+        return parsed;
       }
-      AICache.set(type, cacheKey, parsed);
-      return parsed;
-    }
 
-    // 5. String types
-    AICache.set(type, cacheKey, result);
-    return result;
+      // 5. String types
+      AICache.set(type, cacheKey, result);
+      return result;
+    })();
+
+    inflight.set(requestKey, request);
+    try {
+      return await request;
+    } finally {
+      inflight.delete(requestKey);
+    }
   },
 
   // Pre-generate: fire and cache, don't return (called proactively)
