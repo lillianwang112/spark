@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/ember-icon.svg" width="160" alt="Spark" />
+  <img src="public/hero.jpg" width="160" alt="Spark" />
 </p>
 
 <h1 align="center">Spark</h1>
