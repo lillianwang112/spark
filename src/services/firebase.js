@@ -169,3 +169,22 @@ export async function getSearchCount(term) {
     return null;
   }
 }
+
+// ── Course outline cache — shared across users ──
+export async function saveCourseOutline(topicSlug, outline) {
+  if (!db) return;
+  try {
+    await setDoc(doc(db, 'courses', topicSlug), {
+      outline,
+      generatedAt: new Date().toISOString(),
+    });
+  } catch { /* non-critical */ }
+}
+
+export async function loadCourseOutline(topicSlug) {
+  if (!db) return null;
+  try {
+    const snap = await getDoc(doc(db, 'courses', topicSlug));
+    return snap.exists() ? snap.data().outline : null;
+  } catch { return null; }
+}

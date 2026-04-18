@@ -15,13 +15,16 @@ import {
   researchFrontierPrompt,
   researchContributionPrompt,
   majorDecisionPrompt,
+  courseOutlinePrompt,
+  lessonContentPrompt,
+  lessonFlashcardsPrompt,
 } from './prompts.js';
 import { parseAIJson } from '../utils/helpers.js';
 import { hashPath } from '../utils/helpers.js';
 import { getSharedAICache, setSharedAICache } from '../services/firebase.js';
 
 // Only cache-shareable types (not personalized responses)
-const SHARED_CACHEABLE = new Set(['explainer', 'keyTakeaways', 'quickQuiz', 'nodeChildren', 'researchFrontier']);
+const SHARED_CACHEABLE = new Set(['explainer', 'keyTakeaways', 'quickQuiz', 'nodeChildren', 'researchFrontier', 'courseOutline', 'lessonContent', 'lessonFlashcards']);
 
 // Static pre-warmed cache — zero latency, bundled at build time
 let _staticCache = null;
@@ -153,6 +156,9 @@ const FALLBACKS = {
   researchFrontier: () => null,
   researchContribution: () => null,
   majorDecision: () => null,
+  courseOutline: () => null,
+  lessonContent: () => null,
+  lessonFlashcards: () => null,
 };
 
 // ── Cache key builders ──
@@ -181,6 +187,12 @@ function getCacheKey(type, params) {
       return `rc:${params.currentNode}:${(params.openQuestion?.title || '').replace(/\s+/g,'_').slice(0,30)}:${params.ageGroup || 'college'}`;
     case 'majorDecision':
       return `md:${(params.topDomains||[]).slice(0,3).join(',')}:${(params.majorField||'').replace(/\s+/g,'_').slice(0,15)}:${params.ageGroup||'student'}`;
+    case 'courseOutline':
+      return `co:${params.topic.replace(/\s+/g,'_').slice(0,30)}:${params.ageGroup}`;
+    case 'lessonContent':
+      return `lc:${params.topic.replace(/\s+/g,'_').slice(0,20)}:${params.lessonTitle.replace(/\s+/g,'_').slice(0,25)}:${params.ageGroup}`;
+    case 'lessonFlashcards':
+      return `lf:${params.topic.replace(/\s+/g,'_').slice(0,20)}:${params.lessonTitle.replace(/\s+/g,'_').slice(0,25)}:${params.ageGroup}`;
     default:
       return `${type}:${JSON.stringify(params).slice(0, 100)}`;
   }
@@ -200,6 +212,9 @@ function buildPrompt(type, params) {
     case 'researchFrontier':      return researchFrontierPrompt(params);
     case 'researchContribution':  return researchContributionPrompt(params);
     case 'majorDecision':         return majorDecisionPrompt(params);
+    case 'courseOutline':         return courseOutlinePrompt(params);
+    case 'lessonContent':         return lessonContentPrompt(params);
+    case 'lessonFlashcards':      return lessonFlashcardsPrompt(params);
     default: throw new Error(`Unknown prompt type: ${type}`);
   }
 }
@@ -277,7 +292,7 @@ const AIService = {
       }
 
       // 4. Parse JSON types
-      const jsonTypes = ['discoveryCards', 'nodeChildren', 'keyTakeaways', 'quickQuiz', 'researchFrontier', 'researchContribution', 'majorDecision'];
+      const jsonTypes = ['discoveryCards', 'nodeChildren', 'keyTakeaways', 'quickQuiz', 'researchFrontier', 'researchContribution', 'majorDecision', 'courseOutline', 'lessonContent', 'lessonFlashcards'];
       if (jsonTypes.includes(type)) {
         const parsed = parseAIJson(result);
         if (!parsed) {

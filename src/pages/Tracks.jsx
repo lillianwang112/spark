@@ -5,6 +5,7 @@ import { useUserContext } from '../hooks/useUserContext.jsx';
 import { deriveBranchState, useBranchState } from '../hooks/useBranchState.js';
 import ExplainerCard from '../components/explainer/ExplainerCard.jsx';
 import ReviewSession from '../components/mastering/ReviewSession.jsx';
+import CourseViewer from '../components/mastering/CourseViewer.jsx';
 import Modal from '../components/common/Modal.jsx';
 import Ember from '../components/ember/Ember.jsx';
 import Toast from '../components/common/Toast.jsx';
@@ -216,7 +217,7 @@ function GardenHealthPanel({ tracksWithSRS, careTracks, dueNow, onTendAll, onSta
 }
 
 // ── Single track card ──
-function TrackCard({ track, ageGroup, onExplain, onReview, onRemove, onToggleMode, onConnect, onShare, onTend, connectMode, isConnectSource }) {
+function TrackCard({ track, ageGroup, onExplain, onReview, onRemove, onToggleMode, onConnect, onShare, onTend, onCourse, connectMode, isConnectSource }) {
   const color = DOMAIN_COLORS[track.domain] || '#FF6B35';
   const { state: branchState, message: branchMessage, needsAttention } = useBranchState(track);
   const ksLabels = ageGroup === 'little_explorer' ? KNOWLEDGE_STATE_LABELS.kids : KNOWLEDGE_STATE_LABELS.adult;
@@ -370,16 +371,24 @@ function TrackCard({ track, ageGroup, onExplain, onReview, onRemove, onToggleMod
             )}
 
             {isMastering ? (
-              <button
-                onClick={(e) => { e.stopPropagation(); onReview(track); }}
-                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors min-h-[32px] ${
-                  daysLeft === 0
-                    ? 'bg-spark-ember text-white hover:bg-orange-600'
-                    : 'bg-[rgba(255,107,53,0.1)] text-spark-ember hover:bg-[rgba(255,107,53,0.2)]'
-                }`}
-              >
-                {daysLeft === 0 ? '⏰ Review now' : '🃏 Review'}
-              </button>
+              <>
+                <button
+                  onClick={(e) => { e.stopPropagation(); onReview(track); }}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors min-h-[32px] ${
+                    daysLeft === 0
+                      ? 'bg-spark-ember text-white hover:bg-orange-600'
+                      : 'bg-[rgba(255,107,53,0.1)] text-spark-ember hover:bg-[rgba(255,107,53,0.2)]'
+                  }`}
+                >
+                  {daysLeft === 0 ? '⏰ Review now' : '🃏 Review'}
+                </button>
+                <button
+                  onClick={(e) => { e.stopPropagation(); onCourse?.(track); }}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[rgba(255,107,53,0.08)] text-spark-ember text-xs font-medium hover:bg-[rgba(255,107,53,0.15)] transition-colors"
+                >
+                  📚 Full Course
+                </button>
+              </>
             ) : (
               <button
                 onClick={(e) => { e.stopPropagation(); onExplain(track); }}
@@ -469,6 +478,7 @@ function GoalBranchSection({ user }) {
 export default function Tracks({ onSpark }) {
   const user = useUserContext();
   const [explainerTrack, setExplainerTrack] = useState(null);
+  const [courseTrack, setCourseTrack] = useState(null);
   const [reviewMode, setReviewMode] = useState(false);
   const [reviewCards, setReviewCards] = useState([]);
   const [connectSource, setConnectSource] = useState(null); // track being connected
@@ -1396,6 +1406,7 @@ export default function Tracks({ onSpark }) {
                           onConnect={handleConnect}
                           onShare={handleShare}
                           onTend={handleTendTrack}
+                          onCourse={setCourseTrack}
                           connectMode={!!connectSource}
                           isConnectSource={connectSource?.id === track.id}
                         />
@@ -1647,6 +1658,19 @@ export default function Tracks({ onSpark }) {
         variant={toast?.variant || 'default'}
         onClose={() => setToast(null)}
       />
+
+      <AnimatePresence>
+        {courseTrack && (
+          <CourseViewer
+            topic={courseTrack.label}
+            domain={courseTrack.domain}
+            ageGroup={userContextObj.ageGroup}
+            personality={userContextObj.personality}
+            topInterests={userContextObj.topInterests || []}
+            onClose={() => setCourseTrack(null)}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }

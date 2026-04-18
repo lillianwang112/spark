@@ -315,6 +315,147 @@ Rules:
   return { prompt, systemPrompt };
 }
 
+// ── TYPE 11: Course Outline Generation ──
+export function courseOutlinePrompt({ topic, ageGroup, topInterests, personality, sourceContext }) {
+  const systemPrompt = `You are a world-class curriculum designer who has built courses for Khan Academy, MIT OpenCourseWare, Princeton, and Coursera. You craft learning journeys that feel inevitable — each module unlocks the next, and every lesson earns its place. When given real reference material, use it to ground the structure in accurate, real-world content. Return only valid JSON with no markdown fences.`;
+
+  const interestsStr = topInterests?.length ? topInterests.join(', ') : 'general curiosity';
+  const ageInstructions = {
+    little_explorer: 'Use simple, concrete language. Short lessons. Heavy on stories and examples. Avoid abstractions.',
+    student: 'Conversational and relatable. Connect to real life. Moderate depth. Keep energy high.',
+    college: 'Intellectually rigorous. Surface genuine complexity. Assume comfort with abstract ideas.',
+    adult: 'Respect their time and intelligence. Dense but clear. Tie concepts to practical application.',
+  }[ageGroup] || 'Match the sophistication level of a curious, educated adult.';
+
+  const sourceSection = sourceContext
+    ? `\nREAL REFERENCE MATERIAL (ground the curriculum in these facts):\n${sourceContext.slice(0, 800)}\n`
+    : '';
+
+  const prompt = `Design a complete course outline for the topic: "${topic}".
+${sourceSection}
+Learner profile: age_group=${ageGroup}, interests=${interestsStr}.
+Calibration: ${ageInstructions}
+
+Requirements:
+- 5-7 modules that build on each other in a logical arc — from foundation to frontier
+- Each module has 3-5 lessons
+- Total estimated hours should be realistic (8-20 hours for a full course)
+- lesson durationMins should reflect actual learning time (6-12 mins each)
+- lesson type must be exactly one of: concept | example | practice
+- First module should always be approachable — no steep prerequisite wall
+- Last module should feel like the payoff — synthesis, frontier, or application
+- Titles should be specific and evocative, not generic ("How DNA Actually Replicates", not "DNA Basics")
+- The tagline should make someone think "I need to take this"
+
+Return ONLY valid JSON matching this exact shape, no markdown fences:
+{
+  "title": "...",
+  "tagline": "One compelling sentence hook",
+  "emoji": "single emoji",
+  "estimatedHours": number,
+  "prerequisiteKnowledge": "none|basic|intermediate",
+  "modules": [
+    {
+      "id": "module_1",
+      "title": "...",
+      "overview": "What this module unlocks — 1 sentence",
+      "lessons": [
+        { "id": "lesson_1_1", "title": "...", "durationMins": 8, "type": "concept|example|practice" }
+      ]
+    }
+  ]
+}`;
+
+  return { prompt, systemPrompt };
+}
+
+// ── TYPE 12: Lesson Content Generation ──
+export function lessonContentPrompt({ topic, moduleTitle, lessonTitle, lessonIndex, ageGroup, topInterests, personality, sourceContext }) {
+  const systemPrompt = `You are a master teacher who writes lesson content for Khan Academy, MIT OpenCourseWare, and 3Blue1Brown. You open every lesson with a hook that makes the learner sit up straight. Your explanations feel conversational but are precise. You never talk down, never pad, and never use filler phrases like "Great question!" You know that an analogy well-chosen is worth three paragraphs of explanation. When given real reference material, you USE it — cite actual facts, real examples, correct terminology. Return only valid JSON with no markdown fences.`;
+
+  const interestsStr = topInterests?.length ? topInterests.join(', ') : 'general curiosity';
+  const wordTarget = ['little_explorer', 'student'].includes(ageGroup) ? 'Under 300 words' : 'Under 400 words';
+  const languageNote = {
+    little_explorer: 'Simple sentences. Concrete and vivid. No jargon.',
+    student: 'Conversational. Culturally relevant. Occasional wit.',
+    college: 'Precise and honest about complexity. Intellectually engaging.',
+    adult: 'Dense but clear. Respect their intelligence and time.',
+  }[ageGroup] || 'Clear, precise, and intellectually engaging.';
+
+  const sourceSection = sourceContext
+    ? `\nREAL REFERENCE MATERIAL (use these facts — do not contradict them):\n${sourceContext.slice(0, 1200)}\n`
+    : '';
+
+  const prompt = `Write the lesson content for:
+Course topic: "${topic}"
+Module: "${moduleTitle}"
+Lesson: "${lessonTitle}" (lesson ${lessonIndex + 1} in this module)
+${sourceSection}
+Learner profile: age_group=${ageGroup}, interests=${interestsStr}.
+Language calibration: ${languageNote}
+${wordTarget} total across all sections.
+
+Structural requirements:
+- 3-5 sections total
+- First section must be type "concept" — lay the essential foundation
+- Include at least one "analogy" section — connect to their interests (${interestsStr}) if possible
+- Include at least one "example" section — something concrete they can picture
+- You may include one "deep_dive" section if the lesson warrants going further
+- The hook is NOT a section — it is a single surprising sentence that opens the lesson cold
+- checkIn is a single conceptual question with a concise answer (not a trivia quiz — test understanding)
+- keyPoints: 3-4 punchy bullet facts — the things worth remembering
+
+Return ONLY valid JSON matching this exact shape, no markdown fences:
+{
+  "title": "...",
+  "hook": "One surprising sentence to open — makes learner lean forward",
+  "sections": [
+    { "heading": "...", "body": "2-4 sentences", "type": "concept|analogy|example|deep_dive" }
+  ],
+  "keyPoints": ["3-4 punchy bullet facts"],
+  "checkIn": { "question": "...", "answer": "..." }
+}`;
+
+  return { prompt, systemPrompt };
+}
+
+// ── TYPE 13: Lesson Flashcards Generation ──
+export function lessonFlashcardsPrompt({ topic, lessonTitle, keyPoints, ageGroup }) {
+  const systemPrompt = `You create flashcards for active recall that actually work. You know that the best flashcards test the boundaries of understanding, not surface-level facts. A good flashcard makes you retrieve something — and when you get it right, you feel it click. You mix card types strategically. Return only a valid JSON array with no markdown fences.`;
+
+  const keyPointsStr = keyPoints?.length ? keyPoints.join('; ') : 'the core concepts of the lesson';
+  const languageNote = {
+    little_explorer: 'Use simple, concrete words. Avoid jargon.',
+    student: 'Conversational tone. Keep it punchy.',
+    college: 'Precise language. Test the conceptual edge cases.',
+    adult: 'Clear and direct. Assume baseline familiarity.',
+  }[ageGroup] || 'Clear and precise.';
+
+  const prompt = `Generate 6-8 flashcards for active recall of this lesson:
+Topic: "${topic}"
+Lesson: "${lessonTitle}"
+Key points covered: ${keyPointsStr}
+Age group: ${ageGroup}. Language: ${languageNote}
+
+Card type mix — include at least one of each:
+- definition: "What is X?" → concise definition
+- application: "When/why would you use X?" → practical scenario
+- true_or_false: a statement that is definitively true or false → answer + one-sentence reason
+- fill_in_blank: "X works by ___" → the missing concept
+
+Rules:
+- Front: under 15 words. A question, term, or incomplete statement.
+- Back: under 25 words. The answer — precise, not padded.
+- Test conceptual understanding and reasoning, not memorization of trivia or surface phrasing
+- Cards should be independently useful — assume someone shuffles them out of order
+- Do NOT repeat the same concept twice in different wording
+
+Return ONLY a valid JSON array, no markdown fences:
+[{ "front": "question or term (under 15 words)", "back": "answer (under 25 words)" }]`;
+
+  return { prompt, systemPrompt };
+}
+
 // ── TYPE 10: Major Decision Layer ──
 export function majorDecisionPrompt({ topDomains, majorField, ageGroup, personality }) {
   const systemPrompt = getSystemPrompt(personality, ageGroup);
