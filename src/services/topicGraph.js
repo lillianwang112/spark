@@ -6,6 +6,11 @@ import { SEED_INDEX, getSeedChildren, getSeedNode } from '../utils/seedData.js';
 const TOPIC_GRAPH_KEY = 'spark_topic_graph_v1';
 const EMPTY_GRAPH = { topics: {} };
 const inflight = new Map();
+const API_BASE = import.meta.env.VITE_TOPIC_API_URL || '';
+const API_RETRY_COOLDOWN_MS = 8000;
+
+let topicApiStatus = 'unknown';
+let topicApiFailedAt = 0;
 
 function readGraph() {
   return storage.get(TOPIC_GRAPH_KEY) || EMPTY_GRAPH;
@@ -84,6 +89,35 @@ function withInflight(key, factory) {
     .finally(() => inflight.delete(key));
   inflight.set(key, promise);
   return promise;
+}
+
+async function callTopicApi(pathname, payload) {
+  if (topicApiStatus === 'unavailable' && (Date.now() - topicApiFailedAt) < API_RETRY_COOLDOWN_MS) {
+    throw new Error('Topic API unavailable');
+  }
+
+  const endpoint = `${API_BASE}${pathname}`;
+  try {
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      topicApiStatus = 'unavailable';
+      topicApiFailedAt = Date.now();
+      throw new Error(`Topic API error: ${response.status}`);
+    }
+
+    topicApiStatus = 'available';
+    topicApiFailedAt = 0;
+    return response.json();
+  } catch (error) {
+    topicApiStatus = 'unavailable';
+    topicApiFailedAt = Date.now();
+    throw error;
+  }
 }
 
 function getTopicFromGraph(term) {
@@ -226,6 +260,7 @@ const TopicGraph = {
 
   rememberSignal(topic, signal) {
     if (!topic?.label || !signal) return;
+    callTopicApi('/api/topic/signal', { topic, signal }).catch(() => {});
     const graph = readGraph();
     const key = normalizeTopicKey(topic.id || topic.label);
     const record = mergeTopicRecord(graph.topics[key], hydrateTopic(topic));
@@ -267,6 +302,20 @@ const TopicGraph = {
 
     const requestKey = `children:${normalizeTopicKey(resolvedTopic.id || resolvedTopic.label)}:${buildProfileKey(userContextObj)}`;
     return withInflight(requestKey, async () => {
+      try {
+        const remote = await callTopicApi('/api/topic/children', {
+          topic: resolvedTopic,
+          userContext: userContextObj,
+        });
+        if (Array.isArray(remote?.children) && remote.children.length > 0) {
+          const children = remote.children.map((child) => hydrateTopic(child));
+          persistChildren(resolvedTopic, children);
+          return children;
+        }
+      } catch {
+        // Fall back to local-first graph below.
+      }
+
       const childData = await AIService.call('nodeChildren', buildUserParams(resolvedTopic, userContextObj));
       const children = (Array.isArray(childData) ? childData : []).map((child) => hydrateTopic({
         id: child.id || normalizeTopicKey(child.label),
@@ -298,6 +347,19 @@ const TopicGraph = {
 
     const requestKey = `explainer:${normalizeTopicKey(resolvedTopic.id || resolvedTopic.label)}:${buildProfileKey(userContextObj)}:${hashPath(resolvedTopic.path || [resolvedTopic.label])}`;
     return withInflight(requestKey, async () => {
+      try {
+        const remote = await callTopicApi('/api/topic/explainer', {
+          topic: resolvedTopic,
+          userContext: userContextObj,
+        });
+        if (typeof remote?.explainer === 'string' && remote.explainer.trim()) {
+          persistExplainer(resolvedTopic, userContextObj, remote.explainer);
+          return remote.explainer;
+        }
+      } catch {
+        // Fall back to local-first graph below.
+      }
+
       const text = await AIService.call('explainer', buildUserParams(resolvedTopic, userContextObj));
       persistExplainer(resolvedTopic, userContextObj, text);
       return text;
@@ -314,6 +376,18 @@ const TopicGraph = {
   async warmTopic(topic, userContextObj = {}) {
     const resolvedTopic = hydrateTopic(topic);
     persistTopic(resolvedTopic);
+
+    callTopicApi('/api/topic/warm', {
+      topic: resolvedTopic,
+      userContext: userContextObj,
+    }).then((remote) => {
+      if (Array.isArray(remote?.children) && remote.children.length > 0) {
+        persistChildren(resolvedTopic, remote.children.map((child) => hydrateTopic(child)));
+      }
+      if (typeof remote?.explainer === 'string' && remote.explainer.trim()) {
+        persistExplainer(resolvedTopic, userContextObj, remote.explainer);
+      }
+    }).catch(() => {});
 
     const children = await this.getChildren(resolvedTopic, userContextObj).catch(() => []);
     this.getExplainer(resolvedTopic, userContextObj).catch(() => {});
