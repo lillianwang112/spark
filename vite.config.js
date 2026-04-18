@@ -1,7 +1,15 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-const basePath = globalThis?.process?.env?.VITE_BASE_PATH || '/'
+const rawBasePath = globalThis?.process?.env?.VITE_BASE_PATH
+const repoSlug = globalThis?.process?.env?.GITHUB_REPOSITORY || ''
+const repoName = repoSlug.split('/')[1] || ''
+const inferredBasePath = repoName && repoName.endsWith('.github.io')
+  ? '/'
+  : repoName
+    ? `/${repoName}/`
+    : '/'
+const basePath = rawBasePath || inferredBasePath
 
 // https://vite.dev/config/
 export default defineConfig({

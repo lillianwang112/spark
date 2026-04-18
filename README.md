@@ -39,3 +39,6 @@ This repo is configured to deploy with GitHub Actions via `.github/workflows/dep
 
 - The app gracefully falls back to local AI/cache flows when `VITE_TOPIC_API_URL` is not provided (common on Pages).
 - If you use a custom domain and serve from root, set `VITE_BASE_PATH=/` in your build environment.
+- If your GitHub Pages site is blank, verify the repository type:
+  - `username.github.io` repos must build with base path `/`
+  - project repos must build with base path `/<repo-name>/`
