@@ -32,7 +32,7 @@ function SectionLabel({ children }) {
 }
 
 export default function LiveContentShelf({ node, compact = false }) {
-  const [state, setState] = useState({ status: 'loading', summary: null, related: [], images: [], papers: [] });
+  const [state, setState] = useState({ status: 'loading', summary: null, related: [], images: [], papers: [], lessons: [] });
 
   useEffect(() => {
     if (!node?.label) return undefined;
@@ -41,6 +41,7 @@ export default function LiveContentShelf({ node, compact = false }) {
     fetchTopicContent(node.label, {
       imageCount: compact ? 2 : 4,
       paperCount: compact ? 3 : 4,
+      lessonCount: compact ? 2 : 4,
     })
       .then((data) => {
         if (cancelled) return;
@@ -48,7 +49,7 @@ export default function LiveContentShelf({ node, compact = false }) {
       })
       .catch(() => {
         if (cancelled) return;
-        setState({ status: 'error', summary: null, related: [], images: [], papers: [] });
+        setState({ status: 'error', summary: null, related: [], images: [], papers: [], lessons: [] });
       });
 
     return () => {
@@ -58,7 +59,7 @@ export default function LiveContentShelf({ node, compact = false }) {
 
   if (!node?.label) return null;
 
-  const hasContent = state.summary || state.images.length > 0 || state.papers.length > 0 || state.related.length > 0;
+  const hasContent = state.summary || state.images.length > 0 || state.papers.length > 0 || state.related.length > 0 || state.lessons.length > 0;
 
   return (
     <div className="space-y-4">
@@ -142,6 +143,33 @@ export default function LiveContentShelf({ node, compact = false }) {
                     </p>
                     <p className="mt-2 text-[11px] font-mono uppercase tracking-[0.12em] text-spark-ember">
                       {paper.citedByCount > 0 ? `${paper.citedByCount} citations` : 'Research link'} ↗
+                    </p>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {state.lessons.length > 0 && (
+            <div className="space-y-2">
+              <SectionLabel>Lessons</SectionLabel>
+              <div className="grid gap-2">
+                {state.lessons.slice(0, compact ? 2 : 4).map((lesson) => (
+                  <a
+                    key={lesson.id}
+                    href={lesson.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="rounded-[18px] border border-[rgba(42,42,42,0.06)] bg-white/70 p-3 transition-colors hover:bg-white"
+                  >
+                    <p className="font-body text-sm font-semibold leading-snug text-text-primary">
+                      {lesson.title}
+                    </p>
+                    <p className="mt-1 text-xs leading-relaxed text-text-muted">
+                      {lesson.kind} · {lesson.description || 'Structured lesson from Khan Academy'}
+                    </p>
+                    <p className="mt-2 text-[11px] font-mono uppercase tracking-[0.12em] text-spark-ember">
+                      Learn ↗
                     </p>
                   </a>
                 ))}
