@@ -53,11 +53,12 @@ async function getStaticCache() {
 }
 
 const AI_BACKEND = import.meta.env.VITE_AI_BACKEND || 'puter';
+const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY || '';
+const GEMINI_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 const TIMEOUT_MS = 12000;
 const inflight = new Map();
 
 // ── Wait for Puter.js to load (async script) ──
-// Short timeout so network failures fail fast rather than hanging
 function waitForPuter(timeoutMs = 5000) {
   if (window.puter) return Promise.resolve(window.puter);
   return new Promise((resolve, reject) => {
@@ -71,18 +72,40 @@ function waitForPuter(timeoutMs = 5000) {
   });
 }
 
+// ── Direct Gemini 2.5 Flash API (fallback when Puter.js unavailable) ──
+async function callGeminiDirect(prompt, systemPrompt) {
+  if (!GEMINI_API_KEY) throw new Error('No Gemini API key configured');
+  const res = await fetch(GEMINI_ENDPOINT, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      system_instruction: systemPrompt ? { parts: [{ text: systemPrompt }] } : undefined,
+      contents: [{ role: 'user', parts: [{ text: prompt }] }],
+      generationConfig: { temperature: 0.7, maxOutputTokens: 2048 },
+    }),
+  });
+  if (!res.ok) throw new Error(`Gemini API error: ${res.status}`);
+  const data = await res.json();
+  return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+}
+
 // ── Low-level: multi-turn chat (preserves conversation history) ──
 async function chat(messages, systemPrompt) {
   if (AI_BACKEND === 'puter') {
-    const puter = await waitForPuter();
-    if (!puter) throw new Error('Puter.js not loaded');
-    const response = await puter.ai.chat(messages, {
-      system: systemPrompt,
-      model: 'google/gemini-2.5-flash',
-    });
-    return typeof response === 'string'
-      ? response
-      : response?.message?.content?.[0]?.text || response?.message?.content || String(response);
+    try {
+      const puter = await waitForPuter(4000);
+      const response = await puter.ai.chat(messages, {
+        system: systemPrompt,
+        model: 'google/gemini-2.5-flash',
+      });
+      return typeof response === 'string'
+        ? response
+        : response?.message?.content?.[0]?.text || response?.message?.content || String(response);
+    } catch {
+      // Puter unavailable (e.g. restricted network) — fall through to Gemini direct
+      const lastUserMsg = [...messages].reverse().find(m => m.role === 'user')?.content || '';
+      return callGeminiDirect(lastUserMsg, systemPrompt);
+    }
   } else {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -107,20 +130,20 @@ async function chat(messages, systemPrompt) {
 // ── Low-level: single completion ──
 async function complete(prompt, systemPrompt) {
   if (AI_BACKEND === 'puter') {
-    // HACKATHON: Puter.js (free, no API key)
-    // KNOWN ISSUE: blocked on eduroam — use mobile hotspot for demo
-    const puter = await waitForPuter();
-    if (!puter) throw new Error('Puter.js not loaded');
-    const response = await puter.ai.chat(prompt, {
-      system: systemPrompt,
-      model: 'google/gemini-2.5-flash',
-    });
-    // Puter returns string or object — normalize
-    return typeof response === 'string'
-      ? response
-      : response?.message?.content?.[0]?.text || response?.message?.content || String(response);
+    try {
+      const puter = await waitForPuter(4000);
+      const response = await puter.ai.chat(prompt, {
+        system: systemPrompt,
+        model: 'google/gemini-2.5-flash',
+      });
+      return typeof response === 'string'
+        ? response
+        : response?.message?.content?.[0]?.text || response?.message?.content || String(response);
+    } catch {
+      // Puter unavailable — fall back to direct Gemini API key
+      return callGeminiDirect(prompt, systemPrompt);
+    }
   } else {
-    // PRODUCTION: Claude API
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
