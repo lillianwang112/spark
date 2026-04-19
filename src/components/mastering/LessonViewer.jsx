@@ -272,17 +272,22 @@ export default function LessonViewer({
     setLessonData(null);
 
     (async () => {
-      // Fetch real Wikipedia context (non-blocking — degrades gracefully)
+      // 1. Check cache first — no network wait if content is already cached
+      const cached = await AIService.call('lessonContent', {
+        topic, moduleTitle, lessonTitle: lesson.title,
+        lessonIndex, ageGroup, topInterests, personality,
+        sourceContext: null,
+      });
+      if (cached) return cached;
+
+      if (cancelled) return null;
+
+      // 2. Cache miss — fetch Wikipedia context then generate
       const sourceContext = await fetchLessonSourceContext(lesson.title, topic, abort.signal).catch(() => null);
-      if (cancelled) return;
+      if (cancelled) return null;
       return AIService.call('lessonContent', {
-        topic,
-        moduleTitle,
-        lessonTitle: lesson.title,
-        lessonIndex,
-        ageGroup,
-        topInterests,
-        personality,
+        topic, moduleTitle, lessonTitle: lesson.title,
+        lessonIndex, ageGroup, topInterests, personality,
         sourceContext,
       });
     })()
