@@ -142,6 +142,7 @@ export function UserContextProvider({ children }) {
   }, [state]);
 
   useEffect(() => {
+    const isDemoMode = !!localStorage.getItem('spark_demo_key');
     const saved = storage.getUser();
     const savedElo = storage.getElo();
     const savedKnowledge = storage.getKnowledge();
@@ -156,6 +157,8 @@ export function UserContextProvider({ children }) {
 
     dispatch({ type: 'INIT_COMPLETE', payload: localState });
 
+    // In demo mode, skip Firebase entirely — no cloud merge that would overwrite demo data
+    if (isDemoMode) return undefined;
     if (!initFirebase()) return undefined;
 
     const unsubscribe = subscribeToAuthChanges(async (user) => {
@@ -197,6 +200,8 @@ export function UserContextProvider({ children }) {
 
   useEffect(() => {
     if (state.isLoading) return;
+    // In demo mode, never write back to localStorage — demo data must stay intact
+    if (localStorage.getItem('spark_demo_key')) return;
     storage.saveUser({
       ...state,
       isLoading: undefined,
@@ -209,6 +214,7 @@ export function UserContextProvider({ children }) {
 
   useEffect(() => {
     if (state.isLoading || !state.firebaseReady || !state.uid) return;
+    if (localStorage.getItem('spark_demo_key')) return;
     if (syncTimerRef.current) clearTimeout(syncTimerRef.current);
     syncTimerRef.current = setTimeout(() => {
       const profile = {
