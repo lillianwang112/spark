@@ -41,10 +41,10 @@ export default function DailySpark({
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       className="relative overflow-hidden rounded-[28px]"
       style={{
-        background: 'linear-gradient(145deg, #2D1000 0%, #4A1A00 38%, #3B1400 70%, #220C00 100%)',
-        border: '1px solid rgba(255,138,90,0.28)',
+        background: 'linear-gradient(145deg, #4A1800 0%, #7C3000 38%, #5C2000 70%, #331200 100%)',
+        border: '1px solid rgba(255,138,90,0.35)',
         boxShadow:
-          '0 48px 100px rgba(255,107,53,0.30), 0 16px 40px rgba(200,60,0,0.22), inset 0 1px 0 rgba(255,209,102,0.15)',
+          '0 48px 100px rgba(255,107,53,0.35), 0 16px 40px rgba(200,70,0,0.28), inset 0 1px 0 rgba(255,209,102,0.18)',
       }}
     >
       {/* Aurora sweep */}
@@ -52,10 +52,10 @@ export default function DailySpark({
         className="pointer-events-none absolute inset-0"
         animate={{
           background: [
-            'radial-gradient(ellipse 90% 55% at 15% 35%, rgba(255,107,53,0.22) 0%, transparent 68%)',
-            'radial-gradient(ellipse 90% 55% at 85% 65%, rgba(255,166,43,0.18) 0%, transparent 68%)',
-            'radial-gradient(ellipse 90% 55% at 50% 15%, rgba(255,209,102,0.14) 0%, transparent 68%)',
-            'radial-gradient(ellipse 90% 55% at 15% 35%, rgba(255,107,53,0.22) 0%, transparent 68%)',
+            'radial-gradient(ellipse 90% 55% at 15% 35%, rgba(255,107,53,0.38) 0%, transparent 68%)',
+            'radial-gradient(ellipse 90% 55% at 85% 65%, rgba(255,166,43,0.30) 0%, transparent 68%)',
+            'radial-gradient(ellipse 90% 55% at 50% 15%, rgba(255,209,102,0.24) 0%, transparent 68%)',
+            'radial-gradient(ellipse 90% 55% at 15% 35%, rgba(255,107,53,0.38) 0%, transparent 68%)',
           ],
         }}
         transition={{ duration: 11, repeat: Infinity, ease: 'easeInOut' }}
