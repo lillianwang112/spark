@@ -579,6 +579,7 @@ export default function Profile({ streakState }) {
   const [view, setView] = useState('constellation'); // 'constellation' | 'bars'
   const [showFullMap, setShowFullMap] = useState(false);
   const [shareFeedback, setShareFeedback] = useState('');
+  const [heroCollapsed, setHeroCollapsed] = useState(false);
   const [demoMode, setDemoMode] = useState(false);
   const [demoClicks, setDemoClicks] = useState(0);
   const demoTimerRef = useRef(null);
@@ -759,7 +760,8 @@ export default function Profile({ streakState }) {
         ))}
 
         <div className="max-w-[600px] mx-auto relative">
-          <div className="flex items-center justify-between gap-4">
+          {/* Top row: always visible — stage + name + collapse toggle */}
+          <div className="flex items-start justify-between gap-3">
             <div className="flex-1 min-w-0">
               <motion.p
                 initial={{ opacity: 0, y: -6 }}
@@ -779,107 +781,141 @@ export default function Profile({ streakState }) {
               >
                 {user.name ? `${user.name}'s tree` : 'Your curiosity tree'}
               </motion.h1>
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.4, delay: 0.16 }}
-                className="font-body text-sm mt-1.5 leading-relaxed max-w-xs"
-                style={{ color: 'rgba(72,49,10,0.72)' }}
-              >
-                {topDomains.length
-                  ? `Pulling hardest toward ${topDomains.slice(0, 2).join(' and ')}`
-                  : 'Still finding your threads — keep exploring'}
-              </motion.p>
-
-              {/* Domain color pills */}
-              {topDomains.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 4 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.25 }}
-                  className="flex flex-wrap gap-1.5 mt-3"
-                >
-                  {topDomains.slice(0, 4).map((domain, i) => {
-                    const c = DOMAIN_COLORS[domain] || '#FF6B35';
-                    const emojiMap = { math:'🔢', science:'🔬', cs:'💻', philosophy:'🏛️', music:'🎵', art:'🎨', history:'📜', literature:'📚', economics:'📊' };
-                    return (
-                      <motion.span
-                        key={domain}
-                        initial={{ scale: 0, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        transition={{ delay: 0.3 + i * 0.06, type: 'spring', stiffness: 320 }}
-                        className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-mono font-semibold capitalize"
-                        style={{
-                          background: `${c}25`,
-                          border: `1px solid ${c}40`,
-                          color: c,
-                          boxShadow: `0 2px 8px ${c}25`,
-                        }}
-                      >
-                        {emojiMap[domain] || '✦'} {domain}
-                      </motion.span>
-                    );
-                  })}
-                </motion.div>
-              )}
             </div>
-
-            {/* Ember + stats */}
-            <motion.div
-              initial={{ scale: 0.75, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.45, delay: 0.12, type: 'spring', stiffness: 240 }}
-              className="flex-shrink-0 flex flex-col items-center gap-2"
+            {/* Collapse toggle */}
+            <motion.button
+              onClick={() => setHeroCollapsed(v => !v)}
+              whileTap={{ scale: 0.9 }}
+              className="flex-shrink-0 mt-1 w-8 h-8 flex items-center justify-center rounded-full transition-colors"
+              style={{ background: 'rgba(255,107,53,0.10)', border: '1px solid rgba(255,107,53,0.20)', color: heroColor }}
+              aria-label={heroCollapsed ? 'Expand profile card' : 'Collapse profile card'}
             >
-              <motion.div
-                animate={{ boxShadow: [`0 0 20px ${heroColor}30`, `0 0 44px ${heroColor}55`, `0 0 20px ${heroColor}30`] }}
-                transition={{ duration: 3, repeat: Infinity }}
-                className="rounded-[22px] p-3 cursor-pointer select-none"
-                style={{ background: `rgba(255,107,53,0.15)`, border: `1px solid rgba(255,138,90,0.28)` }}
-                onClick={handleEmberSecretClick}
-                title={demoClicks > 0 ? `${7 - demoClicks} more...` : 'Your curiosity avatar'}
+              <motion.span
+                animate={{ rotate: heroCollapsed ? 180 : 0 }}
+                transition={{ duration: 0.25 }}
+                className="text-sm leading-none"
               >
-                <Ember
-                  mood={demoMode ? 'celebrating' : tracks.length >= 10 ? 'proud' : tracks.length >= 3 ? 'curious' : 'idle'}
-                  size="md"
-                  glowIntensity={demoMode ? 1.2 : emberGlow}
-                />
-              </motion.div>
-              <div className="flex gap-2 text-center">
-                <div className="rounded-[12px] px-2.5 py-1.5" style={{ background: 'rgba(255,107,53,0.12)', border: '1px solid rgba(255,107,53,0.22)' }}>
-                  <p className="font-display text-lg font-bold" style={{ color: '#FF8A5A' }}>{user.stats?.nodesExplored || tracks.length || 0}</p>
-                  <p className="text-[8px] font-mono uppercase tracking-widest" style={{ color: 'rgba(255,150,80,0.6)' }}>sparks</p>
-                </div>
-                <div className="rounded-[12px] px-2.5 py-1.5" style={{ background: 'rgba(255,166,43,0.12)', border: '1px solid rgba(255,166,43,0.22)' }}>
-                  <p className="font-display text-lg font-bold" style={{ color: '#FFD166' }}>{streak}</p>
-                  <p className="text-[8px] font-mono uppercase tracking-widest" style={{ color: 'rgba(255,200,80,0.6)' }}>streak</p>
-                </div>
-              </div>
-              {demoMode && (
-                <span className="text-[9px] font-mono rounded-full px-2 py-0.5" style={{ background: 'rgba(255,209,102,0.18)', color: '#FFD166', border: '1px solid rgba(255,209,102,0.3)' }}>
-                  ✦ demo
-                </span>
-              )}
-            </motion.div>
+                ›
+              </motion.span>
+            </motion.button>
           </div>
 
-          {/* AI personality summary */}
-          {personalitySummary && (
-            <motion.div
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.4 }}
-              className="mt-4 rounded-[16px] px-4 py-3"
-              style={{
-                background: 'rgba(255,107,53,0.07)',
-                border: '1px solid rgba(255,107,53,0.18)',
-              }}
-            >
-              <p className="font-body text-sm italic leading-relaxed" style={{ color: 'rgba(72,38,10,0.82)' }}>
-                "{personalitySummary}"
-              </p>
-            </motion.div>
-          )}
+          {/* Collapsible body */}
+          <AnimatePresence initial={false}>
+            {!heroCollapsed && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.3, ease: [0.25, 0.8, 0.25, 1] }}
+                className="overflow-hidden"
+              >
+                <div className="flex items-start gap-4 mt-2">
+                  <div className="flex-1 min-w-0">
+                    <motion.p
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.4, delay: 0.08 }}
+                      className="font-body text-sm mt-0.5 leading-relaxed max-w-xs"
+                      style={{ color: 'rgba(72,49,10,0.72)' }}
+                    >
+                      {topDomains.length
+                        ? `Pulling hardest toward ${topDomains.slice(0, 2).join(' and ')}`
+                        : 'Still finding your threads — keep exploring'}
+                    </motion.p>
+
+                    {/* Domain color pills */}
+                    {topDomains.length > 0 && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.15 }}
+                        className="flex flex-wrap gap-1.5 mt-3"
+                      >
+                        {topDomains.slice(0, 4).map((domain, i) => {
+                          const c = DOMAIN_COLORS[domain] || '#FF6B35';
+                          const emojiMap = { math:'🔢', science:'🔬', cs:'💻', philosophy:'🏛️', music:'🎵', art:'🎨', history:'📜', literature:'📚', economics:'📊' };
+                          return (
+                            <motion.span
+                              key={domain}
+                              initial={{ scale: 0, opacity: 0 }}
+                              animate={{ scale: 1, opacity: 1 }}
+                              transition={{ delay: 0.18 + i * 0.06, type: 'spring', stiffness: 320 }}
+                              className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-mono font-semibold capitalize"
+                              style={{
+                                background: `${c}25`,
+                                border: `1px solid ${c}40`,
+                                color: c,
+                                boxShadow: `0 2px 8px ${c}25`,
+                              }}
+                            >
+                              {emojiMap[domain] || '✦'} {domain}
+                            </motion.span>
+                          );
+                        })}
+                      </motion.div>
+                    )}
+                  </div>
+
+                  {/* Ember + stats */}
+                  <motion.div
+                    initial={{ scale: 0.75, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.45, delay: 0.12, type: 'spring', stiffness: 240 }}
+                    className="flex-shrink-0 flex flex-col items-center gap-2"
+                  >
+                    <motion.div
+                      animate={{ boxShadow: [`0 0 20px ${heroColor}30`, `0 0 44px ${heroColor}55`, `0 0 20px ${heroColor}30`] }}
+                      transition={{ duration: 3, repeat: Infinity }}
+                      className="rounded-[22px] p-3 cursor-pointer select-none"
+                      style={{ background: `rgba(255,107,53,0.15)`, border: `1px solid rgba(255,138,90,0.28)` }}
+                      onClick={handleEmberSecretClick}
+                      title={demoClicks > 0 ? `${7 - demoClicks} more...` : 'Your curiosity avatar'}
+                    >
+                      <Ember
+                        mood={demoMode ? 'celebrating' : tracks.length >= 10 ? 'proud' : tracks.length >= 3 ? 'curious' : 'idle'}
+                        size="md"
+                        glowIntensity={demoMode ? 1.2 : emberGlow}
+                      />
+                    </motion.div>
+                    <div className="flex gap-2 text-center">
+                      <div className="rounded-[12px] px-2.5 py-1.5" style={{ background: 'rgba(255,107,53,0.12)', border: '1px solid rgba(255,107,53,0.22)' }}>
+                        <p className="font-display text-lg font-bold" style={{ color: '#FF8A5A' }}>{user.stats?.nodesExplored || tracks.length || 0}</p>
+                        <p className="text-[8px] font-mono uppercase tracking-widest" style={{ color: 'rgba(255,150,80,0.6)' }}>sparks</p>
+                      </div>
+                      <div className="rounded-[12px] px-2.5 py-1.5" style={{ background: 'rgba(255,166,43,0.12)', border: '1px solid rgba(255,166,43,0.22)' }}>
+                        <p className="font-display text-lg font-bold" style={{ color: '#FFD166' }}>{streak}</p>
+                        <p className="text-[8px] font-mono uppercase tracking-widest" style={{ color: 'rgba(255,200,80,0.6)' }}>streak</p>
+                      </div>
+                    </div>
+                    {demoMode && (
+                      <span className="text-[9px] font-mono rounded-full px-2 py-0.5" style={{ background: 'rgba(255,209,102,0.18)', color: '#FFD166', border: '1px solid rgba(255,209,102,0.3)' }}>
+                        ✦ demo
+                      </span>
+                    )}
+                  </motion.div>
+                </div>
+
+                {/* AI personality summary */}
+                {personalitySummary && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.22, duration: 0.4 }}
+                    className="mt-4 rounded-[16px] px-4 py-3"
+                    style={{
+                      background: 'rgba(255,107,53,0.07)',
+                      border: '1px solid rgba(255,107,53,0.18)',
+                    }}
+                  >
+                    <p className="font-body text-sm italic leading-relaxed" style={{ color: 'rgba(72,38,10,0.82)' }}>
+                      "{personalitySummary}"
+                    </p>
+                  </motion.div>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
 

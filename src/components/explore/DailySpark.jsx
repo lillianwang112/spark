@@ -41,10 +41,10 @@ export default function DailySpark({
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       className="relative overflow-hidden rounded-[28px]"
       style={{
-        background: 'linear-gradient(145deg, #130700 0%, #1E0C00 38%, #12070A 70%, #0D0500 100%)',
-        border: '1px solid rgba(255,138,90,0.20)',
+        background: 'linear-gradient(145deg, #2D1000 0%, #4A1A00 38%, #3B1400 70%, #220C00 100%)',
+        border: '1px solid rgba(255,138,90,0.28)',
         boxShadow:
-          '0 48px 100px rgba(255,107,53,0.22), 0 16px 40px rgba(72,49,10,0.28), inset 0 1px 0 rgba(255,209,102,0.12)',
+          '0 48px 100px rgba(255,107,53,0.30), 0 16px 40px rgba(200,60,0,0.22), inset 0 1px 0 rgba(255,209,102,0.15)',
       }}
     >
       {/* Aurora sweep */}
