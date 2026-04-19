@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useTransform, animate } from 'framer-motion';
 import Ember from '../ember/Ember.jsx';
 import Toast from '../common/Toast.jsx';
 import { DOMAIN_COLORS } from '../../utils/domainColors.js';
@@ -168,6 +168,157 @@ const TOPICS = [
     hook: 'Evolution is happening right now, inside hospitals, faster than we imagined.',
     body: 'Antibiotics work by exploiting vulnerabilities in bacterial biology. But bacteria reproduce millions of times daily — any random mutation that survives becomes the dominant strain. We\'ve been selecting for resistance by overprescribing and underfinishing courses. WHO estimates drug-resistant infections will kill more people than cancer by 2050 unless we act now.',
   },
+  // ── New topics ──
+  {
+    id: 'monty_hall', label: 'The Monty Hall Problem', domain: 'math', emoji: '🚪',
+    hook: 'Switching doors doubles your odds. Almost every human instinct says otherwise.',
+    body: 'You pick door 1. The host opens door 3 (a goat). Should you switch to door 2? Yes — switching wins 2/3 of the time. When this appeared in Parade magazine in 1990, nearly 1,000 PhDs wrote in saying it was wrong. The host\'s knowledge changes the probability. Your intuition is confidently, provably mistaken.',
+  },
+  {
+    id: 'great_filter', label: 'The Great Filter', domain: 'science', emoji: '🌠',
+    hook: 'The universe is 13.8 billion years old. So where is everyone?',
+    body: 'The Fermi Paradox: the universe has billions of Earth-like planets and billions of years of head start. We should have been contacted. We haven\'t been. Either intelligence is extraordinarily rare, or civilisations reliably destroy themselves. The terrifying implication: if we find life on Mars, it might be the worst news in human history — it means the filter is ahead of us.',
+  },
+  {
+    id: 'ship_of_theseus', label: 'Ship of Theseus', domain: 'philosophy', emoji: '⚓',
+    hook: 'If you replace every plank, is it still the same ship? Your identity depends on the answer.',
+    body: 'Over years, every plank of Theseus\'s ship was replaced. Is it still the same ship? Now suppose someone collected all the old planks and rebuilt the original. Which is the real ship? The puzzle scales: your body replaces most cells every decade. Legal identity, personal continuity, and what makes you "you" all rest on this unsolved question.',
+  },
+  {
+    id: 'cognitive_dissonance', label: 'Cognitive Dissonance', domain: 'science', emoji: '🤯',
+    hook: 'When your actions contradict your beliefs, you change your beliefs — not your actions.',
+    body: 'Leon Festinger studied a cult that predicted the end of the world. When the date passed, members didn\'t abandon the cult — they doubled down and recruited harder. Actions must align with self-image, so when they conflict, the mind rewrites the story. This is why people who suffer for a cause value it more, and why the first step of commitment is so powerful.',
+  },
+  {
+    id: 'tectonic_plates', label: 'Tectonic Plates', domain: 'science', emoji: '🌍',
+    hook: 'The continents are moving — at the exact speed your fingernails grow.',
+    body: 'Earth\'s crust rides on massive plates that grind, subduct, and collide. The Himalayas are still rising because India is slowly crashing into Asia. 200 million years ago, all land was one continent (Pangaea). In 250 million years, the Americas will drift into Eurasia forming a new supercontinent. Every mountain range is a slow-motion collision we\'re frozen inside.',
+  },
+  {
+    id: 'bioluminescence', label: 'Bioluminescence', domain: 'science', emoji: '✨',
+    hook: 'The deep ocean is dark — but most of its creatures make their own light.',
+    body: 'Below 200 metres, sunlight vanishes entirely. Yet 76% of deep-sea animals produce their own light via a chemical reaction (luciferin + oxygen). Anglerfish lure prey with glowing lures; firefly squid flash in waves; some bacteria glow so infected fish becomes visible to predators — serving the bacteria by spreading them. Evolution invented light from scratch at least 50 separate times.',
+  },
+  {
+    id: 'mirror_neurons', label: 'Mirror Neurons', domain: 'science', emoji: '🪞',
+    hook: 'Your brain fires when you watch someone else act — as if you\'re doing it yourself.',
+    body: 'Discovered accidentally in macaque monkeys, mirror neurons fire both when an animal performs an action and when it observes that action. Humans have a homologous system. This may underpin imitation learning, empathy, and even language. When you wince watching someone stub their toe, your motor cortex is literally simulating their pain. Mirror neurons may be what makes culture possible.',
+  },
+  {
+    id: 'tulip_mania', label: 'Tulip Mania', domain: 'economics', emoji: '🌷',
+    hook: 'In 1637, a single tulip bulb cost more than a Dutch house. Then it didn\'t.',
+    body: 'In 1636, tulip futures contracts became wildly speculative. Rare "broken" tulips (actually virus-infected) fetched fortunes. At the peak, one Semper Augustus bulb sold for 10,000 guilders — the price of a grand Amsterdam canal house. In February 1637, the market collapsed overnight. Tulip mania became history\'s first documented speculative bubble, still studied by economists 400 years later.',
+  },
+  {
+    id: 'nuclear_winter', label: 'Nuclear Winter', domain: 'science', emoji: '☢️',
+    hook: 'A regional nuclear war could starve more people than the bombs kill.',
+    body: 'Even a "limited" nuclear exchange — say, India vs Pakistan — would inject enough soot into the stratosphere to cool global temperatures by 1-3°C for a decade. Crops would fail across the Northern Hemisphere. Models suggest 2 billion people could die of famine, mostly in countries that had no part in the conflict. The indirect effects dwarf the direct blast casualties.',
+  },
+  {
+    id: 'voynich_manuscript', label: 'The Voynich Manuscript', domain: 'humanities', emoji: '📜',
+    hook: 'A 600-year-old illustrated book in an undeciphered language — or the world\'s greatest hoax.',
+    body: 'Radiocarbon-dated to 1404–1438, the Voynich Manuscript contains 240 pages of flowing text in an unknown script, alongside illustrations of unidentifiable plants, astronomical diagrams, and naked figures in pools. No cryptographer, codebreaker, or linguist has decoded it. Theories range from an invented language to a hoax. Artificial intelligence failed too. It\'s the most studied unknown text in history.',
+  },
+  {
+    id: 'grandmother_hypothesis', label: 'The Grandmother Hypothesis', domain: 'science', emoji: '👵',
+    hook: 'Humans live past reproductive age partly because grandmothers saved their grandchildren.',
+    body: 'Almost all animals die shortly after they stop reproducing. Humans don\'t — women can live 40+ years past menopause. The grandmother hypothesis argues this was selected for: grandmothers who foraged for grandchildren allowed mothers to have more children more quickly. This would explain both human longevity and why childhood is so unusually long. Our elders may be the reason we\'re smart.',
+  },
+  {
+    id: 'synesthesia', label: 'Synesthesia', domain: 'science', emoji: '🎨',
+    hook: '4% of people automatically see numbers as colors or hear shapes as sounds.',
+    body: 'For synesthetes, sensory crosswiring is automatic and consistent: the number 7 is always green, Tuesday always smells like pine. Vladimir Nabokov, Nikola Tesla, and Pharrell Williams all had it. Brain imaging shows these aren\'t metaphors — cross-activation between sensory cortices is measurable. The condition suggests perception is far more constructed and individual than it feels.',
+  },
+  {
+    id: 'biomimicry', label: 'Biomimicry', domain: 'science', emoji: '🦅',
+    hook: 'Velcro, bullet trains, and solar panels were all invented by looking at animals.',
+    body: 'Velcro was inspired by burr seeds\' hooks. The Shinkansen\'s nose was redesigned from the kingfisher\'s beak to eliminate sonic booms in tunnels. Humpback whale fin tubercles improve wind turbine efficiency by 32%. Termite mounds inspired a passive cooling system for a Zimbabwean building. Evolution has been solving engineering problems for 3.8 billion years — we\'re just starting to read the solutions.',
+  },
+  {
+    id: 'inca_quipu', label: 'Inca Quipu', domain: 'history', emoji: '🪢',
+    hook: 'The Inca ran a continent-spanning empire — using only knots.',
+    body: 'The Inca had no writing system. Instead, they used quipus — complex arrangements of knotted strings encoding numbers, records, and possibly narrative. At its height, the Inca Empire stretched 4,000 km along the Andes, administered tribute, built 40,000 km of roads, and coordinated armies — all recorded in knots. Most quipus remain undeciphered. We may be reading their accounting ledgers and mistaking them for literature.',
+  },
+  {
+    id: 'arrow_of_time', label: 'Arrow of Time', domain: 'science', emoji: '⏳',
+    hook: 'Physics equations work perfectly backwards. So why can\'t you un-break an egg?',
+    body: 'Newtonian mechanics, electromagnetism, quantum mechanics — all are time-symmetric. Run the equations backwards and they\'re equally valid. Yet time clearly flows one direction. The answer involves entropy: there are astronomically more disordered states than ordered ones, so disorder increases statistically. But this just pushes the question back — why was the universe so extraordinarily ordered at the Big Bang?',
+  },
+  {
+    id: 'economic_complexity', label: 'Economic Complexity', domain: 'economics', emoji: '🏭',
+    hook: 'The best predictor of a country\'s wealth in 20 years? Not GDP — what it makes.',
+    body: 'Harvard economist Ricardo Hausmann found that countries\' future income is best predicted by the diversity and sophistication of their current exports — not their GDP or education levels. A country making both chemicals and ball bearings is more complex than one exporting oil. Complexity predicts growth better than almost anything else. Countries don\'t get rich by saving money; they get rich by learning to make hard things.',
+  },
+  {
+    id: 'hagia_sophia', label: 'Hagia Sophia\'s Floating Dome', domain: 'art', emoji: '🕌',
+    hook: 'A 1,500-year-old dome that appears to hover — solved with a ring of light.',
+    body: 'Built in 537 AD, Hagia Sophia\'s dome seems to float above the nave. The illusion is deliberate: 40 windows pierce its base in a continuous ring, flooding the transition zone with light and hiding the structural supports. The dome\'s base visually disappears. Byzantine architects achieved this without calculus or computers. When an earthquake damaged it in 558, they solved the problem by making the dome taller and lighter — the repair has outlasted every empire since.',
+  },
+  {
+    id: 'turing_test', label: 'The Turing Test', domain: 'cs', emoji: '🤖',
+    hook: 'Turing proposed a test for machine intelligence — then suggested it might be meaningless.',
+    body: 'In 1950, Alan Turing proposed the "imitation game": if a human can\'t distinguish a machine\'s responses from a human\'s, the machine is intelligent. But the same paper suggests this just moves the question — we can\'t define intelligence, so testing for imitation doesn\'t settle it. GPT-4 passes casual versions of the test. Philosophers still disagree about whether that means anything at all.',
+  },
+  {
+    id: 'habit_loop', label: 'How Habits Form', domain: 'science', emoji: '🔁',
+    hook: 'A three-step neurological loop runs roughly 40% of your daily actions — without you.',
+    body: 'The habit loop: a cue triggers a routine that delivers a reward. Repeat enough times and the basal ganglia automates the entire sequence, bypassing the prefrontal cortex. This is why habits feel effortless and why they\'re so hard to break — you\'re not fighting bad choices, you\'re fighting automated subroutines. Changing a habit requires keeping the cue and reward identical, but substituting the routine. The loop can\'t be deleted — only overwritten.',
+  },
+  {
+    id: 'humor_psychology', label: 'Why Things Are Funny', domain: 'science', emoji: '😂',
+    hook: 'Humor requires exactly two ingredients: a violated expectation that\'s also harmless.',
+    body: 'The benign violation theory: something is funny when it simultaneously violates expectations AND is safe/benign. Remove either element — pure surprise without safety (a real threat) or pure benign (a boring surprise) — and the humor evaporates. This explains why the same joke lands differently depending on who\'s in the room, why dark humor needs distance, and why tickling only works if the tickler is friendly.',
+  },
+  {
+    id: 'antimatter', label: 'Antimatter', domain: 'science', emoji: '💥',
+    hook: 'For every particle in existence, there\'s an opposite that destroys it on contact.',
+    body: 'Every particle has an antimatter twin with opposite charge. When matter meets antimatter, both annihilate in pure energy — the most efficient energy conversion possible. The Big Bang should have created equal amounts. Somehow matter won, by about one part in a billion. That tiny asymmetry is the reason the universe contains anything at all, and nobody knows why it happened.',
+  },
+  {
+    id: 'power_law', label: 'Power Laws', domain: 'math', emoji: '📊',
+    hook: 'The same mathematical pattern governs city sizes, earthquakes, wealth, and word frequency.',
+    body: 'In a power law distribution, a few items dominate everything. The 20 largest cities hold half the world\'s urban population. The top 1% owns more than the bottom 90%. Earthquake energy follows a power law across 12 orders of magnitude. These distributions have no "typical" value — averages are meaningless. Power laws emerge whenever growth is multiplicative rather than additive, which describes almost everything interesting.',
+  },
+  {
+    id: 'optical_illusions', label: 'Optical Illusions', domain: 'science', emoji: '👀',
+    hook: 'Optical illusions don\'t reveal how your eyes fail — they reveal how your brain predicts.',
+    body: 'Your visual cortex doesn\'t process raw input; it generates predictions about the world and checks them against incoming data. Optical illusions exploit priors baked in by evolution — assumptions about lighting, depth, and motion. The café wall illusion shows perfectly parallel lines that appear angled. These aren\'t errors; they\'re evidence that perception is a controlled hallucination running on shortcuts that are usually correct.',
+  },
+  {
+    id: 'dead_reckoning', label: 'Dead Reckoning', domain: 'history', emoji: '🧭',
+    hook: 'Polynesian navigators crossed 10,000 km of open ocean using only stars, waves, and birds.',
+    body: 'Before GPS or compasses, Polynesian wayfinders navigated from Hawaii to New Zealand using memorised star paths, wave patterns (different islands create distinct swells felt underfoot), wind direction, cloud formation above land, and the flight paths of birds. They carried mental maps of the night sky for 150 stars. This knowledge, nearly lost after colonisation, has been painstakingly reconstructed — and proven accurate by experiment.',
+  },
+  {
+    id: 'entropy_information', label: 'Entropy', domain: 'science', emoji: '🌡️',
+    hook: 'The universe\'s most relentless force isn\'t gravity — it\'s disorder.',
+    body: 'The second law of thermodynamics says entropy (disorder) always increases in a closed system. This is why heat flows hot to cold, why ice melts but water doesn\'t spontaneously freeze, and why your room gets messier. It\'s also why time has a direction. What\'s strange: the laws of physics are time-symmetric. The arrow of time comes entirely from entropy, which itself came from the inexplicably low entropy of the Big Bang.',
+  },
+  {
+    id: 'placebo_effect', label: 'The Placebo Effect', domain: 'science', emoji: '💊',
+    hook: 'A sugar pill can genuinely reduce pain — and the effect gets stronger if the pill is bigger.',
+    body: 'Placebos work even when patients are told they\'re placebos. More expensive-looking pills work better than cheap ones. Sham surgery often matches real surgery for pain relief. The effect is real and measurable — not just reported: placebos release endorphins, lower blood pressure, and trigger immune responses. This means the brain can modulate pain and inflammation on expectation alone. Medicine doesn\'t fully understand why.',
+  },
+  {
+    id: 'dunbar_number', label: 'Dunbar\'s Number', domain: 'science', emoji: '👥',
+    hook: 'Humans can meaningfully maintain exactly ~150 relationships. Social networks don\'t change this.',
+    body: 'Robin Dunbar found that primate neocortex size predicts average social group size. For humans, it\'s ~150. This appears across hunter-gatherer bands, Roman army units, Amish communities, and effective company divisions. You can have 5,000 Facebook friends, but you only genuinely track ~150 people\'s lives. Our brains evolved a fixed budget for social complexity, and no technology has expanded it — only redistributed it.',
+  },
+  {
+    id: 'godel', label: "Gödel's Incompleteness", domain: 'math', emoji: '🔄',
+    hook: 'Every powerful math system contains true statements it can never prove.',
+    body: 'In 1931, Kurt Gödel showed that any consistent formal system powerful enough to include arithmetic must contain statements that are true but unprovable within that system. This destroyed Hilbert\'s program of finding complete, consistent foundations for all mathematics. Worse: such a system cannot prove its own consistency. Mathematics is not and cannot be a closed book. Some truths lie permanently beyond proof.',
+  },
+  {
+    id: 'sound_physics', label: 'Sound is a Lie', domain: 'science', emoji: '🔊',
+    hook: 'Sound doesn\'t travel — pressure waves do. Your brain invents the rest.',
+    body: 'Sound is the brain\'s interpretation of pressure waves moving through a medium. Nothing "sound-like" exists between a speaker and your ear — only oscillating air pressure. The richness of timbre, the quality of a violin vs. a trumpet, is entirely constructed by your auditory cortex processing overtone patterns. Deaf from birth and surgically given hearing at 20, patients must learn to interpret these signals — the sound experience isn\'t given, it\'s built.',
+  },
+  {
+    id: 'compound_interest', label: 'Compound Interest', domain: 'economics', emoji: '📈',
+    hook: 'Einstein allegedly called it the eighth wonder of the world. The math earns the reputation.',
+    body: '$1,000 at 7% annual return becomes $7,612 in 30 years — not $3,100. The returns accelerate because each year\'s gains generate their own gains. A 25-year-old who invests $5,000 and never adds anything ends up with more at 65 than a 35-year-old who invests $5,000 every year. The function is exponential, and human brains evolved to reason linearly — making compound interest one of the most consistently underestimated forces in finance.',
+  },
 ];
 
 function shuffle(arr) {
@@ -187,28 +338,38 @@ function SwipeCard({ topic, onSwipeUp, onSwipeDown, onLike, onDig, isTop, zIndex
   const rotate = useTransform(y, [-150, 150], [-4, 4]);
   const opacity = useTransform(y, [-140, 0, 140], [0.5, 1, 0.5]);
   const color = DOMAIN_COLORS[topic.domain] || '#FF6B35';
-  const dragRef = useRef(null);
+  const swipingRef = useRef(false);
 
+  // Imperative flyoff prevents the dragConstraints spring-back from fighting the exit animation
   const handleDragEnd = useCallback((_, info) => {
+    if (swipingRef.current) return;
     const vy = info.velocity.y;
     const oy = info.offset.y;
     if (oy < -70 || vy < -450) {
-      onSwipeUp();
+      swipingRef.current = true;
+      animate(y, -500, { duration: 0.2, ease: [0.4, 0, 1, 1] }).then(() => {
+        swipingRef.current = false;
+        onSwipeUp();
+      });
     } else if (oy > 70 || vy > 450) {
-      onSwipeDown();
+      swipingRef.current = true;
+      animate(y, 500, { duration: 0.2, ease: [0.4, 0, 1, 1] }).then(() => {
+        swipingRef.current = false;
+        onSwipeDown();
+      });
     }
-  }, [onSwipeUp, onSwipeDown]);
+    // else: let Framer Motion spring y back to 0 naturally
+  }, [y, onSwipeUp, onSwipeDown]);
 
   const isLiked = liked;
   const isDark = theme === 'dark';
 
   return (
     <motion.div
-      ref={dragRef}
       style={{ y, rotate, opacity, zIndex, touchAction: 'none' }}
       drag={isTop ? 'y' : false}
-      dragConstraints={{ top: -250, bottom: 250 }}
-      dragElastic={0.14}
+      dragConstraints={{ top: -300, bottom: 300 }}
+      dragElastic={0.12}
       onDragEnd={isTop ? handleDragEnd : undefined}
       className="absolute inset-0 cursor-grab active:cursor-grabbing select-none"
     >
@@ -368,7 +529,7 @@ export default function FreeFall({ onExit, onDig, theme = 'light' }) {
   const [queue] = useState(() => shuffle(TOPICS));
   const [idx, setIdx] = useState(0);
   const [liked, setLiked] = useState(new Set());
-  const [exitDir, setExitDir] = useState(null);
+  const [enterDir, setEnterDir] = useState('up');
   const [toast, setToast] = useState(null);
 
   const showToast = useCallback((msg) => {
@@ -379,15 +540,13 @@ export default function FreeFall({ onExit, onDig, theme = 'light' }) {
   const current = queue[idx % queue.length];
   const next = queue[(idx + 1) % queue.length];
 
+  // Immediately change idx — SwipeCard handles its own flyoff animation
   const advance = useCallback((dir) => {
-    setExitDir(dir);
-    setTimeout(() => {
-      setIdx((i) => {
-        if (dir === 'down' && i === 0) return 0;
-        return i + (dir === 'up' ? 1 : -1);
-      });
-      setExitDir(null);
-    }, 230);
+    setEnterDir(dir);
+    setIdx((i) => {
+      if (dir === 'down' && i === 0) return 0;
+      return i + (dir === 'up' ? 1 : -1);
+    });
   }, []);
 
   const handleLike = useCallback(() => {
@@ -509,17 +668,14 @@ export default function FreeFall({ onExit, onDig, theme = 'light' }) {
         />
 
         {/* Top card */}
-        <AnimatePresence mode="popLayout">
+        <AnimatePresence mode="popLayout" initial={false}>
           <motion.div
             key={`top-${current.id}-${idx}`}
             className="absolute inset-4"
-            initial={{ y: exitDir === 'down' ? -50 : 50, opacity: 0, scale: 0.95 }}
+            initial={{ y: enterDir === 'down' ? -50 : 50, opacity: 0, scale: 0.95 }}
             animate={{ y: 0, opacity: 1, scale: 1 }}
-            exit={exitDir === 'up'
-              ? { y: -110, opacity: 0, scale: 0.92, transition: { duration: 0.22 } }
-              : { y: 70, opacity: 0, scale: 0.96, transition: { duration: 0.18 } }
-            }
-            transition={{ type: 'spring', stiffness: 340, damping: 30 }}
+            exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.15 } }}
+            transition={{ type: 'spring', stiffness: 380, damping: 32 }}
           >
             <SwipeCard
               topic={current}

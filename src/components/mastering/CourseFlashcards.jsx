@@ -37,7 +37,8 @@ function FlashCard({ card, onResult, cardIndex, total }) {
   const handleResult = useCallback((got) => {
     if (answered) return;
     setAnswered(true);
-    setTimeout(() => onResult(got), 320);
+    // Short delay lets the button tap feel registered, then transitions immediately
+    setTimeout(() => onResult(got), 80);
   }, [answered, onResult]);
 
   return (
@@ -331,13 +332,13 @@ export default function CourseFlashcards({ topic, lessonTitle, keyPoints, ageGro
   }
 
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence mode="popLayout" initial={false}>
       <motion.div
         key={cardIndex}
-        initial={{ opacity: 0, x: 28 }}
-        animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: -28 }}
-        transition={{ duration: 0.22, ease: [0.25, 0.8, 0.25, 1] }}
+        initial={{ opacity: 0, x: 48, scale: 0.97 }}
+        animate={{ opacity: 1, x: 0, scale: 1 }}
+        exit={{ opacity: 0, x: -48, scale: 0.97 }}
+        transition={{ duration: 0.2, ease: [0.25, 0.8, 0.25, 1] }}
       >
         <FlashCard
           card={cards[cardIndex]}
