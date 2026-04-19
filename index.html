@@ -2,16 +2,21 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" href="/spark/favicon.ico" sizes="48x48">
+    <link rel="icon" href="/spark/ember-icon.svg" sizes="any" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/spark/apple-touch-icon-180x180.png">
+    <link rel="manifest" href="/spark/manifest.json" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="description" content="Discover what you actually want to learn" />
+    <meta name="description" content="Your AI tutor for discovering, mastering, and applying what you learn." />
     <meta name="theme-color" content="#FF6B35" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Spark" />
-    <link rel="apple-touch-icon" href="/ember-icon.svg" />
+    <meta property="og:title" content="Spark — The Curiosity Engine" />
+    <meta property="og:description" content="Your AI tutor for discovering, mastering, and applying what you learn." />
+    <meta property="og:image" content="/spark/hero.jpg" />
+    <meta property="og:type" content="website" />
     <title>Spark — The Curiosity Engine</title>
     <!-- Google Fonts: Fraunces + Source Sans 3 -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -19,6 +24,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Source+Sans+3:wght@300;400;500;600;700&family=Baloo+2:wght@400;500;600&family=Nunito:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
     <!-- Puter.js for AI (hackathon backend) — async so it never blocks page load -->
     <script src="https://js.puter.com/v2/" async></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/spark/sw.js', { scope: '/spark/' })
+            .catch(() => {});
+        });
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -50,30 +50,29 @@ Spark is a curiosity-first learning experience with five connected loops:
 
 ## ⚡ Quick Start
 
-### 1) Install
+### Live Demo
+
+Try Spark instantly — no install required:
+
+**[https://lillianwang112.github.io/spark/](https://lillianwang112.github.io/spark/)**
+
+Boot with a demo profile to see everything in action:
+- `https://lillianwang112.github.io/spark/?demo=alex` — College STEM student
+- `https://lillianwang112.github.io/spark/?demo=maya` — High school arts student
+- `https://lillianwang112.github.io/spark/?demo=james` — Adult humanities learner
+
+Use `Shift + 1 / 2 / 3` to switch profiles live.
+
+---
+
+### Local Development
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/lillianwang112/spark.git
 cd spark
 npm install
-```
-
-### 2) Run the app
-
-```bash
+cp .env.example .env   # add your API keys
 npm run dev
-```
-
-### 3) (Optional) Run local API service
-
-```bash
-npm run dev:api
-```
-
-### 4) Build for production
-
-```bash
-npm run build
 ```
 
 ---
