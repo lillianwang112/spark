@@ -37,17 +37,29 @@ const DEMO_META = {
 const DEMO_ORDER = ['alex', 'maya', 'james'];
 
 // ── Floating demo-mode switcher ───────────────────────────────────────────────
+// Always visible — works on mobile (tap) and desktop (Shift+1/2/3)
+// Hidden activation: tap the 🔥 button 3 times fast to reveal if not in demo mode
 function DemoSwitcher({ activeKey }) {
   const [open, setOpen] = useState(false);
-  const meta = DEMO_META[activeKey];
+  const [tapCount, setTapCount] = useState(0);
+  const [revealed, setRevealed] = useState(!!activeKey);
+  const meta = activeKey ? DEMO_META[activeKey] : null;
 
   function switchTo(key) {
     loadDemoProfile(key);
-    // Preserve pathname so this works on both localhost and GitHub Pages /spark/
     window.location.href = `${window.location.pathname}?demo=${key}`;
   }
 
-  // Shift+1/2/3 hotkeys
+  // Triple-tap to reveal when not in demo mode
+  function handleTriggerTap() {
+    if (revealed) { setOpen(v => !v); return; }
+    const next = tapCount + 1;
+    setTapCount(next);
+    if (next >= 3) { setRevealed(true); setOpen(true); setTapCount(0); }
+    else { setTimeout(() => setTapCount(0), 800); }
+  }
+
+  // Keyboard: Shift+1/2/3 on desktop
   useEffect(() => {
     const handler = (e) => {
       if (!e.shiftKey) return;
@@ -59,25 +71,38 @@ function DemoSwitcher({ activeKey }) {
     return () => window.removeEventListener('keydown', handler);
   }, []);
 
+  // Close on outside tap
+  useEffect(() => {
+    if (!open) return;
+    const close = (e) => {
+      if (!e.target.closest('[data-demo-switcher]')) setOpen(false);
+    };
+    document.addEventListener('pointerdown', close);
+    return () => document.removeEventListener('pointerdown', close);
+  }, [open]);
+
+  const btnColor = meta?.color || '#FF6B35';
+
   return (
-    <div className="fixed bottom-28 right-3 z-[200] sm:bottom-32 sm:right-5">
+    <div data-demo-switcher="" className="fixed bottom-28 right-3 z-[200] sm:bottom-32 sm:right-5 flex flex-col items-end">
       <AnimatePresence>
-        {open && (
+        {open && revealed && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.88, y: 8 }}
+            initial={{ opacity: 0, scale: 0.88, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.88, y: 8 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 28 }}
-            className="mb-2 rounded-[20px] p-2 flex flex-col gap-1.5 min-w-[170px]"
+            exit={{ opacity: 0, scale: 0.88, y: 10 }}
+            transition={{ type: 'spring', stiffness: 420, damping: 28 }}
+            className="mb-2 rounded-[22px] p-2 flex flex-col gap-1"
             style={{
-              background: 'rgba(255,252,246,0.96)',
+              background: 'rgba(255,252,246,0.97)',
               border: '1px solid rgba(255,170,120,0.35)',
-              boxShadow: '0 18px 44px rgba(72,49,10,0.18), 0 0 0 1px rgba(255,170,120,0.18)',
-              backdropFilter: 'blur(20px)',
+              boxShadow: '0 20px 48px rgba(72,49,10,0.22), 0 0 0 1px rgba(255,170,120,0.18)',
+              backdropFilter: 'blur(24px)',
+              minWidth: 186,
             }}
           >
-            <p className="text-[9px] font-mono uppercase tracking-[0.22em] px-2 pt-1 pb-0.5" style={{ color: 'rgba(145,95,58,0.65)' }}>
-              Demo Profiles
+            <p className="text-[9px] font-mono uppercase tracking-[0.24em] px-2.5 pt-1.5 pb-1" style={{ color: 'rgba(145,95,58,0.6)' }}>
+              👁 Demo Profiles
             </p>
             {DEMO_ORDER.map((key, i) => {
               const m = DEMO_META[key];
@@ -85,59 +110,70 @@ function DemoSwitcher({ activeKey }) {
               return (
                 <motion.button
                   key={key}
-                  initial={{ opacity: 0, x: 8 }}
+                  initial={{ opacity: 0, x: 10 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.06 }}
+                  transition={{ delay: i * 0.05 }}
                   onClick={() => { setOpen(false); switchTo(key); }}
-                  className="flex items-center gap-2.5 rounded-[14px] px-3 py-2 text-left transition-all"
+                  className="flex items-center gap-3 rounded-[14px] px-3 py-2.5 text-left w-full active:scale-95 transition-transform"
                   style={{
-                    background: isActive ? `${m.color}30` : 'rgba(72,49,10,0.05)',
-                    border: isActive ? `1px solid ${m.color}50` : '1px solid transparent',
-                    boxShadow: isActive ? `0 4px 14px ${m.color}28` : 'none',
+                    background: isActive ? `${m.color}22` : 'rgba(72,49,10,0.04)',
+                    border: isActive ? `1.5px solid ${m.color}55` : '1.5px solid transparent',
+                    boxShadow: isActive ? `0 4px 16px ${m.color}30` : 'none',
                   }}
                 >
-                  <span className="text-lg leading-none">{m.emoji}</span>
-                  <div>
-                    <p className="text-[11px] font-body font-bold" style={{ color: isActive ? '#2A2A2A' : 'rgba(72,49,10,0.88)' }}>
+                  <span className="text-xl leading-none">{m.emoji}</span>
+                  <div className="min-w-0">
+                    <p className="text-[12px] font-bold leading-tight" style={{ color: isActive ? '#1A1A1A' : 'rgba(60,40,10,0.9)' }}>
                       {m.name}
                     </p>
-                    <p className="text-[9px] font-mono" style={{ color: isActive ? m.color : 'rgba(145,95,58,0.55)' }}>
-                      {m.label} {isActive ? '← active' : `[Shift+${i + 1}]`}
+                    <p className="text-[10px] font-mono mt-0.5" style={{ color: isActive ? m.color : 'rgba(145,95,58,0.55)' }}>
+                      {m.label}{isActive ? ' ✓' : ''}
                     </p>
                   </div>
+                  {isActive && (
+                    <span className="ml-auto text-[10px] font-bold" style={{ color: m.color }}>ON</span>
+                  )}
                 </motion.button>
               );
             })}
+            <p className="text-[8px] font-mono text-center pb-1 pt-0.5" style={{ color: 'rgba(145,95,58,0.35)' }}>
+              desktop: Shift+1/2/3
+            </p>
           </motion.div>
         )}
       </AnimatePresence>
 
       <motion.button
-        whileHover={{ scale: 1.1, y: -2 }}
-        whileTap={{ scale: 0.93 }}
-        onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-2 rounded-full px-3 py-2 shadow-lg"
+        whileTap={{ scale: 0.9 }}
+        onPointerDown={handleTriggerTap}
+        className="flex items-center gap-1.5 rounded-full shadow-lg select-none"
         style={{
-          background: 'rgba(255,252,246,0.95)',
-          border: `1.5px solid ${meta?.color || '#FF6B35'}50`,
-          boxShadow: `0 10px 28px rgba(72,49,10,0.2), 0 0 0 1px ${meta?.color || '#FF6B35'}22`,
+          padding: revealed ? '8px 14px' : '9px 12px',
+          background: revealed
+            ? 'rgba(255,252,246,0.96)'
+            : 'rgba(255,252,246,0.55)',
+          border: `1.5px solid ${btnColor}${revealed ? '55' : '25'}`,
+          boxShadow: revealed
+            ? `0 8px 28px rgba(72,49,10,0.18), 0 0 0 1px ${btnColor}20`
+            : `0 4px 12px rgba(72,49,10,0.08)`,
           backdropFilter: 'blur(20px)',
+          transition: 'all 0.3s ease',
         }}
         aria-label="Switch demo profile"
-        title="Switch demo profile (Shift+1/2/3)"
       >
-        <span className="text-base leading-none">{meta?.emoji || '👤'}</span>
-        <span className="text-[11px] font-mono font-bold" style={{ color: meta?.color || '#FF8A5A' }}>
-          Demo
-        </span>
-        <motion.span
-          animate={{ rotate: open ? 180 : 0 }}
-          transition={{ duration: 0.2 }}
-          className="text-[10px]"
-          style={{ color: 'rgba(145,95,58,0.5)' }}
-        >
-          ▲
-        </motion.span>
+        <span className="text-base leading-none">{meta?.emoji || '🔥'}</span>
+        {revealed && (
+          <>
+            <span className="text-[11px] font-mono font-bold" style={{ color: btnColor }}>
+              {meta ? meta.name.split(' ')[0] : 'Demo'}
+            </span>
+            <motion.span
+              animate={{ rotate: open ? 180 : 0 }}
+              transition={{ duration: 0.18 }}
+              className="text-[9px] opacity-40"
+            >▲</motion.span>
+          </>
+        )}
       </motion.button>
     </div>
   );
@@ -327,8 +363,8 @@ function AppShell() {
         />
       </div>
 
-      {/* Demo mode switcher — only shown when ?demo= param present */}
-      {activeDemoKey && <DemoSwitcher activeKey={activeDemoKey} />}
+      {/* Demo switcher — always mounted; triple-tap 🔥 to reveal when not in demo mode */}
+      <DemoSwitcher activeKey={activeDemoKey} />
     </div>
   );
 }
