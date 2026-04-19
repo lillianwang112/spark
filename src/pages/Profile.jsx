@@ -871,11 +871,11 @@ export default function Profile({ streakState }) {
               transition={{ delay: 0.3, duration: 0.4 }}
               className="mt-4 rounded-[16px] px-4 py-3"
               style={{
-                background: 'rgba(255,209,102,0.10)',
-                border: '1px solid rgba(255,209,102,0.22)',
+                background: 'rgba(255,107,53,0.07)',
+                border: '1px solid rgba(255,107,53,0.18)',
               }}
             >
-              <p className="font-body text-sm italic leading-relaxed" style={{ color: 'rgba(255,220,160,0.85)' }}>
+              <p className="font-body text-sm italic leading-relaxed" style={{ color: 'rgba(72,38,10,0.82)' }}>
                 "{personalitySummary}"
               </p>
             </motion.div>
@@ -1177,7 +1177,8 @@ export default function Profile({ streakState }) {
                   key="summary"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="font-body text-text-primary text-sm leading-relaxed italic"
+                  className="font-body text-sm leading-relaxed italic"
+                  style={{ color: 'rgba(60,30,5,0.85)' }}
                 >
                   "{personalitySummary}"
                 </motion.p>
