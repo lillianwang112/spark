@@ -43,7 +43,8 @@ function DemoSwitcher({ activeKey }) {
 
   function switchTo(key) {
     loadDemoProfile(key);
-    window.location.href = `?demo=${key}`;
+    // Preserve pathname so this works on both localhost and GitHub Pages /spark/
+    window.location.href = `${window.location.pathname}?demo=${key}`;
   }
 
   // Shift+1/2/3 hotkeys

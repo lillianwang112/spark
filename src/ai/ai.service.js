@@ -38,6 +38,7 @@ async function getStaticCache() {
     () => import('../data/courses_physics.json', { with: { type: 'json' } }),
     () => import('../data/courses_bio_econ.json', { with: { type: 'json' } }),
     () => import('../data/courses_cs2_humanities.json', { with: { type: 'json' } }),
+    () => import('../data/courses_demo.json', { with: { type: 'json' } }),
   ];
   _staticCache = {};
   for (const load of files) {
